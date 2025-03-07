@@ -1,0 +1,11 @@
+quarkus:
+  datasource:
+    db-kind: postgresql
+    username: russkiy-po-moyemu
+    password: russkiy-po-moyemu
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/russkiy-po-moyemu
+
+  hibernate-orm:
+    database:
+      generation: update
