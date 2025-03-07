@@ -2,9 +2,7 @@ package es.pausegarra.russkiy_po_moyemu.alphabet.domain.entities;
 
 import es.pausegarra.russkiy_po_moyemu.common.domain.audit.AuditFields;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -12,14 +10,17 @@ import java.util.UUID;
 @Table(name = "letters")
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(force = true)
+@Getter
 public class LetterEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private final UUID id;
 
+  @Column(unique = true)
   private final String letter;
 
+  @Column(unique = true)
   private final String ipa;
 
   @Embedded
