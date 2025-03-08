@@ -1,4 +1,4 @@
-package es.pausegarra.russkiy_po_moyemu.integration;
+package es.pausegarra.russkiy_po_moyemu.integration.alphabet;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import es.pausegarra.russkiy_po_moyemu.alphabet.domain.entities.LetterEntity;
