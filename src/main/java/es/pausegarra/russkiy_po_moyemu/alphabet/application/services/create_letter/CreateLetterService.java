@@ -19,8 +19,9 @@ public class CreateLetterService {
   public UUID handle(@Valid CreateLetterCommand command) {
     LetterEntity letter = LetterEntity.create(
         null,
-        command.letter(),
-        command.ipa()
+        command.cyrillic(),
+        command.ipa(),
+        command.latin()
     );
 
     letterRepository.save(letter);

@@ -7,8 +7,9 @@ import java.util.UUID;
 
 public record LetterDto(
     UUID id,
-    String letter,
+    String latin,
     String ipa,
+    String cyrillic,
     Instant createdAt,
     Instant updatedAt
 ) {
@@ -16,8 +17,9 @@ public record LetterDto(
   public static LetterDto fromEntity(LetterEntity entity) {
     return new LetterDto(
         entity.getId(),
-        entity.getLetter(),
+        entity.getLatin(),
         entity.getIpa(),
+        entity.getCyrillic(),
         entity.getAuditFields().getCreatedAt(),
         entity.getAuditFields().getUpdatedAt()
     );

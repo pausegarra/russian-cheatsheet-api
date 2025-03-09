@@ -17,17 +17,20 @@ public class LetterEntity {
   @GeneratedValue(strategy = GenerationType.UUID)
   private final UUID id;
 
-  @Column(unique = true)
-  private final String letter;
+  @Column(unique = true, nullable = false)
+  private final String cyrillic;
 
-  @Column(unique = true)
+  @Column(unique = true, nullable = false, name = "latin")
+  private final String latin;
+
+  @Column(unique = true, nullable = false)
   private final String ipa;
 
   @Embedded
   private final AuditFields auditFields;
 
-  public static LetterEntity create(UUID id, String letter, String ipa) {
-    return new LetterEntity(id, letter, ipa, null);
+  public static LetterEntity create(UUID id, String letter, String ipa, String latinLetter) {
+    return new LetterEntity(id, letter, ipa, latinLetter, null);
   }
 
 }

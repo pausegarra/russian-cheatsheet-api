@@ -20,7 +20,7 @@ public class CreateLetterResource {
 
   @POST
   public Response createLetter(CreateLetterRequest request) {
-    CreateLetterCommand command = CreateLetterCommand.from(request.letter(), request.ipa());
+    CreateLetterCommand command = CreateLetterCommand.from(request.cyrillic(), request.ipa(), request.latin());
     UUID createdLetterId = createLetterService.handle(command);
 
     return Response.status(Response.Status.CREATED)

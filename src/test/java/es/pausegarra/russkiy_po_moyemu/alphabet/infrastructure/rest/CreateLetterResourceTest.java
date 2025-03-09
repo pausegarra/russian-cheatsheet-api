@@ -25,7 +25,7 @@ class CreateLetterResourceTest {
 
   @Test
   public void shouldCreateLetter() {
-    CreateLetterRequest request = new CreateLetterRequest("a", "a");
+    CreateLetterRequest request = new CreateLetterRequest("a", "a", "a");
     when(createLetterService.handle(any(CreateLetterCommand.class))).thenReturn(UUID.randomUUID());
 
     Response response = createLetterResource.createLetter(request);
