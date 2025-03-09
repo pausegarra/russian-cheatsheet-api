@@ -10,9 +10,11 @@ quarkus:
 mp:
   jwt:
     verify:
-      publickey: ${PUBLIC_KEY_LOC}
+      publickey: |
+        ${PUBLIC_KEY_LOC}
 
 smallrye:
   jwt:
     sign:
-      key: ${PRIVATE_KEY_LOC}
+      key: |
+        ${PRIVATE_KEY_LOC}
