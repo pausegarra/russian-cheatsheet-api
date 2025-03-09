@@ -38,4 +38,4 @@ jobs:
       - name: ✅ Unit Test
         run: |
           source "/home/runner/.sdkman/bin/sdkman-init.sh"
-          mvn clean test
+          mvn clean test -Dquarkus.profile=test
