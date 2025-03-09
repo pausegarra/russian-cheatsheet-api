@@ -7,6 +7,10 @@ on:
   push:
     branches:
       - master
+      - chore/*
+      - feat/*
+      - fix/*
+      - refactor/*
 
 jobs:
   ci:
@@ -36,6 +40,9 @@ jobs:
           sdk use maven 3.9.8
 
       - name: ✅ Unit Test
+        env:
+          PUBLIC_KEY_LOC: ${{env.PUBLIC_KEY_LOC}}
+          PRIVATE_KEY_LOC: ${{secrets.PRIVATE_KEY_LOC}}
         run: |
           source "/home/runner/.sdkman/bin/sdkman-init.sh"
-          mvn clean test
+          mvn clean test -Dquarkus.profile=test

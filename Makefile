@@ -8,7 +8,7 @@ run: ## Run the application.
 	./mvnw clean package quarkus:run -DskipTests
 
 test: ## Run the tests.
-	./mvnw clean test
+	./mvnw clean test -Dquarkus.profile=test
 
 start-db: ## Start the database.
 	docker-compose up -d
