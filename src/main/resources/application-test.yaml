@@ -1,0 +1,8 @@
+quarkus:
+
+  datasource:
+    db-kind: postgresql
+    username: test
+    password: test
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/testdb
