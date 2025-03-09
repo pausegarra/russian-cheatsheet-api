@@ -3,7 +3,6 @@ package es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.rest;
 import es.pausegarra.russkiy_po_moyemu.alphabet.application.services.create_letter.CreateLetterCommand;
 import es.pausegarra.russkiy_po_moyemu.alphabet.application.services.create_letter.CreateLetterService;
 import es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.requests.CreateLetterRequest;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
