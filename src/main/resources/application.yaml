@@ -1,4 +1,7 @@
 quarkus:
+  http:
+    root-path: /api
+
   datasource:
     db-kind: postgresql
     username: russkiy-po-moyemu
@@ -9,3 +12,15 @@ quarkus:
   hibernate-orm:
     database:
       generation: drop-and-create
+
+mp:
+  jwt:
+    verify:
+      publickey:
+        location: file:${PUBLIC_KEY_LOC}
+
+smallrye:
+  jwt:
+    sign:
+      key:
+        location: file:${PRIVATE_KEY_LOC}
