@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import es.pausegarra.russkiy_po_moyemu.alphabet.domain.entities.LetterEntity;
 import es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.requests.CreateLetterRequest;
 import es.pausegarra.russkiy_po_moyemu.annotations.IntegrationTest;
+import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CreateLetterTest extends IntegrationTest {
 
   @Test
+  @TestTransaction
   public void shouldCreateLetter() throws JsonProcessingException {
     CreateLetterRequest request = new CreateLetterRequest("a", "a", "a");
     String json = objectMapper.writeValueAsString(request);
