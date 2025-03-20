@@ -42,3 +42,24 @@ jobs:
         run: |
           source "/home/runner/.sdkman/bin/sdkman-init.sh"
           mvn clean test -Dquarkus.profile=test
+
+  docker:
+    name: 🛠️ Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: ci
+
+    steps:
+      - name: 🔽 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🛠️ Build Docker Image
+        run: |
+          docker build -t psegarra/ruskiy-shpargalka-api:latest .
+
+      - name: 🛠️ Push Docker Image to Docker Hub
+        env:
+          DOCKER_USERNAME: ${{ env.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          docker push psegarra/ruskiy-shpargalka-api:latest
