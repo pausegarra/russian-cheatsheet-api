@@ -38,7 +38,7 @@ class ListLettersServiceTest {
     when(letterRepository.fetchAll())
         .thenReturn(List.of(letter));
 
-    List<LetterDto> letters = listLettersService.handle();
+    List<LetterDto> letters = listLettersService.handle(ListLettersQuery.from());
 
     assertEquals(1, letters.size());
     assertEquals("a", letters.getFirst().cyrillic());

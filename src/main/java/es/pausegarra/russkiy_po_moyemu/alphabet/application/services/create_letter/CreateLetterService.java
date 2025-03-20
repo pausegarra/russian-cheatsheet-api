@@ -2,7 +2,9 @@ package es.pausegarra.russkiy_po_moyemu.alphabet.application.services.create_let
 
 import es.pausegarra.russkiy_po_moyemu.alphabet.domain.entities.LetterEntity;
 import es.pausegarra.russkiy_po_moyemu.alphabet.domain.repositories.LetterRepository;
+import es.pausegarra.russkiy_po_moyemu.common.application.interfaces.Service;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +13,12 @@ import java.util.UUID;
 
 @ApplicationScoped
 @RequiredArgsConstructor
-public class CreateLetterService {
+@Named("CreateLetterService")
+public class CreateLetterService implements Service<CreateLetterCommand, UUID> {
 
   private final LetterRepository letterRepository;
 
+  @Override
   @Transactional
   public UUID handle(@Valid CreateLetterCommand command) {
     LetterEntity letter = LetterEntity.create(
