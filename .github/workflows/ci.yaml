@@ -7,10 +7,6 @@ on:
   push:
     branches:
       - master
-      - chore/*
-      - feat/*
-      - fix/*
-      - refactor/*
 
 jobs:
   ci:
