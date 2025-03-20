@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "letters")
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 @NoArgsConstructor(force = true)
 @Getter
 public class LetterEntity {
