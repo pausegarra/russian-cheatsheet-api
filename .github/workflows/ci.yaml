@@ -41,7 +41,7 @@ jobs:
           PRIVATE_KEY_LOC: ${{secrets.PRIVATE_KEY_LOC}}
         run: |
           source "/home/runner/.sdkman/bin/sdkman-init.sh"
-          mvn clean test -Dquarkus.profile=test
+          mvn clean package -Dquarkus.profile=test
 
   docker:
     name: 🛠️ Build and Push Docker Image
@@ -54,7 +54,7 @@ jobs:
 
       - name: 🛠️ Build Docker Image
         run: |
-          docker build -t psegarra/ruskiy-shpargalka-api:latest .
+          docker build -t psegarra/ruskiy-shpargalka-api:latest -f ./src/main/docker/Dockerfile.jvm .
 
       - name: 🛠️ Push Docker Image to Docker Hub
         env:
