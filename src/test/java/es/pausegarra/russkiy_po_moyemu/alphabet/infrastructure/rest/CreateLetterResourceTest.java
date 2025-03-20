@@ -5,6 +5,7 @@ import es.pausegarra.russkiy_po_moyemu.alphabet.application.services.create_lett
 import es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.requests.CreateLetterRequest;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,7 @@ class CreateLetterResourceTest {
   CreateLetterResource createLetterResource;
 
   @Test
+  @TestSecurity(authorizationEnabled = false)
   public void shouldCreateLetter() {
     CreateLetterRequest request = new CreateLetterRequest("a", "a", "a");
     when(createLetterService.handle(any(CreateLetterCommand.class))).thenReturn(UUID.randomUUID());

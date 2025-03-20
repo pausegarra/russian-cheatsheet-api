@@ -5,6 +5,7 @@ import es.pausegarra.russkiy_po_moyemu.alphabet.domain.entities.LetterEntity;
 import es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.requests.CreateLetterRequest;
 import es.pausegarra.russkiy_po_moyemu.annotations.IntegrationTest;
 import io.quarkus.test.TestTransaction;
+import io.quarkus.test.security.TestSecurity;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,7 @@ public class CreateLetterTest extends IntegrationTest {
 
   @Test
   @TestTransaction
+  @TestSecurity(user = "test", roles = { "admin" })
   public void shouldCreateLetter() throws JsonProcessingException {
     CreateLetterRequest request = new CreateLetterRequest("a", "a", "a");
     String json = objectMapper.writeValueAsString(request);
@@ -39,6 +41,7 @@ public class CreateLetterTest extends IntegrationTest {
   }
 
   @Test
+  @TestSecurity(user = "test", roles = { "admin" })
   public void shouldReturn400WhenDataIsInvalid() throws JsonProcessingException {
     CreateLetterRequest request = new CreateLetterRequest(null, null, null);
     String json = objectMapper.writeValueAsString(request);

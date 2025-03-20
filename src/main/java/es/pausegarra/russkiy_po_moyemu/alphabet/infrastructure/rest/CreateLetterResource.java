@@ -20,7 +20,7 @@ public class CreateLetterResource {
   private final Service<CreateLetterCommand, UUID> service;
 
   @POST
-  @RolesAllowed("admin")
+  @RolesAllowed({ "admin" })
   public Response createLetter(CreateLetterRequest request) {
     CreateLetterCommand command = CreateLetterCommand.from(request.cyrillic(), request.ipa(), request.latin());
     UUID createdLetterId = service.handle(command);
