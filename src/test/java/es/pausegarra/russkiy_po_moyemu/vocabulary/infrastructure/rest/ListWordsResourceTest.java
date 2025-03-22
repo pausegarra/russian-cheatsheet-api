@@ -1,6 +1,7 @@
 package es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.rest;
 
 import es.pausegarra.russkiy_po_moyemu.common.application.pagination.PaginatedDto;
+import es.pausegarra.russkiy_po_moyemu.common.domain.audit.AuditFields;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.dto.WordDto;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.find_paginated_words.FindAllWordsPaginatedQuery;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.find_paginated_words.FindAllWordsPaginatedService;
@@ -12,7 +13,9 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,12 +32,13 @@ class ListWordsResourceTest {
 
   @Test
   public void shouldReturnAllWords() {
-    WordEntity word = WordEntity.create(
-        null,
+    WordEntity word = new WordEntity(
+        UUID.randomUUID(),
         "a",
         "a",
         "a",
-        WordTypes.VERB
+        WordTypes.VERB,
+        new AuditFields(Instant.now(), Instant.now())
     );
     WordDto wordDto = WordDto.fromEntity(word);
     PaginatedDto<WordDto> paginatedDto = new PaginatedDto<>(

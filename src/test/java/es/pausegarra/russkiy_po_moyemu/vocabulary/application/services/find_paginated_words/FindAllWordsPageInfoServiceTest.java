@@ -2,6 +2,7 @@ package es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.find_pag
 
 import es.pausegarra.russkiy_po_moyemu.common.application.pagination.Paginated;
 import es.pausegarra.russkiy_po_moyemu.common.application.pagination.PaginatedDto;
+import es.pausegarra.russkiy_po_moyemu.common.domain.audit.AuditFields;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.dto.WordDto;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.criterias.WordsSearchCriteria;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.entities.WordEntity;
@@ -12,6 +13,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,12 +31,13 @@ class FindAllWordsPageInfoServiceTest {
 
   @Test
   public void shouldFindAllWords() {
-    WordEntity word = WordEntity.create(
+    WordEntity word = new WordEntity(
         UUID.randomUUID(),
         "a",
         "a",
         "a",
-        WordTypes.VERB
+        WordTypes.VERB,
+        new AuditFields(Instant.now(), Instant.now())
     );
 
     Paginated<WordEntity> paginated = new Paginated<>(
