@@ -6,14 +6,20 @@ import io.quarkus.test.common.QuarkusTestResource;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.junit.jupiter.api.AfterEach;
 
 @QuarkusTestResource(PostgreSqlTestContainer.class)
-@Transactional
 public abstract class IntegrationTest {
 
   protected final ObjectMapper objectMapper = new ObjectMapper();
 
   @PersistenceContext
   protected EntityManager em;
+
+  @AfterEach
+  @Transactional
+  public void cleanUp() {
+    em.createNativeQuery("TRUNCATE TABLE letters CASCADE").executeUpdate();
+  }
 
 }

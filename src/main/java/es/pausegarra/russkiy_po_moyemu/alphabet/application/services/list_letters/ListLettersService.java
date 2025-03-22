@@ -6,6 +6,7 @@ import es.pausegarra.russkiy_po_moyemu.alphabet.domain.entities.LetterEntity;
 import es.pausegarra.russkiy_po_moyemu.alphabet.domain.repositories.LetterRepository;
 import es.pausegarra.russkiy_po_moyemu.common.application.interfaces.Service;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +20,7 @@ public class ListLettersService implements Service<ListLettersQuery, List<Letter
 
   private final LetterMapper letterMapper;
 
+  @Transactional
   public List<LetterDto> handle(@Valid ListLettersQuery query) {
     List<LetterEntity> letters = letterRepository.fetchAll();
 

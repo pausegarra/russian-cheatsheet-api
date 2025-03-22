@@ -2,8 +2,8 @@ package es.pausegarra.russkiy_po_moyemu.integration.alphabet;
 
 import es.pausegarra.russkiy_po_moyemu.alphabet.domain.entities.LetterEntity;
 import es.pausegarra.russkiy_po_moyemu.annotations.IntegrationTest;
-import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -13,9 +13,8 @@ import static org.hamcrest.Matchers.nullValue;
 @QuarkusTest
 public class ListLetterTest extends IntegrationTest {
 
-  @Test
-  @TestTransaction
-  public void shouldReturnAllLetters() {
+  @Transactional
+  public void setUp() {
     LetterEntity letter = LetterEntity.create(
         null,
         "a",
@@ -23,6 +22,12 @@ public class ListLetterTest extends IntegrationTest {
         "a"
     );
     em.persist(letter);
+    em.flush();
+  }
+
+  @Test
+  public void shouldReturnAllLetters() {
+    setUp();
 
     given()
         .when().get("/letters")
