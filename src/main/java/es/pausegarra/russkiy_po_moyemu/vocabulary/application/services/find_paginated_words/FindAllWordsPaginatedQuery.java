@@ -4,11 +4,13 @@ import io.smallrye.common.constraint.NotNull;
 
 public record FindAllWordsPaginatedQuery(
     @NotNull int page,
-    @NotNull int pageSize
+    @NotNull int pageSize,
+    @NotNull String sortBy,
+    @NotNull String sortDirection
 ) {
 
-  public static FindAllWordsPaginatedQuery from(int page, int pageSize) {
-    return new FindAllWordsPaginatedQuery(page, pageSize);
+  public static FindAllWordsPaginatedQuery from(int page, int pageSize, String sortBy, String sortDirection) {
+    return new FindAllWordsPaginatedQuery(page, pageSize, sortBy, sortDirection);
   }
 
 }
