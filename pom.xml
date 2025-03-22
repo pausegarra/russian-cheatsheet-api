@@ -85,6 +85,11 @@
         </dependency>
         <!-- END JWT-->
 
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-rest-client-jackson</artifactId>
+        </dependency>
+
         <!-- Test -->
         <dependency>
             <groupId>io.rest-assured</groupId>

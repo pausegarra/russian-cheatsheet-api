@@ -13,9 +13,14 @@ quarkus:
     database:
       generation: drop-and-create
 
+  rest-client:
+    keycloak:
+      url: https://auth.pausegarra.es/realms/develop
+      scope: jakarta.inject.Singleton
+
 mp:
   jwt:
     verify:
       publickey:
-        location: https://auth.pausegarra.es/realms/principal/protocol/openid-connect/certs
-      issuer: https://auth.pausegarra.es/realms/principal
+        location: https://auth.pausegarra.es/realms/develop/protocol/openid-connect/certs
+      issuer: https://auth.pausegarra.es/realms/develop
