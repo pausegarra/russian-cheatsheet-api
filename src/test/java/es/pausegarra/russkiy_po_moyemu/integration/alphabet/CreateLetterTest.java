@@ -51,7 +51,7 @@ public class CreateLetterTest extends IntegrationTest {
         .then()
         .statusCode(400)
         .body("errors.size()", is(3))
-        .body("errors.field", hasItems("handle.command.cyrillic", "handle.command.ipa", "handle.command.latin"))
+        .body("errors.field", hasItems("handle.dto.cyrillic", "handle.dto.ipa", "handle.dto.latin"))
         .body("errors.message", hasItem("must not be blank"));
   }
 

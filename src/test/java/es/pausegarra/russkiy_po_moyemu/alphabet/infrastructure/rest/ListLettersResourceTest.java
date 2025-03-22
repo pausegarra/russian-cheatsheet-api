@@ -1,7 +1,6 @@
 package es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.rest;
 
 import es.pausegarra.russkiy_po_moyemu.alphabet.application.dtos.LetterDto;
-import es.pausegarra.russkiy_po_moyemu.alphabet.application.mappers.LetterMapper;
 import es.pausegarra.russkiy_po_moyemu.alphabet.application.services.list_letters.ListLettersQuery;
 import es.pausegarra.russkiy_po_moyemu.alphabet.application.services.list_letters.ListLettersService;
 import es.pausegarra.russkiy_po_moyemu.alphabet.domain.entities.LetterEntity;
@@ -16,7 +15,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @QuarkusTest
@@ -28,9 +27,6 @@ class ListLettersResourceTest {
   @Inject
   ListLettersResource listLettersResource;
 
-  @Inject
-  LetterMapper letterMapper;
-
   @Test
   public void shouldReturnAllLetters() {
     LetterEntity letter = new LetterEntity(
@@ -40,7 +36,7 @@ class ListLettersResourceTest {
         "a",
         new AuditFields(Instant.now(), Instant.now())
     );
-    LetterDto letterDto = letterMapper.fromEntityToDto(letter);
+    LetterDto letterDto = LetterDto.fromEntity(letter);
 
     when(listLettersService.handle(any(ListLettersQuery.class)))
         .thenReturn(List.of(letterDto));
