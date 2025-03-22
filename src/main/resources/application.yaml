@@ -17,10 +17,5 @@ mp:
   jwt:
     verify:
       publickey:
-        location: file:${PUBLIC_KEY_LOC}
-
-smallrye:
-  jwt:
-    sign:
-      key:
-        location: file:${PRIVATE_KEY_LOC}
+        location: https://auth.pausegarra.es/realms/principal/protocol/openid-connect/certs
+      issuer: https://auth.pausegarra.es/realms/principal

@@ -3,7 +3,7 @@ package es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.rest;
 import es.pausegarra.russkiy_po_moyemu.alphabet.application.services.create_letter.CreateLetterCommand;
 import es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.requests.CreateLetterRequest;
 import es.pausegarra.russkiy_po_moyemu.common.application.interfaces.Service;
-import jakarta.annotation.security.RolesAllowed;
+import io.quarkus.security.PermissionsAllowed;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
@@ -20,7 +20,7 @@ public class CreateLetterResource {
   private final Service<CreateLetterCommand, UUID> service;
 
   @POST
-  @RolesAllowed({ "admin" })
+  @PermissionsAllowed({ "letter:create" })
   public Response createLetter(CreateLetterRequest request) {
     CreateLetterCommand command = CreateLetterCommand.from(request.cyrillic(), request.ipa(), request.latin());
     UUID createdLetterId = service.handle(command);

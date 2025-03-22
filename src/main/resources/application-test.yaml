@@ -6,15 +6,3 @@ quarkus:
     password: test
     jdbc:
       url: jdbc:postgresql://localhost:5432/testdb
-
-mp:
-  jwt:
-    verify:
-      publickey: |
-        ${PUBLIC_KEY_LOC}
-
-smallrye:
-  jwt:
-    sign:
-      key: |
-        ${PRIVATE_KEY_LOC}

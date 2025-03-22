@@ -18,7 +18,7 @@ public class CreateLetterTest extends IntegrationTest {
 
   @Test
   @TestTransaction
-  @TestSecurity(user = "test", roles = { "admin" })
+  @TestSecurity(user = "test", permissions = { "letter:create" })
   public void shouldCreateLetter() throws JsonProcessingException {
     CreateLetterRequest request = new CreateLetterRequest("a", "a", "a");
     String json = objectMapper.writeValueAsString(request);
@@ -41,7 +41,7 @@ public class CreateLetterTest extends IntegrationTest {
   }
 
   @Test
-  @TestSecurity(user = "test", roles = { "admin" })
+  @TestSecurity(user = "test", permissions = { "letter:create" })
   public void shouldReturn400WhenDataIsInvalid() throws JsonProcessingException {
     CreateLetterRequest request = new CreateLetterRequest(null, null, null);
     String json = objectMapper.writeValueAsString(request);
@@ -55,6 +55,33 @@ public class CreateLetterTest extends IntegrationTest {
         .body("errors.size()", is(3))
         .body("errors.field", hasItems("handle.command.cyrillic", "handle.command.ipa", "handle.command.latin"))
         .body("errors.message", hasItem("must not be blank"));
+  }
+
+  @Test
+  @TestSecurity(user = "test")
+  public void shouldReturn403WhenUserDoesNotHavePermissions() throws JsonProcessingException {
+    CreateLetterRequest request = new CreateLetterRequest("a", "a", "a");
+    String json = objectMapper.writeValueAsString(request);
+
+    given()
+        .body(json)
+        .contentType("application/json")
+        .when().post("/letters")
+        .then()
+        .statusCode(403);
+  }
+
+  @Test
+  public void shouldReturn401WhenUserIsNotAuthenticated() throws JsonProcessingException {
+    CreateLetterRequest request = new CreateLetterRequest("a", "a", "a");
+    String json = objectMapper.writeValueAsString(request);
+
+    given()
+        .body(json)
+        .contentType("application/json")
+        .when().post("/letters")
+        .then()
+        .statusCode(401);
   }
 
 }
