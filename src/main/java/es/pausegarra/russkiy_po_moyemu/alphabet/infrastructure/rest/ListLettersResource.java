@@ -1,7 +1,6 @@
 package es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.rest;
 
 import es.pausegarra.russkiy_po_moyemu.alphabet.application.dtos.LetterDto;
-import es.pausegarra.russkiy_po_moyemu.alphabet.application.mappers.LetterMapper;
 import es.pausegarra.russkiy_po_moyemu.alphabet.application.services.list_letters.ListLettersQuery;
 import es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.projections.LetterProjection;
 import es.pausegarra.russkiy_po_moyemu.common.application.interfaces.Service;
@@ -18,13 +17,11 @@ public class ListLettersResource {
 
   private final Service<ListLettersQuery, List<LetterDto>> service;
 
-  private final LetterMapper letterMapper;
-
   @GET
   public Response listLetters() {
     List<LetterDto> letters = service.handle(ListLettersQuery.from());
     List<LetterProjection> letterProjections = letters.stream()
-        .map(letterMapper::fromDtoToProjection)
+        .map(LetterProjection::fromDto)
         .toList();
 
     return Response.ok(letterProjections)

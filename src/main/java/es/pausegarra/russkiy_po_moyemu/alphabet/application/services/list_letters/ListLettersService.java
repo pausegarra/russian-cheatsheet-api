@@ -1,7 +1,6 @@
 package es.pausegarra.russkiy_po_moyemu.alphabet.application.services.list_letters;
 
 import es.pausegarra.russkiy_po_moyemu.alphabet.application.dtos.LetterDto;
-import es.pausegarra.russkiy_po_moyemu.alphabet.application.mappers.LetterMapper;
 import es.pausegarra.russkiy_po_moyemu.alphabet.domain.entities.LetterEntity;
 import es.pausegarra.russkiy_po_moyemu.alphabet.domain.repositories.LetterRepository;
 import es.pausegarra.russkiy_po_moyemu.common.application.interfaces.Service;
@@ -18,14 +17,12 @@ public class ListLettersService implements Service<ListLettersQuery, List<Letter
 
   private final LetterRepository letterRepository;
 
-  private final LetterMapper letterMapper;
-
   @Transactional
   public List<LetterDto> handle(@Valid ListLettersQuery query) {
     List<LetterEntity> letters = letterRepository.fetchAll();
 
     return letters.stream()
-        .map(letterMapper::fromEntityToDto)
+        .map(LetterDto::fromEntity)
         .toList();
   }
 

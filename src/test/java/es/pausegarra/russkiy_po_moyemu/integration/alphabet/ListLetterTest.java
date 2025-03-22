@@ -37,7 +37,8 @@ public class ListLetterTest extends IntegrationTest {
         .body("[0].cyrillic", is("a"))
         .body("[0].ipa", is("a"))
         .body("[0].latin", is("a"))
-        .body("[0].createdAt", nullValue());
+        .body("[0].createdAt", nullValue())
+        .body("[0].updatedAt", nullValue());
   }
 
 }
