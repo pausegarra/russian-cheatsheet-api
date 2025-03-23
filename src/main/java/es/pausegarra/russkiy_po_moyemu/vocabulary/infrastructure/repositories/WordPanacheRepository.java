@@ -1,6 +1,6 @@
 package es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.repositories;
 
-import es.pausegarra.russkiy_po_moyemu.common.application.pagination.Paginated;
+import es.pausegarra.russkiy_po_moyemu.common.domain.pagination_and_sorting.Paginated;
 import es.pausegarra.russkiy_po_moyemu.common.infrastructure.pagination.PageInfo;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.criterias.WordsSearchCriteria;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.entities.WordEntity;

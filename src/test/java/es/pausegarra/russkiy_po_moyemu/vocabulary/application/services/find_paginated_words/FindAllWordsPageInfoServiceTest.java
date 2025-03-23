@@ -1,6 +1,6 @@
 package es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.find_paginated_words;
 
-import es.pausegarra.russkiy_po_moyemu.common.application.pagination.Paginated;
+import es.pausegarra.russkiy_po_moyemu.common.domain.pagination_and_sorting.Paginated;
 import es.pausegarra.russkiy_po_moyemu.common.application.pagination.PaginatedDto;
 import es.pausegarra.russkiy_po_moyemu.common.domain.audit.AuditFields;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.dto.WordDto;

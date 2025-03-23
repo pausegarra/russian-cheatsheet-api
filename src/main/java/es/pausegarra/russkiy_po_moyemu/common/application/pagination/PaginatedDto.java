@@ -1,5 +1,7 @@
 package es.pausegarra.russkiy_po_moyemu.common.application.pagination;
 
+import es.pausegarra.russkiy_po_moyemu.common.domain.pagination_and_sorting.Paginated;
+
 import java.util.List;
 
 public record PaginatedDto<E>(
