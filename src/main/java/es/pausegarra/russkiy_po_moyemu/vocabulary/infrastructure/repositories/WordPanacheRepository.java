@@ -7,6 +7,7 @@ import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.repositories.WordsRepository;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -19,8 +20,12 @@ public class WordPanacheRepository implements WordsRepository, PanacheRepository
         criteria.getSorting().sortBy(),
         Sort.Direction.valueOf(criteria.getSorting().sortDirection().getValue())
     );
+    Page page = Page.of(
+        criteria.getPagination().page(),
+        criteria.getPagination().pageSize()
+    );
     PanacheQuery<WordEntity> query = findAll(sort)
-        .page(criteria.getPagination());
+        .page(page);
 
     PageInfo pageInfo = PageInfo.fromQuery(query);
 
