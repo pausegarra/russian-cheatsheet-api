@@ -1,6 +1,6 @@
-package es.pausegarra.russkiy_po_moyemu.auth.infrastructure.augmentors;
+package es.pausegarra.russkiy_po_moyemu.auth.infrastructure.security.augmentors;
 
-import es.pausegarra.russkiy_po_moyemu.auth.infrastructure.suppliers.KeycloakIdentitySupplier;
+import es.pausegarra.russkiy_po_moyemu.auth.infrastructure.security.suppliers.KeycloakIdentitySupplier;
 import io.quarkus.security.identity.AuthenticationRequestContext;
 import io.quarkus.security.identity.SecurityIdentity;
 import io.quarkus.security.identity.SecurityIdentityAugmentor;

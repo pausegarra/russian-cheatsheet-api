@@ -1,4 +1,4 @@
-package es.pausegarra.russkiy_po_moyemu.auth.infrastructure.suppliers;
+package es.pausegarra.russkiy_po_moyemu.auth.infrastructure.security.suppliers;
 
 import es.pausegarra.russkiy_po_moyemu.auth.infrastructure.dto.PermissionDto;
 import es.pausegarra.russkiy_po_moyemu.auth.infrastructure.rest_clients.KeycloakRestClient;
@@ -50,7 +50,7 @@ public class KeycloakIdentitySupplier implements Supplier<SecurityIdentity> {
       }
 
       for (String scope : permission.scopes()) {
-        builder.addRole(rsName + ":" + scope);
+        builder.addRole(rsName + "#" + scope);
       }
     }
 
