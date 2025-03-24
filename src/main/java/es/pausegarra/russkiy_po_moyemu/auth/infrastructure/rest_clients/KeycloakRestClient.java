@@ -6,6 +6,7 @@ import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
 import java.util.List;
+import java.util.Map;
 
 @Path("/protocol/openid-connect/token")
 @RegisterRestClient(configKey = "keycloak")
@@ -18,6 +19,15 @@ public interface KeycloakRestClient {
       @FormParam("grant_type") String grantType,
       @FormParam("audience") String audience,
       @FormParam("response_mode") String responseMode,
+      @HeaderParam("Authorization") String authorization
+  );
+
+  @POST
+  Map<String, Boolean> checkPermission(
+      @FormParam("grant_type") String grantType,
+      @FormParam("audience") String audience,
+      @FormParam("response_mode") String responseMode,
+      @FormParam("permission") String permission,
       @HeaderParam("Authorization") String authorization
   );
 
