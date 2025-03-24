@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CreateLetterTest extends IntegrationTest {
 
   @Test
-  @TestSecurity(user = "test", roles = { "letters:create" })
+  @TestSecurity(user = "test", roles = { "letters#create" })
   public void shouldCreateLetter() throws JsonProcessingException {
     CreateLetterRequest request = new CreateLetterRequest("a", "a", "a");
     String json = objectMapper.writeValueAsString(request);
@@ -39,7 +39,7 @@ public class CreateLetterTest extends IntegrationTest {
   }
 
   @Test
-  @TestSecurity(user = "test", roles = { "letters:create" })
+  @TestSecurity(user = "test", roles = { "letters#create" })
   public void shouldReturn400WhenDataIsInvalid() throws JsonProcessingException {
     CreateLetterRequest request = new CreateLetterRequest(null, null, null);
     String json = objectMapper.writeValueAsString(request);
