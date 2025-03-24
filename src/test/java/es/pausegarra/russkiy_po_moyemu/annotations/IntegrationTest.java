@@ -20,6 +20,7 @@ public abstract class IntegrationTest {
   @Transactional
   public void cleanUp() {
     em.createNativeQuery("TRUNCATE TABLE letters CASCADE").executeUpdate();
+    em.createNativeQuery("TRUNCATE TABLE words CASCADE").executeUpdate();
   }
 
 }

@@ -1,4 +1,4 @@
-package es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure;
+package es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.presentations;
 
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.dto.WordDto;
 

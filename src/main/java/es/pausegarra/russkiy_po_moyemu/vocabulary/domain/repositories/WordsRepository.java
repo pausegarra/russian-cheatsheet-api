@@ -8,4 +8,6 @@ public interface WordsRepository {
 
   Paginated<WordEntity> findByCriteria(WordsSearchCriteria criteria);
 
+  void save(WordEntity word);
+
 }

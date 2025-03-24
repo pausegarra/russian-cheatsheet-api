@@ -1,0 +1,54 @@
+package es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.create_word;
+
+import es.pausegarra.russkiy_po_moyemu.common.domain.audit.AuditFields;
+import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.entities.WordEntity;
+import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.enums.WordTypes;
+import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.repositories.WordsRepository;
+import io.quarkus.test.InjectMock;
+import io.quarkus.test.junit.QuarkusTest;
+import jakarta.inject.Inject;
+import jakarta.validation.ValidationException;
+import org.junit.jupiter.api.Test;
+
+import java.time.Instant;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
+
+@QuarkusTest
+class CreateWordServiceTest {
+
+  @InjectMock
+  WordsRepository wordsRepository;
+
+  @Inject
+  CreateWordService createWordService;
+
+  @Test
+  public void shouldCreateWord() {
+    WordEntity word = new WordEntity(
+        UUID.randomUUID(),
+        "a",
+        "a",
+        "a",
+        WordTypes.VERB,
+        new AuditFields(Instant.now(), Instant.now())
+    );
+    doNothing().when(wordsRepository)
+        .save(any(WordEntity.class));
+
+    createWordService.handle(CreateWordCommand.from("a", "a", "a", "VERB"));
+
+    verify(wordsRepository, times(1))
+        .save(any(WordEntity.class));
+  }
+
+  @Test
+  public void shouldThrowExceptionIfCommandIsInvalid() {
+    CreateWordCommand command = CreateWordCommand.from(null, null, null, "VERB");
+
+    assertThrows(ValidationException.class, () -> createWordService.handle(command));
+  }
+
+}

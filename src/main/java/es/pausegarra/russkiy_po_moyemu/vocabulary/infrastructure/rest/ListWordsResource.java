@@ -5,7 +5,7 @@ import es.pausegarra.russkiy_po_moyemu.common.application.pagination.PaginatedDt
 import es.pausegarra.russkiy_po_moyemu.common.infrastructure.presentations.PaginatedPresentation;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.dto.WordDto;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.find_paginated_words.FindAllWordsPaginatedQuery;
-import es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.WordPresentation;
+import es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.presentations.WordPresentation;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

@@ -15,12 +15,17 @@ quarkus:
 
   rest-client:
     keycloak:
-      url: https://auth.pausegarra.es/realms/develop
+      url: ${app.idp.url}
       scope: jakarta.inject.Singleton
+
+app:
+  idp:
+    url: https://auth.pausegarra.es/realms/develop
+    client-id: russkiy-po-moyemu
 
 mp:
   jwt:
     verify:
       publickey:
-        location: https://auth.pausegarra.es/realms/develop/protocol/openid-connect/certs
-      issuer: https://auth.pausegarra.es/realms/develop
+        location: ${app.idp.url}/protocol/openid-connect/certs
+      issuer: ${app.idp.url}
