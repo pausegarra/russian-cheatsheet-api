@@ -11,6 +11,8 @@ import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 
+import java.util.UUID;
+
 @ApplicationScoped
 public class WordPanacheRepository implements WordsRepository, PanacheRepository<WordEntity> {
 
@@ -38,6 +40,11 @@ public class WordPanacheRepository implements WordsRepository, PanacheRepository
         pageInfo.hasNextPage(),
         pageInfo.hasPreviousPage()
     );
+  }
+
+  @Override
+  public void save(WordEntity word) {
+    persist(word);
   }
 
 }
