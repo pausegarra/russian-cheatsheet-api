@@ -5,8 +5,6 @@ import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.create_wo
 import es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.requests.CreateWordRequest;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.spec.CreateWordApiSpec;
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 
