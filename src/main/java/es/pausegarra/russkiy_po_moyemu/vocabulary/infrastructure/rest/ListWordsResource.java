@@ -7,10 +7,6 @@ import es.pausegarra.russkiy_po_moyemu.vocabulary.application.dto.WordDto;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.find_paginated_words.FindAllWordsPaginatedQuery;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.presentations.WordPresentation;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.spec.ListWordsApiSpec;
-import jakarta.ws.rs.DefaultValue;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 
