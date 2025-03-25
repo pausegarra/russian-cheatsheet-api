@@ -85,6 +85,13 @@
         </dependency>
         <!-- END JWT-->
 
+        <!-- Open API -->
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-openapi</artifactId>
+        </dependency>
+        <!-- End Open API -->
+
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-rest-client-jackson</artifactId>

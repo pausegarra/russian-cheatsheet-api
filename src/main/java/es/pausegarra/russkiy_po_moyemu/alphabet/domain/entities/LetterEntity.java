@@ -2,7 +2,9 @@ package es.pausegarra.russkiy_po_moyemu.alphabet.domain.entities;
 
 import es.pausegarra.russkiy_po_moyemu.common.domain.audit.AuditFields;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 

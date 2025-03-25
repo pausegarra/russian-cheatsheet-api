@@ -2,29 +2,26 @@ package es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.rest;
 
 import es.pausegarra.russkiy_po_moyemu.alphabet.application.dtos.LetterDto;
 import es.pausegarra.russkiy_po_moyemu.alphabet.application.services.list_letters.ListLettersQuery;
-import es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.projections.LetterProjection;
+import es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.projections.LetterPresentation;
+import es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.spec.ListLettersApiSpec;
 import es.pausegarra.russkiy_po_moyemu.common.application.interfaces.Service;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@Path("/letters")
 @RequiredArgsConstructor
-public class ListLettersResource {
+public class ListLettersResource  implements ListLettersApiSpec {
 
   private final Service<ListLettersQuery, List<LetterDto>> service;
 
-  @GET
   public Response listLetters() {
     List<LetterDto> letters = service.handle(ListLettersQuery.from());
-    List<LetterProjection> letterProjections = letters.stream()
-        .map(LetterProjection::fromDto)
+    List<LetterPresentation> letterPresentations = letters.stream()
+        .map(LetterPresentation::fromDto)
         .toList();
 
-    return Response.ok(letterProjections)
+    return Response.ok(letterPresentations)
         .build();
   }
 
