@@ -6,6 +6,7 @@ import es.pausegarra.russkiy_po_moyemu.common.infrastructure.presentations.Pagin
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.dto.WordDto;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.find_paginated_words.FindAllWordsPaginatedQuery;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.presentations.WordPresentation;
+import es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.spec.ListWordsApiSpec;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -15,18 +16,16 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-@Path("/words")
 @RequiredArgsConstructor
-public class ListWordsResource {
+public class ListWordsResource implements ListWordsApiSpec {
 
   private final Service<FindAllWordsPaginatedQuery, PaginatedDto<WordDto>> service;
 
-  @GET
   public Response listWords(
-      @QueryParam(value = "page") @DefaultValue("0") int page,
-      @QueryParam(value = "pageSize") @DefaultValue("10") int pageSize,
-      @QueryParam(value = "sortBy") @DefaultValue("spanish") String sortBy,
-      @QueryParam(value = "sortDirection") @DefaultValue("asc") String sortDirection
+      int page,
+      int pageSize,
+      String sortBy,
+      String sortDirection
   ) {
     PaginatedDto<WordDto> words = service.handle(FindAllWordsPaginatedQuery.from(page, pageSize, sortBy, sortDirection));
     List<WordPresentation> wordProjections = words.data()
