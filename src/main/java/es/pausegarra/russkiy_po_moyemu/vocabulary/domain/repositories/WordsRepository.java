@@ -4,9 +4,14 @@ import es.pausegarra.russkiy_po_moyemu.common.domain.pagination_and_sorting.Pagi
 import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.criterias.WordsSearchCriteria;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.entities.WordEntity;
 
+import java.util.Optional;
+import java.util.UUID;
+
 public interface WordsRepository {
 
   Paginated<WordEntity> findByCriteria(WordsSearchCriteria criteria);
+
+  Optional<WordEntity> findById(UUID id);
 
   void save(WordEntity word);
 

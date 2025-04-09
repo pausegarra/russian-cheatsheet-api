@@ -39,4 +39,8 @@ public class WordEntity {
     return new WordEntity(id, russian, english, spanish, type, null);
   }
 
+  public WordEntity update(String russian, String english, String spanish, WordTypes type) {
+    return new WordEntity(this.getId(), russian, english, spanish, type, this.getAuditFields());
+  }
+
 }
