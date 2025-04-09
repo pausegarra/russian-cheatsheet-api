@@ -13,17 +13,17 @@ public class DomainTest extends BaseArchTest {
 
   @ArchTest
   static final ArchRule domain_should_not_depend_on_any_other_layer = noClasses().that()
-      .resideInAPackage(DOMAIN_PACKAGE)
-      .should()
-      .dependOnClassesThat()
-      .resideInAnyPackage(REST_PACKAGE, INFRASTRUCTURE_PACKAGE, APPLICATION_PACKAGE);
+    .resideInAPackage(DOMAIN_PACKAGE)
+    .should()
+    .dependOnClassesThat()
+    .resideInAnyPackage(REST_PACKAGE, INFRASTRUCTURE_PACKAGE, APPLICATION_PACKAGE);
 
   @ArchTest
   static final ArchRule repositories_in_domain_layer_should_be_interfaces = classes().that()
-      .resideInAPackage(DOMAIN_PACKAGE)
-      .and()
-      .haveSimpleNameEndingWith(REPOSITORY)
-      .should()
-      .beInterfaces();
+    .resideInAPackage(DOMAIN_PACKAGE)
+    .and()
+    .haveSimpleNameEndingWith(REPOSITORY)
+    .should()
+    .beInterfaces();
 
 }

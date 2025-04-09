@@ -1,23 +1,22 @@
 package es.pausegarra.russkiy_po_moyemu.common.infrastructure.exception_mappers;
 
-import es.pausegarra.russkiy_po_moyemu.common.domain.exception.NotFound;
 import es.pausegarra.russkiy_po_moyemu.common.infrastructure.presentations.ApiExceptionPresentation;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 
 @Provider
-public class NotFoundExceptionMapper implements ExceptionMapper<NotFound> {
+public class IllegalArgumentExceptionMapper implements ExceptionMapper<IllegalArgumentException> {
 
   @Override
-  public Response toResponse(NotFound exception) {
+  public Response toResponse(IllegalArgumentException e) {
     ApiExceptionPresentation presentation = ApiExceptionPresentation.create(
-      exception.getMessage(),
+      e.getMessage(),
       Response.Status.BAD_REQUEST.name(),
-      Response.Status.NOT_FOUND.getStatusCode()
+      Response.Status.BAD_REQUEST.getStatusCode()
     );
 
-    return Response.status(Response.Status.NOT_FOUND).entity(presentation).build();
+    return Response.status(Response.Status.BAD_REQUEST).entity(presentation).build();
   }
 
 }

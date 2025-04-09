@@ -36,10 +36,10 @@ public class KeycloakIdentitySupplier implements Supplier<SecurityIdentity> {
     }
 
     List<PermissionDto> permissions = keycloakRestClient.getEntitlement(
-        "urn:ietf:params:oauth:grant-type:uma-ticket",
-        "ruskiy-shpargalka",
-        "permissions",
-        "Bearer " + token
+      "urn:ietf:params:oauth:grant-type:uma-ticket",
+      "ruskiy-shpargalka",
+      "permissions",
+      "Bearer " + token
     );
 
     for (PermissionDto permission : permissions) {

@@ -31,11 +31,11 @@ public class HasPermissionInterceptor {
     for (String permission : requiredPermission) {
       try {
         keycloakRestClient.checkPermission(
-            "urn:ietf:params:oauth:grant-type:uma-ticket",
-            "ruskiy-shpargalka",
-            "decision",
-            permission,
-            "Bearer " + jwt.getRawToken()
+          "urn:ietf:params:oauth:grant-type:uma-ticket",
+          "ruskiy-shpargalka",
+          "decision",
+          permission,
+          "Bearer " + jwt.getRawToken()
         );
       } catch (ClientWebApplicationException e) {
         throw new ForbiddenException();

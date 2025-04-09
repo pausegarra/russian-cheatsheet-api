@@ -4,6 +4,9 @@ import jakarta.validation.Valid;
 
 public interface Service<T, R> {
 
-  R handle(@Valid T dto);
+  R handle(
+    @Valid
+    T dto
+  );
 
 }

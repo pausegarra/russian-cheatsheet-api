@@ -16,19 +16,14 @@ public class CreateWordResource implements CreateWordApiSpec {
   private final CreateWordService createWordService;
 
   @RolesAllowed("words#create")
-  public Response createWord(CreateWordRequest request) {
-    CreateWordDto command = CreateWordDto.from(
-        request.russian(),
-        request.english(),
-        request.spanish(),
-        request.type()
-    );
+  public Response createWord(
+    CreateWordRequest request
+  ) {
+    CreateWordDto command = CreateWordDto.from(request.russian(), request.english(), request.spanish(), request.type());
 
     UUID createdWordId = createWordService.handle(command);
 
-    return Response.status(Response.Status.CREATED)
-        .entity(createdWordId)
-        .build();
+    return Response.status(Response.Status.CREATED).entity(createdWordId).build();
   }
 
 }

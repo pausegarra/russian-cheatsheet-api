@@ -8,10 +8,7 @@ import es.pausegarra.russkiy_po_moyemu.common.domain.pagination_and_sorting.Sort
 public class WordsSearchCriteria extends Criteria {
 
   private WordsSearchCriteria(int page, int pageSize, String sortBy, String sortDirection) {
-    super(
-        new Page(page, pageSize),
-        new Sort(sortBy, SortDirection.valueOf(sortDirection.toUpperCase()))
-    );
+    super(new Page(page, pageSize), new Sort(sortBy, SortDirection.valueOf(sortDirection.toUpperCase())));
   }
 
   public static WordsSearchCriteria create(int page, int pageSize, String sortBy, String sortDirection) {

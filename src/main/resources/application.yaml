@@ -11,12 +11,16 @@ quarkus:
 
   hibernate-orm:
     database:
-      generation: drop-and-create
+      generation: update
 
   rest-client:
     keycloak:
       url: ${app.idp.url}
       scope: jakarta.inject.Singleton
+
+  security:
+    auth:
+      enabled-in-dev-mode: false
 
 app:
   idp:

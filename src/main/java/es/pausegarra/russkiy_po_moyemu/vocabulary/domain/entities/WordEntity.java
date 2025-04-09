@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.With;
 
 import java.util.UUID;
 
@@ -21,15 +22,19 @@ public class WordEntity {
   private final UUID id;
 
   @Column(unique = true, nullable = false)
+  @With
   private final String russian;
 
   @Column(unique = true, nullable = false)
+  @With
   private final String english;
 
   @Column(unique = true, nullable = false)
+  @With
   private final String spanish;
 
   @Enumerated(EnumType.STRING)
+  @With
   private final WordTypes type;
 
   @Embedded
@@ -40,7 +45,7 @@ public class WordEntity {
   }
 
   public WordEntity update(String russian, String english, String spanish, WordTypes type) {
-    return new WordEntity(this.getId(), russian, english, spanish, type, this.getAuditFields());
+    return this.withEnglish(english).withRussian(russian).withSpanish(spanish).withType(type);
   }
 
 }

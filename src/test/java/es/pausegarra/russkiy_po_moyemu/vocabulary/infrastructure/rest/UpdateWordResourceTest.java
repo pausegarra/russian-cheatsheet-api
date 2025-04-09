@@ -5,6 +5,7 @@ import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.update_wo
 import es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.requests.UpdateWordRequest;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
@@ -24,6 +25,7 @@ class UpdateWordResourceTest {
   UpdateWordResource updateWordResource;
 
   @Test
+  @TestSecurity(authorizationEnabled = false)
   public void shouldUpdateWord() {
     doNothing().when(updateWordService).handle(any(UpdateWordDto.class));
 

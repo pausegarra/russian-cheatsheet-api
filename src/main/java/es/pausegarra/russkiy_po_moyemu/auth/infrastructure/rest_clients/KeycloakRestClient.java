@@ -16,19 +16,28 @@ public interface KeycloakRestClient {
 
   @POST
   List<PermissionDto> getEntitlement(
-      @FormParam("grant_type") String grantType,
-      @FormParam("audience") String audience,
-      @FormParam("response_mode") String responseMode,
-      @HeaderParam("Authorization") String authorization
+    @FormParam("grant_type")
+    String grantType,
+    @FormParam("audience")
+    String audience,
+    @FormParam("response_mode")
+    String responseMode,
+    @HeaderParam("Authorization")
+    String authorization
   );
 
   @POST
   Map<String, Boolean> checkPermission(
-      @FormParam("grant_type") String grantType,
-      @FormParam("audience") String audience,
-      @FormParam("response_mode") String responseMode,
-      @FormParam("permission") String permission,
-      @HeaderParam("Authorization") String authorization
+    @FormParam("grant_type")
+    String grantType,
+    @FormParam("audience")
+    String audience,
+    @FormParam("response_mode")
+    String responseMode,
+    @FormParam("permission")
+    String permission,
+    @HeaderParam("Authorization")
+    String authorization
   );
 
 }

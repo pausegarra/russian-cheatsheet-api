@@ -18,13 +18,13 @@ public class ListLettersService implements Service<ListLettersDto, List<LetterDt
   private final LetterRepository letterRepository;
 
   @Transactional
-  public List<LetterDto> handle(@Valid
-                                ListLettersDto query) {
+  public List<LetterDto> handle(
+    @Valid
+    ListLettersDto query
+  ) {
     List<LetterEntity> letters = letterRepository.fetchAll();
 
-    return letters.stream()
-        .map(LetterDto::fromEntity)
-        .toList();
+    return letters.stream().map(LetterDto::fromEntity).toList();
   }
 
 }

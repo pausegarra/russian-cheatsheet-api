@@ -18,19 +18,15 @@ public class CreateWordService implements Service<CreateWordDto, UUID> {
 
   @Override
   @Transactional
-  public UUID handle(@Valid
-                     CreateWordDto dto) {
-    WordEntity word = WordEntity.create(
-        null,
-        dto.russian(),
-        dto.english(),
-        dto.spanish(),
-        dto.type()
-    );
+  public UUID handle(
+    @Valid
+    CreateWordDto dto
+  ) {
+    WordEntity word = WordEntity.create(null, dto.russian(), dto.english(), dto.spanish(), dto.type());
 
-    wordsRepository.save(word);
+    WordEntity saved = wordsRepository.save(word);
 
-    return word.getId();
+    return saved.getId();
   }
 
 }

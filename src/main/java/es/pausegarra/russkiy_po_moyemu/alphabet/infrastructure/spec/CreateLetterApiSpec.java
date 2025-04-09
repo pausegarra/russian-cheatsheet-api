@@ -19,8 +19,7 @@ public interface CreateLetterApiSpec {
   @APIResponse(responseCode = "401", description = "Unauthenticated")
   @APIResponse(responseCode = "403", description = "Forbidden")
   @APIResponse(
-      responseCode = "201",
-      description = "Letter created"
+    responseCode = "201", description = "Letter created"
   )
   @SecurityRequirement(name = "SecurityScheme")
   Response createLetter(CreateLetterRequest request);

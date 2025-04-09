@@ -13,6 +13,6 @@ public interface WordsRepository {
 
   Optional<WordEntity> findById(UUID id);
 
-  void save(WordEntity word);
+  WordEntity save(WordEntity word);
 
 }

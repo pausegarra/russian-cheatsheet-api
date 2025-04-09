@@ -32,34 +32,13 @@ class ListWordsResourceTest {
 
   @Test
   public void shouldReturnAllWords() {
-    WordEntity word = new WordEntity(
-        UUID.randomUUID(),
-        "a",
-        "a",
-        "a",
-        WordTypes.VERB,
-        new AuditFields(Instant.now(), Instant.now())
-    );
+    WordEntity word = new WordEntity(UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, new AuditFields(Instant.now(), Instant.now()));
     WordDto wordDto = WordDto.fromEntity(word);
-    PaginatedDto<WordDto> paginatedDto = new PaginatedDto<>(
-        List.of(wordDto),
-        0,
-        10,
-        1,
-        1,
-        true,
-        false
-    );
+    PaginatedDto<WordDto> paginatedDto = new PaginatedDto<>(List.of(wordDto), 0, 10, 1, 1, true, false);
 
-    when(findAllWordsPaginatedService.handle(any(FindAllWordsPaginatedDto.class)))
-        .thenReturn(paginatedDto);
+    when(findAllWordsPaginatedService.handle(any(FindAllWordsPaginatedDto.class))).thenReturn(paginatedDto);
 
-    Response response = listWordsResource.listWords(
-        0,
-        10,
-        "spanish",
-        "asc"
-    );
+    Response response = listWordsResource.listWords(0, 10, "spanish", "asc");
 
     assertEquals(200, response.getStatus());
 

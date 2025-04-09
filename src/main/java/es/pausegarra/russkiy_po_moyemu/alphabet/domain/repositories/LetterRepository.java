@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface LetterRepository {
 
-  void save (LetterEntity letter);
+  void save(LetterEntity letter);
 
   List<LetterEntity> fetchAll();
 

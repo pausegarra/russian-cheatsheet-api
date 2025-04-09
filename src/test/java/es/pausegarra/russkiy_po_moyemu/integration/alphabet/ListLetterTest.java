@@ -15,12 +15,7 @@ public class ListLetterTest extends IntegrationTest {
 
   @Transactional
   public void setUp() {
-    LetterEntity letter = LetterEntity.create(
-        null,
-        "a",
-        "a",
-        "a"
-    );
+    LetterEntity letter = LetterEntity.create(null, "a", "a", "a");
     em.persist(letter);
     em.flush();
   }
@@ -29,16 +24,16 @@ public class ListLetterTest extends IntegrationTest {
   public void shouldReturnAllLetters() {
     setUp();
 
-    given()
-        .when().get("/letters")
-        .then()
-        .statusCode(200)
-        .body("size()", is(1))
-        .body("[0].cyrillic", is("a"))
-        .body("[0].ipa", is("a"))
-        .body("[0].latin", is("a"))
-        .body("[0].createdAt", nullValue())
-        .body("[0].updatedAt", nullValue());
+    given().when()
+      .get("/letters")
+      .then()
+      .statusCode(200)
+      .body("size()", is(1))
+      .body("[0].cyrillic", is("a"))
+      .body("[0].ipa", is("a"))
+      .body("[0].latin", is("a"))
+      .body("[0].createdAt", nullValue())
+      .body("[0].updatedAt", nullValue());
   }
 
 }

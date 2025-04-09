@@ -20,14 +20,11 @@ public class CreateLetterService implements Service<CreateLetterDto, UUID> {
 
   @Override
   @Transactional
-  public UUID handle(@Valid
-                     CreateLetterDto command) {
-    LetterEntity letter = LetterEntity.create(
-        null,
-        command.cyrillic(),
-        command.ipa(),
-        command.latin()
-    );
+  public UUID handle(
+    @Valid
+    CreateLetterDto command
+  ) {
+    LetterEntity letter = LetterEntity.create(null, command.cyrillic(), command.ipa(), command.latin());
 
     letterRepository.save(letter);
 

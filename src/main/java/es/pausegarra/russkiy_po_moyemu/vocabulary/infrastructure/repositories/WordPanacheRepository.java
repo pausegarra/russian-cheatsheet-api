@@ -19,27 +19,20 @@ public class WordPanacheRepository implements WordsRepository, PanacheRepository
 
   @Override
   public Paginated<WordEntity> findByCriteria(WordsSearchCriteria criteria) {
-    Sort sort = Sort.by(
-        criteria.getSorting().sortBy(),
-        Sort.Direction.valueOf(criteria.getSorting().sortDirection().getValue())
-    );
-    Page page = Page.of(
-        criteria.getPagination().page(),
-        criteria.getPagination().pageSize()
-    );
-    PanacheQuery<WordEntity> query = findAll(sort)
-        .page(page);
+    Sort sort = Sort.by(criteria.getSorting().sortBy(), Sort.Direction.valueOf(criteria.getSorting().sortDirection().getValue()));
+    Page page = Page.of(criteria.getPagination().page(), criteria.getPagination().pageSize());
+    PanacheQuery<WordEntity> query = findAll(sort).page(page);
 
     PageInfo pageInfo = PageInfo.fromQuery(query);
 
     return new Paginated<>(
-        query.list(),
-        pageInfo.page(),
-        pageInfo.pageSize(),
-        pageInfo.totalPages(),
-        pageInfo.totalElements(),
-        pageInfo.hasNextPage(),
-        pageInfo.hasPreviousPage()
+      query.list(),
+      pageInfo.page(),
+      pageInfo.pageSize(),
+      pageInfo.totalPages(),
+      pageInfo.totalElements(),
+      pageInfo.hasNextPage(),
+      pageInfo.hasPreviousPage()
     );
   }
 
@@ -55,8 +48,8 @@ public class WordPanacheRepository implements WordsRepository, PanacheRepository
   }
 
   @Override
-  public void save(WordEntity word) {
-    persist(word);
+  public WordEntity save(WordEntity word) {
+    return getEntityManager().merge(word);
   }
 
 }

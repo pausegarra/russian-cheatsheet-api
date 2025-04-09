@@ -16,22 +16,10 @@ public class ListPaginatedWordsTest extends IntegrationTest {
 
   @Transactional
   public void setUp() {
-    WordEntity word = WordEntity.create(
-        null,
-        "a",
-        "a",
-        "a",
-        WordTypes.VERB
-    );
+    WordEntity word = WordEntity.create(null, "a", "a", "a", WordTypes.VERB);
     em.persist(word);
 
-    word = WordEntity.create(
-        null,
-        "b",
-        "b",
-        "b",
-        WordTypes.VERB
-    );
+    word = WordEntity.create(null, "b", "b", "b", WordTypes.VERB);
     em.persist(word);
 
     em.flush();
@@ -41,41 +29,41 @@ public class ListPaginatedWordsTest extends IntegrationTest {
   public void shouldReturnAllWords() {
     setUp();
 
-    given()
-        .when().get("/words")
-        .then()
-        .statusCode(200)
-        .body("data.size()", is(2))
-        .body("data[0].russian", is("a"))
-        .body("data[0].english", is("a"))
-        .body("data[0].spanish", is("a"))
-        .body("data[0].type", is("VERB"))
-        .body("data[0].createdAt", nullValue())
-        .body("data[0].updatedAt", nullValue())
-        .body("data[1].russian", is("b"))
-        .body("data[1].english", is("b"))
-        .body("data[1].spanish", is("b"))
-        .body("data[1].type", is("VERB"))
-        .body("data[1].createdAt", nullValue())
-        .body("data[1].updatedAt", nullValue())
-        .body("page", is(0))
-        .body("pageSize", is(10))
-        .body("totalPages", is(1))
-        .body("totalElements", is(2))
-        .body("hasNextPage", is(false))
-        .body("hasPreviousPage", is(false));
+    given().when()
+      .get("/words")
+      .then()
+      .statusCode(200)
+      .body("data.size()", is(2))
+      .body("data[0].russian", is("a"))
+      .body("data[0].english", is("a"))
+      .body("data[0].spanish", is("a"))
+      .body("data[0].type", is("VERB"))
+      .body("data[0].createdAt", nullValue())
+      .body("data[0].updatedAt", nullValue())
+      .body("data[1].russian", is("b"))
+      .body("data[1].english", is("b"))
+      .body("data[1].spanish", is("b"))
+      .body("data[1].type", is("VERB"))
+      .body("data[1].createdAt", nullValue())
+      .body("data[1].updatedAt", nullValue())
+      .body("page", is(0))
+      .body("pageSize", is(10))
+      .body("totalPages", is(1))
+      .body("totalElements", is(2))
+      .body("hasNextPage", is(false))
+      .body("hasPreviousPage", is(false));
   }
 
   @Test
   public void shouldChangePageAndPageSize() {
-    given()
-        .queryParam("page", "1")
-        .queryParam("pageSize", "5")
-        .when().get("/words")
-        .then()
-        .statusCode(200)
-        .body("page", is(1))
-        .body("pageSize", is(5));
+    given().queryParam("page", "1")
+      .queryParam("pageSize", "5")
+      .when()
+      .get("/words")
+      .then()
+      .statusCode(200)
+      .body("page", is(1))
+      .body("pageSize", is(5));
   }
 
 }

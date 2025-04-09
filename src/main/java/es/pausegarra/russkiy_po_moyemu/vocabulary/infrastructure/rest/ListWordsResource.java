@@ -17,21 +17,11 @@ public class ListWordsResource implements ListWordsApiSpec {
 
   private final Service<FindAllWordsPaginatedDto, PaginatedDto<WordDto>> service;
 
-  public Response listWords(
-      int page,
-      int pageSize,
-      String sortBy,
-      String sortDirection
-  ) {
+  public Response listWords(int page, int pageSize, String sortBy, String sortDirection) {
     PaginatedDto<WordDto> words = service.handle(FindAllWordsPaginatedDto.from(page, pageSize, sortBy, sortDirection));
-    List<WordPresentation> wordProjections = words.data()
-        .stream()
-        .map(WordPresentation::fromDto)
-        .toList();
+    List<WordPresentation> wordProjections = words.data().stream().map(WordPresentation::fromDto).toList();
 
-    return Response.ok()
-        .entity(PaginatedPresentation.fromDto(words, wordProjections))
-        .build();
+    return Response.ok().entity(PaginatedPresentation.fromDto(words, wordProjections)).build();
   }
 
 }

@@ -29,17 +29,10 @@ class ListLettersResourceTest {
 
   @Test
   public void shouldReturnAllLetters() {
-    LetterEntity letter = new LetterEntity(
-        UUID.randomUUID(),
-        "a",
-        "a",
-        "a",
-        new AuditFields(Instant.now(), Instant.now())
-    );
+    LetterEntity letter = new LetterEntity(UUID.randomUUID(), "a", "a", "a", new AuditFields(Instant.now(), Instant.now()));
     LetterDto letterDto = LetterDto.fromEntity(letter);
 
-    when(listLettersService.handle(any(ListLettersDto.class)))
-        .thenReturn(List.of(letterDto));
+    when(listLettersService.handle(any(ListLettersDto.class))).thenReturn(List.of(letterDto));
 
     Response response = listLettersResource.listLetters();
 

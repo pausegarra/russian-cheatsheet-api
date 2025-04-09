@@ -27,21 +27,12 @@ class CreateWordServiceTest {
 
   @Test
   public void shouldCreateWord() {
-    WordEntity word = new WordEntity(
-        UUID.randomUUID(),
-        "a",
-        "a",
-        "a",
-        WordTypes.VERB,
-        new AuditFields(Instant.now(), Instant.now())
-    );
-    doNothing().when(wordsRepository)
-        .save(any(WordEntity.class));
+    WordEntity word = new WordEntity(UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, new AuditFields(Instant.now(), Instant.now()));
+    when(wordsRepository.save(any(WordEntity.class))).thenReturn(word);
 
     createWordService.handle(CreateWordDto.from("a", "a", "a", "VERB"));
 
-    verify(wordsRepository, times(1))
-        .save(any(WordEntity.class));
+    verify(wordsRepository, times(1)).save(any(WordEntity.class));
   }
 
   @Test

@@ -30,5 +30,4 @@ public class KeycloakSecurityIdentityAugmentor implements SecurityIdentityAugmen
   }
 
 
-
 }

@@ -23,10 +23,7 @@ public class FindAllWordsPaginatedService implements Service<FindAllWordsPaginat
     WordsSearchCriteria criteria = WordsSearchCriteria.create(dto.page(), dto.pageSize(), dto.sortBy(), dto.sortDirection());
     Paginated<WordEntity> words = wordsRepository.findByCriteria(criteria);
 
-    List<WordDto> wordsDto = words.data()
-        .stream()
-        .map(WordDto::fromEntity)
-        .toList();
+    List<WordDto> wordsDto = words.data().stream().map(WordDto::fromEntity).toList();
 
     return PaginatedDto.fromPaginated(words, wordsDto);
   }

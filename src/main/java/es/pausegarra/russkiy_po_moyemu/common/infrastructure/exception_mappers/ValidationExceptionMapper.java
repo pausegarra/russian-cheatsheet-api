@@ -16,19 +16,17 @@ public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViol
   @Override
   public Response toResponse(ConstraintViolationException exception) {
     Set<ValidationError> errors = exception.getConstraintViolations()
-        .stream()
-        .map(ValidationError::fromConstraint)
-        .collect(Collectors.toSet());
+      .stream()
+      .map(ValidationError::fromConstraint)
+      .collect(Collectors.toSet());
 
     ValidationErrorPresentation presentation = ValidationErrorPresentation.create(
-        "Unprocessable Entity",
-        Response.Status.BAD_REQUEST,
-        errors
+      "Unprocessable Entity",
+      Response.Status.BAD_REQUEST,
+      errors
     );
 
-    return Response.status(Response.Status.BAD_REQUEST)
-        .entity(presentation)
-        .build();
+    return Response.status(Response.Status.BAD_REQUEST).entity(presentation).build();
   }
 
 }

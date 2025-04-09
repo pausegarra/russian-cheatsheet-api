@@ -9,23 +9,23 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
-@AnalyzeClasses(packages = BaseArchTest.BASE_PACKAGE, importOptions = { ImportOption.DoNotIncludeTests.class })
+@AnalyzeClasses(packages = BaseArchTest.BASE_PACKAGE, importOptions = {ImportOption.DoNotIncludeTests.class})
 public class ArchitectureTests extends BaseArchTest {
 
   @ArchTest
   static final ArchRule services_should_reside_in_application = classes().that()
-      .areAnnotatedWith(ApplicationScoped.class)
-      .and()
-      .implement(Service.class)
-      .should()
-      .resideInAnyPackage(APPLICATION_PACKAGE);
+    .areAnnotatedWith(ApplicationScoped.class)
+    .and()
+    .implement(Service.class)
+    .should()
+    .resideInAnyPackage(APPLICATION_PACKAGE);
 
   @ArchTest
   static final ArchRule services_should_implement_service = classes().that()
-      .areAnnotatedWith(ApplicationScoped.class)
-      .and()
-      .haveSimpleNameEndingWith(SERVICE)
-      .should()
-      .implement(Service.class);
+    .areAnnotatedWith(ApplicationScoped.class)
+    .and()
+    .haveSimpleNameEndingWith(SERVICE)
+    .should()
+    .implement(Service.class);
 
 }
