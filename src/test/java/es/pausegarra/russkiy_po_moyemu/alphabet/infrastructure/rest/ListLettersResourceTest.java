@@ -1,7 +1,7 @@
 package es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.rest;
 
 import es.pausegarra.russkiy_po_moyemu.alphabet.application.dtos.LetterDto;
-import es.pausegarra.russkiy_po_moyemu.alphabet.application.services.list_letters.ListLettersQuery;
+import es.pausegarra.russkiy_po_moyemu.alphabet.application.services.list_letters.ListLettersDto;
 import es.pausegarra.russkiy_po_moyemu.alphabet.application.services.list_letters.ListLettersService;
 import es.pausegarra.russkiy_po_moyemu.alphabet.domain.entities.LetterEntity;
 import es.pausegarra.russkiy_po_moyemu.common.domain.audit.AuditFields;
@@ -38,14 +38,14 @@ class ListLettersResourceTest {
     );
     LetterDto letterDto = LetterDto.fromEntity(letter);
 
-    when(listLettersService.handle(any(ListLettersQuery.class)))
+    when(listLettersService.handle(any(ListLettersDto.class)))
         .thenReturn(List.of(letterDto));
 
     Response response = listLettersResource.listLetters();
 
     assertEquals(200, response.getStatus());
 
-    verify(listLettersService, times(1)).handle(any(ListLettersQuery.class));
+    verify(listLettersService, times(1)).handle(any(ListLettersDto.class));
   }
 
 }

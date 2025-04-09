@@ -1,7 +1,7 @@
 package es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.rest;
 
 import es.pausegarra.russkiy_po_moyemu.common.domain.audit.AuditFields;
-import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.create_word.CreateWordCommand;
+import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.create_word.CreateWordDto;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.create_word.CreateWordService;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.enums.WordTypes;
@@ -41,7 +41,7 @@ class CreateWordResourceTest {
         new AuditFields(Instant.now(), Instant.now())
     );
 
-    when(createWordService.handle(any(CreateWordCommand.class)))
+    when(createWordService.handle(any(CreateWordDto.class)))
         .thenReturn(word.getId());
 
     CreateWordRequest request = new CreateWordRequest(
@@ -54,7 +54,7 @@ class CreateWordResourceTest {
 
     assertEquals(201, response.getStatus());
 
-    verify(createWordService, times(1)).handle(any(CreateWordCommand.class));
+    verify(createWordService, times(1)).handle(any(CreateWordDto.class));
   }
 
 }

@@ -38,7 +38,7 @@ class CreateWordServiceTest {
     doNothing().when(wordsRepository)
         .save(any(WordEntity.class));
 
-    createWordService.handle(CreateWordCommand.from("a", "a", "a", "VERB"));
+    createWordService.handle(CreateWordDto.from("a", "a", "a", "VERB"));
 
     verify(wordsRepository, times(1))
         .save(any(WordEntity.class));
@@ -46,7 +46,7 @@ class CreateWordServiceTest {
 
   @Test
   public void shouldThrowExceptionIfCommandIsInvalid() {
-    CreateWordCommand command = CreateWordCommand.from(null, null, null, "VERB");
+    CreateWordDto command = CreateWordDto.from(null, null, null, "VERB");
 
     assertThrows(ValidationException.class, () -> createWordService.handle(command));
   }

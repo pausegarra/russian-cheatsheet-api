@@ -13,12 +13,13 @@ import java.util.List;
 
 @ApplicationScoped
 @RequiredArgsConstructor
-public class ListLettersService implements Service<ListLettersQuery, List<LetterDto>> {
+public class ListLettersService implements Service<ListLettersDto, List<LetterDto>> {
 
   private final LetterRepository letterRepository;
 
   @Transactional
-  public List<LetterDto> handle(@Valid ListLettersQuery query) {
+  public List<LetterDto> handle(@Valid
+                                ListLettersDto query) {
     List<LetterEntity> letters = letterRepository.fetchAll();
 
     return letters.stream()

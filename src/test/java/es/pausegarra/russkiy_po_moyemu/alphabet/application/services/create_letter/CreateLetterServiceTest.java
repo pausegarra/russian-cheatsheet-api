@@ -22,7 +22,7 @@ class CreateLetterServiceTest {
 
   @Test
   public void shouldCreateLetter() {
-    CreateLetterCommand command = CreateLetterCommand.from("a", "a", "a");
+    CreateLetterDto command = CreateLetterDto.from("a", "a", "a");
     doNothing().when(letterRepository).save(any(LetterEntity.class));
 
     createLetterService.handle(command);
@@ -32,7 +32,7 @@ class CreateLetterServiceTest {
 
   @Test
   public void shouldThrowExceptionIfCommandIsInvalid() {
-    CreateLetterCommand command = CreateLetterCommand.from(null, "a", "a");
+    CreateLetterDto command = CreateLetterDto.from(null, "a", "a");
 
     assertThrows(ValidationException.class, () -> createLetterService.handle(command));
   }

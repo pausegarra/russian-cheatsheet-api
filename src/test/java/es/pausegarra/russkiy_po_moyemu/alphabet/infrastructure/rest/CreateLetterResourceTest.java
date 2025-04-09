@@ -1,6 +1,6 @@
 package es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.rest;
 
-import es.pausegarra.russkiy_po_moyemu.alphabet.application.services.create_letter.CreateLetterCommand;
+import es.pausegarra.russkiy_po_moyemu.alphabet.application.services.create_letter.CreateLetterDto;
 import es.pausegarra.russkiy_po_moyemu.alphabet.application.services.create_letter.CreateLetterService;
 import es.pausegarra.russkiy_po_moyemu.alphabet.infrastructure.requests.CreateLetterRequest;
 import io.quarkus.test.InjectMock;
@@ -28,13 +28,13 @@ class CreateLetterResourceTest {
   @TestSecurity(authorizationEnabled = false)
   public void shouldCreateLetter() {
     CreateLetterRequest request = new CreateLetterRequest("a", "a", "a");
-    when(createLetterService.handle(any(CreateLetterCommand.class))).thenReturn(UUID.randomUUID());
+    when(createLetterService.handle(any(CreateLetterDto.class))).thenReturn(UUID.randomUUID());
 
     Response response = createLetterResource.createLetter(request);
 
     assertEquals(201, response.getStatus());
 
-    verify(createLetterService, times(1)).handle(any(CreateLetterCommand.class));
+    verify(createLetterService, times(1)).handle(any(CreateLetterDto.class));
   }
 
 }

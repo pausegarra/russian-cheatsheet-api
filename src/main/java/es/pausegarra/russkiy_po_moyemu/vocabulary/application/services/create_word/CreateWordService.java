@@ -12,13 +12,14 @@ import java.util.UUID;
 
 @ApplicationScoped
 @RequiredArgsConstructor
-public class CreateWordService implements Service<CreateWordCommand, UUID> {
+public class CreateWordService implements Service<CreateWordDto, UUID> {
 
   private final WordsRepository wordsRepository;
 
   @Override
   @Transactional
-  public UUID handle(@Valid CreateWordCommand dto) {
+  public UUID handle(@Valid
+                     CreateWordDto dto) {
     WordEntity word = WordEntity.create(
         null,
         dto.russian(),

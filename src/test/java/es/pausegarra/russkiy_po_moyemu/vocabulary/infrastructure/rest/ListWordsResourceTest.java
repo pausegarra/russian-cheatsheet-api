@@ -3,7 +3,7 @@ package es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.rest;
 import es.pausegarra.russkiy_po_moyemu.common.application.pagination.PaginatedDto;
 import es.pausegarra.russkiy_po_moyemu.common.domain.audit.AuditFields;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.dto.WordDto;
-import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.find_paginated_words.FindAllWordsPaginatedQuery;
+import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.find_paginated_words.FindAllWordsPaginatedDto;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.find_paginated_words.FindAllWordsPaginatedService;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.domain.enums.WordTypes;
@@ -51,7 +51,7 @@ class ListWordsResourceTest {
         false
     );
 
-    when(findAllWordsPaginatedService.handle(any(FindAllWordsPaginatedQuery.class)))
+    when(findAllWordsPaginatedService.handle(any(FindAllWordsPaginatedDto.class)))
         .thenReturn(paginatedDto);
 
     Response response = listWordsResource.listWords(
@@ -63,7 +63,7 @@ class ListWordsResourceTest {
 
     assertEquals(200, response.getStatus());
 
-    verify(findAllWordsPaginatedService, times(1)).handle(any(FindAllWordsPaginatedQuery.class));
+    verify(findAllWordsPaginatedService, times(1)).handle(any(FindAllWordsPaginatedDto.class));
   }
 
 }

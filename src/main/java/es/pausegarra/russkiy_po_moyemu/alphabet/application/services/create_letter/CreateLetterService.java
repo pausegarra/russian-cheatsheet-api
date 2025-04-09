@@ -14,13 +14,14 @@ import java.util.UUID;
 @ApplicationScoped
 @RequiredArgsConstructor
 @Named("CreateLetterService")
-public class CreateLetterService implements Service<CreateLetterCommand, UUID> {
+public class CreateLetterService implements Service<CreateLetterDto, UUID> {
 
   private final LetterRepository letterRepository;
 
   @Override
   @Transactional
-  public UUID handle(@Valid CreateLetterCommand command) {
+  public UUID handle(@Valid
+                     CreateLetterDto command) {
     LetterEntity letter = LetterEntity.create(
         null,
         command.cyrillic(),

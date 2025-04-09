@@ -1,6 +1,6 @@
 package es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.rest;
 
-import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.create_word.CreateWordCommand;
+import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.create_word.CreateWordDto;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.application.services.create_word.CreateWordService;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.requests.CreateWordRequest;
 import es.pausegarra.russkiy_po_moyemu.vocabulary.infrastructure.spec.CreateWordApiSpec;
@@ -17,7 +17,7 @@ public class CreateWordResource implements CreateWordApiSpec {
 
   @RolesAllowed("words#create")
   public Response createWord(CreateWordRequest request) {
-    CreateWordCommand command = CreateWordCommand.from(
+    CreateWordDto command = CreateWordDto.from(
         request.russian(),
         request.english(),
         request.spanish(),
