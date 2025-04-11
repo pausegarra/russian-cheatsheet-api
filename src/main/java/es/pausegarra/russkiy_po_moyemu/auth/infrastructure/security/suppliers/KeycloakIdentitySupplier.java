@@ -1,5 +1,6 @@
 package es.pausegarra.russkiy_po_moyemu.auth.infrastructure.security.suppliers;
 
+import es.pausegarra.russkiy_po_moyemu.auth.infrastructure.config.KeycloakConfig;
 import es.pausegarra.russkiy_po_moyemu.auth.infrastructure.dto.PermissionDto;
 import es.pausegarra.russkiy_po_moyemu.auth.infrastructure.rest_clients.KeycloakRestClient;
 import io.quarkus.security.identity.SecurityIdentity;
@@ -25,6 +26,8 @@ public class KeycloakIdentitySupplier implements Supplier<SecurityIdentity> {
   @Setter
   private SecurityIdentity identity;
 
+  private final KeycloakConfig keycloakConfig;
+
   @Override
   public SecurityIdentity get() {
     QuarkusSecurityIdentity.Builder builder = QuarkusSecurityIdentity.builder(identity);
@@ -37,7 +40,7 @@ public class KeycloakIdentitySupplier implements Supplier<SecurityIdentity> {
 
     List<PermissionDto> permissions = keycloakRestClient.getEntitlement(
       "urn:ietf:params:oauth:grant-type:uma-ticket",
-      "ruskiy-shpargalka",
+      keycloakConfig.clientId(),
       "permissions",
       "Bearer " + token
     );

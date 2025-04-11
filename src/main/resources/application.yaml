@@ -25,7 +25,7 @@ quarkus:
 app:
   idp:
     url: https://auth.pausegarra.es/realms/principal
-    client-id: russkiy-po-moyemu
+    client-id: russkiy-shpargalka-private
 
 mp:
   jwt:
