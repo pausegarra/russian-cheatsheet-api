@@ -10,7 +10,8 @@ public class ForbiddenExceptionMapper implements ExceptionMapper<Forbidden> {
 
   @Override
   public Response toResponse(Forbidden exception) {
-    return Response.status(Response.Status.FORBIDDEN).build();
+    return Response.status(Response.Status.FORBIDDEN)
+      .build();
   }
 
 }

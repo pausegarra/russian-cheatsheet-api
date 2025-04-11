@@ -33,7 +33,8 @@ public class UpdateWordService implements Service<UpdateWordDto, Void> {
   }
 
   private WordEntity ensureEntityExists(UUID id) {
-    return wordsRepository.findById(id).orElseThrow(() -> new WordNotFound(id.toString()));
+    return wordsRepository.findById(id)
+      .orElseThrow(() -> new WordNotFound(id.toString()));
   }
 
 }

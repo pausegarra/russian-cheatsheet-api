@@ -27,10 +27,14 @@ class UpdateWordResourceTest {
   @Test
   @TestSecurity(authorizationEnabled = false)
   public void shouldUpdateWord() {
-    doNothing().when(updateWordService).handle(any(UpdateWordDto.class));
+    doNothing().when(updateWordService)
+      .handle(any(UpdateWordDto.class));
 
     UpdateWordRequest request = new UpdateWordRequest("word", "english", "spanish", "VERB");
-    updateWordResource.updateWord(UUID.randomUUID().toString(), request);
+    updateWordResource.updateWord(
+      UUID.randomUUID()
+        .toString(), request
+    );
 
     verify(updateWordService).handle(any(UpdateWordDto.class));
   }

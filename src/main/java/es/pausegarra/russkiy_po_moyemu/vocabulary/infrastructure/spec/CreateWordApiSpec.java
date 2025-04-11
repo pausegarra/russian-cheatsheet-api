@@ -18,20 +18,33 @@ public interface CreateWordApiSpec {
 
   @POST
   @Operation(summary = "Create word")
-  @APIResponse(responseCode = "400", description = "Bad request")
-  @APIResponse(responseCode = "401", description = "Unauthenticated")
-  @APIResponse(responseCode = "403", description = "Forbidden")
   @APIResponse(
-    responseCode = "201", description = "Word created"
+    responseCode = "400",
+    description = "Bad request"
+  )
+  @APIResponse(
+    responseCode = "401",
+    description = "Unauthenticated"
+  )
+  @APIResponse(
+    responseCode = "403",
+    description = "Forbidden"
+  )
+  @APIResponse(
+    responseCode = "201",
+    description = "Word created"
   )
   @SecurityRequirement(name = "SecurityScheme")
   Response createWord(
     @RequestBody(
-      description = "Word to create", required = true, content = @Content(
-      mediaType = "application/json", schema = @Schema(
-      implementation = CreateWordRequest.class
-    )
-    )
+      description = "Word to create",
+      required = true,
+      content = @Content(
+        mediaType = "application/json",
+        schema = @Schema(
+          implementation = CreateWordRequest.class
+        )
+      )
     )
     CreateWordRequest request
   );

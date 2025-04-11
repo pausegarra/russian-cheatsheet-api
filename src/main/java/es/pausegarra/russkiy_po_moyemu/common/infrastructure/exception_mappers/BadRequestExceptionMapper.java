@@ -17,7 +17,9 @@ public class BadRequestExceptionMapper implements ExceptionMapper<BadRequest> {
       Response.Status.BAD_REQUEST.getStatusCode()
     );
 
-    return Response.status(Response.Status.BAD_REQUEST).entity(presentation).build();
+    return Response.status(Response.Status.BAD_REQUEST)
+      .entity(presentation)
+      .build();
   }
 
 }

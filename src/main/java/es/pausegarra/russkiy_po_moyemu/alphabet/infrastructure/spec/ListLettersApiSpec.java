@@ -17,11 +17,14 @@ public interface ListLettersApiSpec {
   @GET
   @Operation(summary = "List letters")
   @APIResponse(
-    responseCode = "200", description = "Letters found", content = @Content(
-    mediaType = "application/json", schema = @Schema(
-    implementation = LetterPresentation.class
-  )
-  )
+    responseCode = "200",
+    description = "Letters found",
+    content = @Content(
+      mediaType = "application/json",
+      schema = @Schema(
+        implementation = LetterPresentation.class
+      )
+    )
   )
   Response listLetters();
 

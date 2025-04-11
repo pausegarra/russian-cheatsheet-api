@@ -7,7 +7,10 @@ public record ValidationError(
 ) {
 
   public static ValidationError fromConstraint(ConstraintViolation<?> violation) {
-    return new ValidationError(violation.getPropertyPath().toString(), violation.getMessage());
+    return new ValidationError(
+      violation.getPropertyPath()
+        .toString(), violation.getMessage()
+    );
   }
 
 }

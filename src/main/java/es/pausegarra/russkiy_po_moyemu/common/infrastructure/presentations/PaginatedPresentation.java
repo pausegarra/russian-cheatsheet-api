@@ -10,12 +10,7 @@ public record PaginatedPresentation<T>(
 
   public static <T, R> PaginatedPresentation<R> fromDto(PaginatedDto<T> dto, List<R> data) {
     return new PaginatedPresentation<>(
-      data,
-      dto.page(),
-      dto.pageSize(),
-      dto.totalPages(),
-      dto.totalElements(),
-      dto.hasNextPage(),
+      data, dto.page(), dto.pageSize(), dto.totalPages(), dto.totalElements(), dto.hasNextPage(),
       dto.hasPreviousPage()
     );
   }

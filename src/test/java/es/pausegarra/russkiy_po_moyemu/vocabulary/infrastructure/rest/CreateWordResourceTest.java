@@ -32,7 +32,8 @@ class CreateWordResourceTest {
   @Test
   @TestSecurity(authorizationEnabled = false)
   public void shouldCreateWord() {
-    WordEntity word = new WordEntity(UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, new AuditFields(Instant.now(), Instant.now()));
+    WordEntity word = new WordEntity(
+      UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, new AuditFields(Instant.now(), Instant.now()));
 
     when(createWordService.handle(any(CreateWordDto.class))).thenReturn(word.getId());
 

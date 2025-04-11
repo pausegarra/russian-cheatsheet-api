@@ -21,31 +21,46 @@ public interface ListWordsApiSpec {
   @GET
   @Operation(summary = "List words")
   @APIResponse(
-    responseCode = "200", description = "Words found", content = @Content(
-    mediaType = "application/json", schema = @Schema(
-    implementation = WordPresentation.class
-  )
-  )
+    responseCode = "200",
+    description = "Words found",
+    content = @Content(
+      mediaType = "application/json",
+      schema = @Schema(
+        implementation = WordPresentation.class
+      )
+    )
   )
   Response listWords(
     @QueryParam("page")
     @DefaultValue("0")
-    @Parameter(name = "page", in = ParameterIn.QUERY)
+    @Parameter(
+      name = "page",
+      in = ParameterIn.QUERY
+    )
     int page,
 
     @QueryParam("pageSize")
     @DefaultValue("10")
-    @Parameter(name = "pageSize", in = ParameterIn.QUERY)
+    @Parameter(
+      name = "pageSize",
+      in = ParameterIn.QUERY
+    )
     int pageSize,
 
     @QueryParam("sortBy")
     @DefaultValue("spanish")
-    @Parameter(name = "sortBy", in = ParameterIn.QUERY)
+    @Parameter(
+      name = "sortBy",
+      in = ParameterIn.QUERY
+    )
     String sortBy,
 
     @QueryParam("sortDirection")
     @DefaultValue("asc")
-    @Parameter(name = "sortDirection", in = ParameterIn.QUERY)
+    @Parameter(
+      name = "sortDirection",
+      in = ParameterIn.QUERY
+    )
     String sortDirection
   );
 

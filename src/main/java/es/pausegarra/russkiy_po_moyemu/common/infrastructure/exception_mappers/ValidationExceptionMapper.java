@@ -22,11 +22,12 @@ public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViol
 
     ValidationErrorPresentation presentation = ValidationErrorPresentation.create(
       "Unprocessable Entity",
-      Response.Status.BAD_REQUEST,
-      errors
+      Response.Status.BAD_REQUEST, errors
     );
 
-    return Response.status(Response.Status.BAD_REQUEST).entity(presentation).build();
+    return Response.status(Response.Status.BAD_REQUEST)
+      .entity(presentation)
+      .build();
   }
 
 }

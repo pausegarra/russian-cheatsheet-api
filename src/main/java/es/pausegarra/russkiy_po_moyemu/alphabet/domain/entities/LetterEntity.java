@@ -19,13 +19,23 @@ public class LetterEntity {
   @GeneratedValue(strategy = GenerationType.UUID)
   private final UUID id;
 
-  @Column(unique = true, nullable = false)
+  @Column(
+    unique = true,
+    nullable = false
+  )
   private final String cyrillic;
 
-  @Column(unique = true, nullable = false, name = "latin")
+  @Column(
+    unique = true,
+    nullable = false,
+    name = "latin"
+  )
   private final String latin;
 
-  @Column(unique = true, nullable = false)
+  @Column(
+    unique = true,
+    nullable = false
+  )
   private final String ipa;
 
   @Embedded

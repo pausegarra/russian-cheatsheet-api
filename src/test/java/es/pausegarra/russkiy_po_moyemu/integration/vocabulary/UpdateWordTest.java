@@ -27,24 +27,39 @@ public class UpdateWordTest extends IntegrationTest {
   }
 
   @Test
-  @TestSecurity(user = "user", roles = "words#update")
+  @TestSecurity(
+    user = "user",
+    roles = "words#update"
+  )
   public void shouldUpdateWord() throws JsonProcessingException {
     WordEntity word = setUp();
 
     UpdateWordRequest request = new UpdateWordRequest("word-r", "english-u", "spanish-u", "ADVERB");
     String json = objectMapper.writeValueAsString(request);
-    given().body(json).contentType("application/json").when().patch("/words/" + word.getId()).then().statusCode(204);
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .patch("/words/" + word.getId())
+      .then()
+      .statusCode(204);
 
     WordEntity updated = em.find(WordEntity.class, word.getId());
     assertNotNull(updated);
-    assertTrue(updated.getRussian().equals("word-r"));
-    assertTrue(updated.getEnglish().equals("english-u"));
-    assertTrue(updated.getSpanish().equals("spanish-u"));
-    assertTrue(updated.getType().equals(WordTypes.ADVERB));
+    assertTrue(updated.getRussian()
+                 .equals("word-r"));
+    assertTrue(updated.getEnglish()
+                 .equals("english-u"));
+    assertTrue(updated.getSpanish()
+                 .equals("spanish-u"));
+    assertTrue(updated.getType()
+                 .equals(WordTypes.ADVERB));
   }
 
   @Test
-  @TestSecurity(user = "user", roles = "words#update")
+  @TestSecurity(
+    user = "user",
+    roles = "words#update"
+  )
   public void shouldReturn400WhenDataIsInvalid() throws JsonProcessingException {
     WordEntity word = setUp();
 
@@ -67,7 +82,11 @@ public class UpdateWordTest extends IntegrationTest {
 
     UpdateWordRequest request = new UpdateWordRequest("word", "english", "spanish", "VERB");
     String json = objectMapper.writeValueAsString(request);
-    given().body(json).when().patch("/words/" + word.getId()).then().statusCode(401);
+    given().body(json)
+      .when()
+      .patch("/words/" + word.getId())
+      .then()
+      .statusCode(401);
   }
 
   @Test
@@ -77,7 +96,11 @@ public class UpdateWordTest extends IntegrationTest {
 
     UpdateWordRequest request = new UpdateWordRequest("word", "english", "spanish", "VERB");
     String json = objectMapper.writeValueAsString(request);
-    given().body(json).when().patch("/words/" + word.getId()).then().statusCode(403);
+    given().body(json)
+      .when()
+      .patch("/words/" + word.getId())
+      .then()
+      .statusCode(403);
   }
 
 }

@@ -20,7 +20,9 @@ public class CreateLetterResource implements CreateLetterApiSpec {
     CreateLetterDto command = CreateLetterDto.from(request.cyrillic(), request.ipa(), request.latin());
     UUID createdLetterId = service.handle(command);
 
-    return Response.status(Response.Status.CREATED).entity(createdLetterId).build();
+    return Response.status(Response.Status.CREATED)
+      .entity(createdLetterId)
+      .build();
   }
 
 }

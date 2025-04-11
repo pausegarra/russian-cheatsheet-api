@@ -19,26 +19,31 @@ public class WordPanacheRepository implements WordsRepository, PanacheRepository
 
   @Override
   public Paginated<WordEntity> findByCriteria(WordsSearchCriteria criteria) {
-    Sort sort = Sort.by(criteria.getSorting().sortBy(), Sort.Direction.valueOf(criteria.getSorting().sortDirection().getValue()));
-    Page page = Page.of(criteria.getPagination().page(), criteria.getPagination().pageSize());
+    Sort sort = Sort.by(
+      criteria.getSorting()
+        .sortBy(), Sort.Direction.valueOf(criteria.getSorting()
+                                            .sortDirection()
+                                            .getValue())
+    );
+    Page page = Page.of(
+      criteria.getPagination()
+        .page(), criteria.getPagination()
+        .pageSize()
+    );
     PanacheQuery<WordEntity> query = findAll(sort).page(page);
 
     PageInfo pageInfo = PageInfo.fromQuery(query);
 
     return new Paginated<>(
-      query.list(),
-      pageInfo.page(),
-      pageInfo.pageSize(),
-      pageInfo.totalPages(),
-      pageInfo.totalElements(),
-      pageInfo.hasNextPage(),
-      pageInfo.hasPreviousPage()
+      query.list(), pageInfo.page(), pageInfo.pageSize(), pageInfo.totalPages(), pageInfo.totalElements(),
+      pageInfo.hasNextPage(), pageInfo.hasPreviousPage()
     );
   }
 
   @Override
   public Optional<WordEntity> findById(UUID id) {
-    WordEntity word = this.find("id", id).firstResult();
+    WordEntity word = this.find("id", id)
+      .firstResult();
 
     if (word == null) {
       return Optional.empty();

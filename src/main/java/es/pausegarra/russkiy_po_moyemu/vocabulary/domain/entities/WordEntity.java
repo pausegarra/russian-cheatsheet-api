@@ -21,15 +21,24 @@ public class WordEntity {
   @GeneratedValue(strategy = GenerationType.UUID)
   private final UUID id;
 
-  @Column(unique = true, nullable = false)
+  @Column(
+    unique = true,
+    nullable = false
+  )
   @With
   private final String russian;
 
-  @Column(unique = true, nullable = false)
+  @Column(
+    unique = true,
+    nullable = false
+  )
   @With
   private final String english;
 
-  @Column(unique = true, nullable = false)
+  @Column(
+    unique = true,
+    nullable = false
+  )
   @With
   private final String spanish;
 
@@ -45,7 +54,10 @@ public class WordEntity {
   }
 
   public WordEntity update(String russian, String english, String spanish, WordTypes type) {
-    return this.withEnglish(english).withRussian(russian).withSpanish(spanish).withType(type);
+    return this.withEnglish(english)
+      .withRussian(russian)
+      .withSpanish(spanish)
+      .withType(type);
   }
 
 }

@@ -31,15 +31,14 @@ public class HasPermissionInterceptor {
 
   @AroundInvoke
   public Object hasPermission(InvocationContext context) throws Exception {
-    String[] requiredPermission = context.getMethod().getAnnotation(HasPermission.class).value();
+    String[] requiredPermission = context.getMethod()
+      .getAnnotation(HasPermission.class)
+      .value();
 
     for (String permission : requiredPermission) {
       try {
         keycloakRestClient.checkPermission(
-          "urn:ietf:params:oauth:grant-type:uma-ticket",
-          keycloakConfig.clientId(),
-          "decision",
-          permission,
+          "urn:ietf:params:oauth:grant-type:uma-ticket", keycloakConfig.clientId(), "decision", permission,
           "Bearer " + jwt.getRawToken()
         );
       } catch (ClientWebApplicationException e) {

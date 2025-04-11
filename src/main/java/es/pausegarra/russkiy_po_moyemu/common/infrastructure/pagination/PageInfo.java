@@ -8,11 +8,7 @@ public record PageInfo(
 
   public static <T> PageInfo fromQuery(PanacheQuery<T> query) {
     return new PageInfo(
-      query.page().index,
-      query.page().size,
-      query.pageCount(),
-      query.count(),
-      query.hasNextPage(),
+      query.page().index, query.page().size, query.pageCount(), query.count(), query.hasNextPage(),
       query.hasPreviousPage()
     );
   }

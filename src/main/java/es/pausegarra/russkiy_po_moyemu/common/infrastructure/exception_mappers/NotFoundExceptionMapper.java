@@ -17,7 +17,9 @@ public class NotFoundExceptionMapper implements ExceptionMapper<NotFound> {
       Response.Status.NOT_FOUND.getStatusCode()
     );
 
-    return Response.status(Response.Status.NOT_FOUND).entity(presentation).build();
+    return Response.status(Response.Status.NOT_FOUND)
+      .entity(presentation)
+      .build();
   }
 
 }

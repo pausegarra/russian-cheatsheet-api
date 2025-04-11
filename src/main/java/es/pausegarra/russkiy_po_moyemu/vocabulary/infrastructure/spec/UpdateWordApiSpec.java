@@ -22,25 +22,43 @@ public interface UpdateWordApiSpec {
   @Operation(summary = "Update word")
   @SecurityRequirement(name = "SecurityScheme")
   @APIResponse(
-    responseCode = "204", description = "Word updated"
+    responseCode = "204",
+    description = "Word updated"
   )
-  @APIResponse(responseCode = "400", description = "Bad request")
-  @APIResponse(responseCode = "401", description = "Unauthenticated")
-  @APIResponse(responseCode = "403", description = "Forbidden")
-  @APIResponse(responseCode = "404", description = "Not found")
+  @APIResponse(
+    responseCode = "400",
+    description = "Bad request"
+  )
+  @APIResponse(
+    responseCode = "401",
+    description = "Unauthenticated"
+  )
+  @APIResponse(
+    responseCode = "403",
+    description = "Forbidden"
+  )
+  @APIResponse(
+    responseCode = "404",
+    description = "Not found"
+  )
   Response updateWord(
     @PathParam("id")
     @Parameter(
-      name = "id", description = "Word ID", required = true
+      name = "id",
+      description = "Word ID",
+      required = true
     )
     String id,
 
     @RequestBody(
-      description = "Word to update", required = true, content = @Content(
-      mediaType = "application/json", schema = @Schema(
-      implementation = UpdateWordRequest.class
-    )
-    )
+      description = "Word to update",
+      required = true,
+      content = @Content(
+        mediaType = "application/json",
+        schema = @Schema(
+          implementation = UpdateWordRequest.class
+        )
+      )
     )
     UpdateWordRequest request
   );

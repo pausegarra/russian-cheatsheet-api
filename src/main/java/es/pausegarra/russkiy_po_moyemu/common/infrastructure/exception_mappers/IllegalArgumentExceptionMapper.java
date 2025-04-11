@@ -16,7 +16,9 @@ public class IllegalArgumentExceptionMapper implements ExceptionMapper<IllegalAr
       Response.Status.BAD_REQUEST.getStatusCode()
     );
 
-    return Response.status(Response.Status.BAD_REQUEST).entity(presentation).build();
+    return Response.status(Response.Status.BAD_REQUEST)
+      .entity(presentation)
+      .build();
   }
 
 }

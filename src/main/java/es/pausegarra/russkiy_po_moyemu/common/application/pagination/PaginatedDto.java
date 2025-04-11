@@ -10,13 +10,8 @@ public record PaginatedDto<E>(
 
   public static <T, E> PaginatedDto<E> fromPaginated(Paginated<T> paginated, List<E> data) {
     return new PaginatedDto<>(
-      data,
-      paginated.page(),
-      paginated.pageSize(),
-      paginated.totalPages(),
-      paginated.totalElements(),
-      paginated.hasNextPage(),
-      paginated.hasPreviousPage()
+      data, paginated.page(), paginated.pageSize(), paginated.totalPages(), paginated.totalElements(),
+      paginated.hasNextPage(), paginated.hasPreviousPage()
     );
   }
 

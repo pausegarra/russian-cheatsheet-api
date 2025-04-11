@@ -33,7 +33,10 @@ class UpdateWordServiceTest {
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.of(word));
     when(wordsRepository.save(any(WordEntity.class))).thenReturn(word);
 
-    UpdateWordDto dto = UpdateWordDto.from(UUID.randomUUID().toString(), "word", "english", "spanish", "VERB");
+    UpdateWordDto dto = UpdateWordDto.from(
+      UUID.randomUUID()
+        .toString(), "word", "english", "spanish", "VERB"
+    );
     updateWordService.handle(dto);
 
     verify(wordsRepository).save(any(WordEntity.class));
@@ -43,7 +46,10 @@ class UpdateWordServiceTest {
   public void shouldThrowExceptionWhenWordNotFound() {
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
-    UpdateWordDto dto = UpdateWordDto.from(UUID.randomUUID().toString(), "word", "english", "spanish", "VERB");
+    UpdateWordDto dto = UpdateWordDto.from(
+      UUID.randomUUID()
+        .toString(), "word", "english", "spanish", "VERB"
+    );
     assertThrows(WordNotFound.class, () -> updateWordService.handle(dto));
   }
 

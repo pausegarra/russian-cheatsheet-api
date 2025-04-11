@@ -24,7 +24,9 @@ public class ListLettersService implements Service<ListLettersDto, List<LetterDt
   ) {
     List<LetterEntity> letters = letterRepository.fetchAll();
 
-    return letters.stream().map(LetterDto::fromEntity).toList();
+    return letters.stream()
+      .map(LetterDto::fromEntity)
+      .toList();
   }
 
 }

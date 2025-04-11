@@ -31,19 +31,33 @@ class FindAllWordsPageInfoServiceTest {
 
   @Test
   public void shouldFindAllWords() {
-    WordEntity word = new WordEntity(UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, new AuditFields(Instant.now(), Instant.now()));
+    WordEntity word = new WordEntity(
+      UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, new AuditFields(Instant.now(), Instant.now()));
 
     Paginated<WordEntity> paginated = new Paginated<>(List.of(word), 0, 10, 1, 1, true, false);
     when(wordsRepository.findByCriteria(any(WordsSearchCriteria.class))).thenReturn(paginated);
 
-    PaginatedDto<WordDto> words = findAllWordsPaginatedService.handle(FindAllWordsPaginatedDto.from(0, 10, "spanish", "ASC"));
+    PaginatedDto<WordDto> words = findAllWordsPaginatedService.handle(
+      FindAllWordsPaginatedDto.from(0, 10, "spanish", "ASC"));
 
     List<WordDto> wordsDto = words.data();
     assertEquals(1, wordsDto.size());
-    assertEquals("a", wordsDto.getFirst().russian());
-    assertEquals("a", wordsDto.getFirst().english());
-    assertEquals("a", wordsDto.getFirst().spanish());
-    assertEquals("VERB", wordsDto.getFirst().type());
+    assertEquals(
+      "a", wordsDto.getFirst()
+        .russian()
+    );
+    assertEquals(
+      "a", wordsDto.getFirst()
+        .english()
+    );
+    assertEquals(
+      "a", wordsDto.getFirst()
+        .spanish()
+    );
+    assertEquals(
+      "VERB", wordsDto.getFirst()
+        .type()
+    );
     assertEquals(0, words.page());
     assertEquals(10, words.pageSize());
     assertEquals(1, words.totalPages());

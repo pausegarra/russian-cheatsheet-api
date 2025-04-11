@@ -11,13 +11,10 @@ public record WordDto(
 
   public static WordDto fromEntity(WordEntity entity) {
     return new WordDto(
-      entity.getId(),
-      entity.getRussian(),
-      entity.getEnglish(),
-      entity.getSpanish(),
-      entity.getType().toString(),
-      entity.getAuditFields().getCreatedAt(),
-      entity.getAuditFields().getUpdatedAt()
+      entity.getId(), entity.getRussian(), entity.getEnglish(), entity.getSpanish(), entity.getType()
+      .toString(), entity.getAuditFields()
+        .getCreatedAt(), entity.getAuditFields()
+        .getUpdatedAt()
     );
   }
 

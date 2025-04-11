@@ -19,8 +19,10 @@ public abstract class IntegrationTest {
   @AfterEach
   @Transactional
   public void cleanUp() {
-    em.createNativeQuery("TRUNCATE TABLE letters CASCADE").executeUpdate();
-    em.createNativeQuery("TRUNCATE TABLE words CASCADE").executeUpdate();
+    em.createNativeQuery("TRUNCATE TABLE letters CASCADE")
+      .executeUpdate();
+    em.createNativeQuery("TRUNCATE TABLE words CASCADE")
+      .executeUpdate();
   }
 
 }

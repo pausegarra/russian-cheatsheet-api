@@ -18,7 +18,8 @@ public class DeleteWordResource implements DeleteWordApiSpec {
     DeleteWordDto dto = DeleteWordDto.from(id);
     service.handle(dto);
 
-    return Response.noContent().build();
+    return Response.noContent()
+      .build();
   }
 
 }

@@ -3,7 +3,10 @@ package es.pausegarra.russkiy_po_moyemu.arch;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 
-@AnalyzeClasses(packages = BaseArchTest.BASE_PACKAGE, importOptions = {ImportOption.DoNotIncludeTests.class})
+@AnalyzeClasses(
+  packages = BaseArchTest.BASE_PACKAGE,
+  importOptions = {ImportOption.DoNotIncludeTests.class}
+)
 public class ConfigTests extends BaseArchTest {
 
   //  @ArchTest

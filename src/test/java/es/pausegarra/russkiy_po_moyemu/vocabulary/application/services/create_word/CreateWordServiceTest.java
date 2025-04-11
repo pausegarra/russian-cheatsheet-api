@@ -27,7 +27,8 @@ class CreateWordServiceTest {
 
   @Test
   public void shouldCreateWord() {
-    WordEntity word = new WordEntity(UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, new AuditFields(Instant.now(), Instant.now()));
+    WordEntity word = new WordEntity(
+      UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, new AuditFields(Instant.now(), Instant.now()));
     when(wordsRepository.save(any(WordEntity.class))).thenReturn(word);
 
     createWordService.handle(CreateWordDto.from("a", "a", "a", "VERB"));

@@ -19,7 +19,8 @@ public class UpdateWordResource implements UpdateWordApiSpec {
     UpdateWordDto dto = UpdateWordDto.from(id, request.russian(), request.english(), request.spanish(), request.type());
     updateWordService.handle(dto);
 
-    return Response.noContent().build();
+    return Response.noContent()
+      .build();
   }
 
 }

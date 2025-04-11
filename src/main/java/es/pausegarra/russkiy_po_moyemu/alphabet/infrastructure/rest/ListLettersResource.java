@@ -17,9 +17,12 @@ public class ListLettersResource implements ListLettersApiSpec {
 
   public Response listLetters() {
     List<LetterDto> letters = service.handle(ListLettersDto.from());
-    List<LetterPresentation> letterPresentations = letters.stream().map(LetterPresentation::fromDto).toList();
+    List<LetterPresentation> letterPresentations = letters.stream()
+      .map(LetterPresentation::fromDto)
+      .toList();
 
-    return Response.ok(letterPresentations).build();
+    return Response.ok(letterPresentations)
+      .build();
   }
 
 }

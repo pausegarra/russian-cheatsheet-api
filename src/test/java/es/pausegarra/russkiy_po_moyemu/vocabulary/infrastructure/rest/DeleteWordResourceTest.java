@@ -11,7 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 
@@ -27,9 +28,11 @@ class DeleteWordResourceTest {
   @Test
   @TestSecurity(authorizationEnabled = false)
   public void shouldDeleteWord() {
-    doNothing().when(service).handle(any(DeleteWordDto.class));
+    doNothing().when(service)
+      .handle(any(DeleteWordDto.class));
 
-    Response response = deleteWordResource.deleteWord(UUID.randomUUID().toString());
+    Response response = deleteWordResource.deleteWord(UUID.randomUUID()
+                                                        .toString());
 
     assertNotNull(response);
     assertEquals(204, response.getStatus());

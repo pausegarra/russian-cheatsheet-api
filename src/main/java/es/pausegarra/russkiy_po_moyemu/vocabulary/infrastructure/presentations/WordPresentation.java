@@ -7,7 +7,10 @@ public record WordPresentation(
 ) {
 
   public static WordPresentation fromDto(WordDto dto) {
-    return new WordPresentation(dto.id().toString(), dto.russian(), dto.english(), dto.spanish(), dto.type());
+    return new WordPresentation(
+      dto.id()
+        .toString(), dto.russian(), dto.english(), dto.spanish(), dto.type()
+    );
   }
 
 }

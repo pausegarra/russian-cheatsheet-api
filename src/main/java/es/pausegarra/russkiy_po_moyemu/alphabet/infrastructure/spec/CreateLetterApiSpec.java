@@ -15,11 +15,21 @@ public interface CreateLetterApiSpec {
 
   @POST
   @Operation(summary = "Create letter")
-  @APIResponse(responseCode = "400", description = "Bad request")
-  @APIResponse(responseCode = "401", description = "Unauthenticated")
-  @APIResponse(responseCode = "403", description = "Forbidden")
   @APIResponse(
-    responseCode = "201", description = "Letter created"
+    responseCode = "400",
+    description = "Bad request"
+  )
+  @APIResponse(
+    responseCode = "401",
+    description = "Unauthenticated"
+  )
+  @APIResponse(
+    responseCode = "403",
+    description = "Forbidden"
+  )
+  @APIResponse(
+    responseCode = "201",
+    description = "Letter created"
   )
   @SecurityRequirement(name = "SecurityScheme")
   Response createLetter(CreateLetterRequest request);

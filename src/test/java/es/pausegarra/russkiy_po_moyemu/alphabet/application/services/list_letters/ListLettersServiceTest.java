@@ -27,16 +27,26 @@ class ListLettersServiceTest {
 
   @Test
   public void shouldReturnAllLetters() {
-    LetterEntity letter = new LetterEntity(UUID.randomUUID(), "a", "a", "a", new AuditFields(Instant.now(), Instant.now()));
+    LetterEntity letter = new LetterEntity(
+      UUID.randomUUID(), "a", "a", "a", new AuditFields(Instant.now(), Instant.now()));
 
     when(letterRepository.fetchAll()).thenReturn(List.of(letter));
 
     List<LetterDto> letters = listLettersService.handle(ListLettersDto.from());
 
     assertEquals(1, letters.size());
-    assertEquals("a", letters.getFirst().cyrillic());
-    assertEquals("a", letters.getFirst().ipa());
-    assertEquals("a", letters.getFirst().latin());
+    assertEquals(
+      "a", letters.getFirst()
+        .cyrillic()
+    );
+    assertEquals(
+      "a", letters.getFirst()
+        .ipa()
+    );
+    assertEquals(
+      "a", letters.getFirst()
+        .latin()
+    );
 
     verify(letterRepository, times(1)).fetchAll();
   }

@@ -9,7 +9,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
-@AnalyzeClasses(packages = BaseArchTest.BASE_PACKAGE, importOptions = {ImportOption.DoNotIncludeTests.class})
+@AnalyzeClasses(
+  packages = BaseArchTest.BASE_PACKAGE,
+  importOptions = {ImportOption.DoNotIncludeTests.class}
+)
 public class ArchitectureTests extends BaseArchTest {
 
   @ArchTest

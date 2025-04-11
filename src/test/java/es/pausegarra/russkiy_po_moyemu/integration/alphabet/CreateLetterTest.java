@@ -16,14 +16,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CreateLetterTest extends IntegrationTest {
 
   @Test
-  @TestSecurity(user = "test", roles = {"letters#create"})
+  @TestSecurity(
+    user = "test",
+    roles = {"letters#create"}
+  )
   public void shouldCreateLetter() throws JsonProcessingException {
     CreateLetterRequest request = new CreateLetterRequest("a", "a", "a");
     String json = objectMapper.writeValueAsString(request);
 
-    given().body(json).contentType("application/json").when().post("/letters").then().statusCode(201);
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .post("/letters")
+      .then()
+      .statusCode(201);
 
-    LetterEntity savedLetter = em.createQuery("SELECT l FROM LetterEntity l WHERE l.cyrillic = :cyrillic", LetterEntity.class)
+    LetterEntity savedLetter = em.createQuery(
+        "SELECT l FROM LetterEntity l WHERE l.cyrillic = :cyrillic", LetterEntity.class)
       .setParameter("cyrillic", "a")
       .getSingleResult();
 
@@ -33,7 +42,10 @@ public class CreateLetterTest extends IntegrationTest {
   }
 
   @Test
-  @TestSecurity(user = "test", roles = {"letters#create"})
+  @TestSecurity(
+    user = "test",
+    roles = {"letters#create"}
+  )
   public void shouldReturn400WhenDataIsInvalid() throws JsonProcessingException {
     CreateLetterRequest request = new CreateLetterRequest(null, null, null);
     String json = objectMapper.writeValueAsString(request);
@@ -55,7 +67,12 @@ public class CreateLetterTest extends IntegrationTest {
     CreateLetterRequest request = new CreateLetterRequest("a", "a", "a");
     String json = objectMapper.writeValueAsString(request);
 
-    given().body(json).contentType("application/json").when().post("/letters").then().statusCode(403);
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .post("/letters")
+      .then()
+      .statusCode(403);
   }
 
   @Test
@@ -63,7 +80,12 @@ public class CreateLetterTest extends IntegrationTest {
     CreateLetterRequest request = new CreateLetterRequest("a", "a", "a");
     String json = objectMapper.writeValueAsString(request);
 
-    given().body(json).contentType("application/json").when().post("/letters").then().statusCode(401);
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .post("/letters")
+      .then()
+      .statusCode(401);
   }
 
 }

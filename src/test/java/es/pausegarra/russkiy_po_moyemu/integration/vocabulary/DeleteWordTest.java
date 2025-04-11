@@ -19,10 +19,7 @@ public class DeleteWordTest extends IntegrationTest {
   @Transactional
   public WordEntity createWord() {
     WordEntity word = WordEntity.create(
-      null,
-      "Russkiy po moyemu",
-      "Russkiy po moyemu",
-      "russkiy po moyemu",
+      null, "Russkiy po moyemu", "Russkiy po moyemu", "russkiy po moyemu",
       WordTypes.VERB
     );
     em.persist(word);
@@ -31,12 +28,14 @@ public class DeleteWordTest extends IntegrationTest {
   }
 
   @Test
-  @TestSecurity(user = "user", roles = "words#delete")
+  @TestSecurity(
+    user = "user",
+    roles = "words#delete"
+  )
   public void shouldDeleteWord() {
     WordEntity word = createWord();
 
-    given()
-      .when()
+    given().when()
       .delete("/words/" + word.getId())
       .then()
       .statusCode(204);
@@ -46,10 +45,12 @@ public class DeleteWordTest extends IntegrationTest {
   }
 
   @Test
-  @TestSecurity(user = "user", roles = "words#delete")
+  @TestSecurity(
+    user = "user",
+    roles = "words#delete"
+  )
   public void shouldReturn404IfWordNotFound() {
-    given()
-      .when()
+    given().when()
       .delete("/words/" + UUID.randomUUID())
       .then()
       .statusCode(404);
@@ -57,8 +58,7 @@ public class DeleteWordTest extends IntegrationTest {
 
   @Test
   public void shouldReturn401IfUserIsNotAuthenticated() {
-    given()
-      .when()
+    given().when()
       .delete("/words/" + UUID.randomUUID())
       .then()
       .statusCode(401);
@@ -67,8 +67,7 @@ public class DeleteWordTest extends IntegrationTest {
   @Test
   @TestSecurity(user = "user")
   public void shouldReturn403IfUserHasNoRole() {
-    given()
-      .when()
+    given().when()
       .delete("/words/" + UUID.randomUUID())
       .then()
       .statusCode(403);

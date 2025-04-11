@@ -23,7 +23,9 @@ public class CreateWordResource implements CreateWordApiSpec {
 
     UUID createdWordId = createWordService.handle(command);
 
-    return Response.status(Response.Status.CREATED).entity(createdWordId).build();
+    return Response.status(Response.Status.CREATED)
+      .entity(createdWordId)
+      .build();
   }
 
 }

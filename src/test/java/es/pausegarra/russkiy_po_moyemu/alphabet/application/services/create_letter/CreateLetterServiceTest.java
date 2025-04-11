@@ -23,7 +23,8 @@ class CreateLetterServiceTest {
   @Test
   public void shouldCreateLetter() {
     CreateLetterDto command = CreateLetterDto.from("a", "a", "a");
-    doNothing().when(letterRepository).save(any(LetterEntity.class));
+    doNothing().when(letterRepository)
+      .save(any(LetterEntity.class));
 
     createLetterService.handle(command);
 

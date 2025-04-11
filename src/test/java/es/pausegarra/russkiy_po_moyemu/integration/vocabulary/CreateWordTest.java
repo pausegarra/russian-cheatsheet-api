@@ -14,16 +14,28 @@ import static org.hamcrest.Matchers.*;
 public class CreateWordTest extends IntegrationTest {
 
   @Test
-  @TestSecurity(user = "test", roles = {"words#create"})
+  @TestSecurity(
+    user = "test",
+    roles = {"words#create"}
+  )
   public void shouldCreateWord() throws JsonProcessingException {
     CreateWordRequest request = new CreateWordRequest("a", "a", "a", "VERB");
     String json = objectMapper.writeValueAsString(request);
 
-    given().body(json).contentType("application/json").when().post("/words").then().statusCode(201).body(notNullValue());
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .post("/words")
+      .then()
+      .statusCode(201)
+      .body(notNullValue());
   }
 
   @Test
-  @TestSecurity(user = "test", roles = {"words#create"})
+  @TestSecurity(
+    user = "test",
+    roles = {"words#create"}
+  )
   public void shouldReturn400WhenDataIsInvalid() throws JsonProcessingException {
     CreateWordRequest request = new CreateWordRequest(null, null, null, "VERB");
     String json = objectMapper.writeValueAsString(request);
@@ -44,7 +56,12 @@ public class CreateWordTest extends IntegrationTest {
     CreateWordRequest request = new CreateWordRequest("a", "a", "a", "VERB");
     String json = objectMapper.writeValueAsString(request);
 
-    given().body(json).contentType("application/json").when().post("/words").then().statusCode(401);
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .post("/words")
+      .then()
+      .statusCode(401);
   }
 
   @Test
@@ -53,7 +70,12 @@ public class CreateWordTest extends IntegrationTest {
     CreateWordRequest request = new CreateWordRequest("a", "a", "a", "VERB");
     String json = objectMapper.writeValueAsString(request);
 
-    given().body(json).contentType("application/json").when().post("/words").then().statusCode(403);
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .post("/words")
+      .then()
+      .statusCode(403);
   }
 
 }

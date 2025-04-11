@@ -8,7 +8,10 @@ import com.tngtech.archunit.library.GeneralCodingRules;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
-@AnalyzeClasses(packages = BaseArchTest.BASE_PACKAGE, importOptions = {ImportOption.DoNotIncludeTests.class})
+@AnalyzeClasses(
+  packages = BaseArchTest.BASE_PACKAGE,
+  importOptions = {ImportOption.DoNotIncludeTests.class}
+)
 public class CodingRulesTest extends BaseArchTest {
 
   @ArchTest
