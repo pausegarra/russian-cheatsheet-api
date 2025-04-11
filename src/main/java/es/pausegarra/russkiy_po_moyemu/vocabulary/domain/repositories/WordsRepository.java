@@ -15,4 +15,6 @@ public interface WordsRepository {
 
   WordEntity save(WordEntity word);
 
+  void delete(UUID id);
+
 }

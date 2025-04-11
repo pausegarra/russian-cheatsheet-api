@@ -52,4 +52,9 @@ public class WordPanacheRepository implements WordsRepository, PanacheRepository
     return getEntityManager().merge(word);
   }
 
+  @Override
+  public void delete(UUID id) {
+    this.delete("id", id);
+  }
+
 }
