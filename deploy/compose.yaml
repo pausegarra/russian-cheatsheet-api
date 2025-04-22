@@ -1,0 +1,9 @@
+version: '3.2'
+
+services:
+  ruskiu-shpargalka-api:
+    container_name: ruskiu-shpargalka-api
+    image: pausegarra/ruskiy-shpargalka-api:${VERSION}
+    ports:
+      - "8001:8080"
+    restart: always
