@@ -78,6 +78,9 @@ jobs:
     needs: docker
     
     steps:
+      - name: 🔽 Checkout
+      - uses: actions/checkout@v4
+
       - name: 🚀 Deploy
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa
