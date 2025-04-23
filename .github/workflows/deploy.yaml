@@ -21,10 +21,10 @@ jobs:
           sdk version
 
       - name: 🔧 Setup JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'graalvm'
+        run: |
+          source "/home/runner/.sdkman/bin/sdkman-init.sh"
+          sdk install java 23.1.6.r21-nik
+          sdk use java 23.1.6.r21-nik
 
       - name: 🔧 Setup Maven 3.9.8
         run: |
