@@ -24,7 +24,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: '21'
-          distribution: 'corretto'
+          distribution: 'graalvm'
 
       - name: 🔧 Setup Maven 3.9.8
         run: |
@@ -35,7 +35,7 @@ jobs:
       - name: 🛠️ Build Application
         run: |
           source "/home/runner/.sdkman/bin/sdkman-init.sh"
-          mvn clean package -Dquarkus.profile=prod -DskipTests
+          mvn clean package -Dquarkus.profile=prod -DskipTests -Pnative
 
       - name: 🛠️ Upload Build Artifacts
         uses: actions/upload-artifact@v4
@@ -60,7 +60,7 @@ jobs:
 
       - name: 🛠️ Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/ruskiy-shpargalka-api:${{ github.ref_name }} -f ./src/main/docker/Dockerfile.legacy-jar .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/ruskiy-shpargalka-api:${{ github.ref_name }} -f ./src/main/docker/Dockerfile.native-micro .
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
