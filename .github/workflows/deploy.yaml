@@ -84,11 +84,11 @@ jobs:
       - name: 🚀 Deploy
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa
-          docker pull ${{ secrets.DOCKER_USERNAME }}/ruskiy-shpargalka-api:${{ github.ref_name }}
           chmod 600 id_rsa
           cat ./deploy/compose.yaml | ssh -o StrictHostKeyChecking=no -i id_rsa -p ${{ secrets.SSH_PORT }} \
             ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
-            "export VERSION=${{ github.ref_name }} && \
+            "docker pull ${{ secrets.DOCKER_USERNAME }}/ruskiy-shpargalka-api:${{ github.ref_name }} && \
+              export VERSION=${{ github.ref_name }} && \
               export DB_USERNAME=${{ secrets.DB_USERNAME }} && \
               export DB_PASSWORD=${{ secrets.DB_PASSWORD }} && \
               export DB_URL=${{ secrets.DB_URL }} && \
