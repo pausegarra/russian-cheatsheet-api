@@ -13,6 +13,9 @@ test: ## Run the tests.
 start-db: ## Start the database.
 	docker-compose up -d
 
+build: ## Build the application.
+	./mvnw clean package -DskipTests
+
 stop-db: ## Stop the database.
 	docker-compose down
 
