@@ -26,14 +26,12 @@ public class LetterEntity {
   private final String cyrillic;
 
   @Column(
-    unique = true,
     nullable = false,
     name = "latin"
   )
   private final String latin;
 
   @Column(
-    unique = true,
     nullable = false
   )
   private final String ipa;
