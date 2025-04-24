@@ -25,7 +25,7 @@ quarkus:
 app:
   idp:
     url: https://auth.pausegarra.es/realms/principal
-    client-id: russkiy-shpargalka-private
+    client-id: russian-cheatsheet-private
 
 mp:
   jwt:
@@ -33,3 +33,4 @@ mp:
       publickey:
         location: ${app.idp.url}/protocol/openid-connect/certs
       issuer: ${app.idp.url}
+      audience: ${app.id.client-id}
