@@ -16,10 +16,13 @@ start-db: ## Start the database.
 build: ## Build the application.
 	./mvnw clean package -DskipTests
 
+build-native: ## Build the application natively.
+	./mvnw clean package -Pnative -DskipTests
+
 stop-db: ## Stop the database.
 	docker-compose down
 
 remove-db: ## Remove the database and it's volumes.
 	docker-compose down -v
 
-.PHONY: start-db stop-db remove-db help
+.PHONY: start-db stop-db remove-db help build build-native dev run test
