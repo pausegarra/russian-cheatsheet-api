@@ -5,9 +5,10 @@ import es.pausegarra.russian_cheatsheet.alphabet.infrastructure.requests.CreateL
 import es.pausegarra.russian_cheatsheet.alphabet.infrastructure.spec.CreateLetterApiSpec;
 import es.pausegarra.russian_cheatsheet.common.application.interfaces.Service;
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
+import org.jboss.resteasy.reactive.RestResponse;
 
+import java.net.URI;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -16,13 +17,12 @@ public class CreateLetterResource implements CreateLetterApiSpec {
   private final Service<CreateLetterDto, UUID> service;
 
   @RolesAllowed("letters#create")
-  public Response createLetter(CreateLetterRequest request) {
+  public RestResponse<String> createLetter(CreateLetterRequest request) {
     CreateLetterDto command = CreateLetterDto.from(request.cyrillic(), request.ipa(), request.latin());
     UUID createdLetterId = service.handle(command);
 
-    return Response.status(Response.Status.CREATED)
-      .entity(createdLetterId)
-      .build();
+    URI location = URI.create("/letters/" + createdLetterId);
+    return RestResponse.created(location);
   }
 
 }

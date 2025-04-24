@@ -4,11 +4,12 @@ import es.pausegarra.russian_cheatsheet.alphabet.application.dtos.LetterDto;
 import es.pausegarra.russian_cheatsheet.alphabet.application.services.list_letters.ListLettersDto;
 import es.pausegarra.russian_cheatsheet.alphabet.application.services.list_letters.ListLettersService;
 import es.pausegarra.russian_cheatsheet.alphabet.domain.entities.LetterEntity;
+import es.pausegarra.russian_cheatsheet.alphabet.infrastructure.projections.LetterPresentation;
 import es.pausegarra.russian_cheatsheet.common.domain.audit.AuditFields;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.RestResponse;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -35,7 +36,7 @@ class ListLettersResourceTest {
 
     when(listLettersService.handle(any(ListLettersDto.class))).thenReturn(List.of(letterDto));
 
-    Response response = listLettersResource.listLetters();
+    RestResponse<List<LetterPresentation>> response = listLettersResource.listLetters();
 
     assertEquals(200, response.getStatus());
 

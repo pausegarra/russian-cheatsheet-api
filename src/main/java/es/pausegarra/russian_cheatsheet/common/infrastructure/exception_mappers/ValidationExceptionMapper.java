@@ -6,6 +6,7 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
+import org.jboss.resteasy.reactive.RestResponse;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -25,9 +26,10 @@ public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViol
       Response.Status.BAD_REQUEST, errors
     );
 
-    return Response.status(Response.Status.BAD_REQUEST)
-      .entity(presentation)
-      .build();
+    return RestResponse.ResponseBuilder.create(Response.Status.BAD_REQUEST, presentation)
+      .header("Content-Type", "application/json")
+      .build()
+      .toResponse();
   }
 
 }

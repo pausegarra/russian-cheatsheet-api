@@ -5,6 +5,7 @@ import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.ApiE
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
+import org.jboss.resteasy.reactive.RestResponse;
 
 @Provider
 public class BadRequestExceptionMapper implements ExceptionMapper<BadRequest> {
@@ -17,9 +18,10 @@ public class BadRequestExceptionMapper implements ExceptionMapper<BadRequest> {
       Response.Status.BAD_REQUEST.getStatusCode()
     );
 
-    return Response.status(Response.Status.BAD_REQUEST)
-      .entity(presentation)
-      .build();
+    return RestResponse.ResponseBuilder.create(Response.Status.BAD_REQUEST, presentation)
+      .header("Content-Type", "application/json")
+      .build()
+      .toResponse();
   }
 
 }
