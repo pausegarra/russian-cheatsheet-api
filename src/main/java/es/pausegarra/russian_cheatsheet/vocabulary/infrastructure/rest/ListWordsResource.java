@@ -7,8 +7,8 @@ import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.find_paginated_words.FindAllWordsPaginatedDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.presentations.WordPresentation;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.spec.ListWordsApiSpec;
-import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
+import org.jboss.resteasy.reactive.RestResponse;
 
 import java.util.List;
 
@@ -17,16 +17,17 @@ public class ListWordsResource implements ListWordsApiSpec {
 
   private final Service<FindAllWordsPaginatedDto, PaginatedDto<WordDto>> service;
 
-  public Response listWords(int page, int pageSize, String sortBy, String sortDirection) {
+  public RestResponse<PaginatedPresentation<WordPresentation>> listWords(
+    int page, int pageSize, String sortBy, String sortDirection) {
     PaginatedDto<WordDto> words = service.handle(FindAllWordsPaginatedDto.from(page, pageSize, sortBy, sortDirection));
     List<WordPresentation> wordProjections = words.data()
       .stream()
       .map(WordPresentation::fromDto)
       .toList();
 
-    return Response.ok()
-      .entity(PaginatedPresentation.fromDto(words, wordProjections))
-      .build();
+    PaginatedPresentation<WordPresentation> paginatedPresentation = PaginatedPresentation.fromDto(
+      words, wordProjections);
+    return RestResponse.ok(paginatedPresentation);
   }
 
 }

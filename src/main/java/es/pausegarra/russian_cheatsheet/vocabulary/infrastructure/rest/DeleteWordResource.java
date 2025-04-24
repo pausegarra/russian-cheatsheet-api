@@ -4,8 +4,8 @@ import es.pausegarra.russian_cheatsheet.common.application.interfaces.Service;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.delete_word.DeleteWordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.spec.DeleteWordApiSpec;
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
+import org.jboss.resteasy.reactive.RestResponse;
 
 @RequiredArgsConstructor
 public class DeleteWordResource implements DeleteWordApiSpec {
@@ -14,12 +14,11 @@ public class DeleteWordResource implements DeleteWordApiSpec {
 
   @Override
   @RolesAllowed("words#delete")
-  public Response deleteWord(String id) {
+  public RestResponse<Void> deleteWord(String id) {
     DeleteWordDto dto = DeleteWordDto.from(id);
     service.handle(dto);
 
-    return Response.noContent()
-      .build();
+    return RestResponse.noContent();
   }
 
 }

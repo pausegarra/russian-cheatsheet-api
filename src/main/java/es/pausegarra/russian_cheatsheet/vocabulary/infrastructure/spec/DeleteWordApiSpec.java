@@ -3,12 +3,12 @@ package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.spec;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+import org.jboss.resteasy.reactive.RestResponse;
 
 @Path("/words/{id}")
 @Tag(name = "Words")
@@ -33,7 +33,7 @@ public interface DeleteWordApiSpec {
     description = "Forbidden"
   )
   @SecurityRequirement(name = "SecurityScheme")
-  Response deleteWord(
+  RestResponse<Void> deleteWord(
     @PathParam("id")
     @Parameter(
       name = "id",

@@ -6,7 +6,7 @@ import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.RestResponse;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
@@ -31,8 +31,8 @@ class DeleteWordResourceTest {
     doNothing().when(service)
       .handle(any(DeleteWordDto.class));
 
-    Response response = deleteWordResource.deleteWord(UUID.randomUUID()
-                                                        .toString());
+    RestResponse<Void> response = deleteWordResource.deleteWord(UUID.randomUUID()
+                                                                  .toString());
 
     assertNotNull(response);
     assertEquals(204, response.getStatus());

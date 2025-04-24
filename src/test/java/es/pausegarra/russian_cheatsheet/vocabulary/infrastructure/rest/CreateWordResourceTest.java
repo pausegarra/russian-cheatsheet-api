@@ -10,7 +10,7 @@ import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.core.Response;
+import org.jboss.resteasy.reactive.RestResponse;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
@@ -38,7 +38,7 @@ class CreateWordResourceTest {
     when(createWordService.handle(any(CreateWordDto.class))).thenReturn(word.getId());
 
     CreateWordRequest request = new CreateWordRequest("a", "a", "a", "VERB");
-    Response response = createWordResource.createWord(request);
+    RestResponse<String> response = createWordResource.createWord(request);
 
     assertEquals(201, response.getStatus());
 
