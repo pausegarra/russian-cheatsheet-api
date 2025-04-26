@@ -40,7 +40,7 @@ public class LetterEntity {
   private final AuditFields auditFields;
 
   public static LetterEntity create(UUID id, String letter, String ipa, String latinLetter) {
-    return new LetterEntity(id, letter, ipa, latinLetter, null);
+    return new LetterEntity(id, letter, latinLetter, ipa, null);
   }
 
 }
