@@ -38,7 +38,7 @@ class FindAllWordsPageInfoServiceTest {
     when(wordsRepository.findByCriteria(any(WordsSearchCriteria.class))).thenReturn(paginated);
 
     PaginatedDto<WordDto> words = findAllWordsPaginatedService.handle(
-      FindAllWordsPaginatedDto.from(0, 10, "spanish", "ASC"));
+      FindAllWordsPaginatedDto.from(0, 10, "spanish", "ASC", ""));
 
     List<WordDto> wordsDto = words.data();
     assertEquals(1, wordsDto.size());

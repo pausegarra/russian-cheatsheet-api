@@ -8,8 +8,7 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 
 @QuarkusTest
 public class ListPaginatedWordsTest extends IntegrationTest {
@@ -64,6 +63,23 @@ public class ListPaginatedWordsTest extends IntegrationTest {
       .statusCode(200)
       .body("page", is(1))
       .body("pageSize", is(5));
+  }
+
+  @Test
+  public void shouldSearch() {
+    setUp();
+
+    given().queryParam("search", "a")
+      .when()
+      .get("/words")
+      .then()
+      .statusCode(200)
+      .body("data.size()", is(1))
+      .body("data[0]", anyOf(
+        hasEntry(equalTo("russian"), containsString("a")),
+        hasEntry(equalTo("english"), containsString("a")),
+        hasEntry(equalTo("spanish"), containsString("a"))
+      ));
   }
 
 }

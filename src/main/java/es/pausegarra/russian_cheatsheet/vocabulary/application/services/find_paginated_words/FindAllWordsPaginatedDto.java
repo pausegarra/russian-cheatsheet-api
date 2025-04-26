@@ -3,11 +3,11 @@ package es.pausegarra.russian_cheatsheet.vocabulary.application.services.find_pa
 import io.smallrye.common.constraint.NotNull;
 
 public record FindAllWordsPaginatedDto(
-  @NotNull int page, @NotNull int pageSize, @NotNull String sortBy, @NotNull String sortDirection
+  @NotNull int page, @NotNull int pageSize, @NotNull String sortBy, @NotNull String sortDirection, String search
 ) {
 
-  public static FindAllWordsPaginatedDto from(int page, int pageSize, String sortBy, String sortDirection) {
-    return new FindAllWordsPaginatedDto(page, pageSize, sortBy, sortDirection);
+  public static FindAllWordsPaginatedDto from(int page, int pageSize, String sortBy, String sortDirection, String search) {
+    return new FindAllWordsPaginatedDto(page, pageSize, sortBy, sortDirection, search);
   }
 
 }

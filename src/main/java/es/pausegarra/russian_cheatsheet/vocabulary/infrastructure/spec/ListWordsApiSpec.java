@@ -54,7 +54,15 @@ public interface ListWordsApiSpec {
       name = "sortDirection",
       in = ParameterIn.QUERY
     )
-    String sortDirection
+    String sortDirection,
+
+    @QueryParam("search")
+    @DefaultValue("")
+    @Parameter(
+      name = "search",
+      in = ParameterIn.QUERY
+    )
+    String search
   );
 
 }

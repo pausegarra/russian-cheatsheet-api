@@ -21,7 +21,7 @@ public class FindAllWordsPaginatedService implements Service<FindAllWordsPaginat
   @Override
   public PaginatedDto<WordDto> handle(FindAllWordsPaginatedDto dto) {
     WordsSearchCriteria criteria = WordsSearchCriteria.create(
-      dto.page(), dto.pageSize(), dto.sortBy(), dto.sortDirection());
+      dto.page(), dto.pageSize(), dto.sortBy(), dto.sortDirection(), dto.search());
     Paginated<WordEntity> words = wordsRepository.findByCriteria(criteria);
 
     List<WordDto> wordsDto = words.data()

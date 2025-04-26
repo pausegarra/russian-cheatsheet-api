@@ -42,7 +42,7 @@ class ListWordsResourceTest {
     when(findAllWordsPaginatedService.handle(any(FindAllWordsPaginatedDto.class))).thenReturn(paginatedDto);
 
     RestResponse<PaginatedPresentation<WordPresentation>> response = listWordsResource.listWords(
-      0, 10, "spanish", "asc");
+      0, 10, "spanish", "asc", "");
 
     assertEquals(200, response.getStatus());
 
