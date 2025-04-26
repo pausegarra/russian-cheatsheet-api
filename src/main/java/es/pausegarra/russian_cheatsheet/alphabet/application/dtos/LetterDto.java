@@ -11,7 +11,7 @@ public record LetterDto(
 
   public static LetterDto fromEntity(LetterEntity entity) {
     return new LetterDto(
-      entity.getId(), entity.getCyrillic(), entity.getIpa(), entity.getLatin(), entity.getAuditFields()
+      entity.getId(), entity.getLatin(), entity.getIpa(), entity.getCyrillic(), entity.getAuditFields()
       .getCreatedAt(), entity.getAuditFields()
         .getUpdatedAt()
     );
