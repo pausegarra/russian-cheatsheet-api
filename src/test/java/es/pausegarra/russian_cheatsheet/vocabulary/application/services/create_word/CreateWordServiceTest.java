@@ -33,7 +33,7 @@ class CreateWordServiceTest {
 
     createWordService.handle(CreateWordDto.from("a", "a", "a", "VERB", null));
 
-    verify(wordsRepository, times(1)).save(any(WordEntity.class));
+    verify(wordsRepository, times(2)).save(any(WordEntity.class));
   }
 
   @Test
