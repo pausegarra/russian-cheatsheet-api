@@ -1,7 +1,9 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word;
 
 import es.pausegarra.russian_cheatsheet.common.application.interfaces.Service;
+import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.VerbConjugationEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
+import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.repositories.WordsRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
@@ -18,13 +20,52 @@ public class CreateWordService implements Service<CreateWordDto, UUID> {
 
   @Override
   @Transactional
-  public UUID handle(
-    @Valid
-    CreateWordDto dto
-  ) {
+  public UUID handle(@Valid CreateWordDto dto) {
     WordEntity word = WordEntity.create(null, dto.russian(), dto.english(), dto.spanish(), dto.type());
 
-    WordEntity saved = wordsRepository.save(word);
+    WordEntity savedWord = wordsRepository.save(word);
+
+    if (word.getType() == WordTypes.VERB && dto.conjugations() != null) {
+      VerbConjugationEntity conjugations = VerbConjugationEntity.create(
+        null, savedWord,
+        dto.conjugations().imperfectivePresentFirstPersonSingular(),
+        dto.conjugations().imperfectivePresentSecondPersonSingular(),
+        dto.conjugations().imperfectivePresentThirdPersonSingular(),
+        dto.conjugations().imperfectivePresentFirstPersonPlural(),
+        dto.conjugations().imperfectivePresentSecondPersonPlural(),
+        dto.conjugations().imperfectivePresentThirdPersonPlural(),
+        dto.conjugations().imperfectivePastMasculine(),
+        dto.conjugations().imperfectivePastFeminine(),
+        dto.conjugations().imperfectivePastNeuter(),
+        dto.conjugations().imperfectivePastPlural(),
+        dto.conjugations().imperfectiveFutureFirstPersonSingular(),
+        dto.conjugations().imperfectiveFutureSecondPersonSingular(),
+        dto.conjugations().imperfectiveFutureThirdPersonSingular(),
+        dto.conjugations().imperfectiveFutureFirstPersonPlural(),
+        dto.conjugations().imperfectiveFutureSecondPersonPlural(),
+        dto.conjugations().imperfectiveFutureThirdPersonPlural(),
+        dto.conjugations().perfectivePresentFirstPersonSingular(),
+        dto.conjugations().perfectivePresentSecondPersonSingular(),
+        dto.conjugations().perfectivePresentThirdPersonSingular(),
+        dto.conjugations().perfectivePresentFirstPersonPlural(),
+        dto.conjugations().perfectivePresentSecondPersonPlural(),
+        dto.conjugations().perfectivePresentThirdPersonPlural(),
+        dto.conjugations().perfectivePastMasculine(),
+        dto.conjugations().perfectivePastFeminine(),
+        dto.conjugations().perfectivePastNeuter(),
+        dto.conjugations().perfectivePastPlural(),
+        dto.conjugations().perfectiveFutureFirstPersonSingular(),
+        dto.conjugations().perfectiveFutureSecondPersonSingular(),
+        dto.conjugations().perfectiveFutureThirdPersonSingular(),
+        dto.conjugations().perfectiveFutureFirstPersonPlural(),
+        dto.conjugations().perfectiveFutureSecondPersonPlural(),
+        dto.conjugations().perfectiveFutureThirdPersonPlural()
+      );
+
+      savedWord = savedWord.withConjugations(conjugations);
+    }
+
+    WordEntity saved = wordsRepository.save(savedWord);
 
     return saved.getId();
   }

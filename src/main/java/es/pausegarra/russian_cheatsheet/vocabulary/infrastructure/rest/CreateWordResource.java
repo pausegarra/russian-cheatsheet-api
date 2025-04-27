@@ -20,7 +20,7 @@ public class CreateWordResource implements CreateWordApiSpec {
   public RestResponse<String> createWord(
     CreateWordRequest request
   ) {
-    CreateWordDto command = CreateWordDto.from(request.russian(), request.english(), request.spanish(), request.type());
+    CreateWordDto command = CreateWordDto.from(request.russian(), request.english(), request.spanish(), request.type(), request.conjugations().toDto());
 
     UUID createdWordId = createWordService.handle(command);
 

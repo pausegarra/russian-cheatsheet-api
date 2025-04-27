@@ -28,17 +28,17 @@ class CreateWordServiceTest {
   @Test
   public void shouldCreateWord() {
     WordEntity word = new WordEntity(
-      UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, new AuditFields(Instant.now(), Instant.now()));
+      UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, null, new AuditFields(Instant.now(), Instant.now()));
     when(wordsRepository.save(any(WordEntity.class))).thenReturn(word);
 
-    createWordService.handle(CreateWordDto.from("a", "a", "a", "VERB"));
+    createWordService.handle(CreateWordDto.from("a", "a", "a", "VERB", null));
 
     verify(wordsRepository, times(1)).save(any(WordEntity.class));
   }
 
   @Test
   public void shouldThrowExceptionIfCommandIsInvalid() {
-    CreateWordDto command = CreateWordDto.from(null, null, null, "VERB");
+    CreateWordDto command = CreateWordDto.from(null, null, null, "VERB", null);
 
     assertThrows(ValidationException.class, () -> createWordService.handle(command));
   }

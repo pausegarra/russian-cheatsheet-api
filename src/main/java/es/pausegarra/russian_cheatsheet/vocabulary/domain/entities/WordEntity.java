@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.With;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -46,11 +48,15 @@ public class WordEntity {
   @With
   private final WordTypes type;
 
+  @OneToOne(mappedBy = "word", cascade = CascadeType.ALL, orphanRemoval = true)
+  @With
+  private final VerbConjugationEntity conjugations;
+
   @Embedded
   private final AuditFields auditFields;
 
   public static WordEntity create(UUID id, String russian, String english, String spanish, WordTypes type) {
-    return new WordEntity(id, russian, english, spanish, type, null);
+    return new WordEntity(id, russian, english, spanish, type, null, null);
   }
 
   public WordEntity update(String russian, String english, String spanish, WordTypes type) {

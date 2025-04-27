@@ -32,7 +32,7 @@ class FindAllWordsPageInfoServiceTest {
   @Test
   public void shouldFindAllWords() {
     WordEntity word = new WordEntity(
-      UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, new AuditFields(Instant.now(), Instant.now()));
+      UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, null, new AuditFields(Instant.now(), Instant.now()));
 
     Paginated<WordEntity> paginated = new Paginated<>(List.of(word), 0, 10, 1, 1, true, false);
     when(wordsRepository.findByCriteria(any(WordsSearchCriteria.class))).thenReturn(paginated);

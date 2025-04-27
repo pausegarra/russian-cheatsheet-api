@@ -19,7 +19,7 @@ public class CreateWordTest extends IntegrationTest {
     roles = {"words#create"}
   )
   public void shouldCreateWord() throws JsonProcessingException {
-    CreateWordRequest request = new CreateWordRequest("a", "a", "a", "VERB");
+    CreateWordRequest request = new CreateWordRequest("a", "a", "a", "VERB", null);
     String json = objectMapper.writeValueAsString(request);
 
     given().body(json)
@@ -37,7 +37,7 @@ public class CreateWordTest extends IntegrationTest {
     roles = {"words#create"}
   )
   public void shouldReturn400WhenDataIsInvalid() throws JsonProcessingException {
-    CreateWordRequest request = new CreateWordRequest(null, null, null, "VERB");
+    CreateWordRequest request = new CreateWordRequest(null, null, null, "VERB", null);
     String json = objectMapper.writeValueAsString(request);
 
     given().body(json)
@@ -53,7 +53,7 @@ public class CreateWordTest extends IntegrationTest {
 
   @Test
   public void shouldReturn401WhenUserIsNotAuthenticated() throws JsonProcessingException {
-    CreateWordRequest request = new CreateWordRequest("a", "a", "a", "VERB");
+    CreateWordRequest request = new CreateWordRequest("a", "a", "a", "VERB", null);
     String json = objectMapper.writeValueAsString(request);
 
     given().body(json)
@@ -67,7 +67,7 @@ public class CreateWordTest extends IntegrationTest {
   @Test
   @TestSecurity(user = "test")
   public void shouldReturn403WhenUserDoesNotHavePermissions() throws JsonProcessingException {
-    CreateWordRequest request = new CreateWordRequest("a", "a", "a", "VERB");
+    CreateWordRequest request = new CreateWordRequest("a", "a", "a", "VERB", null);
     String json = objectMapper.writeValueAsString(request);
 
     given().body(json)

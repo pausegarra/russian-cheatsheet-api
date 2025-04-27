@@ -35,7 +35,7 @@ class ListWordsResourceTest {
   @Test
   public void shouldReturnAllWords() {
     WordEntity word = new WordEntity(
-      UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, new AuditFields(Instant.now(), Instant.now()));
+      UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, null, new AuditFields(Instant.now(), Instant.now()));
     WordDto wordDto = WordDto.fromEntity(word);
     PaginatedDto<WordDto> paginatedDto = new PaginatedDto<>(List.of(wordDto), 0, 10, 1, 1, true, false);
 
