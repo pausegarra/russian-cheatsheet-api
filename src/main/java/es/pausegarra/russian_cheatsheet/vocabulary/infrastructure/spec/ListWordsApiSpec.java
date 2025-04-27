@@ -1,6 +1,7 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.spec;
 
 import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.PaginatedPresentation;
+import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.presentations.WordListPresentation;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.presentations.WordPresentation;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
@@ -23,7 +24,7 @@ public interface ListWordsApiSpec {
     responseCode = "200",
     description = "Words found"
   )
-  RestResponse<PaginatedPresentation<WordPresentation>> listWords(
+  RestResponse<PaginatedPresentation<WordListPresentation>> listWords(
     @QueryParam("page")
     @DefaultValue("0")
     @Parameter(

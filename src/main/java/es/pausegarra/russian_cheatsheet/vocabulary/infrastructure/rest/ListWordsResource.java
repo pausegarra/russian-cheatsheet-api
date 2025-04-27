@@ -5,6 +5,7 @@ import es.pausegarra.russian_cheatsheet.common.application.pagination.PaginatedD
 import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.PaginatedPresentation;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.find_paginated_words.FindAllWordsPaginatedDto;
+import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.presentations.WordListPresentation;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.presentations.WordPresentation;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.spec.ListWordsApiSpec;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +18,15 @@ public class ListWordsResource implements ListWordsApiSpec {
 
   private final Service<FindAllWordsPaginatedDto, PaginatedDto<WordDto>> service;
 
-  public RestResponse<PaginatedPresentation<WordPresentation>> listWords(
+  public RestResponse<PaginatedPresentation<WordListPresentation>> listWords(
     int page, int pageSize, String sortBy, String sortDirection, String search) {
     PaginatedDto<WordDto> words = service.handle(FindAllWordsPaginatedDto.from(page, pageSize, sortBy, sortDirection, search));
-    List<WordPresentation> wordProjections = words.data()
+    List<WordListPresentation> wordProjections = words.data()
       .stream()
-      .map(WordPresentation::fromDto)
+      .map(WordListPresentation::fromDto)
       .toList();
 
-    PaginatedPresentation<WordPresentation> paginatedPresentation = PaginatedPresentation.fromDto(
+    PaginatedPresentation<WordListPresentation> paginatedPresentation = PaginatedPresentation.fromDto(
       words, wordProjections);
     return RestResponse.ok(paginatedPresentation);
   }
