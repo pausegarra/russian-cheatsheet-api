@@ -8,6 +8,7 @@ import es.pausegarra.russian_cheatsheet.vocabulary.application.services.find_pag
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.find_paginated_words.FindAllWordsPaginatedService;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
+import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.presentations.WordListPresentation;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.presentations.WordPresentation;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
@@ -41,7 +42,7 @@ class ListWordsResourceTest {
 
     when(findAllWordsPaginatedService.handle(any(FindAllWordsPaginatedDto.class))).thenReturn(paginatedDto);
 
-    RestResponse<PaginatedPresentation<WordPresentation>> response = listWordsResource.listWords(
+    RestResponse<PaginatedPresentation<WordListPresentation>> response = listWordsResource.listWords(
       0, 10, "spanish", "asc", "");
 
     assertEquals(200, response.getStatus());
