@@ -10,9 +10,15 @@ public record WordDto(
 ) {
 
   public static WordDto fromEntity(WordEntity entity) {
+    ConjugationDto conjugations = null;
+
+    if (entity.getConjugations() != null) {
+      conjugations = ConjugationDto.from(entity.getConjugations());
+    }
+
     return new WordDto(
       entity.getId(), entity.getRussian(), entity.getEnglish(), entity.getSpanish(), entity.getType()
-      .toString(), ConjugationDto.from(entity.getConjugations()), entity.getAuditFields()
+      .toString(), conjugations, entity.getAuditFields()
         .getCreatedAt(), entity.getAuditFields()
         .getUpdatedAt()
     );

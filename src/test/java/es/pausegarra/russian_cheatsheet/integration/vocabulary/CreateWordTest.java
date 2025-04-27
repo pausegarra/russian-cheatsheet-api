@@ -78,4 +78,22 @@ public class CreateWordTest extends IntegrationTest {
       .statusCode(403);
   }
 
+  @Test
+  @TestSecurity(
+    user = "test",
+    roles = {"words#create"}
+  )
+  public void shouldWotkWithoutConjugations() throws JsonProcessingException {
+    CreateWordRequest request = new CreateWordRequest("a", "a", "a", "NOUN", null);
+    String json = objectMapper.writeValueAsString(request);
+
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .post("/words")
+      .then()
+      .statusCode(201)
+      .body(notNullValue());
+  }
+
 }
