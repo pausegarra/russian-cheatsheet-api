@@ -1,0 +1,50 @@
+package es.pausegarra.russian_cheatsheet.auth.application.servies.find_aiuth_roles;
+
+import es.pausegarra.russian_cheatsheet.auth.infrastructure.config.KeycloakConfig;
+import es.pausegarra.russian_cheatsheet.auth.infrastructure.dto.PermissionDto;
+import es.pausegarra.russian_cheatsheet.auth.infrastructure.rest_clients.KeycloakRestClient;
+import es.pausegarra.russian_cheatsheet.auth.application.dto.PermissionsDto;
+import es.pausegarra.russian_cheatsheet.common.application.interfaces.Service;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@ApplicationScoped
+@RequiredArgsConstructor
+public class FindAuthRolesService implements Service<FindAuthRolesDto, PermissionsDto> {
+
+  @RestClient
+  @Inject
+  KeycloakRestClient keycloakRestClient;
+
+  private final KeycloakConfig keycloakConfig;
+
+  @Override
+  public PermissionsDto handle(FindAuthRolesDto dto) {
+    List<PermissionDto> permissions = keycloakRestClient.getEntitlement(
+      "urn:ietf:params:oauth:grant-type:uma-ticket",
+      keycloakConfig.clientId(), "permissions",
+      "Bearer " + dto.token()
+    );
+
+    List<String> permissionsList = new ArrayList<>();
+    for (PermissionDto permission : permissions) {
+      String rsName = permission.rsname();
+
+      if (permission.scopes() == null) {
+        continue;
+      }
+
+      for (String scope : permission.scopes()) {
+        permissionsList.add(rsName + "#" + scope);
+      }
+    }
+
+    return PermissionsDto.from(permissionsList);
+  }
+
+}
