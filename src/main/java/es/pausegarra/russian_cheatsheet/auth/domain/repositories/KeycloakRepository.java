@@ -1,6 +1,6 @@
-package es.pausegarra.russian_cheatsheet.auth.infrastructure.rest_clients;
+package es.pausegarra.russian_cheatsheet.auth.domain.repositories;
 
-import es.pausegarra.russian_cheatsheet.auth.infrastructure.dto.PermissionDto;
+import es.pausegarra.russian_cheatsheet.auth.domain.dto.PermissionDto;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
@@ -12,7 +12,7 @@ import java.util.Map;
 @RegisterRestClient(configKey = "keycloak")
 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 @Produces(MediaType.APPLICATION_JSON)
-public interface KeycloakRestClient {
+public interface KeycloakRepository {
 
   @POST
   List<PermissionDto> getEntitlement(

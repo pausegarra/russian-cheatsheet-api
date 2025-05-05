@@ -1,7 +1,7 @@
 package es.pausegarra.russian_cheatsheet.auth.infrastructure.security.interceptors;
 
 import es.pausegarra.russian_cheatsheet.auth.infrastructure.config.KeycloakConfig;
-import es.pausegarra.russian_cheatsheet.auth.infrastructure.rest_clients.KeycloakRestClient;
+import es.pausegarra.russian_cheatsheet.auth.domain.repositories.KeycloakRepository;
 import es.pausegarra.russian_cheatsheet.auth.infrastructure.security.annotations.HasPermission;
 import jakarta.annotation.Priority;
 import jakarta.inject.Inject;
@@ -22,7 +22,7 @@ public class HasPermissionInterceptor {
 
   @Inject
   @RestClient
-  KeycloakRestClient keycloakRestClient;
+  KeycloakRepository keycloakRepository;
 
   @Inject
   JsonWebToken jwt;
@@ -37,7 +37,7 @@ public class HasPermissionInterceptor {
 
     for (String permission : requiredPermission) {
       try {
-        keycloakRestClient.checkPermission(
+        keycloakRepository.checkPermission(
           "urn:ietf:params:oauth:grant-type:uma-ticket", keycloakConfig.clientId(), "decision", permission,
           "Bearer " + jwt.getRawToken()
         );

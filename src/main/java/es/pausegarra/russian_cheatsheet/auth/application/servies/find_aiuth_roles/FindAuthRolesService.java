@@ -1,33 +1,28 @@
 package es.pausegarra.russian_cheatsheet.auth.application.servies.find_aiuth_roles;
 
-import es.pausegarra.russian_cheatsheet.auth.infrastructure.config.KeycloakConfig;
-import es.pausegarra.russian_cheatsheet.auth.infrastructure.dto.PermissionDto;
-import es.pausegarra.russian_cheatsheet.auth.infrastructure.rest_clients.KeycloakRestClient;
+import es.pausegarra.russian_cheatsheet.auth.domain.dto.PermissionDto;
+import es.pausegarra.russian_cheatsheet.auth.domain.repositories.KeycloakRepository;
 import es.pausegarra.russian_cheatsheet.auth.application.dto.PermissionsDto;
 import es.pausegarra.russian_cheatsheet.common.application.interfaces.Service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import lombok.RequiredArgsConstructor;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @ApplicationScoped
-@RequiredArgsConstructor
 public class FindAuthRolesService implements Service<FindAuthRolesDto, PermissionsDto> {
 
   @RestClient
   @Inject
-  KeycloakRestClient keycloakRestClient;
-
-  private final KeycloakConfig keycloakConfig;
+  KeycloakRepository keycloakRepository;
 
   @Override
   public PermissionsDto handle(FindAuthRolesDto dto) {
-    List<PermissionDto> permissions = keycloakRestClient.getEntitlement(
+    List<PermissionDto> permissions = keycloakRepository.getEntitlement(
       "urn:ietf:params:oauth:grant-type:uma-ticket",
-      keycloakConfig.clientId(), "permissions",
+      dto.clientId(), "permissions",
       "Bearer " + dto.token()
     );
 

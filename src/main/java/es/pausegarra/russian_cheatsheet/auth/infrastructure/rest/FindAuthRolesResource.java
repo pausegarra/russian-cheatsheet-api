@@ -1,5 +1,6 @@
 package es.pausegarra.russian_cheatsheet.auth.infrastructure.rest;
 
+import es.pausegarra.russian_cheatsheet.auth.infrastructure.config.KeycloakConfig;
 import es.pausegarra.russian_cheatsheet.auth.infrastructure.spec.FindAuthRolesApiSpec;
 import es.pausegarra.russian_cheatsheet.auth.application.dto.PermissionsDto;
 import es.pausegarra.russian_cheatsheet.auth.application.servies.find_aiuth_roles.FindAuthRolesDto;
@@ -18,10 +19,12 @@ public class FindAuthRolesResource implements FindAuthRolesApiSpec {
   @Inject
   JsonWebToken jsonWebToken;
 
+  private final KeycloakConfig keycloakConfig;
+
   @Override
   @Authenticated
   public RestResponse<PermissionsDto> getPermissionsAndRoles() {
-    FindAuthRolesDto dto = FindAuthRolesDto.from(jsonWebToken.getRawToken());
+    FindAuthRolesDto dto = FindAuthRolesDto.from(jsonWebToken.getRawToken(), keycloakConfig.clientId());
     PermissionsDto permissionsDto = service.handle(dto);
 
     return RestResponse.ok(permissionsDto);

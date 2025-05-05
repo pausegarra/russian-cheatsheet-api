@@ -1,8 +1,8 @@
 package es.pausegarra.russian_cheatsheet.auth.infrastructure.security.suppliers;
 
 import es.pausegarra.russian_cheatsheet.auth.infrastructure.config.KeycloakConfig;
-import es.pausegarra.russian_cheatsheet.auth.infrastructure.dto.PermissionDto;
-import es.pausegarra.russian_cheatsheet.auth.infrastructure.rest_clients.KeycloakRestClient;
+import es.pausegarra.russian_cheatsheet.auth.domain.dto.PermissionDto;
+import es.pausegarra.russian_cheatsheet.auth.domain.repositories.KeycloakRepository;
 import io.quarkus.security.identity.SecurityIdentity;
 import io.quarkus.security.runtime.QuarkusSecurityIdentity;
 import jakarta.enterprise.context.Dependent;
@@ -21,7 +21,7 @@ public class KeycloakIdentitySupplier implements Supplier<SecurityIdentity> {
 
   @RestClient
   @Inject
-  KeycloakRestClient keycloakRestClient;
+  KeycloakRepository keycloakRepository;
 
   @Setter
   private SecurityIdentity identity;
@@ -38,7 +38,7 @@ public class KeycloakIdentitySupplier implements Supplier<SecurityIdentity> {
       token = jwt.getRawToken();
     }
 
-    List<PermissionDto> permissions = keycloakRestClient.getEntitlement(
+    List<PermissionDto> permissions = keycloakRepository.getEntitlement(
       "urn:ietf:params:oauth:grant-type:uma-ticket",
       keycloakConfig.clientId(), "permissions",
       "Bearer " + token
