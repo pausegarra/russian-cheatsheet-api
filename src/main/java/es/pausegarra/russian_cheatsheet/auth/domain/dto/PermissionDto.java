@@ -1,4 +1,4 @@
-package es.pausegarra.russian_cheatsheet.auth.infrastructure.dto;
+package es.pausegarra.russian_cheatsheet.auth.domain.dto;
 
 import java.util.List;
 
