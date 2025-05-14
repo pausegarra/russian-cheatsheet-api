@@ -1,6 +1,7 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.rest;
 
 import es.pausegarra.russian_cheatsheet.common.domain.audit.AuditFields;
+import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.CreatedPresentation;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordService;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
@@ -38,7 +39,7 @@ class CreateWordResourceTest {
     when(createWordService.handle(any(CreateWordDto.class))).thenReturn(word.getId());
 
     CreateWordRequest request = new CreateWordRequest("a", "a", "a", "VERB", null);
-    RestResponse<String> response = createWordResource.createWord(request);
+    RestResponse<CreatedPresentation> response = createWordResource.createWord(request);
 
     assertEquals(201, response.getStatus());
 
