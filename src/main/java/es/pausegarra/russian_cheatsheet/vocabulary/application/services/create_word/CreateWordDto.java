@@ -5,10 +5,15 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
 public record CreateWordDto(
-  @NotBlank String russian, @NotBlank String english, @NotBlank String spanish, WordTypes type, @Valid WordConjugationsDto conjugations
+  @NotBlank String russian,
+  @NotBlank String english,
+  @NotBlank String spanish,
+  WordTypes type,
+  @Valid WordConjugationsDto conjugations
 ) {
 
-  public static CreateWordDto from(String russian, String english, String spanish, String type, WordConjugationsDto conjugations) {
+  public static CreateWordDto from(
+    String russian, String english, String spanish, String type, WordConjugationsDto conjugations) {
     return new CreateWordDto(russian, english, spanish, WordTypes.valueOf(type.toUpperCase()), conjugations);
   }
 

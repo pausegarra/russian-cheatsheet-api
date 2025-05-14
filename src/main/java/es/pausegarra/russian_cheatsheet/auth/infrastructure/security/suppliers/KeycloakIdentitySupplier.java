@@ -1,8 +1,8 @@
 package es.pausegarra.russian_cheatsheet.auth.infrastructure.security.suppliers;
 
-import es.pausegarra.russian_cheatsheet.auth.infrastructure.config.KeycloakConfig;
 import es.pausegarra.russian_cheatsheet.auth.domain.dto.PermissionDto;
 import es.pausegarra.russian_cheatsheet.auth.domain.repositories.KeycloakRepository;
+import es.pausegarra.russian_cheatsheet.auth.infrastructure.config.KeycloakConfig;
 import io.quarkus.security.identity.SecurityIdentity;
 import io.quarkus.security.runtime.QuarkusSecurityIdentity;
 import jakarta.enterprise.context.Dependent;

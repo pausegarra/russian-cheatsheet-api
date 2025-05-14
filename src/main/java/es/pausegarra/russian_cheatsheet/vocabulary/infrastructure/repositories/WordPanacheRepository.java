@@ -32,11 +32,11 @@ public class WordPanacheRepository implements WordsRepository, PanacheRepository
     );
     PanacheQuery<WordEntity> query;
 
-    if (criteria.getSearch() != null && !criteria.getSearch().isBlank()) {
+    if (criteria.getSearch() != null && !criteria.getSearch()
+      .isBlank()) {
       query = find(
-        "lower(russian) like ?1 or lower(english) like ?1 or lower(spanish) like ?1",
-        sort,
-        "%" + criteria.getSearch().toLowerCase() + "%"
+        "lower(russian) like ?1 or lower(english) like ?1 or lower(spanish) like ?1", sort, "%" + criteria.getSearch()
+          .toLowerCase() + "%"
       ).page(page);
     } else {
       query = findAll(sort).page(page);

@@ -4,18 +4,18 @@ import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.Vali
 import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.ValidationErrorPresentation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
 import org.jboss.resteasy.reactive.RestResponse;
+import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Provider
-public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
+public class ValidationExceptionMapper {
 
-  @Override
-  public Response toResponse(ConstraintViolationException exception) {
+  @ServerExceptionMapper
+  public RestResponse<ValidationErrorPresentation> toResponse(ConstraintViolationException exception) {
     Set<ValidationError> errors = exception.getConstraintViolations()
       .stream()
       .map(ValidationError::fromConstraint)
@@ -26,10 +26,9 @@ public class ValidationExceptionMapper implements ExceptionMapper<ConstraintViol
       Response.Status.BAD_REQUEST, errors
     );
 
-    return RestResponse.ResponseBuilder.create(Response.Status.BAD_REQUEST, presentation)
+    return RestResponse.ResponseBuilder.create(RestResponse.Status.BAD_REQUEST, presentation)
       .header("Content-Type", "application/json")
-      .build()
-      .toResponse();
+      .build();
   }
 
 }

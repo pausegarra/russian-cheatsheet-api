@@ -23,9 +23,11 @@ public class CreateWordResource implements CreateWordApiSpec {
   ) {
     WordConjugationsDto conjugationsDto = null;
     if (request.conjugations() != null) {
-      conjugationsDto = request.conjugations().toDto();
+      conjugationsDto = request.conjugations()
+        .toDto();
     }
-    CreateWordDto command = CreateWordDto.from(request.russian(), request.english(), request.spanish(), request.type(), conjugationsDto);
+    CreateWordDto command = CreateWordDto.from(
+      request.russian(), request.english(), request.spanish(), request.type(), conjugationsDto);
 
     UUID createdWordId = createWordService.handle(command);
 

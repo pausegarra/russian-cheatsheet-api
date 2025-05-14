@@ -2,7 +2,6 @@ package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.spec;
 
 import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.PaginatedPresentation;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.presentations.WordListPresentation;
-import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.presentations.WordPresentation;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

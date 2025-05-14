@@ -1,7 +1,7 @@
 package es.pausegarra.russian_cheatsheet.auth.infrastructure.security.interceptors;
 
-import es.pausegarra.russian_cheatsheet.auth.infrastructure.config.KeycloakConfig;
 import es.pausegarra.russian_cheatsheet.auth.domain.repositories.KeycloakRepository;
+import es.pausegarra.russian_cheatsheet.auth.infrastructure.config.KeycloakConfig;
 import es.pausegarra.russian_cheatsheet.auth.infrastructure.security.annotations.HasPermission;
 import jakarta.annotation.Priority;
 import jakarta.inject.Inject;

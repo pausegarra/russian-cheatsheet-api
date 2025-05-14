@@ -19,7 +19,11 @@ public class VerbConjugationEntity {
   private final UUID id;
 
   @OneToOne(optional = false)
-  @JoinColumn(name = "word_id", nullable = false, unique = true)
+  @JoinColumn(
+    name = "word_id",
+    nullable = false,
+    unique = true
+  )
   private final WordEntity word;
 
   @Column(name = "imperfective_present_first_person_singular")
@@ -119,76 +123,34 @@ public class VerbConjugationEntity {
   private final String perfectiveFutureThirdPersonPlural;
 
   public static VerbConjugationEntity create(
-    UUID id,
-    WordEntity word,
-    String imperfectivePresentFirstPersonSingular,
-    String imperfectivePresentSecondPersonSingular,
-    String imperfectivePresentThirdPersonSingular,
-    String imperfectivePresentFirstPersonPlural,
-    String imperfectivePresentSecondPersonPlural,
-    String imperfectivePresentThirdPersonPlural,
-    String imperfectivePastMasculine,
-    String imperfectivePastFeminine,
-    String imperfectivePastNeuter,
-    String imperfectivePastPlural,
-    String imperfectiveFutureFirstPersonSingular,
-    String imperfectiveFutureSecondPersonSingular,
-    String imperfectiveFutureThirdPersonSingular,
-    String imperfectiveFutureFirstPersonPlural,
-    String imperfectiveFutureSecondPersonPlural,
-    String imperfectiveFutureThirdPersonPlural,
-    String perfectivePresentFirstPersonSingular,
-    String perfectivePresentSecondPersonSingular,
-    String perfectivePresentThirdPersonSingular,
-    String perfectivePresentFirstPersonPlural,
-    String perfectivePresentSecondPersonPlural,
-    String perfectivePresentThirdPersonPlural,
-    String perfectivePastMasculine,
-    String perfectivePastFeminine,
-    String perfectivePastNeuter,
-    String perfectivePastPlural,
-    String perfectiveFutureFirstPersonSingular,
-    String perfectiveFutureSecondPersonSingular,
-    String perfectiveFutureThirdPersonSingular,
-    String perfectiveFutureFirstPersonPlural,
-    String perfectiveFutureSecondPersonPlural,
+    UUID id, WordEntity word, String imperfectivePresentFirstPersonSingular,
+    String imperfectivePresentSecondPersonSingular, String imperfectivePresentThirdPersonSingular,
+    String imperfectivePresentFirstPersonPlural, String imperfectivePresentSecondPersonPlural,
+    String imperfectivePresentThirdPersonPlural, String imperfectivePastMasculine, String imperfectivePastFeminine,
+    String imperfectivePastNeuter, String imperfectivePastPlural, String imperfectiveFutureFirstPersonSingular,
+    String imperfectiveFutureSecondPersonSingular, String imperfectiveFutureThirdPersonSingular,
+    String imperfectiveFutureFirstPersonPlural, String imperfectiveFutureSecondPersonPlural,
+    String imperfectiveFutureThirdPersonPlural, String perfectivePresentFirstPersonSingular,
+    String perfectivePresentSecondPersonSingular, String perfectivePresentThirdPersonSingular,
+    String perfectivePresentFirstPersonPlural, String perfectivePresentSecondPersonPlural,
+    String perfectivePresentThirdPersonPlural, String perfectivePastMasculine, String perfectivePastFeminine,
+    String perfectivePastNeuter, String perfectivePastPlural, String perfectiveFutureFirstPersonSingular,
+    String perfectiveFutureSecondPersonSingular, String perfectiveFutureThirdPersonSingular,
+    String perfectiveFutureFirstPersonPlural, String perfectiveFutureSecondPersonPlural,
     String perfectiveFutureThirdPersonPlural
   ) {
     return new VerbConjugationEntity(
-      id,
-      word,
-      imperfectivePresentFirstPersonSingular,
-      imperfectivePresentSecondPersonSingular,
-      imperfectivePresentThirdPersonSingular,
-      imperfectivePresentFirstPersonPlural,
-      imperfectivePresentSecondPersonPlural,
-      imperfectivePresentThirdPersonPlural,
-      imperfectivePastMasculine,
-      imperfectivePastFeminine,
-      imperfectivePastNeuter,
-      imperfectivePastPlural,
-      imperfectiveFutureFirstPersonSingular,
-      imperfectiveFutureSecondPersonSingular,
-      imperfectiveFutureThirdPersonSingular,
-      imperfectiveFutureFirstPersonPlural,
-      imperfectiveFutureSecondPersonPlural,
-      imperfectiveFutureThirdPersonPlural,
-      perfectivePresentFirstPersonSingular,
-      perfectivePresentSecondPersonSingular,
-      perfectivePresentThirdPersonSingular,
-      perfectivePresentFirstPersonPlural,
-      perfectivePresentSecondPersonPlural,
-      perfectivePresentThirdPersonPlural,
-      perfectivePastMasculine,
-      perfectivePastFeminine,
-      perfectivePastNeuter,
-      perfectivePastPlural,
-      perfectiveFutureFirstPersonSingular,
-      perfectiveFutureSecondPersonSingular,
-      perfectiveFutureThirdPersonSingular,
-      perfectiveFutureFirstPersonPlural,
-      perfectiveFutureSecondPersonPlural,
-      perfectiveFutureThirdPersonPlural
+      id, word, imperfectivePresentFirstPersonSingular, imperfectivePresentSecondPersonSingular,
+      imperfectivePresentThirdPersonSingular, imperfectivePresentFirstPersonPlural,
+      imperfectivePresentSecondPersonPlural, imperfectivePresentThirdPersonPlural, imperfectivePastMasculine,
+      imperfectivePastFeminine, imperfectivePastNeuter, imperfectivePastPlural, imperfectiveFutureFirstPersonSingular,
+      imperfectiveFutureSecondPersonSingular, imperfectiveFutureThirdPersonSingular,
+      imperfectiveFutureFirstPersonPlural, imperfectiveFutureSecondPersonPlural, imperfectiveFutureThirdPersonPlural,
+      perfectivePresentFirstPersonSingular, perfectivePresentSecondPersonSingular, perfectivePresentThirdPersonSingular,
+      perfectivePresentFirstPersonPlural, perfectivePresentSecondPersonPlural, perfectivePresentThirdPersonPlural,
+      perfectivePastMasculine, perfectivePastFeminine, perfectivePastNeuter, perfectivePastPlural,
+      perfectiveFutureFirstPersonSingular, perfectiveFutureSecondPersonSingular, perfectiveFutureThirdPersonSingular,
+      perfectiveFutureFirstPersonPlural, perfectiveFutureSecondPersonPlural, perfectiveFutureThirdPersonPlural
     );
   }
 

@@ -1,9 +1,9 @@
 package es.pausegarra.russian_cheatsheet.auth.infrastructure.rest;
 
-import es.pausegarra.russian_cheatsheet.auth.infrastructure.config.KeycloakConfig;
-import es.pausegarra.russian_cheatsheet.auth.infrastructure.spec.FindAuthRolesApiSpec;
 import es.pausegarra.russian_cheatsheet.auth.application.dto.PermissionsDto;
 import es.pausegarra.russian_cheatsheet.auth.application.servies.find_aiuth_roles.FindAuthRolesDto;
+import es.pausegarra.russian_cheatsheet.auth.infrastructure.config.KeycloakConfig;
+import es.pausegarra.russian_cheatsheet.auth.infrastructure.spec.FindAuthRolesApiSpec;
 import es.pausegarra.russian_cheatsheet.common.application.interfaces.Service;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;

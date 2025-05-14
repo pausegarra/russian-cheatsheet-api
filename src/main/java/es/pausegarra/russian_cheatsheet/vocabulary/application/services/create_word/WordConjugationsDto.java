@@ -44,82 +44,46 @@ public record WordConjugationsDto(
 ) {
 
   public static WordConjugationsDto from(
-    String imperfectivePresentFirstPersonSingular,
-    String imperfectivePresentSecondPersonSingular,
-    String imperfectivePresentThirdPersonSingular,
-    String imperfectivePresentFirstPersonPlural,
-    String imperfectivePresentSecondPersonPlural,
-    String imperfectivePresentThirdPersonPlural,
+    String imperfectivePresentFirstPersonSingular, String imperfectivePresentSecondPersonSingular,
+    String imperfectivePresentThirdPersonSingular, String imperfectivePresentFirstPersonPlural,
+    String imperfectivePresentSecondPersonPlural, String imperfectivePresentThirdPersonPlural,
 
-    String imperfectivePastMasculine,
-    String imperfectivePastFeminine,
-    String imperfectivePastNeuter,
+    String imperfectivePastMasculine, String imperfectivePastFeminine, String imperfectivePastNeuter,
     String imperfectivePastPlural,
 
-    String imperfectiveFutureFirstPersonSingular,
-    String imperfectiveFutureSecondPersonSingular,
-    String imperfectiveFutureThirdPersonSingular,
-    String imperfectiveFutureFirstPersonPlural,
-    String imperfectiveFutureSecondPersonPlural,
-    String imperfectiveFutureThirdPersonPlural,
+    String imperfectiveFutureFirstPersonSingular, String imperfectiveFutureSecondPersonSingular,
+    String imperfectiveFutureThirdPersonSingular, String imperfectiveFutureFirstPersonPlural,
+    String imperfectiveFutureSecondPersonPlural, String imperfectiveFutureThirdPersonPlural,
 
-    String perfectivePresentFirstPersonSingular,
-    String perfectivePresentSecondPersonSingular,
-    String perfectivePresentThirdPersonSingular,
-    String perfectivePresentFirstPersonPlural,
-    String perfectivePresentSecondPersonPlural,
-    String perfectivePresentThirdPersonPlural,
+    String perfectivePresentFirstPersonSingular, String perfectivePresentSecondPersonSingular,
+    String perfectivePresentThirdPersonSingular, String perfectivePresentFirstPersonPlural,
+    String perfectivePresentSecondPersonPlural, String perfectivePresentThirdPersonPlural,
 
-    String perfectivePastMasculine,
-    String perfectivePastFeminine,
-    String perfectivePastNeuter,
+    String perfectivePastMasculine, String perfectivePastFeminine, String perfectivePastNeuter,
     String perfectivePastPlural,
 
-    String perfectiveFutureFirstPersonSingular,
-    String perfectiveFutureSecondPersonSingular,
-    String perfectiveFutureThirdPersonSingular,
-    String perfectiveFutureFirstPersonPlural,
-    String perfectiveFutureSecondPersonPlural,
-    String perfectiveFutureThirdPersonPlural
+    String perfectiveFutureFirstPersonSingular, String perfectiveFutureSecondPersonSingular,
+    String perfectiveFutureThirdPersonSingular, String perfectiveFutureFirstPersonPlural,
+    String perfectiveFutureSecondPersonPlural, String perfectiveFutureThirdPersonPlural
   ) {
     return new WordConjugationsDto(
-      imperfectivePresentFirstPersonSingular,
-      imperfectivePresentSecondPersonSingular,
-      imperfectivePresentThirdPersonSingular,
-      imperfectivePresentFirstPersonPlural,
-      imperfectivePresentSecondPersonPlural,
-      imperfectivePresentThirdPersonPlural,
+      imperfectivePresentFirstPersonSingular, imperfectivePresentSecondPersonSingular,
+      imperfectivePresentThirdPersonSingular, imperfectivePresentFirstPersonPlural,
+      imperfectivePresentSecondPersonPlural, imperfectivePresentThirdPersonPlural,
 
-      imperfectivePastMasculine,
-      imperfectivePastFeminine,
-      imperfectivePastNeuter,
-      imperfectivePastPlural,
+      imperfectivePastMasculine, imperfectivePastFeminine, imperfectivePastNeuter, imperfectivePastPlural,
 
-      imperfectiveFutureFirstPersonSingular,
-      imperfectiveFutureSecondPersonSingular,
-      imperfectiveFutureThirdPersonSingular,
-      imperfectiveFutureFirstPersonPlural,
-      imperfectiveFutureSecondPersonPlural,
+      imperfectiveFutureFirstPersonSingular, imperfectiveFutureSecondPersonSingular,
+      imperfectiveFutureThirdPersonSingular, imperfectiveFutureFirstPersonPlural, imperfectiveFutureSecondPersonPlural,
       imperfectiveFutureThirdPersonPlural,
 
-      perfectivePresentFirstPersonSingular,
-      perfectivePresentSecondPersonSingular,
-      perfectivePresentThirdPersonSingular,
-      perfectivePresentFirstPersonPlural,
-      perfectivePresentSecondPersonPlural,
-      perfectivePresentThirdPersonPlural,
+      perfectivePresentFirstPersonSingular, perfectivePresentSecondPersonSingular, perfectivePresentThirdPersonSingular,
+      perfectivePresentFirstPersonPlural, perfectivePresentSecondPersonPlural, perfectivePresentThirdPersonPlural,
 
-      perfectivePastMasculine,
-      perfectivePastFeminine,
-      perfectivePastNeuter,
-      perfectivePastPlural,
+      perfectivePastMasculine, perfectivePastFeminine, perfectivePastNeuter, perfectivePastPlural,
 
-      perfectiveFutureFirstPersonSingular,
-      perfectiveFutureSecondPersonSingular,
-      perfectiveFutureThirdPersonSingular,
-      perfectiveFutureFirstPersonPlural,
-      perfectiveFutureSecondPersonPlural,
-      perfectiveFutureThirdPersonPlural
+      perfectiveFutureFirstPersonSingular, perfectiveFutureSecondPersonSingular, perfectiveFutureThirdPersonSingular,
+      perfectiveFutureFirstPersonPlural, perfectiveFutureSecondPersonPlural, perfectiveFutureThirdPersonPlural
     );
   }
 
