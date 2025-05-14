@@ -17,7 +17,9 @@ public class IllegalArgumentExceptionMapper {
       Response.Status.BAD_REQUEST.getStatusCode()
     );
 
-    return RestResponse.status(Response.Status.BAD_REQUEST, presentation);
+    return RestResponse.ResponseBuilder.create(RestResponse.Status.BAD_REQUEST, presentation)
+      .header("Content-Type", "application/json")
+      .build();
   }
 
 }

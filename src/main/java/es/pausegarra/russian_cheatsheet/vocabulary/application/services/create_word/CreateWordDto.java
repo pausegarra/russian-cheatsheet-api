@@ -9,7 +9,7 @@ public record CreateWordDto(
   @NotBlank String english,
   @NotBlank String spanish,
   WordTypes type,
-  @Valid WordConjugationsDto conjugations
+  WordConjugationsDto conjugations
 ) {
 
   public static CreateWordDto from(

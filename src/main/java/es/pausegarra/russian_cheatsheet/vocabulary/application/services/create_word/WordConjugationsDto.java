@@ -3,24 +3,24 @@ package es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_
 import jakarta.validation.constraints.NotBlank;
 
 public record WordConjugationsDto(
-  @NotBlank String imperfectivePresentFirstPersonSingular,
-  @NotBlank String imperfectivePresentSecondPersonSingular,
-  @NotBlank String imperfectivePresentThirdPersonSingular,
-  @NotBlank String imperfectivePresentFirstPersonPlural,
-  @NotBlank String imperfectivePresentSecondPersonPlural,
-  @NotBlank String imperfectivePresentThirdPersonPlural,
+   String imperfectivePresentFirstPersonSingular,
+   String imperfectivePresentSecondPersonSingular,
+   String imperfectivePresentThirdPersonSingular,
+   String imperfectivePresentFirstPersonPlural,
+   String imperfectivePresentSecondPersonPlural,
+   String imperfectivePresentThirdPersonPlural,
 
-  @NotBlank String imperfectivePastMasculine,
-  @NotBlank String imperfectivePastFeminine,
-  @NotBlank String imperfectivePastNeuter,
-  @NotBlank String imperfectivePastPlural,
+   String imperfectivePastMasculine,
+   String imperfectivePastFeminine,
+   String imperfectivePastNeuter,
+   String imperfectivePastPlural,
 
-  @NotBlank String imperfectiveFutureFirstPersonSingular,
-  @NotBlank String imperfectiveFutureSecondPersonSingular,
-  @NotBlank String imperfectiveFutureThirdPersonSingular,
-  @NotBlank String imperfectiveFutureFirstPersonPlural,
-  @NotBlank String imperfectiveFutureSecondPersonPlural,
-  @NotBlank String imperfectiveFutureThirdPersonPlural,
+   String imperfectiveFutureFirstPersonSingular,
+   String imperfectiveFutureSecondPersonSingular,
+   String imperfectiveFutureThirdPersonSingular,
+   String imperfectiveFutureFirstPersonPlural,
+   String imperfectiveFutureSecondPersonPlural,
+   String imperfectiveFutureThirdPersonPlural,
 
   String perfectivePresentFirstPersonSingular,
   String perfectivePresentSecondPersonSingular,
@@ -29,17 +29,17 @@ public record WordConjugationsDto(
   String perfectivePresentSecondPersonPlural,
   String perfectivePresentThirdPersonPlural,
 
-  @NotBlank String perfectivePastMasculine,
-  @NotBlank String perfectivePastFeminine,
-  @NotBlank String perfectivePastNeuter,
-  @NotBlank String perfectivePastPlural,
+   String perfectivePastMasculine,
+   String perfectivePastFeminine,
+   String perfectivePastNeuter,
+   String perfectivePastPlural,
 
-  @NotBlank String perfectiveFutureFirstPersonSingular,
-  @NotBlank String perfectiveFutureSecondPersonSingular,
-  @NotBlank String perfectiveFutureThirdPersonSingular,
-  @NotBlank String perfectiveFutureFirstPersonPlural,
-  @NotBlank String perfectiveFutureSecondPersonPlural,
-  @NotBlank String perfectiveFutureThirdPersonPlural
+   String perfectiveFutureFirstPersonSingular,
+   String perfectiveFutureSecondPersonSingular,
+   String perfectiveFutureThirdPersonSingular,
+   String perfectiveFutureFirstPersonPlural,
+   String perfectiveFutureSecondPersonPlural,
+   String perfectiveFutureThirdPersonPlural
 
 ) {
 

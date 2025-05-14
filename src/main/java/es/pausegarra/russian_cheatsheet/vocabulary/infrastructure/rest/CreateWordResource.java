@@ -1,11 +1,13 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.rest;
 
+import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.CreatedPresentation;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordService;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.WordConjugationsDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.CreateWordRequest;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.spec.CreateWordApiSpec;
 import jakarta.annotation.security.RolesAllowed;
+import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.jboss.resteasy.reactive.RestResponse;
 
@@ -18,7 +20,7 @@ public class CreateWordResource implements CreateWordApiSpec {
   private final CreateWordService createWordService;
 
   @RolesAllowed("words#create")
-  public RestResponse<String> createWord(
+  public RestResponse<CreatedPresentation> createWord(
     CreateWordRequest request
   ) {
     WordConjugationsDto conjugationsDto = null;
@@ -30,9 +32,8 @@ public class CreateWordResource implements CreateWordApiSpec {
       request.russian(), request.english(), request.spanish(), request.type(), conjugationsDto);
 
     UUID createdWordId = createWordService.handle(command);
-
-    URI location = URI.create("/words/" + createdWordId);
-    return RestResponse.created(location);
+    CreatedPresentation createdPresentation = new CreatedPresentation(createdWordId.toString());
+    return RestResponse.status(Response.Status.CREATED, createdPresentation);
   }
 
 }

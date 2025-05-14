@@ -1,5 +1,6 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.spec;
 
+import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.CreatedPresentation;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.CreateWordRequest;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -35,7 +36,7 @@ public interface CreateWordApiSpec {
     description = "Word created"
   )
   @SecurityRequirement(name = "SecurityScheme")
-  RestResponse<String> createWord(
+  RestResponse<CreatedPresentation> createWord(
     @RequestBody(
       description = "Word to create",
       required = true,
