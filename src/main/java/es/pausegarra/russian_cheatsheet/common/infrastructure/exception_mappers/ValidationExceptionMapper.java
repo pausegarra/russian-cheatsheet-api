@@ -23,7 +23,8 @@ public class ValidationExceptionMapper {
 
     ValidationErrorPresentation presentation = ValidationErrorPresentation.create(
       "Unprocessable Entity",
-      Response.Status.BAD_REQUEST, errors
+      Response.Status.BAD_REQUEST, "VALIDATION_ERROR",
+      errors
     );
 
     return RestResponse.ResponseBuilder.create(RestResponse.Status.BAD_REQUEST, presentation)

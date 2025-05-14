@@ -125,7 +125,7 @@ public class CreateWordTest extends IntegrationTest {
       .post("/words")
       .then()
       .statusCode(400)
-      .body("code", is("BAD_REQUEST"))
+      .body("code", is("WORD_ALREADY_EXISTS"))
       .body("message", is("Word already exists: a"))
       .body("status", is(400));
   }

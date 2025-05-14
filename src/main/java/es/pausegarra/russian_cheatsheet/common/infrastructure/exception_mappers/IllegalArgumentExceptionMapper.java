@@ -13,7 +13,7 @@ public class IllegalArgumentExceptionMapper {
   public RestResponse<ApiExceptionPresentation> toResponse(IllegalArgumentException e) {
     ApiExceptionPresentation presentation = ApiExceptionPresentation.create(
       e.getMessage(),
-      Response.Status.BAD_REQUEST.name(),
+      "ILLEGAL_ARGUMENT",
       Response.Status.BAD_REQUEST.getStatusCode()
     );
 

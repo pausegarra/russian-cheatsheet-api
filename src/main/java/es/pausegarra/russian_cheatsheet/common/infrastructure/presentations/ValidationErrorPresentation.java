@@ -15,10 +15,12 @@ public class ValidationErrorPresentation {
 
   private final Status status;
 
+  private final String code;
+
   private final Set<ValidationError> errors;
 
-  public static ValidationErrorPresentation create(String message, Status status, Set<ValidationError> errors) {
-    return new ValidationErrorPresentation(message, status, errors);
+  public static ValidationErrorPresentation create(String message, Status status, String code, Set<ValidationError> errors) {
+    return new ValidationErrorPresentation(message, status, code, errors);
   }
 
 }
