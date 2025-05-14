@@ -2,9 +2,12 @@ package es.pausegarra.russian_cheatsheet.integration.vocabulary;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import es.pausegarra.russian_cheatsheet.annotations.IntegrationTest;
+import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
+import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.CreateWordRequest;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -12,6 +15,14 @@ import static org.hamcrest.Matchers.*;
 
 @QuarkusTest
 public class CreateWordTest extends IntegrationTest {
+
+  @Transactional
+  public void createWord() {
+    WordEntity word = WordEntity.create(null, "a", "a", "a", WordTypes.VERB);
+    em.persist(word);
+
+    em.flush();
+}
 
   @Test
   @TestSecurity(
@@ -94,6 +105,29 @@ public class CreateWordTest extends IntegrationTest {
       .then()
       .statusCode(201)
       .body(notNullValue());
+  }
+
+  @Test
+  @TestSecurity(
+    user = "test",
+    roles = {"words#create"}
+  )
+  public void shouldReturn400WhenWordAlreadyExists() throws JsonProcessingException {
+    createWord();
+
+    CreateWordRequest request = new CreateWordRequest("a", "a", "a", "VERB", null);
+    String json = objectMapper.writeValueAsString(request);
+
+
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .post("/words")
+      .then()
+      .statusCode(400)
+      .body("code", is("BAD_REQUEST"))
+      .body("message", is("Word already exists: a"))
+      .body("status", is(400));
   }
 
 }

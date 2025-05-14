@@ -17,4 +17,6 @@ public interface WordsRepository {
 
   void delete(UUID id);
 
+  Optional<WordEntity> findByRussian(String russian);
+
 }

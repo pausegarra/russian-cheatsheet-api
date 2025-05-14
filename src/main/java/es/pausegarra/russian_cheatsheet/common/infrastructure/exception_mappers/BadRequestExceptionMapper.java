@@ -14,7 +14,7 @@ public class BadRequestExceptionMapper {
   public RestResponse<ApiExceptionPresentation> toResponse(BadRequest exception) {
     ApiExceptionPresentation presentation = ApiExceptionPresentation.create(
       exception.getMessage(),
-      Response.Status.BAD_REQUEST.name(),
+      exception.getCode(),
       Response.Status.BAD_REQUEST.getStatusCode()
     );
 

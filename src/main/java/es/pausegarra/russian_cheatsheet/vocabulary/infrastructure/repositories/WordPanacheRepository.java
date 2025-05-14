@@ -72,4 +72,16 @@ public class WordPanacheRepository implements WordsRepository, PanacheRepository
     this.delete("id", id);
   }
 
+  @Override
+  public Optional<WordEntity> findByRussian(String russian) {
+    WordEntity word = this.find("lower(russian) like ?1", "%" + russian.toLowerCase() + "%")
+      .firstResult();
+
+    if (word == null) {
+      return Optional.empty();
+    }
+
+    return Optional.of(word);
+  }
+
 }
