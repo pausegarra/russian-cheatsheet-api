@@ -33,8 +33,8 @@ public class UpdateWordService implements Service<UpdateWordDto, Void> {
         .toEntity()
         .withWord(word)
         .withId(word.getConjugations().getId());
-    }else {
-      word = word.withConjugations(null);
+    } else {
+      conjugations = null;
     }
 
     WordEntity updated = word.update(
