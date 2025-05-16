@@ -22,11 +22,8 @@ public class CreateWordResource implements CreateWordApiSpec {
   public RestResponse<SimplePresentation> createWord(
     CreateWordRequest request
   ) {
-    WordConjugationsDto conjugationsDto = null;
-    if (request.conjugations() != null) {
-      conjugationsDto = request.conjugations()
-        .toDto();
-    }
+    WordConjugationsDto conjugationsDto = request.conjugations() == null ? null : request.conjugations()
+      .toDto();
     CreateWordDto command = CreateWordDto.from(
       request.russian(), request.english(), request.spanish(), request.type(), conjugationsDto);
 
