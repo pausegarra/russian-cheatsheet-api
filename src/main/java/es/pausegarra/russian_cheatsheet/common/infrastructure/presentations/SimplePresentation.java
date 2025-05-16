@@ -1,5 +1,5 @@
 package es.pausegarra.russian_cheatsheet.common.infrastructure.presentations;
 
-public record CreatedPresentation(
+public record SimplePresentation(
   String resourceId
 ) {}

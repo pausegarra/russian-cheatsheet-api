@@ -1,5 +1,6 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.spec;
 
+import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.SimplePresentation;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.UpdateWordRequest;
 import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.Path;
@@ -41,7 +42,7 @@ public interface UpdateWordApiSpec {
     responseCode = "404",
     description = "Not found"
   )
-  RestResponse<Void> updateWord(
+  RestResponse<SimplePresentation> updateWord(
     @PathParam("id")
     @Parameter(
       name = "id",

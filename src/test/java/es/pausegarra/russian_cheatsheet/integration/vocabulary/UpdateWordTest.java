@@ -43,7 +43,7 @@ public class UpdateWordTest extends IntegrationTest {
       .when()
       .patch("/words/" + word.getId())
       .then()
-      .statusCode(204);
+      .statusCode(200);
 
     WordEntity updated = em.find(WordEntity.class, word.getId());
     assertNotNull(updated);

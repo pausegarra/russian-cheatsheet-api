@@ -1,6 +1,6 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.rest;
 
-import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.CreatedPresentation;
+import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.SimplePresentation;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordService;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordConjugationsDto;
@@ -19,7 +19,7 @@ public class CreateWordResource implements CreateWordApiSpec {
   private final CreateWordService createWordService;
 
   @RolesAllowed("words#create")
-  public RestResponse<CreatedPresentation> createWord(
+  public RestResponse<SimplePresentation> createWord(
     CreateWordRequest request
   ) {
     WordConjugationsDto conjugationsDto = null;
@@ -31,8 +31,8 @@ public class CreateWordResource implements CreateWordApiSpec {
       request.russian(), request.english(), request.spanish(), request.type(), conjugationsDto);
 
     UUID createdWordId = createWordService.handle(command);
-    CreatedPresentation createdPresentation = new CreatedPresentation(createdWordId.toString());
-    return RestResponse.status(Response.Status.CREATED, createdPresentation);
+    SimplePresentation simplePresentation = new SimplePresentation(createdWordId.toString());
+    return RestResponse.status(Response.Status.CREATED, simplePresentation);
   }
 
 }
