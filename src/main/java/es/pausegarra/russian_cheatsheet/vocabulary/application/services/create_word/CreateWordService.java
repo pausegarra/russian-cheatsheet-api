@@ -27,47 +27,20 @@ public class CreateWordService implements Service<CreateWordDto, UUID> {
     CreateWordDto dto
   ) {
     ensureWordDoesNotExist(dto.russian());
-    WordEntity word = WordEntity.create(null, dto.russian(), dto.english(), dto.spanish(), dto.type());
+    WordEntity word = WordEntity.create(
+      null,
+      dto.russian(),
+      dto.english(),
+      dto.spanish(),
+      dto.type()
+    );
 
     WordEntity savedWord = wordsRepository.save(word);
 
     if (word.getType() == WordTypes.VERB && dto.conjugations() != null) {
-      VerbConjugationEntity conjugations = VerbConjugationEntity.create(
-        null, savedWord, dto.conjugations()
-          .imperfectivePresentFirstPersonSingular(), dto.conjugations()
-          .imperfectivePresentSecondPersonSingular(), dto.conjugations()
-          .imperfectivePresentThirdPersonSingular(), dto.conjugations()
-          .imperfectivePresentFirstPersonPlural(), dto.conjugations()
-          .imperfectivePresentSecondPersonPlural(), dto.conjugations()
-          .imperfectivePresentThirdPersonPlural(), dto.conjugations()
-          .imperfectivePastMasculine(), dto.conjugations()
-          .imperfectivePastFeminine(), dto.conjugations()
-          .imperfectivePastNeuter(), dto.conjugations()
-          .imperfectivePastPlural(), dto.conjugations()
-          .imperfectiveFutureFirstPersonSingular(), dto.conjugations()
-          .imperfectiveFutureSecondPersonSingular(), dto.conjugations()
-          .imperfectiveFutureThirdPersonSingular(), dto.conjugations()
-          .imperfectiveFutureFirstPersonPlural(), dto.conjugations()
-          .imperfectiveFutureSecondPersonPlural(), dto.conjugations()
-          .imperfectiveFutureThirdPersonPlural(), dto.conjugations()
-          .perfectivePresentFirstPersonSingular(), dto.conjugations()
-          .perfectivePresentSecondPersonSingular(), dto.conjugations()
-          .perfectivePresentThirdPersonSingular(), dto.conjugations()
-          .perfectivePresentFirstPersonPlural(), dto.conjugations()
-          .perfectivePresentSecondPersonPlural(), dto.conjugations()
-          .perfectivePresentThirdPersonPlural(), dto.conjugations()
-          .perfectivePastMasculine(), dto.conjugations()
-          .perfectivePastFeminine(), dto.conjugations()
-          .perfectivePastNeuter(), dto.conjugations()
-          .perfectivePastPlural(), dto.conjugations()
-          .perfectiveFutureFirstPersonSingular(), dto.conjugations()
-          .perfectiveFutureSecondPersonSingular(), dto.conjugations()
-          .perfectiveFutureThirdPersonSingular(), dto.conjugations()
-          .perfectiveFutureFirstPersonPlural(), dto.conjugations()
-          .perfectiveFutureSecondPersonPlural(), dto.conjugations()
-          .perfectiveFutureThirdPersonPlural()
-      );
-
+      VerbConjugationEntity conjugations = dto.conjugations()
+        .toEntity()
+        .withWord(savedWord);
       savedWord = savedWord.withConjugations(conjugations);
     }
 

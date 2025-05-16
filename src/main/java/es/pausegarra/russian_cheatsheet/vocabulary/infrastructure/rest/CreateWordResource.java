@@ -3,7 +3,7 @@ package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.rest;
 import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.CreatedPresentation;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordService;
-import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.WordConjugationsDto;
+import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordConjugationsDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.CreateWordRequest;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.spec.CreateWordApiSpec;
 import jakarta.annotation.security.RolesAllowed;
@@ -11,7 +11,6 @@ import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
 import org.jboss.resteasy.reactive.RestResponse;
 
-import java.net.URI;
 import java.util.UUID;
 
 @RequiredArgsConstructor

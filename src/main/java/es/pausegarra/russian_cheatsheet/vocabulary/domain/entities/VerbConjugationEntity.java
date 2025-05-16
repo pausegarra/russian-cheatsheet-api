@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.With;
 
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ public class VerbConjugationEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
+  @With
   private final UUID id;
 
   @OneToOne(optional = false)
@@ -24,6 +26,7 @@ public class VerbConjugationEntity {
     nullable = false,
     unique = true
   )
+  @With
   private final WordEntity word;
 
   @Column(name = "imperfective_present_first_person_singular")

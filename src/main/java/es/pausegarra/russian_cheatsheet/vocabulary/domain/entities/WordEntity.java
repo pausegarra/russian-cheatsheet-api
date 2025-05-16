@@ -61,10 +61,11 @@ public class WordEntity {
     return new WordEntity(id, russian, english, spanish, type, null, null);
   }
 
-  public WordEntity update(String russian, String english, String spanish, WordTypes type) {
+  public WordEntity update(String russian, String english, String spanish, WordTypes type, VerbConjugationEntity conjugations) {
     return this.withEnglish(english)
       .withRussian(russian)
       .withSpanish(spanish)
+      .withConjugations(conjugations)
       .withType(type);
   }
 

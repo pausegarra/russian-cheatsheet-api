@@ -30,7 +30,7 @@ class UpdateWordResourceTest {
     doNothing().when(updateWordService)
       .handle(any(UpdateWordDto.class));
 
-    UpdateWordRequest request = new UpdateWordRequest("word", "english", "spanish", "VERB");
+    UpdateWordRequest request = new UpdateWordRequest("word", "english", "spanish", "VERB", null);
     updateWordResource.updateWord(
       UUID.randomUUID()
         .toString(), request

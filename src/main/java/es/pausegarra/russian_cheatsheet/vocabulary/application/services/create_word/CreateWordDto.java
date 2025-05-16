@@ -1,7 +1,7 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word;
 
+import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordConjugationsDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 
 public record CreateWordDto(

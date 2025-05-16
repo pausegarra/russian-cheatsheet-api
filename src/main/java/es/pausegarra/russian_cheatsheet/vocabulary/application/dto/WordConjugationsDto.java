@@ -1,6 +1,6 @@
-package es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word;
+package es.pausegarra.russian_cheatsheet.vocabulary.application.dto;
 
-import jakarta.validation.constraints.NotBlank;
+import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.VerbConjugationEntity;
 
 public record WordConjugationsDto(
    String imperfectivePresentFirstPersonSingular,
@@ -84,6 +84,22 @@ public record WordConjugationsDto(
 
       perfectiveFutureFirstPersonSingular, perfectiveFutureSecondPersonSingular, perfectiveFutureThirdPersonSingular,
       perfectiveFutureFirstPersonPlural, perfectiveFutureSecondPersonPlural, perfectiveFutureThirdPersonPlural
+    );
+  }
+
+  public VerbConjugationEntity toEntity() {
+    return VerbConjugationEntity.create(
+      null, null, imperfectivePresentFirstPersonSingular, imperfectivePresentSecondPersonSingular,
+      imperfectivePresentThirdPersonSingular, imperfectivePresentFirstPersonPlural, imperfectivePresentSecondPersonPlural,
+      imperfectivePresentThirdPersonPlural, imperfectivePastMasculine, imperfectivePastFeminine, imperfectivePastNeuter,
+      imperfectivePastPlural, imperfectiveFutureFirstPersonSingular, imperfectiveFutureSecondPersonSingular,
+      imperfectiveFutureThirdPersonSingular, imperfectiveFutureFirstPersonPlural, imperfectiveFutureSecondPersonPlural,
+      imperfectiveFutureThirdPersonPlural, perfectivePresentFirstPersonSingular, perfectivePresentSecondPersonSingular,
+      perfectivePresentThirdPersonSingular, perfectivePresentFirstPersonPlural, perfectivePresentSecondPersonPlural,
+      perfectivePresentThirdPersonPlural, perfectivePastMasculine, perfectivePastFeminine, perfectivePastNeuter,
+      perfectivePastPlural, perfectiveFutureFirstPersonSingular, perfectiveFutureSecondPersonSingular,
+      perfectiveFutureThirdPersonSingular, perfectiveFutureFirstPersonPlural, perfectiveFutureSecondPersonPlural,
+      perfectiveFutureThirdPersonPlural
     );
   }
 

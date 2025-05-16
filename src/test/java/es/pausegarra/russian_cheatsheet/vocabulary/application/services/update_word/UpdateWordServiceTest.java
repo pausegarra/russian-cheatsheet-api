@@ -35,7 +35,7 @@ class UpdateWordServiceTest {
 
     UpdateWordDto dto = UpdateWordDto.from(
       UUID.randomUUID()
-        .toString(), "word", "english", "spanish", "VERB"
+        .toString(), "word", "english", "spanish", "VERB", null
     );
     updateWordService.handle(dto);
 
@@ -48,7 +48,7 @@ class UpdateWordServiceTest {
 
     UpdateWordDto dto = UpdateWordDto.from(
       UUID.randomUUID()
-        .toString(), "word", "english", "spanish", "VERB"
+        .toString(), "word", "english", "spanish", "VERB", null
     );
     assertThrows(WordNotFound.class, () -> updateWordService.handle(dto));
   }

@@ -1,8 +1,8 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests;
 
-import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.WordConjugationsDto;
+import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordConjugationsDto;
 
-public record CreateWordRequestConjugations(
+public record WordRequestConjugations(
   String imperfectivePresentFirstPersonSingular,
   String imperfectivePresentSecondPersonSingular,
   String imperfectivePresentThirdPersonSingular,

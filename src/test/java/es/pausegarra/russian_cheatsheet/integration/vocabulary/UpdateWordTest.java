@@ -2,9 +2,11 @@ package es.pausegarra.russian_cheatsheet.integration.vocabulary;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import es.pausegarra.russian_cheatsheet.annotations.IntegrationTest;
+import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.VerbConjugationEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.UpdateWordRequest;
+import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.WordRequestConjugations;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import jakarta.transaction.Transactional;
@@ -34,7 +36,7 @@ public class UpdateWordTest extends IntegrationTest {
   public void shouldUpdateWord() throws JsonProcessingException {
     WordEntity word = setUp();
 
-    UpdateWordRequest request = new UpdateWordRequest("word-r", "english-u", "spanish-u", "ADVERB");
+    UpdateWordRequest request = new UpdateWordRequest("word-r", "english-u", "spanish-u", "ADVERB", null);
     String json = objectMapper.writeValueAsString(request);
     given().body(json)
       .contentType("application/json")
@@ -63,7 +65,7 @@ public class UpdateWordTest extends IntegrationTest {
   public void shouldReturn400WhenDataIsInvalid() throws JsonProcessingException {
     WordEntity word = setUp();
 
-    UpdateWordRequest request = new UpdateWordRequest(null, null, null, "VERB");
+    UpdateWordRequest request = new UpdateWordRequest(null, null, null, "VERB", null);
     String json = objectMapper.writeValueAsString(request);
     given().body(json)
       .when()
@@ -80,7 +82,7 @@ public class UpdateWordTest extends IntegrationTest {
   public void shouldReturn401WhenUserIsNotAuthenticated() throws JsonProcessingException {
     WordEntity word = setUp();
 
-    UpdateWordRequest request = new UpdateWordRequest("word", "english", "spanish", "VERB");
+    UpdateWordRequest request = new UpdateWordRequest("word", "english", "spanish", "VERB", null);
     String json = objectMapper.writeValueAsString(request);
     given().body(json)
       .when()
@@ -94,7 +96,7 @@ public class UpdateWordTest extends IntegrationTest {
   public void shouldReturn403WhenUserDoesNotHavePermissions() throws JsonProcessingException {
     WordEntity word = setUp();
 
-    UpdateWordRequest request = new UpdateWordRequest("word", "english", "spanish", "VERB");
+    UpdateWordRequest request = new UpdateWordRequest("word", "english", "spanish", "VERB", null);
     String json = objectMapper.writeValueAsString(request);
     given().body(json)
       .when()
