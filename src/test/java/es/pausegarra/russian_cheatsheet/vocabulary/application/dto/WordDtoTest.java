@@ -4,7 +4,7 @@ import es.pausegarra.russian_cheatsheet.mother.WordEntityMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class WordDtoTest {
 
@@ -19,7 +19,10 @@ class WordDtoTest {
     assertEquals(wordEntity.getRussian(), wordDto.russian());
     assertEquals(wordEntity.getEnglish(), wordDto.english());
     assertEquals(wordEntity.getSpanish(), wordDto.spanish());
-    assertEquals(wordEntity.getType().toString(), wordDto.type());
+    assertEquals(
+      wordEntity.getType()
+        .toString(), wordDto.type()
+    );
   }
 
 }

@@ -58,8 +58,7 @@ class ListWordsResourceTest {
       paginatedDto);
 
     RestResponse<PaginatedPresentation<WordListPresentation>> response =
-      listWordsResource.listWords(
-      0,
+      listWordsResource.listWords(0,
       10,
       "spanish",
       "asc",

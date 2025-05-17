@@ -17,7 +17,10 @@ class WordListPresentationTest {
 
     WordListPresentation presentation = WordListPresentation.fromDto(dto);
 
-    assertEquals(dto.id().toString(), presentation.id());
+    assertEquals(
+      dto.id()
+        .toString(), presentation.id()
+    );
     assertEquals(dto.russian(), presentation.russian());
     assertEquals(dto.english(), presentation.english());
     assertEquals(dto.spanish(), presentation.spanish());

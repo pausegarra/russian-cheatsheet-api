@@ -30,8 +30,8 @@ public class CreateLetterTest extends IntegrationTest {
       .then()
       .statusCode(201);
 
-    LetterEntity savedLetter = em.createQuery(
-        "SELECT l FROM LetterEntity l WHERE l.cyrillic = :cyrillic",
+    LetterEntity savedLetter = em.createQuery("SELECT l FROM LetterEntity l WHERE l.cyrillic = " +
+          ":cyrillic",
         LetterEntity.class
       )
       .setParameter("cyrillic", "a")

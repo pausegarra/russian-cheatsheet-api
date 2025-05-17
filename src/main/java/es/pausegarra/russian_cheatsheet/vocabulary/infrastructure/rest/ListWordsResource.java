@@ -37,8 +37,7 @@ public class ListWordsResource implements ListWordsApiSpec {
       .toList();
 
     PaginatedPresentation<WordListPresentation> paginatedPresentation =
-      PaginatedPresentation.fromDto(
-      words,
+      PaginatedPresentation.fromDto(words,
       wordProjections
     );
     return RestResponse.ok(paginatedPresentation);
