@@ -1,7 +1,9 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests;
 
 import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordConjugationsDto;
+import lombok.Builder;
 
+@Builder
 public record WordRequestConjugations(
   String imperfectivePresentFirstPersonSingular,
   String imperfectivePresentSecondPersonSingular,
@@ -44,23 +46,43 @@ public record WordRequestConjugations(
 
   public WordConjugationsDto toDto() {
     return WordConjugationsDto.from(
-      imperfectivePresentFirstPersonSingular, imperfectivePresentSecondPersonSingular,
-      imperfectivePresentThirdPersonSingular, imperfectivePresentFirstPersonPlural,
-      imperfectivePresentSecondPersonPlural, imperfectivePresentThirdPersonPlural,
+      imperfectivePresentFirstPersonSingular,
+      imperfectivePresentSecondPersonSingular,
+      imperfectivePresentThirdPersonSingular,
+      imperfectivePresentFirstPersonPlural,
+      imperfectivePresentSecondPersonPlural,
+      imperfectivePresentThirdPersonPlural,
 
-      imperfectivePastMasculine, imperfectivePastFeminine, imperfectivePastNeuter, imperfectivePastPlural,
+      imperfectivePastMasculine,
+      imperfectivePastFeminine,
+      imperfectivePastNeuter,
+      imperfectivePastPlural,
 
-      imperfectiveFutureFirstPersonSingular, imperfectiveFutureSecondPersonSingular,
-      imperfectiveFutureThirdPersonSingular, imperfectiveFutureFirstPersonPlural, imperfectiveFutureSecondPersonPlural,
+      imperfectiveFutureFirstPersonSingular,
+      imperfectiveFutureSecondPersonSingular,
+      imperfectiveFutureThirdPersonSingular,
+      imperfectiveFutureFirstPersonPlural,
+      imperfectiveFutureSecondPersonPlural,
       imperfectiveFutureThirdPersonPlural,
 
-      perfectivePresentFirstPersonSingular, perfectivePresentSecondPersonSingular, perfectivePresentThirdPersonSingular,
-      perfectivePresentFirstPersonPlural, perfectivePresentSecondPersonPlural, perfectivePresentThirdPersonPlural,
+      perfectivePresentFirstPersonSingular,
+      perfectivePresentSecondPersonSingular,
+      perfectivePresentThirdPersonSingular,
+      perfectivePresentFirstPersonPlural,
+      perfectivePresentSecondPersonPlural,
+      perfectivePresentThirdPersonPlural,
 
-      perfectivePastMasculine, perfectivePastFeminine, perfectivePastNeuter, perfectivePastPlural,
+      perfectivePastMasculine,
+      perfectivePastFeminine,
+      perfectivePastNeuter,
+      perfectivePastPlural,
 
-      perfectiveFutureFirstPersonSingular, perfectiveFutureSecondPersonSingular, perfectiveFutureThirdPersonSingular,
-      perfectiveFutureFirstPersonPlural, perfectiveFutureSecondPersonPlural, perfectiveFutureThirdPersonPlural
+      perfectiveFutureFirstPersonSingular,
+      perfectiveFutureSecondPersonSingular,
+      perfectiveFutureThirdPersonSingular,
+      perfectiveFutureFirstPersonPlural,
+      perfectiveFutureSecondPersonPlural,
+      perfectiveFutureThirdPersonPlural
     );
   }
 

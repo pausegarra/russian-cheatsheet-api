@@ -3,10 +3,7 @@ package es.pausegarra.russian_cheatsheet.vocabulary.domain.entities;
 import es.pausegarra.russian_cheatsheet.common.domain.audit.AuditFields;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.With;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -15,6 +12,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
 @Getter
+@Builder
 public class WordEntity {
 
   @Id
