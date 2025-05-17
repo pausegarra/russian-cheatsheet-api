@@ -27,15 +27,7 @@ public class UpdateWordService implements Service<UpdateWordDto, Void> {
   ) {
     WordEntity word = ensureEntityExists(dto.id());
 
-    VerbConjugationEntity conjugations = word.getConjugations();
-    if (dto.conjugations() != null && word.getType() == WordTypes.VERB) {
-      conjugations = dto.conjugations()
-        .toEntity()
-        .withWord(word)
-        .withId(word.getConjugations().getId());
-    } else {
-      conjugations = null;
-    }
+    VerbConjugationEntity conjugations = resolveConjugations(word, dto);
 
     WordEntity updated = word.update(
       dto.russian(),
@@ -54,5 +46,28 @@ public class UpdateWordService implements Service<UpdateWordDto, Void> {
     return wordsRepository.findById(id)
       .orElseThrow(() -> new WordNotFound(id.toString()));
   }
+
+  private VerbConjugationEntity resolveConjugations(WordEntity word, UpdateWordDto dto) {
+    if (dto.type() != WordTypes.VERB || dto.conjugations() == null) {
+      return null;
+    }
+
+    VerbConjugationEntity existing = word.getConjugations();
+
+    return existing == null
+      ? createNewConjugations(word, dto)
+      : updateExistingConjugations(existing, dto);
+  }
+
+  private VerbConjugationEntity createNewConjugations(WordEntity word, UpdateWordDto dto) {
+    return dto.conjugations()
+      .toEntity()
+      .withWord(word);
+  }
+
+  private VerbConjugationEntity updateExistingConjugations(VerbConjugationEntity existing, UpdateWordDto dto) {
+    return existing.update(dto.conjugations().toEntity());
+  }
+
 
 }

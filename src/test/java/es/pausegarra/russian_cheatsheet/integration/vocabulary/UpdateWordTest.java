@@ -2,6 +2,10 @@ package es.pausegarra.russian_cheatsheet.integration.vocabulary;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import es.pausegarra.russian_cheatsheet.annotations.IntegrationTest;
+import es.pausegarra.russian_cheatsheet.mother.UpdateWordRequestMother;
+import es.pausegarra.russian_cheatsheet.mother.VerbConjugationEntityMother;
+import es.pausegarra.russian_cheatsheet.mother.WordConjugationRequestMother;
+import es.pausegarra.russian_cheatsheet.mother.WordEntityMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.VerbConjugationEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
@@ -16,27 +20,54 @@ import static io.restassured.RestAssured.given;
 import static io.smallrye.common.constraint.Assert.assertNotNull;
 import static io.smallrye.common.constraint.Assert.assertTrue;
 import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @QuarkusTest
 public class UpdateWordTest extends IntegrationTest {
 
   @Transactional
   public WordEntity setUp() {
-    WordEntity word = WordEntity.create(null, "word", "english", "spanish", null);
+    WordEntity word = WordEntityMother.random()
+      .type(WordTypes.ADVERB)
+      .id(null)
+      .build();
     em.persist(word);
+    em.flush();
+    em.clear();
+
+    return word;
+  }
+
+  @Transactional
+  public WordEntity setUpWithConjugations() {
+    WordEntity word = WordEntityMother.random()
+      .id(null)
+      .build();
+    em.persist(word);
+
+    VerbConjugationEntity conjugations = VerbConjugationEntityMother.random()
+      .id(null)
+      .word(word)
+      .build();
+    em.persist(conjugations);
+
+    em.flush();
+    em.clear();
 
     return word;
   }
 
   @Test
   @TestSecurity(
-    user = "user",
-    roles = "words#update"
+    user = "user", roles = "words#update"
   )
   public void shouldUpdateWord() throws JsonProcessingException {
     WordEntity word = setUp();
 
-    UpdateWordRequest request = new UpdateWordRequest("word-r", "english-u", "spanish-u", "ADVERB", null);
+    UpdateWordRequest request = UpdateWordRequestMother.random()
+      .type(WordTypes.ADVERB.toString())
+      .build();
     String json = objectMapper.writeValueAsString(request);
     given().body(json)
       .contentType("application/json")
@@ -48,19 +79,119 @@ public class UpdateWordTest extends IntegrationTest {
     WordEntity updated = em.find(WordEntity.class, word.getId());
     assertNotNull(updated);
     assertTrue(updated.getRussian()
-                 .equals("word-r"));
+      .equals(request.russian()));
     assertTrue(updated.getEnglish()
-                 .equals("english-u"));
+      .equals(request.english()));
     assertTrue(updated.getSpanish()
-                 .equals("spanish-u"));
+      .equals(request.spanish()));
     assertTrue(updated.getType()
-                 .equals(WordTypes.ADVERB));
+      .equals(WordTypes.ADVERB));
   }
 
   @Test
   @TestSecurity(
-    user = "user",
-    roles = "words#update"
+    user = "user", roles = "words#update"
+  )
+  public void shouldUpdateWordThatHasNoConjugationsWithConjugations() throws JsonProcessingException {
+    WordEntity word = setUp();
+
+    WordRequestConjugations conjugations = WordConjugationRequestMother.random()
+      .build();
+    UpdateWordRequest request = UpdateWordRequestMother.random()
+      .type(WordTypes.VERB.toString())
+      .conjugations(conjugations)
+      .build();
+    String json = objectMapper.writeValueAsString(request);
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .patch("/words/" + word.getId())
+      .then()
+      .statusCode(200);
+
+    WordEntity updated = em.find(WordEntity.class, word.getId());
+    assertNotNull(updated);
+    assertTrue(updated.getRussian()
+      .equals(request.russian()));
+    assertTrue(updated.getEnglish()
+      .equals(request.english()));
+    assertTrue(updated.getSpanish()
+      .equals(request.spanish()));
+    assertTrue(updated.getType()
+      .equals(WordTypes.VERB));
+    assertNotNull(updated.getConjugations());
+  }
+
+  @Test
+  @TestSecurity(
+    user = "user", roles = "words#update"
+  )
+  public void shouldUpdateWordThatHasConjugationsWithNoConjugations() throws JsonProcessingException {
+    WordEntity word = setUpWithConjugations();
+
+    UpdateWordRequest request = UpdateWordRequestMother.random()
+      .type(WordTypes.ADVERB.toString())
+      .build();
+    String json = objectMapper.writeValueAsString(request);
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .patch("/words/" + word.getId())
+      .then()
+      .statusCode(200);
+
+    WordEntity updated = em.find(WordEntity.class, word.getId());
+    assertNotNull(updated);
+    assertTrue(updated.getRussian()
+      .equals(request.russian()));
+    assertTrue(updated.getEnglish()
+      .equals(request.english()));
+    assertTrue(updated.getSpanish()
+      .equals(request.spanish()));
+    assertTrue(updated.getType()
+      .equals(WordTypes.ADVERB));
+    assertNull(updated.getConjugations());
+  }
+
+  @Test
+  @TestSecurity(
+    user = "user", roles = "words#update"
+  )
+  public void shouldUpdateWordThatHasConjugationsWithConjugations() throws JsonProcessingException {
+    WordEntity word = setUpWithConjugations();
+
+    WordRequestConjugations conjugations = WordConjugationRequestMother.random()
+      .build();
+    UpdateWordRequest request = UpdateWordRequestMother.random()
+      .type(WordTypes.VERB.toString())
+      .conjugations(conjugations)
+      .build();
+    String json = objectMapper.writeValueAsString(request);
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .patch("/words/" + word.getId())
+      .then()
+      .statusCode(200);
+
+    WordEntity updated = em.find(WordEntity.class, word.getId());
+    assertNotNull(updated);
+    assertTrue(updated.getRussian()
+      .equals(request.russian()));
+    assertTrue(updated.getEnglish()
+      .equals(request.english()));
+    assertTrue(updated.getSpanish()
+      .equals(request.spanish()));
+    assertTrue(updated.getType()
+      .equals(WordTypes.VERB));
+    assertNotNull(updated.getConjugations());
+    assertEquals(conjugations.imperfectivePresentFirstPersonSingular(), updated.getConjugations()
+      .getImperfectivePresentFirstPersonSingular());
+  }
+
+  @Test
+  @TestSecurity(
+    user = "user", roles = "words#update"
   )
   public void shouldReturn400WhenDataIsInvalid() throws JsonProcessingException {
     WordEntity word = setUp();
@@ -74,7 +205,10 @@ public class UpdateWordTest extends IntegrationTest {
       .then()
       .statusCode(400)
       .body("errors.size()", is(3))
-      .body("errors.field", hasItems("handle.dto.russian", "handle.dto.english", "handle.dto.spanish"))
+      .body(
+        "errors.field",
+        hasItems("handle.dto.russian", "handle.dto.english", "handle.dto.spanish")
+      )
       .body("errors.message", hasItem("must not be blank"));
   }
 

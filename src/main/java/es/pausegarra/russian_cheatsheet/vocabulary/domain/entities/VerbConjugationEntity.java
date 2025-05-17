@@ -1,10 +1,7 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.domain.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.With;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -13,6 +10,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
 @Getter
+@Builder
 public class VerbConjugationEntity {
 
   @Id
@@ -154,6 +152,45 @@ public class VerbConjugationEntity {
       perfectivePastMasculine, perfectivePastFeminine, perfectivePastNeuter, perfectivePastPlural,
       perfectiveFutureFirstPersonSingular, perfectiveFutureSecondPersonSingular, perfectiveFutureThirdPersonSingular,
       perfectiveFutureFirstPersonPlural, perfectiveFutureSecondPersonPlural, perfectiveFutureThirdPersonPlural
+    );
+  }
+
+  public VerbConjugationEntity update(VerbConjugationEntity entity) {
+    return new VerbConjugationEntity(
+      getId(),
+      getWord(),
+      entity.getImperfectivePresentFirstPersonSingular(),
+      entity.getImperfectivePresentSecondPersonSingular(),
+      entity.getImperfectivePresentThirdPersonSingular(),
+      entity.getImperfectivePresentFirstPersonPlural(),
+      entity.getImperfectivePresentSecondPersonPlural(),
+      entity.getImperfectivePresentThirdPersonPlural(),
+      entity.getImperfectivePastMasculine(),
+      entity.getImperfectivePastFeminine(),
+      entity.getImperfectivePastNeuter(),
+      entity.getImperfectivePastPlural(),
+      entity.getImperfectiveFutureFirstPersonSingular(),
+      entity.getImperfectiveFutureSecondPersonSingular(),
+      entity.getImperfectiveFutureThirdPersonSingular(),
+      entity.getImperfectiveFutureFirstPersonPlural(),
+      entity.getImperfectiveFutureSecondPersonPlural(),
+      entity.getImperfectiveFutureThirdPersonPlural(),
+      entity.getPerfectivePresentFirstPersonSingular(),
+      entity.getPerfectivePresentSecondPersonSingular(),
+      entity.getPerfectivePresentThirdPersonSingular(),
+      entity.getPerfectivePresentFirstPersonPlural(),
+      entity.getPerfectivePresentSecondPersonPlural(),
+      entity.getPerfectivePresentThirdPersonPlural(),
+      entity.getPerfectivePastMasculine(),
+      entity.getPerfectivePastFeminine(),
+      entity.getPerfectivePastNeuter(),
+      entity.getPerfectivePastPlural(),
+      entity.getPerfectiveFutureFirstPersonSingular(),
+      entity.getPerfectiveFutureSecondPersonSingular(),
+      entity.getPerfectiveFutureThirdPersonSingular(),
+      entity.getPerfectiveFutureFirstPersonPlural(),
+      entity.getPerfectiveFutureSecondPersonPlural(),
+      entity.getPerfectiveFutureThirdPersonPlural()
     );
   }
 
