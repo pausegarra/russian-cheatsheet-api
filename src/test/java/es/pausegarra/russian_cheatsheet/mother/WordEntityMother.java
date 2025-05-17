@@ -1,5 +1,6 @@
 package es.pausegarra.russian_cheatsheet.mother;
 
+import es.pausegarra.russian_cheatsheet.common.domain.audit.AuditFields;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 
@@ -22,7 +23,8 @@ public class WordEntityMother {
       .type(MotherCreator.random()
         .options()
         .option(WordTypes.class))
-      .conjugations(null);
+      .conjugations(null)
+      .auditFields(new AuditFields());
   }
 
 }

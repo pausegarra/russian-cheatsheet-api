@@ -11,16 +11,16 @@ public record WordDto(
   String english,
   String spanish,
   String type,
-  ConjugationDto conjugations,
+  WordConjugationsDto conjugations,
   Instant createdAt,
   Instant updatedAt
 ) {
 
   public static WordDto fromEntity(WordEntity entity) {
-    ConjugationDto conjugations = null;
+    WordConjugationsDto conjugations = null;
 
     if (entity.getConjugations() != null) {
-      conjugations = ConjugationDto.from(entity.getConjugations());
+      conjugations = WordConjugationsDto.fromEntity(entity.getConjugations());
     }
 
     return new WordDto(

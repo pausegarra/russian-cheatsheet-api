@@ -2,6 +2,7 @@ package es.pausegarra.russian_cheatsheet.alphabet.domain.entities;
 
 import es.pausegarra.russian_cheatsheet.common.domain.audit.AuditFields;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
 @Getter
+@Builder
 public class LetterEntity {
 
   @Id

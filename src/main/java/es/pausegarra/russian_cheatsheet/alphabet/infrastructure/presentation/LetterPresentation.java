@@ -1,4 +1,4 @@
-package es.pausegarra.russian_cheatsheet.alphabet.infrastructure.projections;
+package es.pausegarra.russian_cheatsheet.alphabet.infrastructure.presentation;
 
 import es.pausegarra.russian_cheatsheet.alphabet.application.dtos.LetterDto;
 

@@ -1,6 +1,6 @@
 package es.pausegarra.russian_cheatsheet.alphabet.infrastructure.spec;
 
-import es.pausegarra.russian_cheatsheet.alphabet.infrastructure.projections.LetterPresentation;
+import es.pausegarra.russian_cheatsheet.alphabet.infrastructure.presentation.LetterPresentation;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.openapi.annotations.Operation;

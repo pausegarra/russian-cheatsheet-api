@@ -4,7 +4,7 @@ import es.pausegarra.russian_cheatsheet.alphabet.application.dtos.LetterDto;
 import es.pausegarra.russian_cheatsheet.alphabet.application.services.list_letters.ListLettersDto;
 import es.pausegarra.russian_cheatsheet.alphabet.application.services.list_letters.ListLettersService;
 import es.pausegarra.russian_cheatsheet.alphabet.domain.entities.LetterEntity;
-import es.pausegarra.russian_cheatsheet.alphabet.infrastructure.projections.LetterPresentation;
+import es.pausegarra.russian_cheatsheet.alphabet.infrastructure.presentation.LetterPresentation;
 import es.pausegarra.russian_cheatsheet.common.domain.audit.AuditFields;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;

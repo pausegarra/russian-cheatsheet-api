@@ -1,6 +1,6 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.presentations;
 
-import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.ConjugationDto;
+import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordConjugationsDto;
 
 public record WordConjugationsPresentation(
   String imperfectivePresentFirstPersonSingular,
@@ -42,7 +42,7 @@ public record WordConjugationsPresentation(
   String perfectiveFutureThirdPersonPlural
 ) {
 
-  public static WordConjugationsPresentation fromDto(ConjugationDto dto) {
+  public static WordConjugationsPresentation fromDto(WordConjugationsDto dto) {
     return new WordConjugationsPresentation(
       dto.imperfectivePresentFirstPersonSingular(),
       dto.imperfectivePresentSecondPersonSingular(),
