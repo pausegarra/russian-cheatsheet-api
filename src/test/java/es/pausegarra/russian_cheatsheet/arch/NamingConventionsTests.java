@@ -9,8 +9,7 @@ import es.pausegarra.russian_cheatsheet.common.application.interfaces.Service;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 @AnalyzeClasses(
-  packages = BaseArchTest.BASE_PACKAGE,
-  importOptions = {ImportOption.DoNotIncludeTests.class}
+  packages = BaseArchTest.BASE_PACKAGE, importOptions = {ImportOption.DoNotIncludeTests.class}
 )
 public class NamingConventionsTests extends BaseArchTest {
 

@@ -28,7 +28,12 @@ class ListLettersServiceTest {
   @Test
   public void shouldReturnAllLetters() {
     LetterEntity letter = new LetterEntity(
-      UUID.randomUUID(), "a", "a", "a", new AuditFields(Instant.now(), Instant.now()));
+      UUID.randomUUID(),
+      "a",
+      "a",
+      "a",
+      new AuditFields(Instant.now(), Instant.now())
+    );
 
     when(letterRepository.fetchAll()).thenReturn(List.of(letter));
 
@@ -36,15 +41,18 @@ class ListLettersServiceTest {
 
     assertEquals(1, letters.size());
     assertEquals(
-      "a", letters.getFirst()
+      "a",
+      letters.getFirst()
         .cyrillic()
     );
     assertEquals(
-      "a", letters.getFirst()
+      "a",
+      letters.getFirst()
         .ipa()
     );
     assertEquals(
-      "a", letters.getFirst()
+      "a",
+      letters.getFirst()
         .latin()
     );
 

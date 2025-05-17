@@ -17,8 +17,7 @@ public class CreateLetterTest extends IntegrationTest {
 
   @Test
   @TestSecurity(
-    user = "test",
-    roles = {"letters#create"}
+    user = "test", roles = {"letters#create"}
   )
   public void shouldCreateLetter() throws JsonProcessingException {
     CreateLetterRequest request = new CreateLetterRequest("a", "a", "a");
@@ -32,7 +31,9 @@ public class CreateLetterTest extends IntegrationTest {
       .statusCode(201);
 
     LetterEntity savedLetter = em.createQuery(
-        "SELECT l FROM LetterEntity l WHERE l.cyrillic = :cyrillic", LetterEntity.class)
+        "SELECT l FROM LetterEntity l WHERE l.cyrillic = :cyrillic",
+        LetterEntity.class
+      )
       .setParameter("cyrillic", "a")
       .getSingleResult();
 
@@ -43,8 +44,7 @@ public class CreateLetterTest extends IntegrationTest {
 
   @Test
   @TestSecurity(
-    user = "test",
-    roles = {"letters#create"}
+    user = "test", roles = {"letters#create"}
   )
   public void shouldReturn400WhenDataIsInvalid() throws JsonProcessingException {
     CreateLetterRequest request = new CreateLetterRequest(null, null, null);

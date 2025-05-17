@@ -32,7 +32,7 @@ class DeleteWordResourceTest {
       .handle(any(DeleteWordDto.class));
 
     RestResponse<Void> response = deleteWordResource.deleteWord(UUID.randomUUID()
-                                                                  .toString());
+      .toString());
 
     assertNotNull(response);
     assertEquals(204, response.getStatus());

@@ -19,7 +19,12 @@ public class ValidationErrorPresentation {
 
   private final Set<ValidationError> errors;
 
-  public static ValidationErrorPresentation create(String message, Status status, String code, Set<ValidationError> errors) {
+  public static ValidationErrorPresentation create(
+    String message,
+    Status status,
+    String code,
+    Set<ValidationError> errors
+  ) {
     return new ValidationErrorPresentation(message, status, code, errors);
   }
 

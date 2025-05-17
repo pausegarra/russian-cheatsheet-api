@@ -30,7 +30,14 @@ class CreateWordServiceTest {
   @Test
   public void shouldCreateWord() {
     WordEntity word = new WordEntity(
-      UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, null, new AuditFields(Instant.now(), Instant.now()));
+      UUID.randomUUID(),
+      "a",
+      "a",
+      "a",
+      WordTypes.VERB,
+      null,
+      new AuditFields(Instant.now(), Instant.now())
+    );
     when(wordsRepository.save(any(WordEntity.class))).thenReturn(word);
 
     createWordService.handle(CreateWordDto.from("a", "a", "a", "VERB", null));
@@ -48,7 +55,14 @@ class CreateWordServiceTest {
   @Test
   public void shouldThrowExceptionIfWordExists() {
     when(wordsRepository.findByRussian(anyString())).thenReturn(Optional.of(new WordEntity(
-      UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, null, new AuditFields(Instant.now(), Instant.now()))));
+      UUID.randomUUID(),
+      "a",
+      "a",
+      "a",
+      WordTypes.VERB,
+      null,
+      new AuditFields(Instant.now(), Instant.now())
+    )));
 
     CreateWordDto command = CreateWordDto.from("a", "a", "a", "VERB", null);
     assertThrows(WordAlreadyExists.class, () -> createWordService.handle(command));

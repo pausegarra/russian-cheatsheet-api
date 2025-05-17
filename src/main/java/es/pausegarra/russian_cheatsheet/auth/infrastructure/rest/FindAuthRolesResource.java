@@ -24,7 +24,10 @@ public class FindAuthRolesResource implements FindAuthRolesApiSpec {
   @Override
   @Authenticated
   public RestResponse<PermissionsDto> getPermissionsAndRoles() {
-    FindAuthRolesDto dto = FindAuthRolesDto.from(jsonWebToken.getRawToken(), keycloakConfig.clientId());
+    FindAuthRolesDto dto = FindAuthRolesDto.from(
+      jsonWebToken.getRawToken(),
+      keycloakConfig.clientId()
+    );
     PermissionsDto permissionsDto = service.handle(dto);
 
     return RestResponse.ok(permissionsDto);

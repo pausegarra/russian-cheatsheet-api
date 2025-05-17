@@ -185,8 +185,11 @@ public class UpdateWordTest extends IntegrationTest {
     assertTrue(updated.getType()
       .equals(WordTypes.VERB));
     assertNotNull(updated.getConjugations());
-    assertEquals(conjugations.imperfectivePresentFirstPersonSingular(), updated.getConjugations()
-      .getImperfectivePresentFirstPersonSingular());
+    assertEquals(
+      conjugations.imperfectivePresentFirstPersonSingular(),
+      updated.getConjugations()
+        .getImperfectivePresentFirstPersonSingular()
+    );
   }
 
   @Test

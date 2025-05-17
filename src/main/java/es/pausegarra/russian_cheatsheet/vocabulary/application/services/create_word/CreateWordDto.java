@@ -13,8 +13,19 @@ public record CreateWordDto(
 ) {
 
   public static CreateWordDto from(
-    String russian, String english, String spanish, String type, WordConjugationsDto conjugations) {
-    return new CreateWordDto(russian, english, spanish, WordTypes.valueOf(type.toUpperCase()), conjugations);
+    String russian,
+    String english,
+    String spanish,
+    String type,
+    WordConjugationsDto conjugations
+  ) {
+    return new CreateWordDto(
+      russian,
+      english,
+      spanish,
+      WordTypes.valueOf(type.toUpperCase()),
+      conjugations
+    );
   }
 
 }

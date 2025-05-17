@@ -44,27 +44,43 @@ public record WordConjugationsPresentation(
 
   public static WordConjugationsPresentation fromDto(ConjugationDto dto) {
     return new WordConjugationsPresentation(
-      dto.imperfectivePresentFirstPersonSingular(), dto.imperfectivePresentSecondPersonSingular(),
-      dto.imperfectivePresentThirdPersonSingular(), dto.imperfectivePresentFirstPersonPlural(),
-      dto.imperfectivePresentSecondPersonPlural(), dto.imperfectivePresentThirdPersonPlural(),
+      dto.imperfectivePresentFirstPersonSingular(),
+      dto.imperfectivePresentSecondPersonSingular(),
+      dto.imperfectivePresentThirdPersonSingular(),
+      dto.imperfectivePresentFirstPersonPlural(),
+      dto.imperfectivePresentSecondPersonPlural(),
+      dto.imperfectivePresentThirdPersonPlural(),
 
-      dto.imperfectivePastMasculine(), dto.imperfectivePastFeminine(), dto.imperfectivePastNeuter(),
+      dto.imperfectivePastMasculine(),
+      dto.imperfectivePastFeminine(),
+      dto.imperfectivePastNeuter(),
       dto.imperfectivePastPlural(),
 
-      dto.imperfectiveFutureFirstPersonSingular(), dto.imperfectiveFutureSecondPersonSingular(),
-      dto.imperfectiveFutureThirdPersonSingular(), dto.imperfectiveFutureFirstPersonPlural(),
-      dto.imperfectiveFutureSecondPersonPlural(), dto.imperfectiveFutureThirdPersonPlural(),
+      dto.imperfectiveFutureFirstPersonSingular(),
+      dto.imperfectiveFutureSecondPersonSingular(),
+      dto.imperfectiveFutureThirdPersonSingular(),
+      dto.imperfectiveFutureFirstPersonPlural(),
+      dto.imperfectiveFutureSecondPersonPlural(),
+      dto.imperfectiveFutureThirdPersonPlural(),
 
-      dto.perfectivePresentFirstPersonSingular(), dto.perfectivePresentSecondPersonSingular(),
-      dto.perfectivePresentThirdPersonSingular(), dto.perfectivePresentFirstPersonPlural(),
-      dto.perfectivePresentSecondPersonPlural(), dto.perfectivePresentThirdPersonPlural(),
+      dto.perfectivePresentFirstPersonSingular(),
+      dto.perfectivePresentSecondPersonSingular(),
+      dto.perfectivePresentThirdPersonSingular(),
+      dto.perfectivePresentFirstPersonPlural(),
+      dto.perfectivePresentSecondPersonPlural(),
+      dto.perfectivePresentThirdPersonPlural(),
 
-      dto.perfectivePastMasculine(), dto.perfectivePastFeminine(), dto.perfectivePastNeuter(),
+      dto.perfectivePastMasculine(),
+      dto.perfectivePastFeminine(),
+      dto.perfectivePastNeuter(),
       dto.perfectivePastPlural(),
 
-      dto.perfectiveFutureFirstPersonSingular(), dto.perfectiveFutureSecondPersonSingular(),
-      dto.perfectiveFutureThirdPersonSingular(), dto.perfectiveFutureFirstPersonPlural(),
-      dto.perfectiveFutureSecondPersonPlural(), dto.perfectiveFutureThirdPersonPlural()
+      dto.perfectiveFutureFirstPersonSingular(),
+      dto.perfectiveFutureSecondPersonSingular(),
+      dto.perfectiveFutureThirdPersonSingular(),
+      dto.perfectiveFutureFirstPersonPlural(),
+      dto.perfectiveFutureSecondPersonPlural(),
+      dto.perfectiveFutureThirdPersonPlural()
     );
   }
 

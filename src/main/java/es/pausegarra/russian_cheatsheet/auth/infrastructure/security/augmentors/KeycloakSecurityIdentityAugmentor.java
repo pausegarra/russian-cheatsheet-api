@@ -18,7 +18,10 @@ public class KeycloakSecurityIdentityAugmentor implements SecurityIdentityAugmen
   private final Instance<KeycloakIdentitySupplier> keycloakIdentitySupplier;
 
   @Override
-  public Uni<SecurityIdentity> augment(SecurityIdentity identity, AuthenticationRequestContext context) {
+  public Uni<SecurityIdentity> augment(
+    SecurityIdentity identity,
+    AuthenticationRequestContext context
+  ) {
     if (identity.isAnonymous()) {
       return Uni.createFrom()
         .item(identity);

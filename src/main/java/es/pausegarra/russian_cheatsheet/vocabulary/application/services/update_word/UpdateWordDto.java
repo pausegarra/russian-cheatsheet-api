@@ -16,8 +16,22 @@ public record UpdateWordDto(
   WordConjugationsDto conjugations
 ) {
 
-  public static UpdateWordDto from(String id, String russian, String english, String spanish, String type, WordConjugationsDto conjugations) {
-    return new UpdateWordDto(UUID.fromString(id), russian, english, spanish, WordTypes.valueOf(type), conjugations);
+  public static UpdateWordDto from(
+    String id,
+    String russian,
+    String english,
+    String spanish,
+    String type,
+    WordConjugationsDto conjugations
+  ) {
+    return new UpdateWordDto(
+      UUID.fromString(id),
+      russian,
+      english,
+      spanish,
+      WordTypes.valueOf(type),
+      conjugations
+    );
   }
 
 }

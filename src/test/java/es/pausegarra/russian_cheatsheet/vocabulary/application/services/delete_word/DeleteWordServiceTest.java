@@ -28,8 +28,11 @@ class DeleteWordServiceTest {
   @Test
   public void shouldDeleteWord() {
     WordEntity word = WordEntity.create(
-      UUID.randomUUID(), "Russkiy po moyemu", "Russkiy po moyemu",
-      "russkiy po moyemu", WordTypes.VERB
+      UUID.randomUUID(),
+      "Russkiy po moyemu",
+      "Russkiy po moyemu",
+      "russkiy po moyemu",
+      WordTypes.VERB
     );
 
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.of(word));
@@ -37,7 +40,7 @@ class DeleteWordServiceTest {
       .delete(any(UUID.class));
 
     DeleteWordDto dto = DeleteWordDto.from(UUID.randomUUID()
-                                             .toString());
+      .toString());
     deleteWordService.handle(dto);
 
     verify(wordsRepository).delete(any(UUID.class));
@@ -48,7 +51,7 @@ class DeleteWordServiceTest {
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
     DeleteWordDto dto = DeleteWordDto.from(UUID.randomUUID()
-                                             .toString());
+      .toString());
     assertThrows(WordNotFound.class, () -> deleteWordService.handle(dto));
   }
 

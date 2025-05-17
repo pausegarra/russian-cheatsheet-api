@@ -28,7 +28,13 @@ class UpdateWordServiceTest {
 
   @Test
   public void shouldUpdateWord() {
-    WordEntity word = WordEntity.create(UUID.randomUUID(), "word", "english", "spanish", WordTypes.VERB);
+    WordEntity word = WordEntity.create(
+      UUID.randomUUID(),
+      "word",
+      "english",
+      "spanish",
+      WordTypes.VERB
+    );
 
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.of(word));
     when(wordsRepository.save(any(WordEntity.class))).thenReturn(word);

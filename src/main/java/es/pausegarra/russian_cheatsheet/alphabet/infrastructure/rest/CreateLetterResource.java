@@ -18,7 +18,11 @@ public class CreateLetterResource implements CreateLetterApiSpec {
 
   @RolesAllowed("letters#create")
   public RestResponse<String> createLetter(CreateLetterRequest request) {
-    CreateLetterDto command = CreateLetterDto.from(request.cyrillic(), request.ipa(), request.latin());
+    CreateLetterDto command = CreateLetterDto.from(
+      request.cyrillic(),
+      request.ipa(),
+      request.latin()
+    );
     UUID createdLetterId = service.handle(command);
 
     URI location = URI.create("/letters/" + createdLetterId);

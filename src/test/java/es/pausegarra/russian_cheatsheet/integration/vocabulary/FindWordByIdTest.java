@@ -23,7 +23,8 @@ public class FindWordByIdTest extends IntegrationTest {
     em.persist(word);
 
     VerbConjugationEntity conjugation = VerbConjugationEntity.create(
-      null, word,
+      null,
+      word,
       "imperfectivePresentFirstPersonSingular",
       "imperfectivePresentSecondPersonSingular",
       "imperfectivePresentThirdPersonSingular",
@@ -80,43 +81,119 @@ public class FindWordByIdTest extends IntegrationTest {
       .get("/words/" + word.getId())
       .then()
       .statusCode(200)
-      .body("id", is(word.getId().toString()))
+      .body(
+        "id",
+        is(word.getId()
+          .toString())
+      )
       .body("russian", is("a"))
       .body("english", is("a"))
       .body("spanish", is("a"))
       .body("type", is("VERB"))
-      .body("conjugations.imperfectivePresentFirstPersonSingular", is("imperfectivePresentFirstPersonSingular"))
-      .body("conjugations.imperfectivePresentSecondPersonSingular", is("imperfectivePresentSecondPersonSingular"))
-      .body("conjugations.imperfectivePresentThirdPersonSingular", is("imperfectivePresentThirdPersonSingular"))
-      .body("conjugations.imperfectivePresentFirstPersonPlural", is("imperfectivePresentFirstPersonPlural"))
-      .body("conjugations.imperfectivePresentSecondPersonPlural", is("imperfectivePresentSecondPersonPlural"))
-      .body("conjugations.imperfectivePresentThirdPersonPlural", is("imperfectivePresentThirdPersonPlural"))
+      .body(
+        "conjugations.imperfectivePresentFirstPersonSingular",
+        is("imperfectivePresentFirstPersonSingular")
+      )
+      .body(
+        "conjugations.imperfectivePresentSecondPersonSingular",
+        is("imperfectivePresentSecondPersonSingular")
+      )
+      .body(
+        "conjugations.imperfectivePresentThirdPersonSingular",
+        is("imperfectivePresentThirdPersonSingular")
+      )
+      .body(
+        "conjugations.imperfectivePresentFirstPersonPlural",
+        is("imperfectivePresentFirstPersonPlural")
+      )
+      .body(
+        "conjugations.imperfectivePresentSecondPersonPlural",
+        is("imperfectivePresentSecondPersonPlural")
+      )
+      .body(
+        "conjugations.imperfectivePresentThirdPersonPlural",
+        is("imperfectivePresentThirdPersonPlural")
+      )
       .body("conjugations.imperfectivePastMasculine", is("imperfectivePastMasculine"))
       .body("conjugations.imperfectivePastFeminine", is("imperfectivePastFeminine"))
       .body("conjugations.imperfectivePastNeuter", is("imperfectivePastNeuter"))
       .body("conjugations.imperfectivePastPlural", is("imperfectivePastPlural"))
-      .body("conjugations.imperfectiveFutureFirstPersonSingular", is("imperfectiveFutureFirstPersonSingular"))
-      .body("conjugations.imperfectiveFutureSecondPersonSingular", is("imperfectiveFutureSecondPersonSingular"))
-      .body("conjugations.imperfectiveFutureThirdPersonSingular", is("imperfectiveFutureThirdPersonSingular"))
-      .body("conjugations.imperfectiveFutureFirstPersonPlural", is("imperfectiveFutureFirstPersonPlural"))
-      .body("conjugations.imperfectiveFutureSecondPersonPlural", is("imperfectiveFutureSecondPersonPlural"))
-      .body("conjugations.imperfectiveFutureThirdPersonPlural", is("imperfectiveFutureThirdPersonPlural"))
-      .body("conjugations.perfectivePresentFirstPersonSingular", is("perfectivePresentFirstPersonSingular"))
-      .body("conjugations.perfectivePresentSecondPersonSingular", is("perfectivePresentSecondPersonSingular"))
-      .body("conjugations.perfectivePresentThirdPersonSingular", is("perfectivePresentThirdPersonSingular"))
-      .body("conjugations.perfectivePresentFirstPersonPlural", is("perfectivePresentFirstPersonPlural"))
-      .body("conjugations.perfectivePresentSecondPersonPlural", is("perfectivePresentSecondPersonPlural"))
-      .body("conjugations.perfectivePresentThirdPersonPlural", is("perfectivePresentThirdPersonPlural"))
+      .body(
+        "conjugations.imperfectiveFutureFirstPersonSingular",
+        is("imperfectiveFutureFirstPersonSingular")
+      )
+      .body(
+        "conjugations.imperfectiveFutureSecondPersonSingular",
+        is("imperfectiveFutureSecondPersonSingular")
+      )
+      .body(
+        "conjugations.imperfectiveFutureThirdPersonSingular",
+        is("imperfectiveFutureThirdPersonSingular")
+      )
+      .body(
+        "conjugations.imperfectiveFutureFirstPersonPlural",
+        is("imperfectiveFutureFirstPersonPlural")
+      )
+      .body(
+        "conjugations.imperfectiveFutureSecondPersonPlural",
+        is("imperfectiveFutureSecondPersonPlural")
+      )
+      .body(
+        "conjugations.imperfectiveFutureThirdPersonPlural",
+        is("imperfectiveFutureThirdPersonPlural")
+      )
+      .body(
+        "conjugations.perfectivePresentFirstPersonSingular",
+        is("perfectivePresentFirstPersonSingular")
+      )
+      .body(
+        "conjugations.perfectivePresentSecondPersonSingular",
+        is("perfectivePresentSecondPersonSingular")
+      )
+      .body(
+        "conjugations.perfectivePresentThirdPersonSingular",
+        is("perfectivePresentThirdPersonSingular")
+      )
+      .body(
+        "conjugations.perfectivePresentFirstPersonPlural",
+        is("perfectivePresentFirstPersonPlural")
+      )
+      .body(
+        "conjugations.perfectivePresentSecondPersonPlural",
+        is("perfectivePresentSecondPersonPlural")
+      )
+      .body(
+        "conjugations.perfectivePresentThirdPersonPlural",
+        is("perfectivePresentThirdPersonPlural")
+      )
       .body("conjugations.perfectivePastMasculine", is("perfectivePastMasculine"))
       .body("conjugations.perfectivePastFeminine", is("perfectivePastFeminine"))
       .body("conjugations.perfectivePastNeuter", is("perfectivePastNeuter"))
       .body("conjugations.perfectivePastPlural", is("perfectivePastPlural"))
-      .body("conjugations.perfectiveFutureFirstPersonSingular", is("perfectiveFutureFirstPersonSingular"))
-      .body("conjugations.perfectiveFutureSecondPersonSingular", is("perfectiveFutureSecondPersonSingular"))
-      .body("conjugations.perfectiveFutureThirdPersonSingular", is("perfectiveFutureThirdPersonSingular"))
-      .body("conjugations.perfectiveFutureFirstPersonPlural", is("perfectiveFutureFirstPersonPlural"))
-      .body("conjugations.perfectiveFutureSecondPersonPlural", is("perfectiveFutureSecondPersonPlural"))
-      .body("conjugations.perfectiveFutureThirdPersonPlural", is("perfectiveFutureThirdPersonPlural"));
+      .body(
+        "conjugations.perfectiveFutureFirstPersonSingular",
+        is("perfectiveFutureFirstPersonSingular")
+      )
+      .body(
+        "conjugations.perfectiveFutureSecondPersonSingular",
+        is("perfectiveFutureSecondPersonSingular")
+      )
+      .body(
+        "conjugations.perfectiveFutureThirdPersonSingular",
+        is("perfectiveFutureThirdPersonSingular")
+      )
+      .body(
+        "conjugations.perfectiveFutureFirstPersonPlural",
+        is("perfectiveFutureFirstPersonPlural")
+      )
+      .body(
+        "conjugations.perfectiveFutureSecondPersonPlural",
+        is("perfectiveFutureSecondPersonPlural")
+      )
+      .body(
+        "conjugations.perfectiveFutureThirdPersonPlural",
+        is("perfectiveFutureThirdPersonPlural")
+      );
   }
 
   @Test
@@ -135,7 +212,11 @@ public class FindWordByIdTest extends IntegrationTest {
       .get("/words/" + word.getId())
       .then()
       .statusCode(200)
-      .body("id", is(word.getId().toString()))
+      .body(
+        "id",
+        is(word.getId()
+          .toString())
+      )
       .body("russian", is("a"))
       .body("english", is("a"))
       .body("spanish", is("a"))

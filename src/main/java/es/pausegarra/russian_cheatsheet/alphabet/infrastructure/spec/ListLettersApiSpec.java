@@ -17,8 +17,7 @@ public interface ListLettersApiSpec {
   @GET
   @Operation(summary = "List letters")
   @APIResponse(
-    responseCode = "200",
-    description = "Letters found"
+    responseCode = "200", description = "Letters found"
   )
   RestResponse<List<LetterPresentation>> listLetters();
 

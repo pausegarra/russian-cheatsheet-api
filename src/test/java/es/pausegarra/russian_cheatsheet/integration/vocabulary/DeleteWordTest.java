@@ -19,7 +19,10 @@ public class DeleteWordTest extends IntegrationTest {
   @Transactional
   public WordEntity createWord() {
     WordEntity word = WordEntity.create(
-      null, "Russkiy po moyemu", "Russkiy po moyemu", "russkiy po moyemu",
+      null,
+      "Russkiy po moyemu",
+      "Russkiy po moyemu",
+      "russkiy po moyemu",
       WordTypes.VERB
     );
     em.persist(word);
@@ -29,8 +32,7 @@ public class DeleteWordTest extends IntegrationTest {
 
   @Test
   @TestSecurity(
-    user = "user",
-    roles = "words#delete"
+    user = "user", roles = "words#delete"
   )
   public void shouldDeleteWord() {
     WordEntity word = createWord();
@@ -46,8 +48,7 @@ public class DeleteWordTest extends IntegrationTest {
 
   @Test
   @TestSecurity(
-    user = "user",
-    roles = "words#delete"
+    user = "user", roles = "words#delete"
   )
   public void shouldReturn404IfWordNotFound() {
     given().when()

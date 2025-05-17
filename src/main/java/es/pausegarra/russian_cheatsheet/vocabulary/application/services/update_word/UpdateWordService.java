@@ -54,9 +54,10 @@ public class UpdateWordService implements Service<UpdateWordDto, Void> {
 
     VerbConjugationEntity existing = word.getConjugations();
 
-    return existing == null
-      ? createNewConjugations(word, dto)
-      : updateExistingConjugations(existing, dto);
+    return existing == null ? createNewConjugations(
+      word,
+      dto
+    ) : updateExistingConjugations(existing, dto);
   }
 
   private VerbConjugationEntity createNewConjugations(WordEntity word, UpdateWordDto dto) {
@@ -65,8 +66,12 @@ public class UpdateWordService implements Service<UpdateWordDto, Void> {
       .withWord(word);
   }
 
-  private VerbConjugationEntity updateExistingConjugations(VerbConjugationEntity existing, UpdateWordDto dto) {
-    return existing.update(dto.conjugations().toEntity());
+  private VerbConjugationEntity updateExistingConjugations(
+    VerbConjugationEntity existing,
+    UpdateWordDto dto
+  ) {
+    return existing.update(dto.conjugations()
+      .toEntity());
   }
 
 

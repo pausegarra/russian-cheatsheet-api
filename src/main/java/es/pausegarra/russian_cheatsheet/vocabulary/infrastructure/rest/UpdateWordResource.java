@@ -19,8 +19,16 @@ public class UpdateWordResource implements UpdateWordApiSpec {
   @Override
   @RolesAllowed("words#update")
   public RestResponse<SimplePresentation> updateWord(String id, UpdateWordRequest request) {
-    WordConjugationsDto conjugationsDto = request.conjugations() != null ? request.conjugations().toDto() : null;
-    UpdateWordDto dto = UpdateWordDto.from(id, request.russian(), request.english(), request.spanish(), request.type(), conjugationsDto);
+    WordConjugationsDto conjugationsDto = request.conjugations() != null ? request.conjugations()
+      .toDto() : null;
+    UpdateWordDto dto = UpdateWordDto.from(
+      id,
+      request.russian(),
+      request.english(),
+      request.spanish(),
+      request.type(),
+      conjugationsDto
+    );
     updateWordService.handle(dto);
 
     SimplePresentation simplePresentation = new SimplePresentation(id);

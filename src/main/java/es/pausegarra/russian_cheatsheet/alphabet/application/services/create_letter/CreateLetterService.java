@@ -24,7 +24,12 @@ public class CreateLetterService implements Service<CreateLetterDto, UUID> {
     @Valid
     CreateLetterDto command
   ) {
-    LetterEntity letter = LetterEntity.create(null, command.cyrillic(), command.ipa(), command.latin());
+    LetterEntity letter = LetterEntity.create(
+      null,
+      command.cyrillic(),
+      command.ipa(),
+      command.latin()
+    );
 
     letterRepository.save(letter);
 

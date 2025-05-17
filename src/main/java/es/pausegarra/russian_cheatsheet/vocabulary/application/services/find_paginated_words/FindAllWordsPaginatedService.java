@@ -14,14 +14,20 @@ import java.util.List;
 
 @ApplicationScoped
 @RequiredArgsConstructor
-public class FindAllWordsPaginatedService implements Service<FindAllWordsPaginatedDto, PaginatedDto<WordDto>> {
+public class FindAllWordsPaginatedService implements Service<FindAllWordsPaginatedDto,
+  PaginatedDto<WordDto>> {
 
   private final WordsRepository wordsRepository;
 
   @Override
   public PaginatedDto<WordDto> handle(FindAllWordsPaginatedDto dto) {
     WordsSearchCriteria criteria = WordsSearchCriteria.create(
-      dto.page(), dto.pageSize(), dto.sortBy(), dto.sortDirection(), dto.search());
+      dto.page(),
+      dto.pageSize(),
+      dto.sortBy(),
+      dto.sortDirection(),
+      dto.search()
+    );
     Paginated<WordEntity> words = wordsRepository.findByCriteria(criteria);
 
     List<WordDto> wordsDto = words.data()

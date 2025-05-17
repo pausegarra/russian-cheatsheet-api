@@ -14,7 +14,8 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @QuarkusTest
@@ -32,14 +33,18 @@ class FindWordByIdServiceTest {
 
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.of(word));
 
-    FindWordByIdDto dto = FindWordByIdDto.from(UUID.randomUUID().toString());
+    FindWordByIdDto dto = FindWordByIdDto.from(UUID.randomUUID()
+      .toString());
     WordDto wordDto = findWordByIdService.handle(dto);
 
     assertEquals(word.getId(), wordDto.id());
     assertEquals(word.getRussian(), wordDto.russian());
     assertEquals(word.getEnglish(), wordDto.english());
     assertEquals(word.getSpanish(), wordDto.spanish());
-    assertEquals(word.getType().toString(), wordDto.type());
+    assertEquals(
+      word.getType()
+        .toString(), wordDto.type()
+    );
 
     verify(wordsRepository, times(1)).findById(any(UUID.class));
   }
@@ -48,7 +53,8 @@ class FindWordByIdServiceTest {
   public void shouldThrowExceptionWhenWordIsNotFound() {
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
-    FindWordByIdDto dto = FindWordByIdDto.from(UUID.randomUUID().toString());
+    FindWordByIdDto dto = FindWordByIdDto.from(UUID.randomUUID()
+      .toString());
     assertThrows(WordNotFound.class, () -> findWordByIdService.handle(dto));
   }
 

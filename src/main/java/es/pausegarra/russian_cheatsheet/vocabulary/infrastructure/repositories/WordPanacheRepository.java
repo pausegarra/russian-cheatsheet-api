@@ -21,13 +21,15 @@ public class WordPanacheRepository implements WordsRepository, PanacheRepository
   public Paginated<WordEntity> findByCriteria(WordsSearchCriteria criteria) {
     Sort sort = Sort.by(
       criteria.getSorting()
-        .sortBy(), Sort.Direction.valueOf(criteria.getSorting()
-                                            .sortDirection()
-                                            .getValue())
+        .sortBy(),
+      Sort.Direction.valueOf(criteria.getSorting()
+        .sortDirection()
+        .getValue())
     );
     Page page = Page.of(
       criteria.getPagination()
-        .page(), criteria.getPagination()
+        .page(),
+      criteria.getPagination()
         .pageSize()
     );
     PanacheQuery<WordEntity> query;
@@ -35,7 +37,9 @@ public class WordPanacheRepository implements WordsRepository, PanacheRepository
     if (criteria.getSearch() != null && !criteria.getSearch()
       .isBlank()) {
       query = find(
-        "lower(russian) like ?1 or lower(english) like ?1 or lower(spanish) like ?1", sort, "%" + criteria.getSearch()
+        "lower(russian) like ?1 or lower(english) like ?1 or lower(spanish) like ?1",
+        sort,
+        "%" + criteria.getSearch()
           .toLowerCase() + "%"
       ).page(page);
     } else {
@@ -45,8 +49,13 @@ public class WordPanacheRepository implements WordsRepository, PanacheRepository
     PageInfo pageInfo = PageInfo.fromQuery(query);
 
     return new Paginated<>(
-      query.list(), pageInfo.page(), pageInfo.pageSize(), pageInfo.totalPages(), pageInfo.totalElements(),
-      pageInfo.hasNextPage(), pageInfo.hasPreviousPage()
+      query.list(),
+      pageInfo.page(),
+      pageInfo.pageSize(),
+      pageInfo.totalPages(),
+      pageInfo.totalElements(),
+      pageInfo.hasNextPage(),
+      pageInfo.hasPreviousPage()
     );
   }
 

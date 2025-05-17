@@ -16,16 +16,13 @@ public interface FindAuthRolesApiSpec {
   @GET
   @Operation(summary = "Get the roles and permissions for current user")
   @APIResponse(
-    description = "Permissions found",
-    responseCode = "200"
+    description = "Permissions found", responseCode = "200"
   )
   @APIResponse(
-    description = "Unauthenticated",
-    responseCode = "401"
+    description = "Unauthenticated", responseCode = "401"
   )
   @APIResponse(
-    description = "Server error",
-    responseCode = "500"
+    description = "Server error", responseCode = "500"
   )
   @SecurityRequirement(
     name = "SecurityScheme"

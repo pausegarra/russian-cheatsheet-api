@@ -60,7 +60,8 @@ public class CreateWordTest extends IntegrationTest {
       .extract()
       .response();
 
-    WordEntity word = em.find(WordEntity.class,
+    WordEntity word = em.find(
+      WordEntity.class,
       UUID.fromString(response.getBody()
         .jsonPath()
         .getString("resourceId"))

@@ -22,7 +22,8 @@ public class FindAuthRolesService implements Service<FindAuthRolesDto, Permissio
   public PermissionsDto handle(FindAuthRolesDto dto) {
     List<PermissionDto> permissions = keycloakRepository.getEntitlement(
       "urn:ietf:params:oauth:grant-type:uma-ticket",
-      dto.clientId(), "permissions",
+      dto.clientId(),
+      "permissions",
       "Bearer " + dto.token()
     );
 

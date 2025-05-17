@@ -20,47 +20,41 @@ public interface ListWordsApiSpec {
   @GET
   @Operation(summary = "List words")
   @APIResponse(
-    responseCode = "200",
-    description = "Words found"
+    responseCode = "200", description = "Words found"
   )
   RestResponse<PaginatedPresentation<WordListPresentation>> listWords(
     @QueryParam("page")
     @DefaultValue("0")
     @Parameter(
-      name = "page",
-      in = ParameterIn.QUERY
+      name = "page", in = ParameterIn.QUERY
     )
     int page,
 
     @QueryParam("pageSize")
     @DefaultValue("10")
     @Parameter(
-      name = "pageSize",
-      in = ParameterIn.QUERY
+      name = "pageSize", in = ParameterIn.QUERY
     )
     int pageSize,
 
     @QueryParam("sortBy")
     @DefaultValue("spanish")
     @Parameter(
-      name = "sortBy",
-      in = ParameterIn.QUERY
+      name = "sortBy", in = ParameterIn.QUERY
     )
     String sortBy,
 
     @QueryParam("sortDirection")
     @DefaultValue("asc")
     @Parameter(
-      name = "sortDirection",
-      in = ParameterIn.QUERY
+      name = "sortDirection", in = ParameterIn.QUERY
     )
     String sortDirection,
 
     @QueryParam("search")
     @DefaultValue("")
     @Parameter(
-      name = "search",
-      in = ParameterIn.QUERY
+      name = "search", in = ParameterIn.QUERY
     )
     String search
   );

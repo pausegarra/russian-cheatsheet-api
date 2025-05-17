@@ -7,10 +7,19 @@ public class UpdateWordRequestMother {
 
   public static UpdateWordRequest.UpdateWordRequestBuilder random() {
     return UpdateWordRequest.builder()
-      .russian(MotherCreator.random().name().toString())
-      .english(MotherCreator.random().name().toString())
-      .spanish(MotherCreator.random().name().toString())
-      .type(MotherCreator.random().options().option(WordTypes.class).toString())
+      .russian(MotherCreator.random()
+        .name()
+        .toString())
+      .english(MotherCreator.random()
+        .name()
+        .toString())
+      .spanish(MotherCreator.random()
+        .name()
+        .toString())
+      .type(MotherCreator.random()
+        .options()
+        .option(WordTypes.class)
+        .toString())
       .conjugations(null);
   }
 

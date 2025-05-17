@@ -24,9 +24,16 @@ public record WordDto(
     }
 
     return new WordDto(
-      entity.getId(), entity.getRussian(), entity.getEnglish(), entity.getSpanish(), entity.getType()
-      .toString(), conjugations, entity.getAuditFields()
-        .getCreatedAt(), entity.getAuditFields()
+      entity.getId(),
+      entity.getRussian(),
+      entity.getEnglish(),
+      entity.getSpanish(),
+      entity.getType()
+        .toString(),
+      conjugations,
+      entity.getAuditFields()
+        .getCreatedAt(),
+      entity.getAuditFields()
         .getUpdatedAt()
     );
   }

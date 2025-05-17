@@ -1,9 +1,9 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.rest;
 
 import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.SimplePresentation;
+import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordConjugationsDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordService;
-import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordConjugationsDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.CreateWordRequest;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.spec.CreateWordApiSpec;
 import jakarta.annotation.security.RolesAllowed;
@@ -22,10 +22,16 @@ public class CreateWordResource implements CreateWordApiSpec {
   public RestResponse<SimplePresentation> createWord(
     CreateWordRequest request
   ) {
-    WordConjugationsDto conjugationsDto = request.conjugations() == null ? null : request.conjugations()
+    WordConjugationsDto conjugationsDto = request.conjugations() == null ? null :
+      request.conjugations()
       .toDto();
     CreateWordDto command = CreateWordDto.from(
-      request.russian(), request.english(), request.spanish(), request.type(), conjugationsDto);
+      request.russian(),
+      request.english(),
+      request.spanish(),
+      request.type(),
+      conjugationsDto
+    );
 
     UUID createdWordId = createWordService.handle(command);
     SimplePresentation simplePresentation = new SimplePresentation(createdWordId.toString());

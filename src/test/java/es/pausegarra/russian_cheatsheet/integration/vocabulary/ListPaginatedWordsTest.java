@@ -75,11 +75,13 @@ public class ListPaginatedWordsTest extends IntegrationTest {
       .then()
       .statusCode(200)
       .body("data.size()", is(1))
-      .body("data[0]", anyOf(
-        hasEntry(equalTo("russian"), containsString("a")),
-        hasEntry(equalTo("english"), containsString("a")),
-        hasEntry(equalTo("spanish"), containsString("a"))
-      ));
+      .body(
+        "data[0]", anyOf(
+          hasEntry(equalTo("russian"), containsString("a")),
+          hasEntry(equalTo("english"), containsString("a")),
+          hasEntry(equalTo("spanish"), containsString("a"))
+        )
+      );
   }
 
 }

@@ -38,7 +38,10 @@ public class HasPermissionInterceptor {
     for (String permission : requiredPermission) {
       try {
         keycloakRepository.checkPermission(
-          "urn:ietf:params:oauth:grant-type:uma-ticket", keycloakConfig.clientId(), "decision", permission,
+          "urn:ietf:params:oauth:grant-type:uma-ticket",
+          keycloakConfig.clientId(),
+          "decision",
+          permission,
           "Bearer " + jwt.getRawToken()
         );
       } catch (ClientWebApplicationException e) {

@@ -18,19 +18,15 @@ public interface FindWordByIdApiSpec {
   @GET
   @Operation(summary = "Find word by id")
   @APIResponse(
-    responseCode = "200",
-    description = "Word found"
+    responseCode = "200", description = "Word found"
   )
   @APIResponse(
-    responseCode = "404",
-    description = "Word not found"
+    responseCode = "404", description = "Word not found"
   )
   public RestResponse<WordPresentation> findWordById(
     @PathParam("id")
     @Parameter(
-      name = "id",
-      in = ParameterIn.PATH,
-      required = true
+      name = "id", in = ParameterIn.PATH, required = true
     )
     String id
   );

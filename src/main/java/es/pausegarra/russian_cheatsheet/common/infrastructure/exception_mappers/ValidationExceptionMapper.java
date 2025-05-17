@@ -21,9 +21,10 @@ public class ValidationExceptionMapper {
       .map(ValidationError::fromConstraint)
       .collect(Collectors.toSet());
 
-    ValidationErrorPresentation presentation = ValidationErrorPresentation.create(
-      "Unprocessable Entity",
-      Response.Status.BAD_REQUEST, "VALIDATION_ERROR",
+    ValidationErrorPresentation presentation = ValidationErrorPresentation.create("Unprocessable " +
+        "Entity",
+      Response.Status.BAD_REQUEST,
+      "VALIDATION_ERROR",
       errors
     );
 

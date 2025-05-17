@@ -9,7 +9,6 @@ import es.pausegarra.russian_cheatsheet.vocabulary.application.services.find_pag
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.presentations.WordListPresentation;
-import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.presentations.WordPresentation;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
@@ -36,14 +35,36 @@ class ListWordsResourceTest {
   @Test
   public void shouldReturnAllWords() {
     WordEntity word = new WordEntity(
-      UUID.randomUUID(), "a", "a", "a", WordTypes.VERB, null, new AuditFields(Instant.now(), Instant.now()));
+      UUID.randomUUID(),
+      "a",
+      "a",
+      "a",
+      WordTypes.VERB,
+      null,
+      new AuditFields(Instant.now(), Instant.now())
+    );
     WordDto wordDto = WordDto.fromEntity(word);
-    PaginatedDto<WordDto> paginatedDto = new PaginatedDto<>(List.of(wordDto), 0, 10, 1, 1, true, false);
+    PaginatedDto<WordDto> paginatedDto = new PaginatedDto<>(
+      List.of(wordDto),
+      0,
+      10,
+      1,
+      1,
+      true,
+      false
+    );
 
-    when(findAllWordsPaginatedService.handle(any(FindAllWordsPaginatedDto.class))).thenReturn(paginatedDto);
+    when(findAllWordsPaginatedService.handle(any(FindAllWordsPaginatedDto.class))).thenReturn(
+      paginatedDto);
 
-    RestResponse<PaginatedPresentation<WordListPresentation>> response = listWordsResource.listWords(
-      0, 10, "spanish", "asc", "");
+    RestResponse<PaginatedPresentation<WordListPresentation>> response =
+      listWordsResource.listWords(
+      0,
+      10,
+      "spanish",
+      "asc",
+      ""
+    );
 
     assertEquals(200, response.getStatus());
 

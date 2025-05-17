@@ -20,22 +20,19 @@ public class WordEntity {
   private final UUID id;
 
   @Column(
-    unique = true,
-    nullable = false
+    unique = true, nullable = false
   )
   @With
   private final String russian;
 
   @Column(
-    unique = true,
-    nullable = false
+    unique = true, nullable = false
   )
   @With
   private final String english;
 
   @Column(
-    unique = true,
-    nullable = false
+    unique = true, nullable = false
   )
   @With
   private final String spanish;
@@ -45,9 +42,7 @@ public class WordEntity {
   private final WordTypes type;
 
   @OneToOne(
-    mappedBy = "word",
-    cascade = CascadeType.ALL,
-    orphanRemoval = true
+    mappedBy = "word", cascade = CascadeType.ALL, orphanRemoval = true
   )
   @With
   private final VerbConjugationEntity conjugations;
@@ -55,11 +50,23 @@ public class WordEntity {
   @Embedded
   private final AuditFields auditFields;
 
-  public static WordEntity create(UUID id, String russian, String english, String spanish, WordTypes type) {
+  public static WordEntity create(
+    UUID id,
+    String russian,
+    String english,
+    String spanish,
+    WordTypes type
+  ) {
     return new WordEntity(id, russian, english, spanish, type, null, null);
   }
 
-  public WordEntity update(String russian, String english, String spanish, WordTypes type, VerbConjugationEntity conjugations) {
+  public WordEntity update(
+    String russian,
+    String english,
+    String spanish,
+    WordTypes type,
+    VerbConjugationEntity conjugations
+  ) {
     return this.withEnglish(english)
       .withRussian(russian)
       .withSpanish(spanish)
