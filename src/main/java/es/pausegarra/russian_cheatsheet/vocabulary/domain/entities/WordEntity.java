@@ -47,6 +47,12 @@ public class WordEntity {
   @With
   private final VerbConjugationEntity conjugations;
 
+  @OneToOne(
+    mappedBy = "word", cascade = CascadeType.ALL, orphanRemoval = true
+  )
+  @With
+  private final WordCasesEntity cases;
+
   @Embedded
   private final AuditFields auditFields;
 
@@ -57,7 +63,7 @@ public class WordEntity {
     String spanish,
     WordTypes type
   ) {
-    return new WordEntity(id, russian, english, spanish, type, null, null);
+    return new WordEntity(id, russian, english, spanish, type, null, null, null);
   }
 
   public WordEntity update(

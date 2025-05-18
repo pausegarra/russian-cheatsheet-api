@@ -1,6 +1,7 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word;
 
 import es.pausegarra.russian_cheatsheet.common.domain.audit.AuditFields;
+import es.pausegarra.russian_cheatsheet.mother.WordEntityMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.exception.WordAlreadyExists;
@@ -29,15 +30,8 @@ class CreateWordServiceTest {
 
   @Test
   public void shouldCreateWord() {
-    WordEntity word = new WordEntity(
-      UUID.randomUUID(),
-      "a",
-      "a",
-      "a",
-      WordTypes.VERB,
-      null,
-      new AuditFields(Instant.now(), Instant.now())
-    );
+    WordEntity word = WordEntityMother.random()
+      .build();
     when(wordsRepository.save(any(WordEntity.class))).thenReturn(word);
 
     createWordService.handle(CreateWordDto.from("a", "a", "a", "VERB", null));
@@ -54,15 +48,8 @@ class CreateWordServiceTest {
 
   @Test
   public void shouldThrowExceptionIfWordExists() {
-    when(wordsRepository.findByRussian(anyString())).thenReturn(Optional.of(new WordEntity(
-      UUID.randomUUID(),
-      "a",
-      "a",
-      "a",
-      WordTypes.VERB,
-      null,
-      new AuditFields(Instant.now(), Instant.now())
-    )));
+    when(wordsRepository.findByRussian(anyString())).thenReturn(Optional.of(WordEntityMother.random()
+        .build()));
 
     CreateWordDto command = CreateWordDto.from("a", "a", "a", "VERB", null);
     assertThrows(WordAlreadyExists.class, () -> createWordService.handle(command));

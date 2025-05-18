@@ -12,15 +12,21 @@ public record WordDto(
   String spanish,
   String type,
   WordConjugationsDto conjugations,
+  WordCaseDto cases,
   Instant createdAt,
   Instant updatedAt
 ) {
 
   public static WordDto fromEntity(WordEntity entity) {
     WordConjugationsDto conjugations = null;
+    WordCaseDto cases = null;
 
     if (entity.getConjugations() != null) {
       conjugations = WordConjugationsDto.fromEntity(entity.getConjugations());
+    }
+
+    if (entity.getCases() != null) {
+      cases = WordCaseDto.fromEntity(entity.getCases());
     }
 
     return new WordDto(
@@ -31,6 +37,7 @@ public record WordDto(
       entity.getType()
         .toString(),
       conjugations,
+      cases,
       entity.getAuditFields()
         .getCreatedAt(),
       entity.getAuditFields()

@@ -24,6 +24,7 @@ public class WordEntityMother {
         .options()
         .option(WordTypes.class))
       .conjugations(null)
+      .cases(null)
       .auditFields(new AuditFields());
   }
 

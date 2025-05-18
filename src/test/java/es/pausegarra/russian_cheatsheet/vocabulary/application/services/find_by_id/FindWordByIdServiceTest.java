@@ -1,6 +1,7 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.application.services.find_by_id;
 
 import es.pausegarra.russian_cheatsheet.common.domain.audit.AuditFields;
+import es.pausegarra.russian_cheatsheet.mother.WordEntityMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
@@ -29,7 +30,8 @@ class FindWordByIdServiceTest {
 
   @Test
   public void shouldFindWordById() {
-    WordEntity word = new WordEntity(null, "a", "a", "a", WordTypes.VERB, null, new AuditFields());
+    WordEntity word = WordEntityMother.random()
+      .build();
 
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.of(word));
 

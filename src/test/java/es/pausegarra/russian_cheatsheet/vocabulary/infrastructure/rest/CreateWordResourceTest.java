@@ -2,6 +2,7 @@ package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.rest;
 
 import es.pausegarra.russian_cheatsheet.common.domain.audit.AuditFields;
 import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.SimplePresentation;
+import es.pausegarra.russian_cheatsheet.mother.WordEntityMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordService;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
@@ -33,15 +34,8 @@ class CreateWordResourceTest {
   @Test
   @TestSecurity(authorizationEnabled = false)
   public void shouldCreateWord() {
-    WordEntity word = new WordEntity(
-      UUID.randomUUID(),
-      "a",
-      "a",
-      "a",
-      WordTypes.VERB,
-      null,
-      new AuditFields(Instant.now(), Instant.now())
-    );
+    WordEntity word = WordEntityMother.random()
+      .build();
 
     when(createWordService.handle(any(CreateWordDto.class))).thenReturn(word.getId());
 

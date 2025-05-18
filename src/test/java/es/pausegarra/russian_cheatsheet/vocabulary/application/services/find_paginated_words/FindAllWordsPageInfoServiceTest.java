@@ -3,6 +3,7 @@ package es.pausegarra.russian_cheatsheet.vocabulary.application.services.find_pa
 import es.pausegarra.russian_cheatsheet.common.application.pagination.PaginatedDto;
 import es.pausegarra.russian_cheatsheet.common.domain.audit.AuditFields;
 import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.Paginated;
+import es.pausegarra.russian_cheatsheet.mother.WordEntityMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.criterias.WordsSearchCriteria;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
@@ -31,15 +32,8 @@ class FindAllWordsPageInfoServiceTest {
 
   @Test
   public void shouldFindAllWords() {
-    WordEntity word = new WordEntity(
-      UUID.randomUUID(),
-      "a",
-      "a",
-      "a",
-      WordTypes.VERB,
-      null,
-      new AuditFields(Instant.now(), Instant.now())
-    );
+    WordEntity word = WordEntityMother.random()
+      .build();
 
     Paginated<WordEntity> paginated = new Paginated<>(List.of(word), 0, 10, 1, 1, true, false);
     when(wordsRepository.findByCriteria(any(WordsSearchCriteria.class))).thenReturn(paginated);

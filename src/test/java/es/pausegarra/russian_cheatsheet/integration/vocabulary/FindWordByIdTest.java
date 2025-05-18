@@ -1,7 +1,11 @@
 package es.pausegarra.russian_cheatsheet.integration.vocabulary;
 
 import es.pausegarra.russian_cheatsheet.annotations.IntegrationTest;
+import es.pausegarra.russian_cheatsheet.mother.VerbConjugationEntityMother;
+import es.pausegarra.russian_cheatsheet.mother.WordCaseMother;
+import es.pausegarra.russian_cheatsheet.mother.WordEntityMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.VerbConjugationEntity;
+import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordCasesEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import io.quarkus.test.junit.QuarkusTest;
@@ -19,45 +23,15 @@ public class FindWordByIdTest extends IntegrationTest {
 
   @Transactional
   public WordEntity setUpWithConjugations() {
-    WordEntity word = WordEntity.create(null, "a", "a", "a", WordTypes.VERB);
+    WordEntity word = WordEntityMother.random()
+      .id(null)
+      .build();
     em.persist(word);
 
-    VerbConjugationEntity conjugation = VerbConjugationEntity.create(
-      null,
-      word,
-      "imperfectivePresentFirstPersonSingular",
-      "imperfectivePresentSecondPersonSingular",
-      "imperfectivePresentThirdPersonSingular",
-      "imperfectivePresentFirstPersonPlural",
-      "imperfectivePresentSecondPersonPlural",
-      "imperfectivePresentThirdPersonPlural",
-      "imperfectivePastMasculine",
-      "imperfectivePastFeminine",
-      "imperfectivePastNeuter",
-      "imperfectivePastPlural",
-      "imperfectiveFutureFirstPersonSingular",
-      "imperfectiveFutureSecondPersonSingular",
-      "imperfectiveFutureThirdPersonSingular",
-      "imperfectiveFutureFirstPersonPlural",
-      "imperfectiveFutureSecondPersonPlural",
-      "imperfectiveFutureThirdPersonPlural",
-      "perfectivePresentFirstPersonSingular",
-      "perfectivePresentSecondPersonSingular",
-      "perfectivePresentThirdPersonSingular",
-      "perfectivePresentFirstPersonPlural",
-      "perfectivePresentSecondPersonPlural",
-      "perfectivePresentThirdPersonPlural",
-      "perfectivePastMasculine",
-      "perfectivePastFeminine",
-      "perfectivePastNeuter",
-      "perfectivePastPlural",
-      "perfectiveFutureFirstPersonSingular",
-      "perfectiveFutureSecondPersonSingular",
-      "perfectiveFutureThirdPersonSingular",
-      "perfectiveFutureFirstPersonPlural",
-      "perfectiveFutureSecondPersonPlural",
-      "perfectiveFutureThirdPersonPlural"
-    );
+    VerbConjugationEntity conjugation = VerbConjugationEntityMother.random()
+      .id(null)
+      .word(word)
+      .build();
     word = word.withConjugations(conjugation);
     word = em.merge(word);
 
@@ -68,8 +42,29 @@ public class FindWordByIdTest extends IntegrationTest {
 
   @Transactional
   public WordEntity setUpWithoutConjugations() {
-    WordEntity word = WordEntity.create(null, "a", "a", "a", WordTypes.NOUN);
+    WordEntity word = WordEntityMother.random()
+      .type(WordTypes.NOUN)
+      .id(null)
+      .build();
     em.persist(word);
+    return word;
+  }
+
+  @Transactional
+  public WordEntity setUpWithCases() {
+    WordEntity word = WordEntityMother.random()
+      .id(null)
+      .build();
+    em.persist(word);
+
+    WordCasesEntity cases = WordCaseMother.random()
+      .id(null)
+      .word(word)
+      .build();
+    word = word.withCases(cases);
+
+    em.persist(cases);
+
     return word;
   }
 
@@ -86,113 +81,173 @@ public class FindWordByIdTest extends IntegrationTest {
         is(word.getId()
           .toString())
       )
-      .body("russian", is("a"))
-      .body("english", is("a"))
-      .body("spanish", is("a"))
-      .body("type", is("VERB"))
+      .body("russian", is(word.getRussian()))
+      .body("english", is(word.getEnglish()))
+      .body("spanish", is(word.getSpanish()))
+      .body(
+        "type",
+        is(word.getType()
+          .toString())
+      )
       .body(
         "conjugations.imperfectivePresentFirstPersonSingular",
-        is("imperfectivePresentFirstPersonSingular")
+        is(word.getConjugations()
+          .getImperfectivePresentFirstPersonSingular())
       )
       .body(
         "conjugations.imperfectivePresentSecondPersonSingular",
-        is("imperfectivePresentSecondPersonSingular")
+        is(word.getConjugations()
+          .getImperfectivePresentSecondPersonSingular())
       )
       .body(
         "conjugations.imperfectivePresentThirdPersonSingular",
-        is("imperfectivePresentThirdPersonSingular")
+        is(word.getConjugations()
+          .getImperfectivePresentThirdPersonSingular())
       )
       .body(
         "conjugations.imperfectivePresentFirstPersonPlural",
-        is("imperfectivePresentFirstPersonPlural")
+        is(word.getConjugations()
+          .getImperfectivePresentFirstPersonPlural())
       )
       .body(
         "conjugations.imperfectivePresentSecondPersonPlural",
-        is("imperfectivePresentSecondPersonPlural")
+        is(word.getConjugations()
+          .getImperfectivePresentSecondPersonPlural())
       )
       .body(
         "conjugations.imperfectivePresentThirdPersonPlural",
-        is("imperfectivePresentThirdPersonPlural")
+        is(word.getConjugations()
+          .getImperfectivePresentThirdPersonPlural())
       )
-      .body("conjugations.imperfectivePastMasculine", is("imperfectivePastMasculine"))
-      .body("conjugations.imperfectivePastFeminine", is("imperfectivePastFeminine"))
-      .body("conjugations.imperfectivePastNeuter", is("imperfectivePastNeuter"))
-      .body("conjugations.imperfectivePastPlural", is("imperfectivePastPlural"))
+      .body(
+        "conjugations.imperfectivePastMasculine",
+        is(word.getConjugations()
+          .getImperfectivePastMasculine())
+      )
+      .body(
+        "conjugations.imperfectivePastFeminine",
+        is(word.getConjugations()
+          .getImperfectivePastFeminine())
+      )
+      .body(
+        "conjugations.imperfectivePastNeuter",
+        is(word.getConjugations()
+          .getImperfectivePastNeuter())
+      )
+      .body(
+        "conjugations.imperfectivePastPlural",
+        is(word.getConjugations()
+          .getImperfectivePastPlural())
+      )
       .body(
         "conjugations.imperfectiveFutureFirstPersonSingular",
-        is("imperfectiveFutureFirstPersonSingular")
+        is(word.getConjugations()
+          .getImperfectiveFutureFirstPersonSingular())
       )
       .body(
         "conjugations.imperfectiveFutureSecondPersonSingular",
-        is("imperfectiveFutureSecondPersonSingular")
+        is(word.getConjugations()
+          .getImperfectiveFutureSecondPersonSingular())
       )
       .body(
         "conjugations.imperfectiveFutureThirdPersonSingular",
-        is("imperfectiveFutureThirdPersonSingular")
+        is(word.getConjugations()
+          .getImperfectiveFutureThirdPersonSingular())
       )
       .body(
         "conjugations.imperfectiveFutureFirstPersonPlural",
-        is("imperfectiveFutureFirstPersonPlural")
+        is(word.getConjugations()
+          .getImperfectiveFutureFirstPersonPlural())
       )
       .body(
         "conjugations.imperfectiveFutureSecondPersonPlural",
-        is("imperfectiveFutureSecondPersonPlural")
+        is(word.getConjugations()
+          .getImperfectiveFutureSecondPersonPlural())
       )
       .body(
         "conjugations.imperfectiveFutureThirdPersonPlural",
-        is("imperfectiveFutureThirdPersonPlural")
+        is(word.getConjugations()
+          .getImperfectiveFutureThirdPersonPlural())
       )
       .body(
         "conjugations.perfectivePresentFirstPersonSingular",
-        is("perfectivePresentFirstPersonSingular")
+        is(word.getConjugations()
+          .getPerfectivePresentFirstPersonSingular())
       )
       .body(
         "conjugations.perfectivePresentSecondPersonSingular",
-        is("perfectivePresentSecondPersonSingular")
+        is(word.getConjugations()
+          .getPerfectivePresentSecondPersonSingular())
       )
       .body(
         "conjugations.perfectivePresentThirdPersonSingular",
-        is("perfectivePresentThirdPersonSingular")
+        is(word.getConjugations()
+          .getPerfectivePresentThirdPersonSingular())
       )
       .body(
         "conjugations.perfectivePresentFirstPersonPlural",
-        is("perfectivePresentFirstPersonPlural")
+        is(word.getConjugations()
+          .getPerfectivePresentFirstPersonPlural())
       )
       .body(
         "conjugations.perfectivePresentSecondPersonPlural",
-        is("perfectivePresentSecondPersonPlural")
+        is(word.getConjugations()
+          .getPerfectivePresentSecondPersonPlural())
       )
       .body(
         "conjugations.perfectivePresentThirdPersonPlural",
-        is("perfectivePresentThirdPersonPlural")
+        is(word.getConjugations()
+          .getPerfectivePresentThirdPersonPlural())
       )
-      .body("conjugations.perfectivePastMasculine", is("perfectivePastMasculine"))
-      .body("conjugations.perfectivePastFeminine", is("perfectivePastFeminine"))
-      .body("conjugations.perfectivePastNeuter", is("perfectivePastNeuter"))
-      .body("conjugations.perfectivePastPlural", is("perfectivePastPlural"))
+      .body(
+        "conjugations.perfectivePastMasculine",
+        is(word.getConjugations()
+          .getPerfectivePastMasculine())
+      )
+      .body(
+        "conjugations.perfectivePastFeminine",
+        is(word.getConjugations()
+          .getPerfectivePastFeminine())
+      )
+      .body(
+        "conjugations.perfectivePastNeuter",
+        is(word.getConjugations()
+          .getPerfectivePastNeuter())
+      )
+      .body(
+        "conjugations.perfectivePastPlural",
+        is(word.getConjugations()
+          .getPerfectivePastPlural())
+      )
       .body(
         "conjugations.perfectiveFutureFirstPersonSingular",
-        is("perfectiveFutureFirstPersonSingular")
+        is(word.getConjugations()
+          .getPerfectiveFutureFirstPersonSingular())
       )
       .body(
         "conjugations.perfectiveFutureSecondPersonSingular",
-        is("perfectiveFutureSecondPersonSingular")
+        is(word.getConjugations()
+          .getPerfectiveFutureSecondPersonSingular())
       )
       .body(
         "conjugations.perfectiveFutureThirdPersonSingular",
-        is("perfectiveFutureThirdPersonSingular")
+        is(word.getConjugations()
+          .getPerfectiveFutureThirdPersonSingular())
       )
       .body(
         "conjugations.perfectiveFutureFirstPersonPlural",
-        is("perfectiveFutureFirstPersonPlural")
+        is(word.getConjugations()
+          .getPerfectiveFutureFirstPersonPlural())
       )
       .body(
         "conjugations.perfectiveFutureSecondPersonPlural",
-        is("perfectiveFutureSecondPersonPlural")
+        is(word.getConjugations()
+          .getPerfectiveFutureSecondPersonPlural())
       )
       .body(
         "conjugations.perfectiveFutureThirdPersonPlural",
-        is("perfectiveFutureThirdPersonPlural")
+        is(word.getConjugations()
+          .getPerfectiveFutureThirdPersonPlural())
       );
   }
 
@@ -217,11 +272,128 @@ public class FindWordByIdTest extends IntegrationTest {
         is(word.getId()
           .toString())
       )
-      .body("russian", is("a"))
-      .body("english", is("a"))
-      .body("spanish", is("a"))
-      .body("type", is("NOUN"))
+      .body("russian", is(word.getRussian()))
+      .body("english", is(word.getEnglish()))
+      .body("spanish", is(word.getSpanish()))
+      .body(
+        "type",
+        is(word.getType()
+          .toString())
+      )
       .body("conjugations", nullValue());
+  }
+
+  @Test
+  public void shouldReturnWordWithCases() {
+    WordEntity word = setUpWithCases();
+
+    given().when()
+      .get("/words/" + word.getId())
+      .then()
+      .statusCode(200)
+      .body(
+        "id",
+        is(word.getId()
+          .toString())
+      )
+      .body("russian", is(word.getRussian()))
+      .body("english", is(word.getEnglish()))
+      .body("spanish", is(word.getSpanish()))
+      .body(
+        "type",
+        is(word.getType()
+          .toString())
+      )
+      .body(
+        "cases.nominativeMasculine",
+        is(word.getCases()
+          .getNominativeMasculine())
+      )
+      .body(
+        "cases.nominativeFeminine",
+        is(word.getCases()
+          .getNominativeFeminine())
+      )
+      .body(
+        "cases.nominativeNeuter",
+        is(word.getCases()
+          .getNominativeNeuter())
+      )
+      .body(
+        "cases.genitiveMasculine",
+        is(word.getCases()
+          .getGenitiveMasculine())
+      )
+      .body(
+        "cases.genitiveFeminine",
+        is(word.getCases()
+          .getGenitiveFeminine())
+      )
+      .body(
+        "cases.genitiveNeuter",
+        is(word.getCases()
+          .getGenitiveNeuter())
+      )
+      .body(
+        "cases.dativeMasculine",
+        is(word.getCases()
+          .getDativeMasculine())
+      )
+      .body(
+        "cases.dativeFeminine",
+        is(word.getCases()
+          .getDativeFeminine())
+      )
+      .body(
+        "cases.dativeNeuter",
+        is(word.getCases()
+          .getDativeNeuter())
+      )
+      .body(
+        "cases.accusativeMasculine",
+        is(word.getCases()
+          .getAccusativeMasculine())
+      )
+      .body(
+        "cases.accusativeFeminine",
+        is(word.getCases()
+          .getAccusativeFeminine())
+      )
+      .body(
+        "cases.accusativeNeuter",
+        is(word.getCases()
+          .getAccusativeNeuter())
+      )
+      .body(
+        "cases.instrumentalMasculine",
+        is(word.getCases()
+          .getInstrumentalMasculine())
+      )
+      .body(
+        "cases.instrumentalFeminine",
+        is(word.getCases()
+          .getInstrumentalFeminine())
+      )
+      .body(
+        "cases.instrumentalNeuter",
+        is(word.getCases()
+          .getInstrumentalNeuter())
+      )
+      .body(
+        "cases.prepositionalMasculine",
+        is(word.getCases()
+          .getPrepositionalMasculine())
+      )
+      .body(
+        "cases.prepositionalFeminine",
+        is(word.getCases()
+          .getPrepositionalFeminine())
+      )
+      .body(
+        "cases.prepositionalNeuter",
+        is(word.getCases()
+          .getPrepositionalNeuter())
+      );
   }
 
 }

@@ -2,6 +2,7 @@ package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.rest;
 
 import es.pausegarra.russian_cheatsheet.common.application.interfaces.Service;
 import es.pausegarra.russian_cheatsheet.common.domain.audit.AuditFields;
+import es.pausegarra.russian_cheatsheet.mother.WordEntityMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.find_by_id.FindWordByIdDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
@@ -30,15 +31,8 @@ class FindWordByIdResourceTest {
 
   @Test
   public void shouldReturnWord() {
-    WordEntity word = new WordEntity(
-      UUID.randomUUID(),
-      "a",
-      "a",
-      "a",
-      WordTypes.VERB,
-      null,
-      new AuditFields()
-    );
+    WordEntity word = WordEntityMother.random()
+      .build();
 
     when(findWordByIdService.handle(any(FindWordByIdDto.class))).thenReturn(WordDto.fromEntity(word));
 
