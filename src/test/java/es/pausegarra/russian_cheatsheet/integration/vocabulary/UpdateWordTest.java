@@ -306,96 +306,18 @@ public class UpdateWordTest extends IntegrationTest {
     assertTrue(updated.getType()
       .equals(WordTypes.NOUN));
     assertNotNull(updated.getCases());
-    assertEquals(
-      casesRequest.nominativeMasculine(),
-      updated.getCases()
-        .getNominativeMasculine()
-    );
-    assertEquals(
-      casesRequest.nominativeFeminine(),
-      updated.getCases()
-        .getNominativeFeminine()
-    );
-    assertEquals(
-      casesRequest.nominativeNeuter(),
-      updated.getCases()
-        .getNominativeNeuter()
-    );
-    assertEquals(
-      casesRequest.genitiveMasculine(),
-      updated.getCases()
-        .getGenitiveMasculine()
-    );
-    assertEquals(
-      casesRequest.genitiveFeminine(),
-      updated.getCases()
-        .getGenitiveFeminine()
-    );
-    assertEquals(
-      casesRequest.genitiveNeuter(),
-      updated.getCases()
-        .getGenitiveNeuter()
-    );
-    assertEquals(
-      casesRequest.dativeMasculine(),
-      updated.getCases()
-        .getDativeMasculine()
-    );
-    assertEquals(
-      casesRequest.dativeFeminine(),
-      updated.getCases()
-        .getDativeFeminine()
-    );
-    assertEquals(
-      casesRequest.dativeNeuter(),
-      updated.getCases()
-        .getDativeNeuter()
-    );
-    assertEquals(
-      casesRequest.accusativeMasculine(),
-      updated.getCases()
-        .getAccusativeMasculine()
-    );
-    assertEquals(
-      casesRequest.accusativeFeminine(),
-      updated.getCases()
-        .getAccusativeFeminine()
-    );
-    assertEquals(
-      casesRequest.accusativeNeuter(),
-      updated.getCases()
-        .getAccusativeNeuter()
-    );
-    assertEquals(
-      casesRequest.instrumentalMasculine(),
-      updated.getCases()
-        .getInstrumentalMasculine()
-    );
-    assertEquals(
-      casesRequest.instrumentalFeminine(),
-      updated.getCases()
-        .getInstrumentalFeminine()
-    );
-    assertEquals(
-      casesRequest.instrumentalNeuter(),
-      updated.getCases()
-        .getInstrumentalNeuter()
-    );
-    assertEquals(
-      casesRequest.prepositionalMasculine(),
-      updated.getCases()
-        .getPrepositionalMasculine()
-    );
-    assertEquals(
-      casesRequest.prepositionalFeminine(),
-      updated.getCases()
-        .getPrepositionalFeminine()
-    );
-    assertEquals(
-      casesRequest.prepositionalNeuter(),
-      updated.getCases()
-        .getPrepositionalNeuter()
-    );
+    assertEquals(casesRequest.nominative(), updated.getCases()
+      .getNominative());
+    assertEquals(casesRequest.genitive(), updated.getCases()
+      .getGenitive());
+    assertEquals(casesRequest.dative(), updated.getCases()
+      .getDative());
+    assertEquals(casesRequest.accusative(), updated.getCases()
+      .getAccusative());
+    assertEquals(casesRequest.instrumental(), updated.getCases()
+      .getInstrumental());
+    assertEquals(casesRequest.prepositional(), updated.getCases()
+      .getPrepositional());
   }
 
   @Test
@@ -431,96 +353,18 @@ public class UpdateWordTest extends IntegrationTest {
     assertTrue(updated.getType()
       .equals(WordTypes.NOUN));
     assertNotNull(updated.getCases());
-    assertEquals(
-      casesRequest.nominativeMasculine(),
-      updated.getCases()
-        .getNominativeMasculine()
-    );
-    assertEquals(
-      casesRequest.nominativeFeminine(),
-      updated.getCases()
-        .getNominativeFeminine()
-    );
-    assertEquals(
-      casesRequest.nominativeNeuter(),
-      updated.getCases()
-        .getNominativeNeuter()
-    );
-    assertEquals(
-      casesRequest.genitiveMasculine(),
-      updated.getCases()
-        .getGenitiveMasculine()
-    );
-    assertEquals(
-      casesRequest.genitiveFeminine(),
-      updated.getCases()
-        .getGenitiveFeminine()
-    );
-    assertEquals(
-      casesRequest.genitiveNeuter(),
-      updated.getCases()
-        .getGenitiveNeuter()
-    );
-    assertEquals(
-      casesRequest.dativeMasculine(),
-      updated.getCases()
-        .getDativeMasculine()
-    );
-    assertEquals(
-      casesRequest.dativeFeminine(),
-      updated.getCases()
-        .getDativeFeminine()
-    );
-    assertEquals(
-      casesRequest.dativeNeuter(),
-      updated.getCases()
-        .getDativeNeuter()
-    );
-    assertEquals(
-      casesRequest.accusativeMasculine(),
-      updated.getCases()
-        .getAccusativeMasculine()
-    );
-    assertEquals(
-      casesRequest.accusativeFeminine(),
-      updated.getCases()
-        .getAccusativeFeminine()
-    );
-    assertEquals(
-      casesRequest.accusativeNeuter(),
-      updated.getCases()
-        .getAccusativeNeuter()
-    );
-    assertEquals(
-      casesRequest.instrumentalMasculine(),
-      updated.getCases()
-        .getInstrumentalMasculine()
-    );
-    assertEquals(
-      casesRequest.instrumentalFeminine(),
-      updated.getCases()
-        .getInstrumentalFeminine()
-    );
-    assertEquals(
-      casesRequest.instrumentalNeuter(),
-      updated.getCases()
-        .getInstrumentalNeuter()
-    );
-    assertEquals(
-      casesRequest.prepositionalMasculine(),
-      updated.getCases()
-        .getPrepositionalMasculine()
-    );
-    assertEquals(
-      casesRequest.prepositionalFeminine(),
-      updated.getCases()
-        .getPrepositionalFeminine()
-    );
-    assertEquals(
-      casesRequest.prepositionalNeuter(),
-      updated.getCases()
-        .getPrepositionalNeuter()
-    );
+    assertEquals(casesRequest.nominative(), updated.getCases()
+      .getNominative());
+    assertEquals(casesRequest.genitive(), updated.getCases()
+      .getGenitive());
+    assertEquals(casesRequest.dative(), updated.getCases()
+      .getDative());
+    assertEquals(casesRequest.accusative(), updated.getCases()
+      .getAccusative());
+    assertEquals(casesRequest.instrumental(), updated.getCases()
+      .getInstrumental());
+    assertEquals(casesRequest.prepositional(), updated.getCases()
+      .getPrepositional());
   }
 
   @Test

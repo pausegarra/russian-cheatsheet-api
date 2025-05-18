@@ -5,46 +5,22 @@ import lombok.Builder;
 
 @Builder
 public record WordCasesRequest(
-  String nominativeMasculine,
-  String nominativeFeminine,
-  String nominativeNeuter,
-  String genitiveMasculine,
-  String genitiveFeminine,
-  String genitiveNeuter,
-  String dativeMasculine,
-  String dativeFeminine,
-  String dativeNeuter,
-  String accusativeMasculine,
-  String accusativeFeminine,
-  String accusativeNeuter,
-  String instrumentalMasculine,
-  String instrumentalFeminine,
-  String instrumentalNeuter,
-  String prepositionalMasculine,
-  String prepositionalFeminine,
-  String prepositionalNeuter
+  String nominative,
+  String genitive,
+  String dative,
+  String accusative,
+  String instrumental,
+  String prepositional
 ) {
 
   public WordCasesDto toDto() {
     return new WordCasesDto(
-      nominativeMasculine(),
-      nominativeFeminine(),
-      nominativeNeuter(),
-      genitiveMasculine(),
-      genitiveFeminine(),
-      genitiveNeuter(),
-      dativeMasculine(),
-      dativeFeminine(),
-      dativeNeuter(),
-      accusativeMasculine(),
-      accusativeFeminine(),
-      accusativeNeuter(),
-      instrumentalMasculine(),
-      instrumentalFeminine(),
-      instrumentalNeuter(),
-      prepositionalMasculine(),
-      prepositionalFeminine(),
-      prepositionalNeuter()
+      nominative(),
+      genitive(),
+      dative(),
+      accusative(),
+      instrumental(),
+      prepositional()
     );
   }
 

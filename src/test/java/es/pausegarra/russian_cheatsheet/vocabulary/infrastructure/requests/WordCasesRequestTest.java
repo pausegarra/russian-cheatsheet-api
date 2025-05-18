@@ -16,24 +16,12 @@ class WordCasesRequestTest {
     WordCasesDto dto = request.toDto();
 
     assertNotNull(dto);
-    assertEquals(request.nominativeMasculine(), dto.nominativeMasculine());
-    assertEquals(request.nominativeFeminine(), dto.nominativeFeminine());
-    assertEquals(request.nominativeNeuter(), dto.nominativeNeuter());
-    assertEquals(request.genitiveMasculine(), dto.genitiveMasculine());
-    assertEquals(request.genitiveFeminine(), dto.genitiveFeminine());
-    assertEquals(request.genitiveNeuter(), dto.genitiveNeuter());
-    assertEquals(request.dativeMasculine(), dto.dativeMasculine());
-    assertEquals(request.dativeFeminine(), dto.dativeFeminine());
-    assertEquals(request.dativeNeuter(), dto.dativeNeuter());
-    assertEquals(request.accusativeMasculine(), dto.accusativeMasculine());
-    assertEquals(request.accusativeFeminine(), dto.accusativeFeminine());
-    assertEquals(request.accusativeNeuter(), dto.accusativeNeuter());
-    assertEquals(request.instrumentalMasculine(), dto.instrumentalMasculine());
-    assertEquals(request.instrumentalFeminine(), dto.instrumentalFeminine());
-    assertEquals(request.instrumentalNeuter(), dto.instrumentalNeuter());
-    assertEquals(request.prepositionalMasculine(), dto.prepositionalMasculine());
-    assertEquals(request.prepositionalFeminine(), dto.prepositionalFeminine());
-    assertEquals(request.prepositionalNeuter(), dto.prepositionalNeuter());
+    assertEquals(request.nominative(), dto.nominative());
+    assertEquals(request.genitive(), dto.genitive());
+    assertEquals(request.dative(), dto.dative());
+    assertEquals(request.accusative(), dto.accusative());
+    assertEquals(request.instrumental(), dto.instrumental());
+    assertEquals(request.prepositional(), dto.prepositional());
   }
 
 }

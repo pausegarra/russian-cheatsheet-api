@@ -3,65 +3,29 @@ package es.pausegarra.russian_cheatsheet.vocabulary.application.dto;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordCasesEntity;
 
 public record WordCasesDto(
-  String nominativeMasculine,
-  String nominativeFeminine,
-  String nominativeNeuter,
-  String genitiveMasculine,
-  String genitiveFeminine,
-  String genitiveNeuter,
-  String dativeMasculine,
-  String dativeFeminine,
-  String dativeNeuter,
-  String accusativeMasculine,
-  String accusativeFeminine,
-  String accusativeNeuter,
-  String instrumentalMasculine,
-  String instrumentalFeminine,
-  String instrumentalNeuter,
-  String prepositionalMasculine,
-  String prepositionalFeminine,
-  String prepositionalNeuter
+  String nominative,
+  String genitive,
+  String dative,
+  String accusative,
+  String instrumental,
+  String prepositional
 ) {
 
   public static WordCasesDto from(
-    String nominativeMasculine,
-    String nominativeFeminine,
-    String nominativeNeuter,
-    String genitiveMasculine,
-    String genitiveFeminine,
-    String genitiveNeuter,
-    String dativeMasculine,
-    String dativeFeminine,
-    String dativeNeuter,
-    String accusativeMasculine,
-    String accusativeFeminine,
-    String accusativeNeuter,
-    String instrumentalMasculine,
-    String instrumentalFeminine,
-    String instrumentalNeuter,
-    String prepositionalMasculine,
-    String prepositionalFeminine,
-    String prepositionalNeuter
+    String nominative,
+    String genitive,
+    String dative,
+    String accusative,
+    String instrumental,
+    String prepositional
   ) {
     return new WordCasesDto(
-      nominativeMasculine,
-      nominativeFeminine,
-      nominativeNeuter,
-      genitiveMasculine,
-      genitiveFeminine,
-      genitiveNeuter,
-      dativeMasculine,
-      dativeFeminine,
-      dativeNeuter,
-      accusativeMasculine,
-      accusativeFeminine,
-      accusativeNeuter,
-      instrumentalMasculine,
-      instrumentalFeminine,
-      instrumentalNeuter,
-      prepositionalMasculine,
-      prepositionalFeminine,
-      prepositionalNeuter
+      nominative,
+      genitive,
+      dative,
+      accusative,
+      instrumental,
+      prepositional
     );
   }
 
@@ -69,24 +33,23 @@ public record WordCasesDto(
     return new WordCasesEntity(
       null,
       null,
-      nominativeMasculine,
-      nominativeFeminine,
-      nominativeNeuter,
-      genitiveMasculine,
-      genitiveFeminine,
-      genitiveNeuter,
-      dativeMasculine,
-      dativeFeminine,
-      dativeNeuter,
-      accusativeMasculine,
-      accusativeFeminine,
-      accusativeNeuter,
-      instrumentalMasculine,
-      instrumentalFeminine,
-      instrumentalNeuter,
-      prepositionalMasculine,
-      prepositionalFeminine,
-      prepositionalNeuter
+      nominative,
+      genitive,
+      dative,
+      accusative,
+      instrumental,
+      prepositional
+    );
+  }
+
+  public static WordCasesDto fromEntity(WordCasesEntity entity) {
+    return new WordCasesDto(
+      entity.getNominative(),
+      entity.getGenitive(),
+      entity.getDative(),
+      entity.getAccusative(),
+      entity.getInstrumental(),
+      entity.getPrepositional()
     );
   }
 

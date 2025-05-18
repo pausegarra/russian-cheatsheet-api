@@ -304,96 +304,18 @@ public class FindWordByIdTest extends IntegrationTest {
         is(word.getType()
           .toString())
       )
-      .body(
-        "cases.nominativeMasculine",
-        is(word.getCases()
-          .getNominativeMasculine())
-      )
-      .body(
-        "cases.nominativeFeminine",
-        is(word.getCases()
-          .getNominativeFeminine())
-      )
-      .body(
-        "cases.nominativeNeuter",
-        is(word.getCases()
-          .getNominativeNeuter())
-      )
-      .body(
-        "cases.genitiveMasculine",
-        is(word.getCases()
-          .getGenitiveMasculine())
-      )
-      .body(
-        "cases.genitiveFeminine",
-        is(word.getCases()
-          .getGenitiveFeminine())
-      )
-      .body(
-        "cases.genitiveNeuter",
-        is(word.getCases()
-          .getGenitiveNeuter())
-      )
-      .body(
-        "cases.dativeMasculine",
-        is(word.getCases()
-          .getDativeMasculine())
-      )
-      .body(
-        "cases.dativeFeminine",
-        is(word.getCases()
-          .getDativeFeminine())
-      )
-      .body(
-        "cases.dativeNeuter",
-        is(word.getCases()
-          .getDativeNeuter())
-      )
-      .body(
-        "cases.accusativeMasculine",
-        is(word.getCases()
-          .getAccusativeMasculine())
-      )
-      .body(
-        "cases.accusativeFeminine",
-        is(word.getCases()
-          .getAccusativeFeminine())
-      )
-      .body(
-        "cases.accusativeNeuter",
-        is(word.getCases()
-          .getAccusativeNeuter())
-      )
-      .body(
-        "cases.instrumentalMasculine",
-        is(word.getCases()
-          .getInstrumentalMasculine())
-      )
-      .body(
-        "cases.instrumentalFeminine",
-        is(word.getCases()
-          .getInstrumentalFeminine())
-      )
-      .body(
-        "cases.instrumentalNeuter",
-        is(word.getCases()
-          .getInstrumentalNeuter())
-      )
-      .body(
-        "cases.prepositionalMasculine",
-        is(word.getCases()
-          .getPrepositionalMasculine())
-      )
-      .body(
-        "cases.prepositionalFeminine",
-        is(word.getCases()
-          .getPrepositionalFeminine())
-      )
-      .body(
-        "cases.prepositionalNeuter",
-        is(word.getCases()
-          .getPrepositionalNeuter())
-      );
+      .body("cases.nominative", is(word.getCases()
+        .getNominative()))
+      .body("cases.genitive", is(word.getCases()
+        .getGenitive()))
+      .body("cases.dative", is(word.getCases()
+        .getDative()))
+      .body("cases.accusative", is(word.getCases()
+        .getAccusative()))
+      .body("cases.instrumental", is(word.getCases()
+        .getInstrumental()))
+      .body("cases.prepositional", is(word.getCases()
+        .getPrepositional()));
   }
 
 }

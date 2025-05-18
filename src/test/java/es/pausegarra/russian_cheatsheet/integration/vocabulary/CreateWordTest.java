@@ -207,24 +207,12 @@ public class CreateWordTest extends IntegrationTest {
     assertEquals(word.getEnglish(), wordRequest.english());
     assertEquals(word.getSpanish(), wordRequest.spanish());
     assertEquals(word.getType(), WordTypes.valueOf(wordRequest.type()));
-    assertEquals(word.getCases().getNominativeMasculine(), casesRequest.nominativeMasculine());
-    assertEquals(word.getCases().getNominativeFeminine(), casesRequest.nominativeFeminine());
-    assertEquals(word.getCases().getNominativeNeuter(), casesRequest.nominativeNeuter());
-    assertEquals(word.getCases().getGenitiveMasculine(), casesRequest.genitiveMasculine());
-    assertEquals(word.getCases().getGenitiveFeminine(), casesRequest.genitiveFeminine());
-    assertEquals(word.getCases().getGenitiveNeuter(), casesRequest.genitiveNeuter());
-    assertEquals(word.getCases().getDativeMasculine(), casesRequest.dativeMasculine());
-    assertEquals(word.getCases().getDativeFeminine(), casesRequest.dativeFeminine());
-    assertEquals(word.getCases().getDativeNeuter(), casesRequest.dativeNeuter());
-    assertEquals(word.getCases().getAccusativeMasculine(), casesRequest.accusativeMasculine());
-    assertEquals(word.getCases().getAccusativeFeminine(), casesRequest.accusativeFeminine());
-    assertEquals(word.getCases().getAccusativeNeuter(), casesRequest.accusativeNeuter());
-    assertEquals(word.getCases().getInstrumentalMasculine(), casesRequest.instrumentalMasculine());
-    assertEquals(word.getCases().getInstrumentalFeminine(), casesRequest.instrumentalFeminine());
-    assertEquals(word.getCases().getInstrumentalNeuter(), casesRequest.instrumentalNeuter());
-    assertEquals(word.getCases().getPrepositionalMasculine(), casesRequest.prepositionalMasculine());
-    assertEquals(word.getCases().getPrepositionalFeminine(), casesRequest.prepositionalFeminine());
-    assertEquals(word.getCases().getPrepositionalNeuter(), casesRequest.prepositionalNeuter());
+    assertEquals(word.getCases().getNominative(), casesRequest.nominative());
+    assertEquals(word.getCases().getGenitive(), casesRequest.genitive());
+    assertEquals(word.getCases().getDative(), casesRequest.dative());
+    assertEquals(word.getCases().getAccusative(), casesRequest.accusative());
+    assertEquals(word.getCases().getInstrumental(), casesRequest.instrumental());
+    assertEquals(word.getCases().getPrepositional(), casesRequest.prepositional());
   }
 
 }
