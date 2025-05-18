@@ -2,10 +2,10 @@ package es.pausegarra.russian_cheatsheet.integration.vocabulary;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import es.pausegarra.russian_cheatsheet.annotations.IntegrationTest;
-import es.pausegarra.russian_cheatsheet.mother.UpdateWordRequestMother;
-import es.pausegarra.russian_cheatsheet.mother.VerbConjugationEntityMother;
-import es.pausegarra.russian_cheatsheet.mother.WordConjugationRequestMother;
-import es.pausegarra.russian_cheatsheet.mother.WordEntityMother;
+import es.pausegarra.russian_cheatsheet.mother.words.requests.UpdateWordRequestMother;
+import es.pausegarra.russian_cheatsheet.mother.words.entities.VerbConjugationEntityMother;
+import es.pausegarra.russian_cheatsheet.mother.words.requests.WordConjugationRequestMother;
+import es.pausegarra.russian_cheatsheet.mother.words.entities.WordEntityMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.VerbConjugationEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;

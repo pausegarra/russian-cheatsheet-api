@@ -1,7 +1,7 @@
 package es.pausegarra.russian_cheatsheet.alphabet.application.dtos;
 
 import es.pausegarra.russian_cheatsheet.alphabet.domain.entities.LetterEntity;
-import es.pausegarra.russian_cheatsheet.mother.LetterEntityMother;
+import es.pausegarra.russian_cheatsheet.mother.words.entities.LetterEntityMother;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,6 +1,6 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.application.dto;
 
-import es.pausegarra.russian_cheatsheet.mother.WordEntityMother;
+import es.pausegarra.russian_cheatsheet.mother.words.entities.WordEntityMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import org.junit.jupiter.api.Test;
 

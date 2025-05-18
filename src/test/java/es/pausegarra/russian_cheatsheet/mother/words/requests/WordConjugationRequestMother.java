@@ -1,11 +1,12 @@
-package es.pausegarra.russian_cheatsheet.mother;
+package es.pausegarra.russian_cheatsheet.mother.words.requests;
 
-import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordConjugationsDto;
+import es.pausegarra.russian_cheatsheet.mother.MotherCreator;
+import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.WordRequestConjugations;
 
-public class WordConjugationsDtoMother {
+public class WordConjugationRequestMother {
 
-  public static WordConjugationsDto.WordConjugationsDtoBuilder random() {
-    return WordConjugationsDto.builder()
+  public static WordRequestConjugations.WordRequestConjugationsBuilder random() {
+    return WordRequestConjugations.builder()
       .imperfectivePresentFirstPersonSingular(MotherCreator.random()
         .name()
         .toString())

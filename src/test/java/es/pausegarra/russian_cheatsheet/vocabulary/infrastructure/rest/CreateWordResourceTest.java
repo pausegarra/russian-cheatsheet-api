@@ -1,12 +1,11 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.rest;
 
-import es.pausegarra.russian_cheatsheet.common.domain.audit.AuditFields;
 import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.SimplePresentation;
-import es.pausegarra.russian_cheatsheet.mother.WordEntityMother;
+import es.pausegarra.russian_cheatsheet.mother.words.entities.WordEntityMother;
+import es.pausegarra.russian_cheatsheet.mother.words.requests.CreateWordRequestMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordService;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
-import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.CreateWordRequest;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
@@ -14,9 +13,6 @@ import io.quarkus.test.security.TestSecurity;
 import jakarta.inject.Inject;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.junit.jupiter.api.Test;
-
-import java.time.Instant;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -39,7 +35,8 @@ class CreateWordResourceTest {
 
     when(createWordService.handle(any(CreateWordDto.class))).thenReturn(word.getId());
 
-    CreateWordRequest request = new CreateWordRequest("a", "a", "a", "VERB", null);
+    CreateWordRequest request = CreateWordRequestMother.random()
+      .build();
     RestResponse<SimplePresentation> response = createWordResource.createWord(request);
 
     assertEquals(201, response.getStatus());

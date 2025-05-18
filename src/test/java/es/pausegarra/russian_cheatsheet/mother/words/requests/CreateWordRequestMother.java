@@ -1,5 +1,6 @@
-package es.pausegarra.russian_cheatsheet.mother;
+package es.pausegarra.russian_cheatsheet.mother.words.requests;
 
+import es.pausegarra.russian_cheatsheet.mother.MotherCreator;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.CreateWordRequest;
 
@@ -20,7 +21,8 @@ public class CreateWordRequestMother {
         .options()
         .option(WordTypes.class)
         .toString())
-      .conjugations(null);
+      .conjugations(null)
+      .cases(null);
   }
 
 }

@@ -1,7 +1,8 @@
-package es.pausegarra.russian_cheatsheet.mother;
+package es.pausegarra.russian_cheatsheet.mother.words.entities;
 
 import es.pausegarra.russian_cheatsheet.alphabet.domain.entities.LetterEntity;
 import es.pausegarra.russian_cheatsheet.common.domain.audit.AuditFields;
+import es.pausegarra.russian_cheatsheet.mother.MotherCreator;
 
 import java.util.UUID;
 

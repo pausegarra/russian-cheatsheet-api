@@ -1,0 +1,66 @@
+package es.pausegarra.russian_cheatsheet.mother.words.requests;
+
+import es.pausegarra.russian_cheatsheet.mother.MotherCreator;
+import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.WordCasesRequest;
+
+public class WordCasesRequestMother {
+
+  public static WordCasesRequest.WordCasesRequestBuilder random() {
+    return WordCasesRequest.builder()
+      .nominativeMasculine(MotherCreator.random()
+        .name()
+        .toString())
+      .nominativeFeminine(MotherCreator.random()
+        .name()
+        .toString())
+      .nominativeNeuter(MotherCreator.random()
+        .name()
+        .toString())
+      .genitiveMasculine(MotherCreator.random()
+        .name()
+        .toString())
+      .genitiveFeminine(MotherCreator.random()
+        .name()
+        .toString())
+      .genitiveNeuter(MotherCreator.random()
+        .name()
+        .toString())
+      .dativeMasculine(MotherCreator.random()
+        .name()
+        .toString())
+      .dativeFeminine(MotherCreator.random()
+        .name()
+        .toString())
+      .dativeNeuter(MotherCreator.random()
+        .name()
+        .toString())
+      .accusativeMasculine(MotherCreator.random()
+        .name()
+        .toString())
+      .accusativeFeminine(MotherCreator.random()
+        .name()
+        .toString())
+      .accusativeNeuter(MotherCreator.random()
+        .name()
+        .toString())
+      .instrumentalMasculine(MotherCreator.random()
+        .name()
+        .toString())
+      .instrumentalFeminine(MotherCreator.random()
+        .name()
+        .toString())
+      .instrumentalNeuter(MotherCreator.random()
+        .name()
+        .toString())
+      .prepositionalMasculine(MotherCreator.random()
+        .name()
+        .toString())
+      .prepositionalFeminine(MotherCreator.random()
+        .name()
+        .toString())
+      .prepositionalNeuter(MotherCreator.random()
+        .name()
+        .toString());
+  }
+
+}

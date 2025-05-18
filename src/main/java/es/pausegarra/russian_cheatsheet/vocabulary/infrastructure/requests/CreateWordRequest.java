@@ -4,5 +4,5 @@ import lombok.Builder;
 
 @Builder
 public record CreateWordRequest(
-  String russian, String english, String spanish, String type, WordRequestConjugations conjugations
+  String russian, String english, String spanish, String type, WordRequestConjugations conjugations, WordCasesRequest cases
 ) {}

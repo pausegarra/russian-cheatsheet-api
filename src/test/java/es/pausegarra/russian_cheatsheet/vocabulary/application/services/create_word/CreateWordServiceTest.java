@@ -1,9 +1,7 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word;
 
-import es.pausegarra.russian_cheatsheet.common.domain.audit.AuditFields;
-import es.pausegarra.russian_cheatsheet.mother.WordEntityMother;
+import es.pausegarra.russian_cheatsheet.mother.words.entities.WordEntityMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
-import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.exception.WordAlreadyExists;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.repositories.WordsRepository;
 import io.quarkus.test.InjectMock;
@@ -12,9 +10,7 @@ import jakarta.inject.Inject;
 import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -34,14 +30,14 @@ class CreateWordServiceTest {
       .build();
     when(wordsRepository.save(any(WordEntity.class))).thenReturn(word);
 
-    createWordService.handle(CreateWordDto.from("a", "a", "a", "VERB", null));
+    createWordService.handle(CreateWordDto.from("a", "a", "a", "VERB", null, null));
 
     verify(wordsRepository, times(2)).save(any(WordEntity.class));
   }
 
   @Test
   public void shouldThrowExceptionIfCommandIsInvalid() {
-    CreateWordDto command = CreateWordDto.from(null, null, null, "VERB", null);
+    CreateWordDto command = CreateWordDto.from(null, null, null, "VERB", null, null);
 
     assertThrows(ValidationException.class, () -> createWordService.handle(command));
   }
@@ -51,7 +47,7 @@ class CreateWordServiceTest {
     when(wordsRepository.findByRussian(anyString())).thenReturn(Optional.of(WordEntityMother.random()
         .build()));
 
-    CreateWordDto command = CreateWordDto.from("a", "a", "a", "VERB", null);
+    CreateWordDto command = CreateWordDto.from("a", "a", "a", "VERB", null, null);
     assertThrows(WordAlreadyExists.class, () -> createWordService.handle(command));
   }
 

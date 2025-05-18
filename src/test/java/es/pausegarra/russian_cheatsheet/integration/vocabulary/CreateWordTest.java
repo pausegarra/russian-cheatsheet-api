@@ -2,12 +2,14 @@ package es.pausegarra.russian_cheatsheet.integration.vocabulary;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import es.pausegarra.russian_cheatsheet.annotations.IntegrationTest;
-import es.pausegarra.russian_cheatsheet.mother.CreateWordRequestMother;
-import es.pausegarra.russian_cheatsheet.mother.WordConjugationRequestMother;
-import es.pausegarra.russian_cheatsheet.mother.WordEntityMother;
+import es.pausegarra.russian_cheatsheet.mother.words.requests.CreateWordRequestMother;
+import es.pausegarra.russian_cheatsheet.mother.words.requests.WordCasesRequestMother;
+import es.pausegarra.russian_cheatsheet.mother.words.requests.WordConjugationRequestMother;
+import es.pausegarra.russian_cheatsheet.mother.words.entities.WordEntityMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.CreateWordRequest;
+import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.WordCasesRequest;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.WordRequestConjugations;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
@@ -133,7 +135,7 @@ public class CreateWordTest extends IntegrationTest {
   @TestSecurity(
     user = "test", roles = {"words#create"}
   )
-  public void shouldWotkWithoutConjugations() throws JsonProcessingException {
+  public void shouldWorkWithoutConjugationsAndCases() throws JsonProcessingException {
     CreateWordRequest request = CreateWordRequestMother.random()
       .build();
     String json = objectMapper.writeValueAsString(request);
@@ -169,6 +171,60 @@ public class CreateWordTest extends IntegrationTest {
       .body("code", is("WORD_ALREADY_EXISTS"))
       .body("message", is("Word already exists: " + word.getRussian()))
       .body("status", is(400));
+  }
+
+  @Test
+  @TestSecurity(
+    user = "test", roles = {"words#create"}
+  )
+  public void shouldCreateWordWithCases() throws JsonProcessingException {
+    WordCasesRequest casesRequest = WordCasesRequestMother.random()
+      .build();
+    CreateWordRequest wordRequest = CreateWordRequestMother.random()
+      .cases(casesRequest)
+      .type(WordTypes.ADJECTIVE.toString())
+      .build();
+    String json = objectMapper.writeValueAsString(wordRequest);
+
+    Response response = given().body(json)
+      .contentType("application/json")
+      .when()
+      .post("/words")
+      .then()
+      .statusCode(201)
+      .body(notNullValue())
+      .extract()
+      .response();
+
+    WordEntity word = em.find(
+      WordEntity.class,
+      UUID.fromString(response.getBody()
+        .jsonPath()
+        .getString("resourceId"))
+    );
+
+    assertEquals(word.getRussian(), wordRequest.russian());
+    assertEquals(word.getEnglish(), wordRequest.english());
+    assertEquals(word.getSpanish(), wordRequest.spanish());
+    assertEquals(word.getType(), WordTypes.valueOf(wordRequest.type()));
+    assertEquals(word.getCases().getNominativeMasculine(), casesRequest.nominativeMasculine());
+    assertEquals(word.getCases().getNominativeFeminine(), casesRequest.nominativeFeminine());
+    assertEquals(word.getCases().getNominativeNeuter(), casesRequest.nominativeNeuter());
+    assertEquals(word.getCases().getGenitiveMasculine(), casesRequest.genitiveMasculine());
+    assertEquals(word.getCases().getGenitiveFeminine(), casesRequest.genitiveFeminine());
+    assertEquals(word.getCases().getGenitiveNeuter(), casesRequest.genitiveNeuter());
+    assertEquals(word.getCases().getDativeMasculine(), casesRequest.dativeMasculine());
+    assertEquals(word.getCases().getDativeFeminine(), casesRequest.dativeFeminine());
+    assertEquals(word.getCases().getDativeNeuter(), casesRequest.dativeNeuter());
+    assertEquals(word.getCases().getAccusativeMasculine(), casesRequest.accusativeMasculine());
+    assertEquals(word.getCases().getAccusativeFeminine(), casesRequest.accusativeFeminine());
+    assertEquals(word.getCases().getAccusativeNeuter(), casesRequest.accusativeNeuter());
+    assertEquals(word.getCases().getInstrumentalMasculine(), casesRequest.instrumentalMasculine());
+    assertEquals(word.getCases().getInstrumentalFeminine(), casesRequest.instrumentalFeminine());
+    assertEquals(word.getCases().getInstrumentalNeuter(), casesRequest.instrumentalNeuter());
+    assertEquals(word.getCases().getPrepositionalMasculine(), casesRequest.prepositionalMasculine());
+    assertEquals(word.getCases().getPrepositionalFeminine(), casesRequest.prepositionalFeminine());
+    assertEquals(word.getCases().getPrepositionalNeuter(), casesRequest.prepositionalNeuter());
   }
 
 }

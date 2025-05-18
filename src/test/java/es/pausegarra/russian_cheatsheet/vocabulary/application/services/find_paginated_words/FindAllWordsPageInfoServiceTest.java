@@ -2,7 +2,7 @@ package es.pausegarra.russian_cheatsheet.vocabulary.application.services.find_pa
 
 import es.pausegarra.russian_cheatsheet.common.application.pagination.PaginatedDto;
 import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.Paginated;
-import es.pausegarra.russian_cheatsheet.mother.WordEntityMother;
+import es.pausegarra.russian_cheatsheet.mother.words.entities.WordEntityMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.criterias.WordsSearchCriteria;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;

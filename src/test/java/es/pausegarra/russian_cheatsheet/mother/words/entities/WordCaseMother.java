@@ -1,5 +1,6 @@
-package es.pausegarra.russian_cheatsheet.mother;
+package es.pausegarra.russian_cheatsheet.mother.words.entities;
 
+import es.pausegarra.russian_cheatsheet.mother.MotherCreator;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordCasesEntity;
 
 public class WordCaseMother {

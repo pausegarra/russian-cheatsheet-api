@@ -1,7 +1,7 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.application.dto;
 
-import es.pausegarra.russian_cheatsheet.mother.VerbConjugationEntityMother;
-import es.pausegarra.russian_cheatsheet.mother.WordConjugationsDtoMother;
+import es.pausegarra.russian_cheatsheet.mother.words.entities.VerbConjugationEntityMother;
+import es.pausegarra.russian_cheatsheet.mother.words.dto.WordConjugationsDtoMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.VerbConjugationEntity;
 import org.junit.jupiter.api.Test;
 

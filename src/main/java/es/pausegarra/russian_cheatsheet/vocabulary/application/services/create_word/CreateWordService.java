@@ -2,6 +2,7 @@ package es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_
 
 import es.pausegarra.russian_cheatsheet.common.application.interfaces.Service;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.VerbConjugationEntity;
+import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordCasesEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.exception.WordAlreadyExists;
@@ -42,6 +43,11 @@ public class CreateWordService implements Service<CreateWordDto, UUID> {
         .toEntity()
         .withWord(savedWord);
       savedWord = savedWord.withConjugations(conjugations);
+    }
+
+    if (word.getType() != WordTypes.VERB && dto.cases() != null) {
+      WordCasesEntity cases = dto.cases().toEntity().withWord(savedWord);
+      savedWord = savedWord.withCases(cases);
     }
 
     WordEntity saved = wordsRepository.save(savedWord);

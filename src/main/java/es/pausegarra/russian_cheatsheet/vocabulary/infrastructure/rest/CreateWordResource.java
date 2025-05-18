@@ -1,6 +1,7 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.rest;
 
 import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.SimplePresentation;
+import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordCasesDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordConjugationsDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.create_word.CreateWordService;
@@ -25,12 +26,18 @@ public class CreateWordResource implements CreateWordApiSpec {
     WordConjugationsDto conjugationsDto = request.conjugations() == null ? null :
       request.conjugations()
       .toDto();
+
+    WordCasesDto casesDto = request.cases() == null ? null :
+      request.cases()
+      .toDto();
+
     CreateWordDto command = CreateWordDto.from(
       request.russian(),
       request.english(),
       request.spanish(),
       request.type(),
-      conjugationsDto
+      conjugationsDto,
+      casesDto
     );
 
     UUID createdWordId = createWordService.handle(command);

@@ -1,11 +1,17 @@
-package es.pausegarra.russian_cheatsheet.mother;
+package es.pausegarra.russian_cheatsheet.mother.words.entities;
 
-import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.WordRequestConjugations;
+import es.pausegarra.russian_cheatsheet.mother.MotherCreator;
+import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.VerbConjugationEntity;
 
-public class WordConjugationRequestMother {
+import java.util.UUID;
 
-  public static WordRequestConjugations.WordRequestConjugationsBuilder random() {
-    return WordRequestConjugations.builder()
+public class VerbConjugationEntityMother {
+
+  public static VerbConjugationEntity.VerbConjugationEntityBuilder random() {
+    return VerbConjugationEntity.builder()
+      .id(UUID.randomUUID())
+      .word(WordEntityMother.random()
+        .build())
       .imperfectivePresentFirstPersonSingular(MotherCreator.random()
         .name()
         .toString())
