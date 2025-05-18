@@ -5,6 +5,6 @@ quarkus:
       origins:
         - "http://localhost:5173"
 
-    security:
-      auth:
-        enabled-in-dev-mode: false
+  security:
+    auth:
+      enabled-in-dev-mode: false
