@@ -21,7 +21,8 @@ public class UpdateWordRequestMother {
         .options()
         .option(WordTypes.class)
         .toString())
-      .conjugations(null);
+      .conjugations(null)
+      .cases(null);
   }
 
 }

@@ -2,14 +2,18 @@ package es.pausegarra.russian_cheatsheet.integration.vocabulary;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import es.pausegarra.russian_cheatsheet.annotations.IntegrationTest;
+import es.pausegarra.russian_cheatsheet.mother.words.entities.WordCaseEntityMother;
 import es.pausegarra.russian_cheatsheet.mother.words.requests.UpdateWordRequestMother;
 import es.pausegarra.russian_cheatsheet.mother.words.entities.VerbConjugationEntityMother;
+import es.pausegarra.russian_cheatsheet.mother.words.requests.WordCasesRequestMother;
 import es.pausegarra.russian_cheatsheet.mother.words.requests.WordConjugationRequestMother;
 import es.pausegarra.russian_cheatsheet.mother.words.entities.WordEntityMother;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.VerbConjugationEntity;
+import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordCasesEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.UpdateWordRequest;
+import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.WordCasesRequest;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.WordRequestConjugations;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
@@ -51,6 +55,26 @@ public class UpdateWordTest extends IntegrationTest {
       .word(word)
       .build();
     em.persist(conjugations);
+
+    em.flush();
+    em.clear();
+
+    return word;
+  }
+
+  @Transactional
+  public WordEntity setUpWithCases() {
+    WordEntity word = WordEntityMother.random()
+      .type(WordTypes.NOUN)
+      .id(null)
+      .build();
+    em.persist(word);
+
+    WordCasesEntity cases = WordCaseEntityMother.random()
+      .id(null)
+      .word(word)
+      .build();
+    em.persist(cases);
 
     em.flush();
     em.clear();
@@ -199,7 +223,12 @@ public class UpdateWordTest extends IntegrationTest {
   public void shouldReturn400WhenDataIsInvalid() throws JsonProcessingException {
     WordEntity word = setUp();
 
-    UpdateWordRequest request = new UpdateWordRequest(null, null, null, "VERB", null);
+    UpdateWordRequest request = UpdateWordRequestMother.random()
+      .russian(null)
+      .english(null)
+      .spanish(null)
+      .type("VERB")
+      .build();
     String json = objectMapper.writeValueAsString(request);
     given().body(json)
       .when()
@@ -219,7 +248,8 @@ public class UpdateWordTest extends IntegrationTest {
   public void shouldReturn401WhenUserIsNotAuthenticated() throws JsonProcessingException {
     WordEntity word = setUp();
 
-    UpdateWordRequest request = new UpdateWordRequest("word", "english", "spanish", "VERB", null);
+    UpdateWordRequest request = UpdateWordRequestMother.random()
+      .build();
     String json = objectMapper.writeValueAsString(request);
     given().body(json)
       .when()
@@ -233,13 +263,296 @@ public class UpdateWordTest extends IntegrationTest {
   public void shouldReturn403WhenUserDoesNotHavePermissions() throws JsonProcessingException {
     WordEntity word = setUp();
 
-    UpdateWordRequest request = new UpdateWordRequest("word", "english", "spanish", "VERB", null);
+    UpdateWordRequest request = UpdateWordRequestMother.random()
+      .build();
     String json = objectMapper.writeValueAsString(request);
     given().body(json)
       .when()
       .patch("/words/" + word.getId())
       .then()
       .statusCode(403);
+  }
+
+  @Test
+  @TestSecurity(
+    user = "user", roles = "words#update"
+  )
+  public void shouldUpdateWordWithoutCasesAndAddCases() throws JsonProcessingException {
+    WordEntity word = setUp();
+
+    WordCasesRequest casesRequest = WordCasesRequestMother.random()
+      .build();
+    UpdateWordRequest request = UpdateWordRequestMother.random()
+      .type(WordTypes.NOUN.toString())
+      .cases(casesRequest)
+      .build();
+    String json = objectMapper.writeValueAsString(request);
+
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .patch("/words/" + word.getId())
+      .then()
+      .statusCode(200);
+
+    WordEntity updated = em.find(WordEntity.class, word.getId());
+    assertNotNull(updated);
+    assertTrue(updated.getRussian()
+      .equals(request.russian()));
+    assertTrue(updated.getEnglish()
+      .equals(request.english()));
+    assertTrue(updated.getSpanish()
+      .equals(request.spanish()));
+    assertTrue(updated.getType()
+      .equals(WordTypes.NOUN));
+    assertNotNull(updated.getCases());
+    assertEquals(
+      casesRequest.nominativeMasculine(),
+      updated.getCases()
+        .getNominativeMasculine()
+    );
+    assertEquals(
+      casesRequest.nominativeFeminine(),
+      updated.getCases()
+        .getNominativeFeminine()
+    );
+    assertEquals(
+      casesRequest.nominativeNeuter(),
+      updated.getCases()
+        .getNominativeNeuter()
+    );
+    assertEquals(
+      casesRequest.genitiveMasculine(),
+      updated.getCases()
+        .getGenitiveMasculine()
+    );
+    assertEquals(
+      casesRequest.genitiveFeminine(),
+      updated.getCases()
+        .getGenitiveFeminine()
+    );
+    assertEquals(
+      casesRequest.genitiveNeuter(),
+      updated.getCases()
+        .getGenitiveNeuter()
+    );
+    assertEquals(
+      casesRequest.dativeMasculine(),
+      updated.getCases()
+        .getDativeMasculine()
+    );
+    assertEquals(
+      casesRequest.dativeFeminine(),
+      updated.getCases()
+        .getDativeFeminine()
+    );
+    assertEquals(
+      casesRequest.dativeNeuter(),
+      updated.getCases()
+        .getDativeNeuter()
+    );
+    assertEquals(
+      casesRequest.accusativeMasculine(),
+      updated.getCases()
+        .getAccusativeMasculine()
+    );
+    assertEquals(
+      casesRequest.accusativeFeminine(),
+      updated.getCases()
+        .getAccusativeFeminine()
+    );
+    assertEquals(
+      casesRequest.accusativeNeuter(),
+      updated.getCases()
+        .getAccusativeNeuter()
+    );
+    assertEquals(
+      casesRequest.instrumentalMasculine(),
+      updated.getCases()
+        .getInstrumentalMasculine()
+    );
+    assertEquals(
+      casesRequest.instrumentalFeminine(),
+      updated.getCases()
+        .getInstrumentalFeminine()
+    );
+    assertEquals(
+      casesRequest.instrumentalNeuter(),
+      updated.getCases()
+        .getInstrumentalNeuter()
+    );
+    assertEquals(
+      casesRequest.prepositionalMasculine(),
+      updated.getCases()
+        .getPrepositionalMasculine()
+    );
+    assertEquals(
+      casesRequest.prepositionalFeminine(),
+      updated.getCases()
+        .getPrepositionalFeminine()
+    );
+    assertEquals(
+      casesRequest.prepositionalNeuter(),
+      updated.getCases()
+        .getPrepositionalNeuter()
+    );
+  }
+
+  @Test
+  @TestSecurity(
+    user = "user", roles = "words#update"
+  )
+  public void shouldUpdateWordWithCasesAndUpdateCases() throws JsonProcessingException {
+    WordEntity word = setUpWithCases();
+
+    WordCasesRequest casesRequest = WordCasesRequestMother.random()
+      .build();
+    UpdateWordRequest request = UpdateWordRequestMother.random()
+      .type(WordTypes.NOUN.toString())
+      .cases(casesRequest)
+      .build();
+    String json = objectMapper.writeValueAsString(request);
+
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .patch("/words/" + word.getId())
+      .then()
+      .statusCode(200);
+
+    WordEntity updated = em.find(WordEntity.class, word.getId());
+    assertNotNull(updated);
+    assertTrue(updated.getRussian()
+      .equals(request.russian()));
+    assertTrue(updated.getEnglish()
+      .equals(request.english()));
+    assertTrue(updated.getSpanish()
+      .equals(request.spanish()));
+    assertTrue(updated.getType()
+      .equals(WordTypes.NOUN));
+    assertNotNull(updated.getCases());
+    assertEquals(
+      casesRequest.nominativeMasculine(),
+      updated.getCases()
+        .getNominativeMasculine()
+    );
+    assertEquals(
+      casesRequest.nominativeFeminine(),
+      updated.getCases()
+        .getNominativeFeminine()
+    );
+    assertEquals(
+      casesRequest.nominativeNeuter(),
+      updated.getCases()
+        .getNominativeNeuter()
+    );
+    assertEquals(
+      casesRequest.genitiveMasculine(),
+      updated.getCases()
+        .getGenitiveMasculine()
+    );
+    assertEquals(
+      casesRequest.genitiveFeminine(),
+      updated.getCases()
+        .getGenitiveFeminine()
+    );
+    assertEquals(
+      casesRequest.genitiveNeuter(),
+      updated.getCases()
+        .getGenitiveNeuter()
+    );
+    assertEquals(
+      casesRequest.dativeMasculine(),
+      updated.getCases()
+        .getDativeMasculine()
+    );
+    assertEquals(
+      casesRequest.dativeFeminine(),
+      updated.getCases()
+        .getDativeFeminine()
+    );
+    assertEquals(
+      casesRequest.dativeNeuter(),
+      updated.getCases()
+        .getDativeNeuter()
+    );
+    assertEquals(
+      casesRequest.accusativeMasculine(),
+      updated.getCases()
+        .getAccusativeMasculine()
+    );
+    assertEquals(
+      casesRequest.accusativeFeminine(),
+      updated.getCases()
+        .getAccusativeFeminine()
+    );
+    assertEquals(
+      casesRequest.accusativeNeuter(),
+      updated.getCases()
+        .getAccusativeNeuter()
+    );
+    assertEquals(
+      casesRequest.instrumentalMasculine(),
+      updated.getCases()
+        .getInstrumentalMasculine()
+    );
+    assertEquals(
+      casesRequest.instrumentalFeminine(),
+      updated.getCases()
+        .getInstrumentalFeminine()
+    );
+    assertEquals(
+      casesRequest.instrumentalNeuter(),
+      updated.getCases()
+        .getInstrumentalNeuter()
+    );
+    assertEquals(
+      casesRequest.prepositionalMasculine(),
+      updated.getCases()
+        .getPrepositionalMasculine()
+    );
+    assertEquals(
+      casesRequest.prepositionalFeminine(),
+      updated.getCases()
+        .getPrepositionalFeminine()
+    );
+    assertEquals(
+      casesRequest.prepositionalNeuter(),
+      updated.getCases()
+        .getPrepositionalNeuter()
+    );
+  }
+
+  @Test
+  @TestSecurity(
+    user = "user", roles = "words#update"
+  )
+  public void shouldUpdateWordWithCasesAndRemoveCases() throws JsonProcessingException {
+    WordEntity word = setUpWithCases();
+
+    UpdateWordRequest request = UpdateWordRequestMother.random()
+      .type(WordTypes.VERB.toString())
+      .build();
+    String json = objectMapper.writeValueAsString(request);
+
+    given().body(json)
+      .contentType("application/json")
+      .when()
+      .patch("/words/" + word.getId())
+      .then()
+      .statusCode(200);
+
+    WordEntity updated = em.find(WordEntity.class, word.getId());
+    assertNotNull(updated);
+    assertTrue(updated.getRussian()
+      .equals(request.russian()));
+    assertTrue(updated.getEnglish()
+      .equals(request.english()));
+    assertTrue(updated.getSpanish()
+      .equals(request.spanish()));
+    assertTrue(updated.getType()
+      .equals(WordTypes.VERB));
+    assertNull(updated.getCases());
   }
 
 }

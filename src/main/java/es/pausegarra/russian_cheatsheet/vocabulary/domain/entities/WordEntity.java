@@ -71,13 +71,16 @@ public class WordEntity {
     String english,
     String spanish,
     WordTypes type,
-    VerbConjugationEntity conjugations
+    VerbConjugationEntity conjugations,
+    WordCasesEntity cases
   ) {
+
     return this.withEnglish(english)
       .withRussian(russian)
       .withSpanish(spanish)
+      .withType(type)
       .withConjugations(conjugations)
-      .withType(type);
+      .withCases(cases);
   }
 
 }

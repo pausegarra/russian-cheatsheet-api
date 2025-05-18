@@ -2,6 +2,7 @@ package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.rest;
 
 import es.pausegarra.russian_cheatsheet.common.application.interfaces.Service;
 import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.SimplePresentation;
+import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordCasesDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordConjugationsDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.services.update_word.UpdateWordDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.UpdateWordRequest;
@@ -21,13 +22,17 @@ public class UpdateWordResource implements UpdateWordApiSpec {
   public RestResponse<SimplePresentation> updateWord(String id, UpdateWordRequest request) {
     WordConjugationsDto conjugationsDto = request.conjugations() != null ? request.conjugations()
       .toDto() : null;
+    WordCasesDto casesDto = request.cases() != null ? request.cases()
+      .toDto() : null;
+
     UpdateWordDto dto = UpdateWordDto.from(
       id,
       request.russian(),
       request.english(),
       request.spanish(),
       request.type(),
-      conjugationsDto
+      conjugationsDto,
+      casesDto
     );
     updateWordService.handle(dto);
 

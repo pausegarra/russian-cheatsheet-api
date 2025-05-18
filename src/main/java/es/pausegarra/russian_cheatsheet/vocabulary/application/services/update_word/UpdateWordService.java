@@ -2,6 +2,7 @@ package es.pausegarra.russian_cheatsheet.vocabulary.application.services.update_
 
 import es.pausegarra.russian_cheatsheet.common.application.interfaces.Service;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.VerbConjugationEntity;
+import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordCasesEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.exception.WordNotFound;
@@ -28,13 +29,15 @@ public class UpdateWordService implements Service<UpdateWordDto, Void> {
     WordEntity word = ensureEntityExists(dto.id());
 
     VerbConjugationEntity conjugations = resolveConjugations(word, dto);
+    WordCasesEntity cases = resolveCases(word, dto);
 
     WordEntity updated = word.update(
       dto.russian(),
       dto.english(),
       dto.spanish(),
       dto.type(),
-      conjugations
+      conjugations,
+      cases
     );
 
     wordsRepository.save(updated);
@@ -54,25 +57,30 @@ public class UpdateWordService implements Service<UpdateWordDto, Void> {
 
     VerbConjugationEntity existing = word.getConjugations();
 
-    return existing == null ? createNewConjugations(
-      word,
-      dto
-    ) : updateExistingConjugations(existing, dto);
-  }
+    if (existing == null) {
+      return dto.conjugations()
+        .toEntity()
+        .withWord(word);
+    }
 
-  private VerbConjugationEntity createNewConjugations(WordEntity word, UpdateWordDto dto) {
-    return dto.conjugations()
-      .toEntity()
-      .withWord(word);
-  }
-
-  private VerbConjugationEntity updateExistingConjugations(
-    VerbConjugationEntity existing,
-    UpdateWordDto dto
-  ) {
     return existing.update(dto.conjugations()
       .toEntity());
   }
 
+  private WordCasesEntity resolveCases(WordEntity word, UpdateWordDto dto) {
+    if (dto.type() == WordTypes.VERB || dto.cases() == null) {
+      return null;
+    }
+
+    WordCasesEntity existing = word.getCases();
+    if (existing == null) {
+      return dto.cases()
+        .toEntity()
+        .withWord(word);
+    }
+
+    return existing.update(dto.cases()
+      .toEntity());
+  }
 
 }

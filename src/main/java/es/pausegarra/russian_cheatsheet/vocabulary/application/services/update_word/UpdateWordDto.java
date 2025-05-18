@@ -1,5 +1,6 @@
 package es.pausegarra.russian_cheatsheet.vocabulary.application.services.update_word;
 
+import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordCasesDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.application.dto.WordConjugationsDto;
 import es.pausegarra.russian_cheatsheet.vocabulary.domain.enums.WordTypes;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +14,8 @@ public record UpdateWordDto(
   @NotBlank String english,
   @NotBlank String spanish,
   @NotNull WordTypes type,
-  WordConjugationsDto conjugations
+  WordConjugationsDto conjugations,
+  WordCasesDto cases
 ) {
 
   public static UpdateWordDto from(
@@ -22,7 +24,8 @@ public record UpdateWordDto(
     String english,
     String spanish,
     String type,
-    WordConjugationsDto conjugations
+    WordConjugationsDto conjugations,
+    WordCasesDto cases
   ) {
     return new UpdateWordDto(
       UUID.fromString(id),
@@ -30,7 +33,8 @@ public record UpdateWordDto(
       english,
       spanish,
       WordTypes.valueOf(type),
-      conjugations
+      conjugations,
+      cases
     );
   }
 

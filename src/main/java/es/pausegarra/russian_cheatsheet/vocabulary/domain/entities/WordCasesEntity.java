@@ -78,4 +78,29 @@ public class WordCasesEntity {
   @Column(name = "prepositional_neuter")
   private final String prepositionalNeuter;
 
+  public WordCasesEntity update(WordCasesEntity entity) {
+    return new WordCasesEntity(
+      getId(),
+      getWord(),
+      entity.getNominativeMasculine(),
+      entity.getNominativeFeminine(),
+      entity.getNominativeNeuter(),
+      entity.getGenitiveMasculine(),
+      entity.getGenitiveFeminine(),
+      entity.getGenitiveNeuter(),
+      entity.getDativeMasculine(),
+      entity.getDativeFeminine(),
+      entity.getDativeNeuter(),
+      entity.getAccusativeMasculine(),
+      entity.getAccusativeFeminine(),
+      entity.getAccusativeNeuter(),
+      entity.getInstrumentalMasculine(),
+      entity.getInstrumentalFeminine(),
+      entity.getInstrumentalNeuter(),
+      entity.getPrepositionalMasculine(),
+      entity.getPrepositionalFeminine(),
+      entity.getPrepositionalNeuter()
+    );
+  }
+
 }
