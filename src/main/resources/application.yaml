@@ -1,0 +1,32 @@
+quarkus:
+  http:
+    root-path: /api
+
+  datasource:
+    db-kind: postgresql
+    username: russkiy-po-moyemu
+    password: russkiy-po-moyemu
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/russkiy-po-moyemu
+
+  hibernate-orm:
+    database:
+      generation: update
+
+  rest-client:
+    keycloak:
+      url: ${app.idp.url}
+      scope: jakarta.inject.Singleton
+
+app:
+  idp:
+    url: https://auth.pausegarra.es/realms/principal
+    client-id: russian-cheatsheet-private
+
+mp:
+  jwt:
+    verify:
+      publickey:
+        location: ${app.idp.url}/protocol/openid-connect/certs
+      issuer: ${app.idp.url}
+      audience: ${app.id.client-id}

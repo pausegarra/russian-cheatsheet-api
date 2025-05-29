@@ -1,0 +1,96 @@
+name: Deploy Application 🐋
+
+on:
+  push:
+    tags:
+      - "*.*.*"
+
+jobs:
+  ci:
+    name: 🛠️ Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔽 Checkout
+        uses: actions/checkout@v4
+
+      - name: Install SDKMAN!
+        run: |
+          curl -s "https://get.sdkman.io" | bash
+          source "$HOME/.sdkman/bin/sdkman-init.sh"
+          sdk version
+
+      - name: 🔧 Setup JDK 21
+        run: |
+          source "/home/runner/.sdkman/bin/sdkman-init.sh"
+          sdk install java 23.1.6.r21-nik
+          sdk use java 23.1.6.r21-nik
+
+      - name: 🔧 Setup Maven 3.9.8
+        run: |
+          source "/home/runner/.sdkman/bin/sdkman-init.sh"
+          sdk install maven 3.9.8
+          sdk use maven 3.9.8
+
+      - name: 🛠️ Build Application
+        run: |
+          source "/home/runner/.sdkman/bin/sdkman-init.sh"
+          mvn clean package -Dquarkus.profile=prod -Pnative
+
+      - name: 🛠️ Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: target/
+
+  docker:
+    name: 🐋 Build and Push Docker Image
+    runs-on: ubuntu-latest
+    needs: ci
+
+    steps:
+      - name: 🔽 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🛠️ Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: target/
+
+      - name: 🛠️ Build Docker Image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/russian-cheatsheet-api:${{ github.ref_name }} -f ./src/main/docker/Dockerfile.native-micro .
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: 🛠️ Push Docker Image to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/russian-cheatsheet-api:${{ github.ref_name }}
+          
+  deploy:
+    name: 🚀 Deploy Application
+    runs-on: ubuntu-latest
+    needs: docker
+    
+    steps:
+      - name: 🔽 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🚀 Deploy
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa
+          chmod 600 id_rsa
+          cat ./deploy/compose.yaml | ssh -o StrictHostKeyChecking=no -i id_rsa -p ${{ secrets.SSH_PORT }} \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
+            "docker pull ${{ secrets.DOCKER_USERNAME }}/russian-cheatsheet-api:${{ github.ref_name }} && \
+              export VERSION=${{ github.ref_name }} && \
+              export DB_USERNAME=${{ secrets.DB_USERNAME }} && \
+              export DB_PASSWORD=${{ secrets.DB_PASSWORD }} && \
+              export DB_URL=${{ secrets.DB_URL }} && \
+            docker compose -f - up -d --force-recreate"
+          rm id_rsa
