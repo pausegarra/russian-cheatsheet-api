@@ -60,7 +60,7 @@ jobs:
 
       - name: 🛠️ Build Docker Image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/russian-cheatsheet-api:${{ github.ref_name }} -f ./src/main/docker/Dockerfile.native-micro .
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/image-name:${{ github.ref_name }} -f ./src/main/docker/Dockerfile.native-micro .
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -70,7 +70,7 @@ jobs:
 
       - name: 🛠️ Push Docker Image to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKER_USERNAME }}/russian-cheatsheet-api:${{ github.ref_name }}
+          docker push ${{ secrets.DOCKER_USERNAME }}/image-name:${{ github.ref_name }}
           
   deploy:
     name: 🚀 Deploy Application
@@ -87,10 +87,7 @@ jobs:
           chmod 600 id_rsa
           cat ./deploy/compose.yaml | ssh -o StrictHostKeyChecking=no -i id_rsa -p ${{ secrets.SSH_PORT }} \
             ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
-            "docker pull ${{ secrets.DOCKER_USERNAME }}/russian-cheatsheet-api:${{ github.ref_name }} && \
+            "docker pull ${{ secrets.DOCKER_USERNAME }}/image-name:${{ github.ref_name }} && \
               export VERSION=${{ github.ref_name }} && \
-              export DB_USERNAME=${{ secrets.DB_USERNAME }} && \
-              export DB_PASSWORD=${{ secrets.DB_PASSWORD }} && \
-              export DB_URL=${{ secrets.DB_URL }} && \
             docker compose -f - up -d --force-recreate"
           rm id_rsa
