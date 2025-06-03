@@ -4,10 +4,10 @@ quarkus:
 
   datasource:
     db-kind: postgresql
-    username: russkiy-po-moyemu
-    password: russkiy-po-moyemu
+    username: username
+    password: password
     jdbc:
-      url: jdbc:postgresql://localhost:5432/russkiy-po-moyemu
+      url: jdbc:postgresql://localhost:5432/database
 
   hibernate-orm:
     database:
@@ -21,7 +21,7 @@ quarkus:
 app:
   idp:
     url: https://auth.pausegarra.es/realms/principal
-    client-id: russian-cheatsheet-private
+    client-id: client-id
 
 mp:
   jwt:
