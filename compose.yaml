@@ -2,17 +2,17 @@ version: '3.2'
 
 services:
   db:
-    container_name: russkiy-po-moyemu-db
+    container_name: database
     image: postgres:16-alpine
     ports:
       - "5432:5432"
     volumes:
-      - russkiy-po-moyemu-db-data:/var/lib/postgresql/data
+      - database-db-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: 'russkiy-po-moyemu'
-      POSTGRES_PASSWORD: 'russkiy-po-moyemu'
-      POSTGRES_DB: 'russkiy-po-moyemu'
+      POSTGRES_USER: 'user'
+      POSTGRES_PASSWORD: 'password'
+      POSTGRES_DB: 'database'
     restart: unless-stopped
 
 volumes:
-  russkiy-po-moyemu-db-data:
+  database-db-data:
