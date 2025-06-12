@@ -9,6 +9,9 @@ quarkus:
     jdbc:
       url: jdbc:postgresql://localhost:5432/russkiy-po-moyemu
 
+  swagger-ui:
+    always-include: true
+
   hibernate-orm:
     database:
       generation: update
