@@ -30,16 +30,22 @@ upgrade-major-version: ## Upgrade major version of the POM
 	@$(eval NEW_VERSION := $(shell echo $(CURRENT_VERSION) | awk -F. '{$$1+=1; $$2=0; $$3=0; print $$1"."$$2"."$$3}'))
 	@echo Setting new version to $(NEW_VERSION)
 	@./mvnw versions:set -DnewVersion=$(NEW_VERSION) -DgenerateBackupPoms=false
+	git add pom.xml
+	git commit -m "chore: upgrade to $(NEW_VERSION)"
 
 upgrade-minor-version: ## Upgrade minor version of the POM
 	@$(eval NEW_VERSION := $(shell echo $(CURRENT_VERSION) | awk -F. '{$$2+=1; $$3=0; print $$1"."$$2"."$$3}'))
 	@echo Setting new version to $(NEW_VERSION)
 	@./mvnw versions:set -DnewVersion=$(NEW_VERSION) -DgenerateBackupPoms=false
+	git add pom.xml
+	git commit -m "chore: upgrade to $(NEW_VERSION)"
 
 upgrade-patch-version: ## Upgrade patch version of the POM
 	@$(eval NEW_VERSION := $(shell echo $(CURRENT_VERSION) | awk -F. '{$$3+=1; print $$1"."$$2"."$$3}'))
 	@echo Setting new version to $(NEW_VERSION)
 	@./mvnw versions:set -DnewVersion=$(NEW_VERSION) -DgenerateBackupPoms=false
+	git add pom.xml
+	git commit -m "chore: upgrade to $(NEW_VERSION)"
 
 tag: ## Tag the current version
 	git tag $(CURRENT_VERSION)
