@@ -96,7 +96,7 @@ public class UpdateWordTest extends IntegrationTest {
     given().body(json)
       .contentType("application/json")
       .when()
-      .patch("/words/" + word.getId())
+      .put("/words/" + word.getId())
       .then()
       .statusCode(200);
 
@@ -129,7 +129,7 @@ public class UpdateWordTest extends IntegrationTest {
     given().body(json)
       .contentType("application/json")
       .when()
-      .patch("/words/" + word.getId())
+      .put("/words/" + word.getId())
       .then()
       .statusCode(200);
 
@@ -160,7 +160,7 @@ public class UpdateWordTest extends IntegrationTest {
     given().body(json)
       .contentType("application/json")
       .when()
-      .patch("/words/" + word.getId())
+      .put("/words/" + word.getId())
       .then()
       .statusCode(200);
 
@@ -194,7 +194,7 @@ public class UpdateWordTest extends IntegrationTest {
     given().body(json)
       .contentType("application/json")
       .when()
-      .patch("/words/" + word.getId())
+      .put("/words/" + word.getId())
       .then()
       .statusCode(200);
 
@@ -233,7 +233,7 @@ public class UpdateWordTest extends IntegrationTest {
     given().body(json)
       .when()
       .contentType("application/json")
-      .patch("/words/" + word.getId())
+      .put("/words/" + word.getId())
       .then()
       .statusCode(400)
       .body("errors.size()", is(3))
@@ -253,7 +253,7 @@ public class UpdateWordTest extends IntegrationTest {
     String json = objectMapper.writeValueAsString(request);
     given().body(json)
       .when()
-      .patch("/words/" + word.getId())
+      .put("/words/" + word.getId())
       .then()
       .statusCode(401);
   }
@@ -268,7 +268,7 @@ public class UpdateWordTest extends IntegrationTest {
     String json = objectMapper.writeValueAsString(request);
     given().body(json)
       .when()
-      .patch("/words/" + word.getId())
+      .put("/words/" + word.getId())
       .then()
       .statusCode(403);
   }
@@ -291,7 +291,7 @@ public class UpdateWordTest extends IntegrationTest {
     given().body(json)
       .contentType("application/json")
       .when()
-      .patch("/words/" + word.getId())
+      .put("/words/" + word.getId())
       .then()
       .statusCode(200);
 
@@ -338,7 +338,7 @@ public class UpdateWordTest extends IntegrationTest {
     given().body(json)
       .contentType("application/json")
       .when()
-      .patch("/words/" + word.getId())
+      .put("/words/" + word.getId())
       .then()
       .statusCode(200);
 
@@ -382,7 +382,7 @@ public class UpdateWordTest extends IntegrationTest {
     given().body(json)
       .contentType("application/json")
       .when()
-      .patch("/words/" + word.getId())
+      .put("/words/" + word.getId())
       .then()
       .statusCode(200);
 
