@@ -2,7 +2,7 @@ package es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.spec;
 
 import es.pausegarra.russian_cheatsheet.common.infrastructure.presentations.SimplePresentation;
 import es.pausegarra.russian_cheatsheet.vocabulary.infrastructure.requests.UpdateWordRequest;
-import jakarta.ws.rs.PATCH;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import org.eclipse.microprofile.openapi.annotations.Operation;
@@ -19,7 +19,7 @@ import org.jboss.resteasy.reactive.RestResponse;
 @Tag(name = "Words")
 public interface UpdateWordApiSpec {
 
-  @PATCH
+  @PUT
   @Operation(summary = "Update word")
   @SecurityRequirement(name = "SecurityScheme")
   @APIResponse(
