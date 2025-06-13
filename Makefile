@@ -50,6 +50,19 @@ upgrade-patch-version: ## Upgrade patch version of the POM
 	git commit -m "chore: upgrade to $(NEW_VERSION)"
 	git push
 
+new-migration: ## Generates a new migration file
+	@read -p "Enter migration name: " name; \
+	current_time=$$(date +"V%Y_%m_%d_%H_%M_%S"); \
+	filename="src/main/resources/db/migration/$${current_time}__$$name.sql"; \
+	touch $$filename; \
+	echo "file created: $$filename"
+
+generate-schema: ## Generate the schema
+	@rm -rf schema.sql
+	@./mvnw quarkus:dev \
+		-Dquarkus.hibernate-orm.scripts.generation=create \
+		-Dquarkus.hibernate-orm.scripts.generation.create-target=schema.sql
+
 tag: ## Tag the current version
 	git tag $(CURRENT_VERSION)
 	git push origin $(CURRENT_VERSION)

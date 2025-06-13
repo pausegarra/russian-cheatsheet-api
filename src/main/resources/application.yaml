@@ -9,12 +9,16 @@ quarkus:
     jdbc:
       url: jdbc:postgresql://localhost:5432/database
 
+  flyway:
+    migrate-at-start: true
+
   swagger-ui:
     always-include: true
 
   hibernate-orm:
     database:
-      generation: update
+      generation: none
+    format-sql: true
 
   rest-client:
     keycloak:
