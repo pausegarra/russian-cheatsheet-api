@@ -2,6 +2,13 @@ quarkus:
   http:
     root-path: /api
 
+  micrometer:
+    binder:
+      jvm:
+        enabled: true
+      system:
+        enabled: true
+
   datasource:
     db-kind: postgresql
     username: russkiy-po-moyemu
