@@ -7,7 +7,9 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Set;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(
+  access = AccessLevel.PRIVATE
+)
 @Data
 public class ValidationErrorPresentation {
 
@@ -15,17 +17,10 @@ public class ValidationErrorPresentation {
 
   private final Status status;
 
-  private final String code;
-
   private final Set<ValidationError> errors;
 
-  public static ValidationErrorPresentation create(
-    String message,
-    Status status,
-    String code,
-    Set<ValidationError> errors
-  ) {
-    return new ValidationErrorPresentation(message, status, code, errors);
+  public static ValidationErrorPresentation create(String message, Status status, Set<ValidationError> errors) {
+    return new ValidationErrorPresentation(message, status, errors);
   }
 
 }

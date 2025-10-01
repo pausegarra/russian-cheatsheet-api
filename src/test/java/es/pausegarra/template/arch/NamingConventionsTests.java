@@ -1,15 +1,16 @@
 package es.pausegarra.template.arch;
 
+import es.pausegarra.template.common.application.services.Service;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
-import es.pausegarra.template.common.application.interfaces.Service;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 @AnalyzeClasses(
-  packages = BaseArchTest.BASE_PACKAGE, importOptions = {ImportOption.DoNotIncludeTests.class}
+  packages = BaseArchTest.BASE_PACKAGE,
+  importOptions = {ImportOption.DoNotIncludeTests.class}
 )
 public class NamingConventionsTests extends BaseArchTest {
 
@@ -23,10 +24,16 @@ public class NamingConventionsTests extends BaseArchTest {
     .andShould()
     .haveSimpleNameNotEndingWith(SERVICE_IMPL);
 
-  //  @ArchTest
-  //  static final ArchRule config_properties_should_be_suffixed = classes().that()
-  //      .areAnnotatedWith(ConfigMapping.class)
-  //      .should()
-  //      .haveSimpleNameEndingWith(CONFIG_PROPERTIES);
+  // @ArchTest
+  // static final ArchRule controllers_should_be_suffixed = classes().that()
+  // .areAnnotatedWith(Path.class)
+  // .should()
+  // .haveSimpleNameEndingWith(RESOURCE);
+
+  // @ArchTest
+  // static final ArchRule config_properties_should_be_suffixed = classes().that()
+  // .areAnnotatedWith(ConfigMapping.class)
+  // .should()
+  // .haveSimpleNameEndingWith(CONFIG_PROPERTIES);
 
 }
