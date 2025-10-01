@@ -23,15 +23,6 @@ public class IntegrationTest {
   @BeforeEach
   @Transactional
   public void cleanUp() {
-    em.createNativeQuery("TRUNCATE TABLE users CASCADE").executeUpdate();
-    em.createNativeQuery("TRUNCATE TABLE solutions CASCADE").executeUpdate();
-    em.createNativeQuery("TRUNCATE TABLE projects CASCADE").executeUpdate();
-    em.createNativeQuery("TRUNCATE TABLE authz_models CASCADE").executeUpdate();
-    em.createNativeQuery("TRUNCATE TABLE type_definitions CASCADE").executeUpdate();
-    em.createNativeQuery("TRUNCATE TABLE type_definitions_items CASCADE").executeUpdate();
-    em.createNativeQuery("TRUNCATE TABLE tuples CASCADE").executeUpdate();
-    em.createNativeQuery("TRUNCATE TABLE type_definitions_relations CASCADE").executeUpdate();
-    em.createNativeQuery("TRUNCATE TABLE stores CASCADE").executeUpdate();
   }
 
   @Transactional

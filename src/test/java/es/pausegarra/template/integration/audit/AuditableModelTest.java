@@ -13,25 +13,65 @@ import static org.junit.jupiter.api.Assertions.*;
 class AuditableModelTest extends IntegrationTest {
 
   @Test
-  @TestSecurity(
-    user = "test"
-  )
-  public void shouldCreateAndSaveAuditableEntity() {
+  @TestSecurity(user = "test")
+  void shouldCreateAndSaveAuditableEntity() {
+    DummyAuditableModel entity = DummyAuditableModel.create("value");
+
+    persist(entity);
+
+    DummyAuditableModel persisted = em.find(DummyAuditableModel.class, entity.getId());
+
+    assertNotNull(persisted);
+    assertNotNull(persisted.getCreatedAt());
+    assertNotNull(persisted.getUpdatedAt());
+    assertEquals("test", persisted.getCreatedBy());
+    assertNull(persisted.getUpdatedBy());
   }
 
   @Test
-  public void shouldCreateAndSaveAuditableEntityEvenIfNoSecurityIdentityIsPresent() {
+  void shouldCreateAndSaveAuditableEntityEvenIfNoSecurityIdentityIsPresent() {
+    DummyAuditableModel entity = DummyAuditableModel.create("value");
+
+    persist(entity);
+
+    DummyAuditableModel persisted = em.find(DummyAuditableModel.class, entity.getId());
+
+    assertNotNull(persisted);
+    assertNotNull(persisted.getCreatedAt());
+    assertNotNull(persisted.getUpdatedAt());
+    assertEquals("anonymous", persisted.getCreatedBy());
+    assertNull(persisted.getUpdatedBy());
   }
 
   @Test
-  @TestSecurity(
-    user = "test"
-  )
-  public void shouldSaveAuditableEntityThatHasBeenUpdatedWithUpdatedBy() {
+  @TestSecurity(user = "test")
+  void shouldSaveAuditableEntityThatHasBeenUpdatedWithUpdatedBy() {
+    DummyAuditableModel entity = DummyAuditableModel.create("value");
+    DummyAuditableModel created = persist(entity);
+
+    merge(created.withValue("updated"));
+
+    DummyAuditableModel updated = em.find(DummyAuditableModel.class, created.getId());
+
+    assertNotNull(updated);
+    assertEquals("updated", updated.getValue());
+    assertEquals("test", updated.getUpdatedBy());
+    assertNotNull(updated.getUpdatedAt());
   }
 
   @Test
-  public void shouldSaveAuditableEntityThatHasBeenUpdatedWithUpdateByAnonymous() {
-  }
+  void shouldSaveAuditableEntityThatHasBeenUpdatedWithUpdateByAnonymous() {
+    DummyAuditableModel entity = DummyAuditableModel.create("value");
+    DummyAuditableModel created = persist(entity);
 
+    merge(created.withValue("updated"));
+
+    DummyAuditableModel updated = em.find(DummyAuditableModel.class, entity.getId());
+
+    assertNotNull(updated);
+    assertEquals("updated", updated.getValue());
+    assertEquals("anonymous", updated.getUpdatedBy());
+    assertNotNull(updated.getUpdatedAt());
+  }
+  
 }
