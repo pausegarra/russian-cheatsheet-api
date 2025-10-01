@@ -2,7 +2,6 @@ package es.pausegarra.template.common.infrastructure.exception_mappers;
 
 import es.pausegarra.template.common.domain.exception.NotFound;
 import es.pausegarra.template.common.infrastructure.presentations.ApiExceptionPresentation;
-import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
@@ -11,14 +10,14 @@ import org.jboss.resteasy.reactive.server.ServerExceptionMapper;
 public class NotFoundExceptionMapper {
 
   @ServerExceptionMapper
-  public RestResponse<ApiExceptionPresentation> toResponse(NotFound exception) {
+  public RestResponse<ApiExceptionPresentation> toResponse(NotFound e) {
     ApiExceptionPresentation presentation = ApiExceptionPresentation.create(
-      exception.getMessage(),
-      Response.Status.BAD_REQUEST.name(),
-      Response.Status.NOT_FOUND.getStatusCode()
+      e.getMessage(),
+      RestResponse.Status.NOT_FOUND.name(),
+      RestResponse.Status.NOT_FOUND.getStatusCode()
     );
 
-    return RestResponse.status(Response.Status.NOT_FOUND, presentation);
+    return RestResponse.status(RestResponse.Status.NOT_FOUND, presentation);
   }
 
 }

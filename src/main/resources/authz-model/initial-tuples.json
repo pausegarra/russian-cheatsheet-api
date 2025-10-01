@@ -1,0 +1,66 @@
+[
+  {
+    "userTypeDefinition": "role",
+    "userTypeDefinitionItem": "root",
+    "userRelation": "member",
+    "relation": "root",
+    "objectTypeDefinition": "system",
+    "objectTypeDefinitionItem": "main"
+  },
+  {
+    "userTypeDefinition": "system",
+    "userTypeDefinitionItem": "main",
+    "userRelation": null,
+    "relation": "in_system",
+    "objectTypeDefinition": "project",
+    "objectTypeDefinitionItem": "authz-project"
+  },
+  {
+    "userTypeDefinition": "project",
+    "userTypeDefinitionItem": "authz-project",
+    "userRelation": null,
+    "relation": "in_project",
+    "objectTypeDefinition": "solution",
+    "objectTypeDefinitionItem": "authz-solution"
+  },
+  {
+    "userTypeDefinition": "solution",
+    "userTypeDefinitionItem": "authz-solution",
+    "userRelation": null,
+    "relation": "in_solution",
+    "objectTypeDefinition": "store",
+    "objectTypeDefinitionItem": "authz-store"
+  },
+  {
+    "userTypeDefinition": "user",
+    "userTypeDefinitionItem": "pasegarra.ext@acciona.com",
+    "userRelation": null,
+    "relation": "member",
+    "objectTypeDefinition": "role",
+    "objectTypeDefinitionItem": "root"
+  },
+  {
+    "userTypeDefinition": "user",
+    "userTypeDefinitionItem": "davalverde.ext@acciona.com",
+    "userRelation": null,
+    "relation": "member",
+    "objectTypeDefinition": "role",
+    "objectTypeDefinitionItem": "root"
+  },
+  {
+    "userTypeDefinition": "user",
+    "userTypeDefinitionItem": "cacarnero.ext@acciona.com",
+    "userRelation": null,
+    "relation": "member",
+    "objectTypeDefinition": "role",
+    "objectTypeDefinitionItem": "root"
+  },
+  {
+    "userTypeDefinition": "user",
+    "userTypeDefinitionItem": "alnino@acciona.com",
+    "userRelation": null,
+    "relation": "member",
+    "objectTypeDefinition": "role",
+    "objectTypeDefinitionItem": "root"
+  }
+]

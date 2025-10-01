@@ -1,11 +1,11 @@
 version: '3.2'
 
 services:
-  db:
-    container_name: database
-    image: postgres:16-alpine
+  postgres:
+    image: postgres:15
+    container_name: postgres
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - database-db-data:/var/lib/postgresql/data
     environment:
@@ -13,6 +13,11 @@ services:
       POSTGRES_PASSWORD: 'password'
       POSTGRES_DB: 'database'
     restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   database-db-data:

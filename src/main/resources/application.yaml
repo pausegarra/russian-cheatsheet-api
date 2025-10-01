@@ -1,29 +1,40 @@
 quarkus:
-  http:
-    root-path: /api
 
   datasource:
     db-kind: postgresql
     username: username
     password: password
     jdbc:
-      url: jdbc:postgresql://localhost:5432/database
+      url: jdbc:postgresql://localhost:5433/database
 
   flyway:
     migrate-at-start: true
-
-  swagger-ui:
-    always-include: true
 
   hibernate-orm:
     database:
       generation: none
     format-sql: true
 
+  banner:
+    path: banner.txt
+
+  swagger-ui:
+    always-include: true
+    urls:
+      default: /q/openapi
+    enable: true
+    theme: original
+    operations-sorter: alpha
+
   rest-client:
     keycloak:
       url: ${app.idp.url}
-      scope: jakarta.inject.Singleton
+      scope: jakarta.enterprise.context.ApplicationScoped
+
+  smallrye-openapi:
+    info-title: Template
+    info-version: 1.0.0
+    info-description: Template
 
 app:
   idp:

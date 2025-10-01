@@ -24,13 +24,10 @@ public class ValidationExceptionMapper {
     ValidationErrorPresentation presentation = ValidationErrorPresentation.create(
       "Unprocessable " + "Entity",
       Response.Status.BAD_REQUEST,
-      "VALIDATION_ERROR",
       errors
     );
 
-    return RestResponse.ResponseBuilder.create(RestResponse.Status.BAD_REQUEST, presentation)
-      .header("Content-Type", "application/json")
-      .build();
+    return RestResponse.status(RestResponse.Status.BAD_REQUEST, presentation);
   }
 
 }

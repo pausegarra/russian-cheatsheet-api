@@ -1,9 +1,19 @@
 package es.pausegarra.template.common.domain.exception;
 
+import lombok.Getter;
+
+@Getter
 public class Forbidden extends RuntimeException {
 
-  public Forbidden() {
-    super();
+  private String code = "FORBIDDEN";
+
+  public Forbidden(String message) {
+    super(message);
+  }
+
+  public Forbidden(String message, String code) {
+    super(message);
+    this.code = code;
   }
 
 }

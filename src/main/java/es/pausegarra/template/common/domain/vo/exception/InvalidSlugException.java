@@ -1,0 +1,15 @@
+package es.pausegarra.template.common.domain.vo.exception;
+
+import es.pausegarra.template.common.domain.exception.BadRequest;
+
+public class InvalidSlugException extends BadRequest {
+
+  public InvalidSlugException(String slug) {
+    super("The slug " + slug + " is not valid");
+  }
+
+  public InvalidSlugException(String slug, String message) {
+    super("The slug " + slug + " is not valid: " + message);
+  }
+
+}

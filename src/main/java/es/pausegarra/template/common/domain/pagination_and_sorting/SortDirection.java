@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public enum SortDirection {
 
-  ASC("Ascending"), DESC("Descending");
+  ASC("ASC"), DESC("DESC");
 
-  private String value;
+  private final String value;
 
   SortDirection(String value) {
     this.value = value;

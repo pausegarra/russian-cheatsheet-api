@@ -1,16 +1,17 @@
 package es.pausegarra.template.arch;
 
+import es.pausegarra.template.common.application.services.Service;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
-import es.pausegarra.template.common.application.interfaces.Service;
 import jakarta.enterprise.context.ApplicationScoped;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 @AnalyzeClasses(
-  packages = BaseArchTest.BASE_PACKAGE, importOptions = {ImportOption.DoNotIncludeTests.class}
+  packages = BaseArchTest.BASE_PACKAGE,
+  importOptions = {ImportOption.DoNotIncludeTests.class}
 )
 public class ArchitectureTests extends BaseArchTest {
 
