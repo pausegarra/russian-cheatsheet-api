@@ -1,0 +1,39 @@
+package es.pausegarra.russian_cheatsheet.context.words.domain.entities;
+
+import java.time.Instant;
+import java.util.UUID;
+
+public record WordConjugationEntity(
+  UUID id,
+  WordEntity word,
+  String imperfectivePresentFirstPersonSingular,
+  String imperfectivePresentSecondPersonSingular,
+  String imperfectivePresentThirdPersonSingular,
+  String imperfectivePresentFirstPersonPlural,
+  String imperfectivePresentSecondPersonPlural,
+  String imperfectivePresentThirdPersonPlural,
+  String imperfectivePastMasculine,
+  String imperfectivePastFeminine,
+  String imperfectivePastNeuter,
+  String imperfectivePastPlural,
+  String imperfectiveFutureFirstPersonSingular,
+  String imperfectiveFutureSecondPersonSingular,
+  String imperfectiveFutureThirdPersonSingular,
+  String imperfectiveFutureFirstPersonPlural,
+  String imperfectiveFutureSecondPersonPlural,
+  String imperfectiveFutureThirdPersonPlural,
+  String perfectivePastMasculine,
+  String perfectivePastFeminine,
+  String perfectivePastNeuter,
+  String perfectivePastPlural,
+  String perfectiveFutureFirstPersonSingular,
+  String perfectiveFutureSecondPersonSingular,
+  String perfectiveFutureThirdPersonSingular,
+  String perfectiveFutureFirstPersonPlural,
+  String perfectiveFutureSecondPersonPlural,
+  String perfectiveFutureThirdPersonPlural,
+  String createdBy,
+  Instant createdAt,
+  String updatedBy,
+  Instant updatedAt
+) {}

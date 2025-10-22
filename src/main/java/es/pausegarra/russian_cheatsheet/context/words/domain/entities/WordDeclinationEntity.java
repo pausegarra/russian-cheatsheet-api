@@ -1,17 +1,18 @@
 package es.pausegarra.russian_cheatsheet.context.words.domain.entities;
 
-import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
-
 import java.time.Instant;
 import java.util.UUID;
 
-public record WordEntity(
+public record WordDeclinationEntity(
   UUID id,
-  String russian,
-  String english,
-  String spanish,
+  WordEntity word,
+  String nominative,
+  String accusative,
+  String genitive,
+  String dative,
+  String instrumental,
+  String prepositional,
   String createdBy,
-  WordType type,
   Instant createdAt,
   String updatedBy,
   Instant updatedAt
