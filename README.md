@@ -1,4 +1,4 @@
-# quarkus-template
+# Russian Cheatsheet
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 

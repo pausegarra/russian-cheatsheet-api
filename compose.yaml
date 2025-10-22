@@ -3,15 +3,15 @@ version: '3.2'
 services:
   postgres:
     image: postgres:15
-    container_name: postgres
+    container_name: russian-cheatsheet-postgres
     ports:
-      - "5434:5432"
+      - "5432:5432"
     volumes:
-      - database-db-data:/var/lib/postgresql/data
+      - russian-cheatsheet-postgres-data:/var/lib/postgresql/data
     environment:
-      POSTGRES_USER: 'user'
+      POSTGRES_USER: 'russian-cheatsheet'
       POSTGRES_PASSWORD: 'password'
-      POSTGRES_DB: 'database'
+      POSTGRES_DB: 'russian-cheatsheet'
     restart: unless-stopped
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U postgres" ]
@@ -20,4 +20,4 @@ services:
       retries: 5
 
 volumes:
-  database-db-data:
+  russian-cheatsheet-postgres-data:
