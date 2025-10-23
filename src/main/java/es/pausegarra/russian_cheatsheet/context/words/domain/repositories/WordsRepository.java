@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface WordsRepository {
 
-  WordEntity save(WordEntity word);
+  WordEntity create(WordEntity word);
 
   Optional<WordEntity> findById(String id);
 

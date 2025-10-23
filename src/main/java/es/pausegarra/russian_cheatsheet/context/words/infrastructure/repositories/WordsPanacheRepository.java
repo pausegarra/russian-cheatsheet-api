@@ -14,13 +14,18 @@ import java.util.Optional;
 public class WordsPanacheRepository implements WordsRepository, PanacheRepository<WordModel> {
 
   @Override
-  public WordEntity save(WordEntity word) {
-    return null;
+  public WordEntity create(WordEntity word) {
+    WordModel wordModel = WordModel.fromEntity(word);
+
+    persist(wordModel);
+
+   return wordModel.toEntity();
   }
 
   @Override
   public Optional<WordEntity> findById(String id) {
-    return Optional.empty();
+    return find("id", id).firstResultOptional()
+      .map(WordModel::toEntity);
   }
 
 }
