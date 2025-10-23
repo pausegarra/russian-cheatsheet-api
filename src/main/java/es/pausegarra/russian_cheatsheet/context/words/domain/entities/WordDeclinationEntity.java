@@ -1,8 +1,11 @@
 package es.pausegarra.russian_cheatsheet.context.words.domain.entities;
 
+import lombok.Builder;
+
 import java.time.Instant;
 import java.util.UUID;
 
+@Builder
 public record WordDeclinationEntity(
   UUID id,
   WordEntity word,
