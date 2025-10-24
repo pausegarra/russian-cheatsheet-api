@@ -8,6 +8,8 @@ public interface WordsRepository {
 
   WordEntity create(WordEntity word);
 
+  WordEntity save(WordEntity word);
+
   Optional<WordEntity> findById(String id);
 
 }

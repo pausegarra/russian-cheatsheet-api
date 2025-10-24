@@ -8,6 +8,7 @@ public enum WordType {
   ADJECTIVE,
   ADVERB,
   NUMERAL,
+  ORDINAL,
   PREPOSITION,
   CONJUNCTION,
   PARTICLE,

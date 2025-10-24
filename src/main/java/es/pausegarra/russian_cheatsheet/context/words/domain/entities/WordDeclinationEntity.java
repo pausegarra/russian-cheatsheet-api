@@ -19,4 +19,24 @@ public record WordDeclinationEntity(
   Instant createdAt,
   String updatedBy,
   Instant updatedAt
-) {}
+) {
+
+  public static WordDeclinationEntity create(
+    String nominative,
+    String accusative,
+    String genitive,
+    String dative,
+    String instrumental,
+    String prepositional
+  ) {
+    return WordDeclinationEntity.builder()
+      .nominative(nominative)
+      .accusative(accusative)
+      .genitive(genitive)
+      .dative(dative)
+      .instrumental(instrumental)
+      .prepositional(prepositional)
+      .build();
+  }
+
+}

@@ -23,6 +23,15 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
   }
 
   @Override
+  public WordEntity save(WordEntity word) {
+    WordModel wordModel = WordModel.fromEntity(word);
+
+    WordModel saved = getEntityManager().merge(wordModel);
+
+    return saved.toEntity();
+  }
+
+  @Override
   public Optional<WordEntity> findById(String id) {
     return find("id", id).firstResultOptional()
       .map(WordModel::toEntity);
