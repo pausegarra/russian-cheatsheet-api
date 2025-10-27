@@ -93,9 +93,9 @@ create table words
     english    varchar(255),
     russian    varchar(255),
     spanish    varchar(255),
-    type       varchar(255) check (type in ('NOUN', 'PRONOUN', 'VERB', 'ADJECTIVE', 'ADVERB', 'NUMERAL', 'PREPOSITION',
-                                            'CONJUNCTION', 'PARTICLE', 'INTERJECTION', 'GERUND', 'PARTICIPLE', 'PREFIX',
-                                            'SUFFIX', 'ROOT', 'OTHER')),
+    type       varchar(255) check (type in ('NOUN', 'PRONOUN', 'VERB', 'ADJECTIVE', 'ADVERB', 'NUMERAL', 'ORDINAL',
+                                            'PREPOSITION', 'CONJUNCTION', 'PARTICLE', 'INTERJECTION', 'GERUND',
+                                            'PARTICIPLE', 'PREFIX', 'SUFFIX', 'ROOT', 'OTHER')),
     updated_by varchar(255),
     primary key (id)
 );
