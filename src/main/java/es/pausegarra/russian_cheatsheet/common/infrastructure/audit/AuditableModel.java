@@ -22,13 +22,11 @@ import java.time.Instant;
 @NoArgsConstructor
 public abstract class AuditableModel {
 
-  @CreationTimestamp
   @Column(
     name = "created_at"
   )
   protected Instant createdAt;
 
-  @UpdateTimestamp
   @Column(
     name = "updated_at"
   )
@@ -47,11 +45,13 @@ public abstract class AuditableModel {
   @PrePersist
   public void prePersist() {
     this.createdBy = AuditorProvider.getCurrentUser();
+    this.createdAt = Instant.now();
   }
 
   @PreUpdate
   public void preUpdate() {
     this.updatedBy = AuditorProvider.getCurrentUser();
+    this.updatedAt = Instant.now();
   }
 
 }
