@@ -1,7 +1,7 @@
 quarkus:
 
   flyway:
-    clean-at-start: true
+    clean-at-start: false
 
   http:
     port: 8080
