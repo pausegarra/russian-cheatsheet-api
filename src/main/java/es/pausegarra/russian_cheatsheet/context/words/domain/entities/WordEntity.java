@@ -36,7 +36,7 @@ public record WordEntity(
   }
 
   public WordEntity addConjugations(WordConjugationEntity conjugations) {
-    if (type() != WordType.VERB) {
+    if (!canHaveConjugations()) {
       throw new WordCannotHaveConjugations(russian());
     }
 
@@ -44,7 +44,7 @@ public record WordEntity(
   }
 
   public WordEntity addDeclinations(WordDeclinationEntity declinations) {
-    if (type() != WordType.NOUN) {
+    if (!canHaveDeclinations()) {
       throw new WordCannotHaveDeclinations(russian());
     }
 
@@ -52,7 +52,7 @@ public record WordEntity(
   }
 
   public WordEntity addDeclinationMatrix(WordDeclinationMatrixEntity declinationMatrix) {
-    if (type() != WordType.ADJECTIVE && type() != WordType.PRONOUN && type() != WordType.PARTICIPLE && type() != WordType.ORDINAL) {
+    if (!canHaveDeclinationMatrix()) {
       throw new WordCannotHaveDeclinationMatrix(russian());
     }
 

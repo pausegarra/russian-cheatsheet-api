@@ -34,15 +34,15 @@ public class WordModel extends AuditableModel {
   @Enumerated(EnumType.STRING)
   private final WordType type;
 
-  @OneToOne(mappedBy = "word")
+  @OneToOne(mappedBy = "word", cascade = CascadeType.ALL)
   @With
   private final WordConjugationModel conjugations;
 
-  @OneToOne(mappedBy = "word")
+  @OneToOne(mappedBy = "word", cascade = CascadeType.ALL)
   @With
   private final WordDeclinationModel declinations;
 
-  @OneToOne(mappedBy = "word")
+  @OneToOne(mappedBy = "word", cascade = CascadeType.ALL)
   @With
   private final WordDeclinationMatrixModel declinationMatrix;
 

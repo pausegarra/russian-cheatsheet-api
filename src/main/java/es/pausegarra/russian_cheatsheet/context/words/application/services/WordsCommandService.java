@@ -8,9 +8,11 @@ import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordConjug
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationMatrixEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
-import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
+import es.pausegarra.russian_cheatsheet.context.words.domain.exception.ConjugationsRequired;
+import es.pausegarra.russian_cheatsheet.context.words.domain.exception.DeclinationsRequired;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordsRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @ApplicationScoped
@@ -19,26 +21,27 @@ public class WordsCommandService {
 
   private final WordsRepository wordsRepository;
 
+  @Transactional
   public WordEntity create(CreateWordDto dto) {
     WordEntity wordEntity = WordEntity.create(dto.russian(), dto.english(), dto.spanish(), dto.type());
 
     WordEntity saved = wordsRepository.create(wordEntity);
 
-    if (saved.type() == WordType.VERB) {
+    if (saved.canHaveConjugations()) {
       WordConjugationEntity conjugations = createConjugations(dto.conjugations());
       WordEntity wordWithConjugations = saved.addConjugations(conjugations);
 
       return wordsRepository.save(wordWithConjugations);
     }
 
-    if (saved.type() == WordType.NOUN) {
+    if (saved.canHaveDeclinations()) {
       WordDeclinationEntity declinations = createDeclinations(dto.declinations());
       WordEntity wordWithDeclinations = saved.addDeclinations(declinations);
 
       return wordsRepository.save(wordWithDeclinations);
     }
 
-    if (saved.type() == WordType.ADJECTIVE || saved.type() == WordType.PRONOUN || saved.type() == WordType.PARTICIPLE || saved.type() == WordType.ORDINAL) {
+    if (saved.canHaveDeclinationMatrix()) {
       WordDeclinationMatrixEntity declinationMatrix = createDeclinationMatrix(dto.declinationMatrix());
       WordEntity wordWithDeclinationMatrix = saved.addDeclinationMatrix(declinationMatrix);
 
@@ -49,6 +52,10 @@ public class WordsCommandService {
   }
 
   private WordDeclinationMatrixEntity createDeclinationMatrix(CreateWordDeclinationMatrixDto dto) {
+    if (dto == null) {
+      throw new DeclinationsRequired();
+    }
+
     return WordDeclinationMatrixEntity.create(
       dto.nominativeMasculine(),
       dto.nominativeFeminine(),
@@ -78,6 +85,10 @@ public class WordsCommandService {
   }
 
   private WordConjugationEntity createConjugations(CreateWordConjugationDto dto) {
+    if (dto == null) {
+      throw new ConjugationsRequired();
+    }
+
     return WordConjugationEntity.create(
       dto.imperfectivePresentFirstPersonSingular(),
       dto.imperfectivePresentSecondPersonSingular(),
@@ -109,6 +120,10 @@ public class WordsCommandService {
   }
 
   private WordDeclinationEntity createDeclinations(CreateWordDeclinationDto dto) {
+    if (dto == null) {
+      throw new DeclinationsRequired();
+    }
+
     return WordDeclinationEntity.create(
       dto.nominative(),
       dto.accusative(),

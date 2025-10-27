@@ -9,6 +9,8 @@ import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclin
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationMatrixEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
+import es.pausegarra.russian_cheatsheet.context.words.domain.exception.ConjugationsRequired;
+import es.pausegarra.russian_cheatsheet.context.words.domain.exception.DeclinationsRequired;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordsRepository;
 import es.pausegarra.russian_cheatsheet.mother.WordConjugationMother;
 import es.pausegarra.russian_cheatsheet.mother.WordDeclinationMatrixMother;
@@ -26,7 +28,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class WordsCommandUseCaseTest {
+class WordsCommandServiceTest {
 
   @Mock
   private WordsRepository wordsRepository;
@@ -212,6 +214,63 @@ class WordsCommandUseCaseTest {
 
     verify(wordsRepository).create(any(WordEntity.class));
     verify(wordsRepository).save(any(WordEntity.class));
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenCreatingAWordWithNoConjugationsAndTypeIsVerb() {
+    WordEntity wordEntity = WordMother.random()
+      .type(WordType.VERB)
+      .build();
+    when(wordsRepository.create(any(WordEntity.class))).thenReturn(wordEntity);
+
+    CreateWordDto dto = new CreateWordDto(
+      wordEntity.russian(),
+      wordEntity.english(),
+      wordEntity.spanish(),
+      wordEntity.type(),
+      null,
+      null,
+      null
+    );
+    assertThrows(ConjugationsRequired.class, () -> wordsCommandService.create(dto));
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenCreatingAWordWithNoDeclinationsAndTypeIsNoun() {
+    WordEntity wordEntity = WordMother.random()
+      .type(WordType.NOUN)
+      .build();
+    when(wordsRepository.create(any(WordEntity.class))).thenReturn(wordEntity);
+
+    CreateWordDto dto = new CreateWordDto(
+      wordEntity.russian(),
+      wordEntity.english(),
+      wordEntity.spanish(),
+      wordEntity.type(),
+      null,
+      null,
+      null
+    );
+    assertThrows(DeclinationsRequired.class, () -> wordsCommandService.create(dto));
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenCreatingAWordWithNoDeclinationMatrixAndTypeIsAdjectiveOrPronounOrParticipleOrOrdinal() {
+    WordEntity wordEntity = WordMother.random()
+      .type(WordType.ADJECTIVE)
+      .build();
+    when(wordsRepository.create(any(WordEntity.class))).thenReturn(wordEntity);
+
+    CreateWordDto dto = new CreateWordDto(
+      wordEntity.russian(),
+      wordEntity.english(),
+      wordEntity.spanish(),
+      wordEntity.type(),
+      null,
+      null,
+      null
+    );
+    assertThrows(DeclinationsRequired.class, () -> wordsCommandService.create(dto));
   }
 
 }
