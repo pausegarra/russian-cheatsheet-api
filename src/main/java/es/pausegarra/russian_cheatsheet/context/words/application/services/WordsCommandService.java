@@ -20,12 +20,7 @@ public class WordsCommandService {
   private final WordsRepository wordsRepository;
 
   public WordEntity create(CreateWordDto dto) {
-    WordEntity wordEntity = WordEntity.create(
-      dto.russian(),
-      dto.english(),
-      dto.spanish(),
-      dto.type()
-    );
+    WordEntity wordEntity = WordEntity.create(dto.russian(), dto.english(), dto.spanish(), dto.type());
 
     WordEntity saved = wordsRepository.create(wordEntity);
 

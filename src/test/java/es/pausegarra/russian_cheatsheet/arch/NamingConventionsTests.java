@@ -1,6 +1,6 @@
 package es.pausegarra.russian_cheatsheet.arch;
 
-import es.pausegarra.russian_cheatsheet.common.application.services.Service;
+import es.pausegarra.russian_cheatsheet.common.application.use_cases.UseCase;
 import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
@@ -16,7 +16,7 @@ public class NamingConventionsTests extends BaseArchTest {
 
   @ArchTest
   static final ArchRule application_services_should_not_be_suffixed = classes().that()
-    .implement(Service.class)
+    .implement(UseCase.class)
     .and()
     .resideInAPackage(APPLICATION_PACKAGE)
     .should()
