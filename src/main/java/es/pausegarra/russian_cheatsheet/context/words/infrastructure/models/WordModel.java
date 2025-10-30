@@ -14,7 +14,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Entity
-@Table(name = "words")
+@Table(
+  name = "words",
+  indexes = {
+    @Index(name = "words_russian_english_spanish_idx", columnList = "russian, spanish, english")
+  }
+)
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
 @Getter
@@ -25,6 +30,7 @@ public class WordModel extends AuditableModel {
   @GeneratedValue(strategy = GenerationType.UUID)
   private final UUID id;
 
+  @Column(name = "russian", unique = true)
   private final String russian;
 
   private final String english;

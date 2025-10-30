@@ -1,12 +1,19 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.repositories;
 
+import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.PageInfo;
+import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.Paginated;
+import es.pausegarra.russian_cheatsheet.context.words.domain.criterias.WordSearchCriteria;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordsRepository;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.WordModel;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.panache.common.Page;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -19,7 +26,7 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
 
     persist(wordModel);
 
-   return wordModel.toEntity();
+    return wordModel.toEntity();
   }
 
   @Override
@@ -33,8 +40,31 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
 
   @Override
   public Optional<WordEntity> findById(String id) {
-    return find("id", id).firstResultOptional()
-      .map(WordModel::toEntity);
+    return find("id", id).firstResultOptional().map(WordModel::toEntity);
+  }
+
+  @Override
+  public Paginated<WordEntity> findByCriteria(WordSearchCriteria criteria) {
+    Page page = Page.of(criteria.getPagination().page(), criteria.getPagination().pageSize());
+    Sort sort = Sort.by(criteria.getSorting().sortBy(), Sort.Direction.valueOf(criteria.getSorting().sortDirection().getValue()));
+
+    PanacheQuery<WordModel> query = find(
+      "lower(russian) like ?1 or lower(spanish) like ?1 or lower(english) like ?1",
+      sort,
+      "%" + criteria.getSearch().toLowerCase() + "%"
+    ).page(page);
+
+    PageInfo pageInfo = PageInfo.fromQuery(query);
+
+    return new Paginated<>(
+      query.list().stream().map(WordModel::toEntity).toList(),
+      pageInfo.page(),
+      pageInfo.pageSize(),
+      pageInfo.totalPages(),
+      pageInfo.totalElements(),
+      pageInfo.hasNextPage(),
+      pageInfo.hasPreviousPage()
+    );
   }
 
 }

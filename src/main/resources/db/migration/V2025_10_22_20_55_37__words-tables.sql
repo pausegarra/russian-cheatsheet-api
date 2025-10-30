@@ -91,7 +91,7 @@ create table words
     id         uuid not null,
     created_by varchar(255),
     english    varchar(255),
-    russian    varchar(255),
+    russian    varchar(255) unique,
     spanish    varchar(255),
     type       varchar(255) check (type in ('NOUN', 'PRONOUN', 'VERB', 'ADJECTIVE', 'ADVERB', 'NUMERAL', 'ORDINAL',
                                             'PREPOSITION', 'CONJUNCTION', 'PARTICLE', 'INTERJECTION', 'GERUND',
@@ -99,6 +99,7 @@ create table words
     updated_by varchar(255),
     primary key (id)
 );
+create index words_russian_english_spanish_idx on words (russian, spanish, english);
 alter table if exists word_conjugations
     add constraint FKa00s4dyjsttk7c100ra17p4eq foreign key (word_id) references words;
 alter table if exists word_declination_matrix
