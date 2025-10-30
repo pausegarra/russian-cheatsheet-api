@@ -1,4 +1,4 @@
-package es.pausegarra.russian_cheatsheet.context.words.application.use_cases.find_words_by_criteria;
+package es.pausegarra.russian_cheatsheet.context.words.application.use_cases;
 
 import es.pausegarra.russian_cheatsheet.common.application.pagination.PaginatedDto;
 import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.Paginated;
