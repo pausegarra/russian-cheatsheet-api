@@ -1,6 +1,7 @@
 package es.pausegarra.russian_cheatsheet.common.application.pagination;
 
 import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.Paginated;
+import lombok.With;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.util.List;

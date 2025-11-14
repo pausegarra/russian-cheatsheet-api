@@ -27,7 +27,7 @@ public class FindWordsInMemrise {
 
   private final WordsRepository wordsRepository;
 
-  @Scheduled(cron = "0 0 1 * * ?")
+  @Scheduled(every = "1h")
   @Transactional
   public void findWords() {
     Map<String, WordEntity> wordsMap = getWordsMap();

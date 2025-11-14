@@ -1,6 +1,5 @@
 package es.pausegarra.russian_cheatsheet.context.words.application.dto.responses;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import lombok.Builder;
@@ -16,11 +15,8 @@ public record WordDto(
   String english,
   String spanish,
   WordType type,
-  @JsonInclude(JsonInclude.Include.NON_NULL)
   WordConjugationDto conjugations,
-  @JsonInclude(JsonInclude.Include.NON_NULL)
   WordDeclinationDto declinations,
-  @JsonInclude(JsonInclude.Include.NON_NULL)
   WordDeclinationMatrixDto declinationMatrix,
   String createdBy,
   Instant createdAt,

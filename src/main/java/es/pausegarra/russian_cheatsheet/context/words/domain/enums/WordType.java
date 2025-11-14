@@ -18,6 +18,8 @@ public enum WordType {
   PREFIX,
   SUFFIX,
   ROOT,
+  LETTER,
+  SENTENCE,
   OTHER
 
 }
