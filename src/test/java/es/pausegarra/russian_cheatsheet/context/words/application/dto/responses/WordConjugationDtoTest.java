@@ -1,5 +1,7 @@
 package es.pausegarra.russian_cheatsheet.context.words.application.dto.responses;
 
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordConjugationDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordConjugationEntity;
 import es.pausegarra.russian_cheatsheet.mother.WordConjugationMother;
 import org.junit.jupiter.api.Test;

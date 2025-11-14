@@ -1,9 +1,8 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.rest;
 
 import es.pausegarra.russian_cheatsheet.common.application.use_cases.UseCase;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.requests.create_word.CreateWordDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.responses.WordDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.CreateWordUseCase;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.mother.WordMother;
 import org.jboss.resteasy.reactive.RestResponse;

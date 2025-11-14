@@ -1,6 +1,6 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.presentations;
 
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.responses.WordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 
 import java.util.UUID;
 

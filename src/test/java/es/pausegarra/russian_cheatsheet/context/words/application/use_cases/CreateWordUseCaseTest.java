@@ -1,10 +1,11 @@
 package es.pausegarra.russian_cheatsheet.context.words.application.use_cases;
 
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.requests.create_word.CreateWordConjugationDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.requests.create_word.CreateWordDeclinationDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.requests.create_word.CreateWordDeclinationMatrixDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.requests.create_word.CreateWordDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.responses.WordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordConjugationDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDeclinationDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDeclinationMatrixDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordUseCase;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordConjugationEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationMatrixEntity;

@@ -1,10 +1,9 @@
-package es.pausegarra.russian_cheatsheet.context.words.application.use_cases;
+package es.pausegarra.russian_cheatsheet.context.words.application.use_cases.find_words_by_criteria;
 
 import es.pausegarra.russian_cheatsheet.common.application.pagination.PaginatedDto;
 import es.pausegarra.russian_cheatsheet.common.application.use_cases.UseCase;
 import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.Paginated;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.requests.find_words_by_criteria.FindWordsByCriteriaDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.responses.WordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.criterias.WordSearchCriteria;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordsRepository;

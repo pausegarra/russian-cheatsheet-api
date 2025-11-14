@@ -1,4 +1,4 @@
-package es.pausegarra.russian_cheatsheet.context.words.application.dto.requests.create_word;
+package es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word;
 
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 

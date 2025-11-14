@@ -1,5 +1,7 @@
 package es.pausegarra.russian_cheatsheet.context.words.application.dto.responses;
 
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDeclinationMatrixDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationMatrixEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.mother.WordDeclinationMatrixMother;

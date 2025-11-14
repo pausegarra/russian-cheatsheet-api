@@ -1,7 +1,7 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.spec;
 
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.requests.create_word.CreateWordDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.responses.WordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.openapi.annotations.Operation;

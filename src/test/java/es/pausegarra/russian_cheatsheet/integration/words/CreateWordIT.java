@@ -2,8 +2,8 @@ package es.pausegarra.russian_cheatsheet.integration.words;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import es.pausegarra.russian_cheatsheet.base.IntegrationTest;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.requests.create_word.CreateWordConjugationDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.requests.create_word.CreateWordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordConjugationDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.WordModel;
 import io.quarkus.test.junit.QuarkusTest;

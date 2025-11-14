@@ -1,7 +1,6 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.spec;
 
 import es.pausegarra.russian_cheatsheet.common.application.pagination.PaginatedDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.responses.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.presentations.WordPresentation;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;

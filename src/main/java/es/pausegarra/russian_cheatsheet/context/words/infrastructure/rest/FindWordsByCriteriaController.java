@@ -2,8 +2,8 @@ package es.pausegarra.russian_cheatsheet.context.words.infrastructure.rest;
 
 import es.pausegarra.russian_cheatsheet.common.application.pagination.PaginatedDto;
 import es.pausegarra.russian_cheatsheet.common.application.use_cases.UseCase;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.requests.find_words_by_criteria.FindWordsByCriteriaDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.responses.WordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.find_words_by_criteria.FindWordsByCriteriaDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.presentations.WordPresentation;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.spec.FindWordsByCriteriaApiSpec;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package es.pausegarra.russian_cheatsheet.context.words.application.dto.responses;
+package es.pausegarra.russian_cheatsheet.context.words.application.dto;
 
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationMatrixEntity;
 
