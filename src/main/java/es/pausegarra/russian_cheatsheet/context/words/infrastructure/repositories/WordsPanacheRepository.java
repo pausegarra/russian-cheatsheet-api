@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @ApplicationScoped
@@ -48,7 +49,7 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
   }
 
   @Override
-  public Optional<WordEntity> findById(String id) {
+  public Optional<WordEntity> findById(UUID id) {
     return find("id", id).firstResultOptional().map(WordModel::toEntity);
   }
 

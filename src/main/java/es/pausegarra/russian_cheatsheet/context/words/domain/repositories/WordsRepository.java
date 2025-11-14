@@ -6,6 +6,7 @@ import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface WordsRepository {
 
@@ -15,7 +16,7 @@ public interface WordsRepository {
 
   List<WordEntity> save(List<WordEntity> words);
 
-  Optional<WordEntity> findById(String id);
+  Optional<WordEntity> findById(UUID id);
 
   List<WordEntity> getAll();
 
