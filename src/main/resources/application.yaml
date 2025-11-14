@@ -31,6 +31,10 @@ quarkus:
       url: ${app.idp.url}
       scope: jakarta.enterprise.context.ApplicationScoped
 
+    memrise:
+      url: ${app.memrise.url}
+      scope: jakarta.enterprise.context.ApplicationScoped
+
   smallrye-openapi:
     info-title: Template
     info-version: 1.0.0
@@ -40,6 +44,14 @@ app:
   idp:
     url: https://auth.pausegarra.es/realms/principal
     client-id: russian-cheatsheet-private
+
+  memrise:
+    url: https://api.memrise.com
+    learning-state: ENCOUNTERED
+    ordering: LAST_TOUCHED
+    ordering-direction: DESCENDING
+    page-size: 50
+    access-token: token
 
 mp:
   jwt:

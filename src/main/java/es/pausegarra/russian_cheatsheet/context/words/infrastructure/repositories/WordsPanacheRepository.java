@@ -39,8 +39,22 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
   }
 
   @Override
+  public List<WordEntity> save(List<WordEntity> words) {
+    List<WordModel> models = words.stream().map(WordModel::fromEntity).toList();
+
+    List<WordModel> saved = models.stream().map(getEntityManager()::merge).toList();
+
+    return saved.stream().map(WordModel::toEntity).toList();
+  }
+
+  @Override
   public Optional<WordEntity> findById(String id) {
     return find("id", id).firstResultOptional().map(WordModel::toEntity);
+  }
+
+  @Override
+  public List<WordEntity> getAll() {
+    return findAll().stream().map(WordModel::toEntity).toList();
   }
 
   @Override

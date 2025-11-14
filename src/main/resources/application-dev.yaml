@@ -1,5 +1,14 @@
 quarkus:
 
+#  rest-client:
+#    logging:
+#      scope: request-response
+#
+#  log:
+#    category:
+#      "org.jboss.resteasy.reactive.client.logging":
+#        level: DEBUG
+
   flyway:
     clean-at-start: true
 
@@ -13,3 +22,7 @@ quarkus:
   security:
     auth:
       enabled-in-dev-mode: false
+
+app:
+  memrise:
+    access-token: ${MEMRISE_TOKEN}
