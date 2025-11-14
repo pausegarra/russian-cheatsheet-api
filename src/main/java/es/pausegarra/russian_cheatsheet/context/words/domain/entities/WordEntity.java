@@ -20,6 +20,7 @@ public record WordEntity(
   @With WordConjugationEntity conjugations,
   @With WordDeclinationEntity declinations,
   @With WordDeclinationMatrixEntity declinationMatrix,
+  Instant publishedAt,
   String createdBy,
   Instant createdAt,
   String updatedBy,

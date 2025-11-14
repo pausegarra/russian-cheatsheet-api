@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.With;
 import lombok.experimental.SuperBuilder;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -52,6 +53,9 @@ public class WordModel extends AuditableModel {
   @With
   private final WordDeclinationMatrixModel declinationMatrix;
 
+  @Column(name = "published_at")
+  private final Instant publishedAt;
+
   public static WordModel fromEntity(WordEntity word) {
     WordModel wordModel = WordModel.builder()
       .id(word.id())
@@ -59,6 +63,7 @@ public class WordModel extends AuditableModel {
       .english(word.english())
       .spanish(word.spanish())
       .type(word.type())
+      .publishedAt(word.publishedAt())
       .createdBy(word.createdBy())
       .createdAt(word.createdAt())
       .updatedBy(word.updatedBy())
@@ -79,6 +84,7 @@ public class WordModel extends AuditableModel {
       .english(english)
       .spanish(spanish)
       .type(type)
+      .publishedAt(publishedAt)
       .createdBy(createdBy)
       .createdAt(createdAt)
       .updatedBy(updatedBy)

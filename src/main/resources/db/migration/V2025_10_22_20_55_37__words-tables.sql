@@ -87,6 +87,7 @@ create table word_declinations
 create table words
 (
     created_at timestamp(6) with time zone,
+    published_at timestamp(6) with time zone,
     updated_at timestamp(6) with time zone,
     id         uuid not null,
     created_by varchar(255),
