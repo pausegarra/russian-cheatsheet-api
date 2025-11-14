@@ -4,7 +4,7 @@ import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 
 import java.util.UUID;
 
-public record WordPresentation(
+public record ListWordsPresentation(
   UUID id,
   String russian,
   String english,
@@ -12,8 +12,8 @@ public record WordPresentation(
   String type
 ) {
 
-  public static WordPresentation fromDto(WordDto dto) {
-    return new WordPresentation(
+  public static ListWordsPresentation fromDto(WordDto dto) {
+    return new ListWordsPresentation(
       dto.id(),
       dto.russian(),
       dto.english(),

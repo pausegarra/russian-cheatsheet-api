@@ -1,7 +1,7 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.spec;
 
 import es.pausegarra.russian_cheatsheet.common.application.pagination.PaginatedDto;
-import es.pausegarra.russian_cheatsheet.context.words.infrastructure.presentations.WordPresentation;
+import es.pausegarra.russian_cheatsheet.context.words.infrastructure.presentations.ListWordsPresentation;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -31,7 +31,7 @@ public interface FindWordsByCriteriaApiSpec {
     responseCode = "500",
     description = "Internal Server Error"
   )
-  RestResponse<PaginatedDto<WordPresentation>> findWordsByCriteria(
+  RestResponse<PaginatedDto<ListWordsPresentation>> findWordsByCriteria(
     @QueryParam("page")
     @DefaultValue("0")
     int page,

@@ -6,7 +6,7 @@ import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.Pag
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.find_words_by_criteria.FindWordsByCriteriaDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
-import es.pausegarra.russian_cheatsheet.context.words.infrastructure.presentations.WordPresentation;
+import es.pausegarra.russian_cheatsheet.context.words.infrastructure.presentations.ListWordsPresentation;
 import es.pausegarra.russian_cheatsheet.mother.WordMother;
 import org.jboss.resteasy.reactive.RestResponse;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ class FindWordsByCriteriaControllerTest {
     PaginatedDto<WordDto> paginatedResponse = PaginatedDto.fromPaginated(paginated, List.of(WordDto.fromEntity(word)));
     when(useCase.handle(any(FindWordsByCriteriaDto.class))).thenReturn(paginatedResponse);
 
-    RestResponse<PaginatedDto<WordPresentation>> result = findWordsByCriteriaController.findWordsByCriteria(0, 10, "sortBy", "ASC", "search");
+    RestResponse<PaginatedDto<ListWordsPresentation>> result = findWordsByCriteriaController.findWordsByCriteria(0, 10, "sortBy", "ASC", "search");
 
     assertNotNull(result);
     assertEquals(1, result.getEntity().data().size());

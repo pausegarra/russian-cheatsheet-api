@@ -4,7 +4,7 @@ import es.pausegarra.russian_cheatsheet.common.application.pagination.PaginatedD
 import es.pausegarra.russian_cheatsheet.common.application.use_cases.UseCase;
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.find_words_by_criteria.FindWordsByCriteriaDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
-import es.pausegarra.russian_cheatsheet.context.words.infrastructure.presentations.WordPresentation;
+import es.pausegarra.russian_cheatsheet.context.words.infrastructure.presentations.ListWordsPresentation;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.spec.FindWordsByCriteriaApiSpec;
 import lombok.RequiredArgsConstructor;
 import org.jboss.resteasy.reactive.RestResponse;
@@ -17,7 +17,7 @@ public class FindWordsByCriteriaController implements FindWordsByCriteriaApiSpec
   private final UseCase<FindWordsByCriteriaDto, PaginatedDto<WordDto>> useCase;
 
   @Override
-  public RestResponse<PaginatedDto<WordPresentation>> findWordsByCriteria(
+  public RestResponse<PaginatedDto<ListWordsPresentation>> findWordsByCriteria(
     int page,
     int perPage,
     String sortBy,
@@ -26,8 +26,8 @@ public class FindWordsByCriteriaController implements FindWordsByCriteriaApiSpec
   ) {
     FindWordsByCriteriaDto dto = new FindWordsByCriteriaDto(page, perPage, sortBy, sortDirection, search);
     PaginatedDto<WordDto> result = useCase.handle(dto);
-    List<WordPresentation> presentations = result.data().stream().map(WordPresentation::fromDto).toList();
-    PaginatedDto<WordPresentation> paginatedPresentations = new PaginatedDto<>(
+    List<ListWordsPresentation> presentations = result.data().stream().map(ListWordsPresentation::fromDto).toList();
+    PaginatedDto<ListWordsPresentation> paginatedPresentations = new PaginatedDto<>(
       presentations,
       result.page(),
       result.pageSize(),
