@@ -16,8 +16,7 @@ public class FindWordByIdUseCase implements UseCase<FindWordByIdDto, WordDto> {
 
   @Override
   public WordDto handle(FindWordByIdDto dto) {
-    WordEntity word = wordsRepository.findById(dto.id())
-      .orElseThrow(() -> new WordNotFound(dto.id().toString()));
+    WordEntity word = wordsRepository.findById(dto.id()).orElseThrow(() -> new WordNotFound(dto.id().toString()));
 
     return WordDto.fromEntity(word);
   }

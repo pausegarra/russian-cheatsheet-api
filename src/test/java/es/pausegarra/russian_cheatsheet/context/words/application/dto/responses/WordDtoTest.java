@@ -9,15 +9,14 @@ import es.pausegarra.russian_cheatsheet.mother.WordDeclinationMother;
 import es.pausegarra.russian_cheatsheet.mother.WordMother;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class WordDtoTest {
 
   @Test
   public void shouldMapFromEntity() {
-    WordEntity word = WordMother.random()
-      .type(WordType.OTHER)
-      .build();
+    WordEntity word = WordMother.random().type(WordType.OTHER).build();
     WordDto wordDto = WordDto.fromEntity(word);
 
     assertNotNull(wordDto);
@@ -34,10 +33,7 @@ class WordDtoTest {
 
   @Test
   public void shouldMapFromEntityWithConjugationsIfVerb() {
-    WordEntity word = WordMother.random()
-      .type(WordType.VERB)
-      .conjugations(WordConjugationMother.random().build())
-      .build();
+    WordEntity word = WordMother.random().type(WordType.VERB).conjugations(WordConjugationMother.random().build()).build();
     WordDto wordDto = WordDto.fromEntity(word);
 
     assertNotNull(wordDto);
@@ -56,10 +52,7 @@ class WordDtoTest {
 
   @Test
   public void shouldMapFromEntityWithDeclinationsIfNoun() {
-    WordEntity word = WordMother.random()
-      .type(WordType.NOUN)
-      .declinations(WordDeclinationMother.random().build())
-      .build();
+    WordEntity word = WordMother.random().type(WordType.NOUN).declinations(WordDeclinationMother.random().build()).build();
     WordDto wordDto = WordDto.fromEntity(word);
 
     assertNotNull(wordDto);
@@ -78,10 +71,7 @@ class WordDtoTest {
 
   @Test
   public void shouldMapFromEntityWithDeclinationMatrixIfAdjectiveOrPronounOrParticipleOrOrdinal() {
-    WordEntity word = WordMother.random()
-      .type(WordType.ADJECTIVE)
-      .declinationMatrix(WordDeclinationMatrixMother.random().build())
-      .build();
+    WordEntity word = WordMother.random().type(WordType.ADJECTIVE).declinationMatrix(WordDeclinationMatrixMother.random().build()).build();
     WordDto wordDto = WordDto.fromEntity(word);
 
     assertNotNull(wordDto);

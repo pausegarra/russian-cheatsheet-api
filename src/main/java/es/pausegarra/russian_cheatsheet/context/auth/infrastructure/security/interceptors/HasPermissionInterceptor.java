@@ -31,9 +31,7 @@ public class HasPermissionInterceptor {
 
   @AroundInvoke
   public Object hasPermission(InvocationContext context) throws Exception {
-    String[] requiredPermission = context.getMethod()
-      .getAnnotation(HasPermission.class)
-      .value();
+    String[] requiredPermission = context.getMethod().getAnnotation(HasPermission.class).value();
 
     for (String permission : requiredPermission) {
       try {

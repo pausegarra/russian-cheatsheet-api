@@ -6,7 +6,8 @@ import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclin
 import es.pausegarra.russian_cheatsheet.mother.WordDeclinationMother;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class WordDeclinationDtoTest {
 

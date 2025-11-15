@@ -25,11 +25,7 @@ public class ForbiddenExceptionMapper {
   }
 
   private ApiExceptionPresentation createPresentation(String message) {
-    return ApiExceptionPresentation.create(
-      message,
-      RestResponse.Status.FORBIDDEN.name(),
-      RestResponse.Status.FORBIDDEN.getStatusCode()
-    );
+    return ApiExceptionPresentation.create(message, RestResponse.Status.FORBIDDEN.name(), RestResponse.Status.FORBIDDEN.getStatusCode());
   }
 
   private ApiExceptionPresentation createPresentation(String message, String code) {

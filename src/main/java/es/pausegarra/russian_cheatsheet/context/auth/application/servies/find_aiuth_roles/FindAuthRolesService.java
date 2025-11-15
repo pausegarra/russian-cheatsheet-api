@@ -1,8 +1,8 @@
 package es.pausegarra.russian_cheatsheet.context.auth.application.servies.find_aiuth_roles;
 
+import es.pausegarra.russian_cheatsheet.common.application.interfaces.Service;
 import es.pausegarra.russian_cheatsheet.context.auth.application.dto.PermissionsDto;
 import es.pausegarra.russian_cheatsheet.context.auth.domain.dto.PermissionDto;
-import es.pausegarra.russian_cheatsheet.common.application.interfaces.Service;
 import es.pausegarra.russian_cheatsheet.context.auth.domain.repositories.KeycloakRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

@@ -15,7 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,15 +35,7 @@ class UpdateWordResourceTest {
     WordEntity word = WordMother.random().build();
     when(updateWordUseCase.handle(any(UpdateWordDto.class))).thenReturn(WordDto.fromEntity(word));
 
-    UpdateWordRequest request = new UpdateWordRequest(
-      "russian",
-      "spanish",
-      "english",
-      "OTHER",
-      null,
-      null,
-      null
-    );
+    UpdateWordRequest request = new UpdateWordRequest("russian", "spanish", "english", "OTHER", null, null, null);
     RestResponse<WordDto> response = updateWordResource.updateWord(UUID.randomUUID().toString(), request);
 
     assertNotNull(response);

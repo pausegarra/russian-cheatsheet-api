@@ -11,8 +11,7 @@ import jakarta.inject.Inject;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 
 @AnalyzeClasses(
-  packages = BaseArchTest.BASE_PACKAGE,
-  importOptions = {ImportOption.DoNotIncludeTests.class}
+  packages = BaseArchTest.BASE_PACKAGE, importOptions = {ImportOption.DoNotIncludeTests.class}
 )
 public class CodingRulesTest extends BaseArchTest {
 
@@ -48,9 +47,7 @@ public class CodingRulesTest extends BaseArchTest {
   //    .haveModifier(FINAL);
 
   @ArchTest
-  static final ArchRule field_injection_should_not_be_used = CompositeArchRule.of(
-    GeneralCodingRules.NO_CLASSES_SHOULD_USE_FIELD_INJECTION
-  )
+  static final ArchRule field_injection_should_not_be_used = CompositeArchRule.of(GeneralCodingRules.NO_CLASSES_SHOULD_USE_FIELD_INJECTION)
     .and(noFields().should(GeneralCodingRules.BE_ANNOTATED_WITH_AN_INJECTION_ANNOTATION))
     .and(noFields().should().beAnnotatedWith(Inject.class))
     .and(noMethods().should().beAnnotatedWith(Inject.class));

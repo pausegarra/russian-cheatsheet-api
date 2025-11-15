@@ -40,7 +40,8 @@ public class WordDeclinationModel extends AuditableModel {
   private final WordModel word;
 
   public static WordDeclinationModel fromEntity(WordDeclinationEntity wordDeclinationEntity, WordModel word) {
-    if (wordDeclinationEntity == null) return null;
+    if (wordDeclinationEntity == null)
+      return null;
 
     return WordDeclinationModel.builder()
       .id(wordDeclinationEntity.id())

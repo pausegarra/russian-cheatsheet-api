@@ -1,8 +1,8 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.rest;
 
 import es.pausegarra.russian_cheatsheet.common.application.use_cases.UseCase;
-import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.spec.CreateWordApiSpec;
 import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;

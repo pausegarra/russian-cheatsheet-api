@@ -106,7 +106,8 @@ public class WordConjugationModel extends AuditableModel {
   private final WordModel word;
 
   public static WordConjugationModel fromEntity(WordConjugationEntity wordConjugationEntity, WordModel word) {
-    if (wordConjugationEntity == null) return null;
+    if (wordConjugationEntity == null)
+      return null;
 
     return WordConjugationModel.builder()
       .id(wordConjugationEntity.id())

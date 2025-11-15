@@ -1,8 +1,6 @@
 package es.pausegarra.russian_cheatsheet.mother;
 
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordConjugationEntity;
-import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.WordConjugationModel;
-import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.WordModel;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;

@@ -20,16 +20,13 @@ public interface FindWordsByCriteriaApiSpec {
     summary = "Find Words By Criteria"
   )
   @APIResponse(
-    responseCode = "200",
-    description = "OK"
+    responseCode = "200", description = "OK"
   )
   @APIResponse(
-    responseCode = "400",
-    description = "Bad Request"
+    responseCode = "400", description = "Bad Request"
   )
   @APIResponse(
-    responseCode = "500",
-    description = "Internal Server Error"
+    responseCode = "500", description = "Internal Server Error"
   )
   RestResponse<PaginatedDto<ListWordsPresentation>> findWordsByCriteria(
     @QueryParam("page")

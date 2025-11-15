@@ -1,7 +1,6 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.models;
 
 import es.pausegarra.russian_cheatsheet.common.infrastructure.audit.AuditableModel;
-import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationMatrixEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import jakarta.persistence.*;
@@ -101,7 +100,8 @@ public class WordDeclinationMatrixModel extends AuditableModel {
   private final WordModel word;
 
   public static WordDeclinationMatrixModel fromEntity(WordDeclinationMatrixEntity wordDeclinationMatrixEntity, WordModel word) {
-    if (wordDeclinationMatrixEntity == null) return null;
+    if (wordDeclinationMatrixEntity == null)
+      return null;
 
     return WordDeclinationMatrixModel.builder()
       .id(wordDeclinationMatrixEntity.id())

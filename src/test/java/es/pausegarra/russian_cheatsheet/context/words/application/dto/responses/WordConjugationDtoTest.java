@@ -6,7 +6,8 @@ import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordConjug
 import es.pausegarra.russian_cheatsheet.mother.WordConjugationMother;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class WordConjugationDtoTest {
 

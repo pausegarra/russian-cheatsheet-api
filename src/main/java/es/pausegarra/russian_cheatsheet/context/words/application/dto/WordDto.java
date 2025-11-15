@@ -46,9 +46,7 @@ public record WordDto(
       .map((declinationMatrix) -> WordDeclinationMatrixDto.fromEntity(declinationMatrix, builder.build()))
       .orElse(null);
 
-    builder.conjugations(conjugationsDto)
-      .declinations(declinationsDto)
-      .declinationMatrix(declinationMatrixDto);
+    builder.conjugations(conjugationsDto).declinations(declinationsDto).declinationMatrix(declinationMatrixDto);
 
     return builder.build();
   }

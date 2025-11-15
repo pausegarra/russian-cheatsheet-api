@@ -18,13 +18,7 @@ public class FindWordsByCriteriaUseCase implements UseCase<FindWordsByCriteriaDt
 
   @Override
   public PaginatedDto<WordDto> handle(FindWordsByCriteriaDto dto) {
-    WordSearchCriteria criteria = WordSearchCriteria.create(
-      dto.page(),
-      dto.perPage(),
-      dto.sortBy(),
-      dto.sortDirection(),
-      dto.search()
-    );
+    WordSearchCriteria criteria = WordSearchCriteria.create(dto.page(), dto.perPage(), dto.sortBy(), dto.sortDirection(), dto.search());
     Paginated<WordEntity> paginated = wordsRepository.findByCriteria(criteria);
 
     return PaginatedDto.fromPaginated(paginated, paginated.data().stream().map(WordDto::fromEntity).toList());

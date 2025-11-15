@@ -8,6 +8,5 @@ import java.util.List;
 public record ListWordsResponse(
   List<MemriseWordDto> learnables,
 
-  @JsonProperty("next_page_token")
-  String nextPageToken
+  @JsonProperty("next_page_token") String nextPageToken
 ) {}

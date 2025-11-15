@@ -58,7 +58,8 @@ class WordDeclinationMatrixModelTest {
       WordModel.fromEntity(wordDeclinationMatrixEntity.word())
     );
 
-    WordDeclinationMatrixEntity wordDeclinationMatrixEntityFromModel = wordDeclinationMatrixModel.toEntity(wordDeclinationMatrixEntity.word());
+    WordDeclinationMatrixEntity wordDeclinationMatrixEntityFromModel =
+      wordDeclinationMatrixModel.toEntity(wordDeclinationMatrixEntity.word());
 
     assertNotNull(wordDeclinationMatrixEntityFromModel);
     assertEquals(wordDeclinationMatrixEntity.id(), wordDeclinationMatrixEntityFromModel.id());

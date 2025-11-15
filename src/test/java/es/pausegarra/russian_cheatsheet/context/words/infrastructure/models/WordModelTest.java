@@ -63,11 +63,7 @@ class WordModelTest {
 
   @Test
   public void shouldMapToEntityWithChildrenNull() {
-    WordEntity wordEntity = WordMother.random()
-      .conjugations(null)
-      .declinations(null)
-      .declinationMatrix(null)
-      .build();
+    WordEntity wordEntity = WordMother.random().conjugations(null).declinations(null).declinationMatrix(null).build();
     WordModel wordModel = WordModel.fromEntity(wordEntity);
 
     WordEntity wordEntityFromModel = wordModel.toEntity();

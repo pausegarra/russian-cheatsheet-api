@@ -24,29 +24,13 @@ public class UpdateWordsIT extends IntegrationTest {
   @Test
   @TestSecurity(user = "user", roles = "words#update")
   public void shouldUpdateWord() throws Exception {
-    WordEntity word = WordMother.random()
-      .id(null)
-      .build();
+    WordEntity word = WordMother.random().id(null).build();
     WordModel saved = persist(WordModel.fromEntity(word));
 
-    UpdateWordRequest dto = new UpdateWordRequest(
-      "newRussian",
-      "newSpanish",
-      "newEnglish",
-      "OTHER",
-      null,
-      null,
-      null
-    );
+    UpdateWordRequest dto = new UpdateWordRequest("newRussian", "newSpanish", "newEnglish", "OTHER", null, null, null);
     String json = objectMapper.writeValueAsString(dto);
 
-    given()
-      .body(json)
-      .contentType("application/json")
-      .when()
-      .put("/words/" + saved.getId().toString())
-      .then()
-      .statusCode(200);
+    given().body(json).contentType("application/json").when().put("/words/" + saved.getId().toString()).then().statusCode(200);
 
     WordModel updated = em.find(WordModel.class, saved.getId());
     assertNotNull(updated);
@@ -63,57 +47,42 @@ public class UpdateWordsIT extends IntegrationTest {
   @Test
   @TestSecurity(user = "user", roles = "words#update")
   public void shouldUpdateWordWithConjugations() throws Exception {
-    WordEntity word = WordMother.random()
-      .id(null)
-      .type(WordType.OTHER)
-      .build();
+    WordEntity word = WordMother.random().id(null).type(WordType.OTHER).build();
     WordModel saved = persist(WordModel.fromEntity(word));
 
     UpdateWordRequest dto = new UpdateWordRequest(
-      "newRussian",
-      "newSpanish",
-      "newEnglish",
-      "VERB",
-      null,
-      null,
-      new UpdateWordConjugationsDto(
-        "imperfectivePresentFirstPersonSingular",
-        "imperfectivePresentSecondPersonSingular",
-        "imperfectivePresentThirdPersonSingular",
-        "imperfectivePresentFirstPersonPlural",
-        "imperfectivePresentSecondPersonPlural",
-        "imperfectivePresentThirdPersonPlural",
-        "imperfectivePastMasculine",
-        "imperfectivePastFeminine",
-        "imperfectivePastNeuter",
-        "imperfectivePastPlural",
-        "imperfectiveFutureFirstPersonSingular",
-        "imperfectiveFutureSecondPersonSingular",
-        "imperfectiveFutureThirdPersonSingular",
-        "imperfectiveFutureFirstPersonPlural",
-        "imperfectiveFutureSecondPersonPlural",
-        "imperfectiveFutureThirdPersonPlural",
-        "perfectivePastMasculine",
-        "perfectivePastFeminine",
-        "perfectivePastNeuter",
-        "perfectivePastPlural",
-        "perfectiveFutureFirstPersonSingular",
-        "perfectiveFutureSecondPersonSingular",
-        "perfectiveFutureThirdPersonSingular",
-        "perfectiveFutureFirstPersonPlural",
-        "perfectiveFutureSecondPersonPlural",
-        "perfectiveFutureThirdPersonPlural"
-      )
+      "newRussian", "newSpanish", "newEnglish", "VERB", null, null, new UpdateWordConjugationsDto(
+      "imperfectivePresentFirstPersonSingular",
+      "imperfectivePresentSecondPersonSingular",
+      "imperfectivePresentThirdPersonSingular",
+      "imperfectivePresentFirstPersonPlural",
+      "imperfectivePresentSecondPersonPlural",
+      "imperfectivePresentThirdPersonPlural",
+      "imperfectivePastMasculine",
+      "imperfectivePastFeminine",
+      "imperfectivePastNeuter",
+      "imperfectivePastPlural",
+      "imperfectiveFutureFirstPersonSingular",
+      "imperfectiveFutureSecondPersonSingular",
+      "imperfectiveFutureThirdPersonSingular",
+      "imperfectiveFutureFirstPersonPlural",
+      "imperfectiveFutureSecondPersonPlural",
+      "imperfectiveFutureThirdPersonPlural",
+      "perfectivePastMasculine",
+      "perfectivePastFeminine",
+      "perfectivePastNeuter",
+      "perfectivePastPlural",
+      "perfectiveFutureFirstPersonSingular",
+      "perfectiveFutureSecondPersonSingular",
+      "perfectiveFutureThirdPersonSingular",
+      "perfectiveFutureFirstPersonPlural",
+      "perfectiveFutureSecondPersonPlural",
+      "perfectiveFutureThirdPersonPlural"
+    )
     );
     String json = objectMapper.writeValueAsString(dto);
 
-    given()
-      .body(json)
-      .contentType("application/json")
-      .when()
-      .put("/words/" + saved.getId().toString())
-      .then()
-      .statusCode(200);
+    given().body(json).contentType("application/json").when().put("/words/" + saved.getId().toString()).then().statusCode(200);
 
     WordModel updated = em.find(WordModel.class, saved.getId());
     assertNotNull(updated);
@@ -124,41 +93,86 @@ public class UpdateWordsIT extends IntegrationTest {
     assertEquals(dto.type(), updated.getType().toString());
 
     assertNotNull(updated.getConjugations());
-    assertEquals(dto.conjugations().imperfectivePresentFirstPersonSingular(), updated.getConjugations().getImperfectivePresentFirstPersonSingular());
-    assertEquals(dto.conjugations().imperfectivePresentSecondPersonSingular(), updated.getConjugations().getImperfectivePresentSecondPersonSingular());
-    assertEquals(dto.conjugations().imperfectivePresentThirdPersonSingular(), updated.getConjugations().getImperfectivePresentThirdPersonSingular());
-    assertEquals(dto.conjugations().imperfectivePresentFirstPersonPlural(), updated.getConjugations().getImperfectivePresentFirstPersonPlural());
-    assertEquals(dto.conjugations().imperfectivePresentSecondPersonPlural(), updated.getConjugations().getImperfectivePresentSecondPersonPlural());
-    assertEquals(dto.conjugations().imperfectivePresentThirdPersonPlural(), updated.getConjugations().getImperfectivePresentThirdPersonPlural());
+    assertEquals(
+      dto.conjugations().imperfectivePresentFirstPersonSingular(),
+      updated.getConjugations().getImperfectivePresentFirstPersonSingular()
+    );
+    assertEquals(
+      dto.conjugations().imperfectivePresentSecondPersonSingular(),
+      updated.getConjugations().getImperfectivePresentSecondPersonSingular()
+    );
+    assertEquals(
+      dto.conjugations().imperfectivePresentThirdPersonSingular(),
+      updated.getConjugations().getImperfectivePresentThirdPersonSingular()
+    );
+    assertEquals(
+      dto.conjugations().imperfectivePresentFirstPersonPlural(),
+      updated.getConjugations().getImperfectivePresentFirstPersonPlural()
+    );
+    assertEquals(
+      dto.conjugations().imperfectivePresentSecondPersonPlural(),
+      updated.getConjugations().getImperfectivePresentSecondPersonPlural()
+    );
+    assertEquals(
+      dto.conjugations().imperfectivePresentThirdPersonPlural(),
+      updated.getConjugations().getImperfectivePresentThirdPersonPlural()
+    );
     assertEquals(dto.conjugations().imperfectivePastMasculine(), updated.getConjugations().getImperfectivePastMasculine());
     assertEquals(dto.conjugations().imperfectivePastFeminine(), updated.getConjugations().getImperfectivePastFeminine());
     assertEquals(dto.conjugations().imperfectivePastNeuter(), updated.getConjugations().getImperfectivePastNeuter());
     assertEquals(dto.conjugations().imperfectivePastPlural(), updated.getConjugations().getImperfectivePastPlural());
-    assertEquals(dto.conjugations().imperfectiveFutureFirstPersonSingular(), updated.getConjugations().getImperfectiveFutureFirstPersonSingular());
-    assertEquals(dto.conjugations().imperfectiveFutureSecondPersonSingular(), updated.getConjugations().getImperfectiveFutureSecondPersonSingular());
-    assertEquals(dto.conjugations().imperfectiveFutureThirdPersonSingular(), updated.getConjugations().getImperfectiveFutureThirdPersonSingular());
-    assertEquals(dto.conjugations().imperfectiveFutureFirstPersonPlural(), updated.getConjugations().getImperfectiveFutureFirstPersonPlural());
-    assertEquals(dto.conjugations().imperfectiveFutureSecondPersonPlural(), updated.getConjugations().getImperfectiveFutureSecondPersonPlural());
-    assertEquals(dto.conjugations().imperfectiveFutureThirdPersonPlural(), updated.getConjugations().getImperfectiveFutureThirdPersonPlural());
+    assertEquals(
+      dto.conjugations().imperfectiveFutureFirstPersonSingular(),
+      updated.getConjugations().getImperfectiveFutureFirstPersonSingular()
+    );
+    assertEquals(
+      dto.conjugations().imperfectiveFutureSecondPersonSingular(),
+      updated.getConjugations().getImperfectiveFutureSecondPersonSingular()
+    );
+    assertEquals(
+      dto.conjugations().imperfectiveFutureThirdPersonSingular(),
+      updated.getConjugations().getImperfectiveFutureThirdPersonSingular()
+    );
+    assertEquals(
+      dto.conjugations().imperfectiveFutureFirstPersonPlural(),
+      updated.getConjugations().getImperfectiveFutureFirstPersonPlural()
+    );
+    assertEquals(
+      dto.conjugations().imperfectiveFutureSecondPersonPlural(),
+      updated.getConjugations().getImperfectiveFutureSecondPersonPlural()
+    );
+    assertEquals(
+      dto.conjugations().imperfectiveFutureThirdPersonPlural(),
+      updated.getConjugations().getImperfectiveFutureThirdPersonPlural()
+    );
     assertEquals(dto.conjugations().perfectivePastMasculine(), updated.getConjugations().getPerfectivePastMasculine());
     assertEquals(dto.conjugations().perfectivePastFeminine(), updated.getConjugations().getPerfectivePastFeminine());
     assertEquals(dto.conjugations().perfectivePastNeuter(), updated.getConjugations().getPerfectivePastNeuter());
     assertEquals(dto.conjugations().perfectivePastPlural(), updated.getConjugations().getPerfectivePastPlural());
-    assertEquals(dto.conjugations().perfectiveFutureFirstPersonSingular(), updated.getConjugations().getPerfectiveFutureFirstPersonSingular());
-    assertEquals(dto.conjugations().perfectiveFutureSecondPersonSingular(), updated.getConjugations().getPerfectiveFutureSecondPersonSingular());
-    assertEquals(dto.conjugations().perfectiveFutureThirdPersonSingular(), updated.getConjugations().getPerfectiveFutureThirdPersonSingular());
+    assertEquals(
+      dto.conjugations().perfectiveFutureFirstPersonSingular(),
+      updated.getConjugations().getPerfectiveFutureFirstPersonSingular()
+    );
+    assertEquals(
+      dto.conjugations().perfectiveFutureSecondPersonSingular(),
+      updated.getConjugations().getPerfectiveFutureSecondPersonSingular()
+    );
+    assertEquals(
+      dto.conjugations().perfectiveFutureThirdPersonSingular(),
+      updated.getConjugations().getPerfectiveFutureThirdPersonSingular()
+    );
     assertEquals(dto.conjugations().perfectiveFutureFirstPersonPlural(), updated.getConjugations().getPerfectiveFutureFirstPersonPlural());
-    assertEquals(dto.conjugations().perfectiveFutureSecondPersonPlural(), updated.getConjugations().getPerfectiveFutureSecondPersonPlural());
+    assertEquals(
+      dto.conjugations().perfectiveFutureSecondPersonPlural(),
+      updated.getConjugations().getPerfectiveFutureSecondPersonPlural()
+    );
     assertEquals(dto.conjugations().perfectiveFutureThirdPersonPlural(), updated.getConjugations().getPerfectiveFutureThirdPersonPlural());
   }
 
   @Test
   @TestSecurity(user = "user", roles = "words#update")
   public void shouldUpdateWordWithDeclinations() throws Exception {
-    WordEntity word = WordMother.random()
-      .id(null)
-      .type(WordType.VERB)
-      .build();
+    WordEntity word = WordMother.random().id(null).type(WordType.VERB).build();
     WordModel saved = persist(WordModel.fromEntity(word));
 
     UpdateWordRequest dto = new UpdateWordRequest(
@@ -166,26 +180,13 @@ public class UpdateWordsIT extends IntegrationTest {
       "newSpanish",
       "newEnglish",
       "NOUN",
-      new UpdateWordDeclinationDto(
-        "nominative",
-        "accusative",
-        "genitive",
-        "dative",
-        "instrumental",
-        "prepositional"
-      ),
+      new UpdateWordDeclinationDto("nominative", "accusative", "genitive", "dative", "instrumental", "prepositional"),
       null,
       null
     );
     String json = objectMapper.writeValueAsString(dto);
 
-    given()
-      .body(json)
-      .contentType("application/json")
-      .when()
-      .put("/words/" + saved.getId().toString())
-      .then()
-      .statusCode(200);
+    given().body(json).contentType("application/json").when().put("/words/" + saved.getId().toString()).then().statusCode(200);
 
     WordModel updated = em.find(WordModel.class, saved.getId());
     assertNotNull(updated);
@@ -207,55 +208,40 @@ public class UpdateWordsIT extends IntegrationTest {
   @Test
   @TestSecurity(user = "user", roles = "words#update")
   public void shouldUpdateWordWithDeclinationMatrix() throws Exception {
-    WordEntity word = WordMother.random()
-      .id(null)
-      .type(WordType.NOUN)
-      .build();
+    WordEntity word = WordMother.random().id(null).type(WordType.NOUN).build();
     WordModel saved = persist(WordModel.fromEntity(word));
 
     UpdateWordRequest dto = new UpdateWordRequest(
-      "newRussian",
-      "newSpanish",
-      "newEnglish",
-      "ADJECTIVE",
-      null,
-      new UpdateWordDeclinationMatrixDto(
-        "nominativeMasculine",
-        "nominativeFeminine",
-        "nominativeNeuter",
-        "nominativePlural",
-        "accusativeMasculine",
-        "accusativeFeminine",
-        "accusativeNeuter",
-        "accusativePlural",
-        "genitiveMasculine",
-        "genitiveFeminine",
-        "genitiveNeuter",
-        "genitivePlural",
-        "dativeMasculine",
-        "dativeFeminine",
-        "dativeNeuter",
-        "dativePlural",
-        "instrumentalMasculine",
-        "instrumentalFeminine",
-        "instrumentalNeuter",
-        "instrumentalPlural",
-        "prepositionalMasculine",
-        "prepositionalFeminine",
-        "prepositionalNeuter",
-        "prepositionalPlural"
-      ),
-      null
+      "newRussian", "newSpanish", "newEnglish", "ADJECTIVE", null, new UpdateWordDeclinationMatrixDto(
+      "nominativeMasculine",
+      "nominativeFeminine",
+      "nominativeNeuter",
+      "nominativePlural",
+      "accusativeMasculine",
+      "accusativeFeminine",
+      "accusativeNeuter",
+      "accusativePlural",
+      "genitiveMasculine",
+      "genitiveFeminine",
+      "genitiveNeuter",
+      "genitivePlural",
+      "dativeMasculine",
+      "dativeFeminine",
+      "dativeNeuter",
+      "dativePlural",
+      "instrumentalMasculine",
+      "instrumentalFeminine",
+      "instrumentalNeuter",
+      "instrumentalPlural",
+      "prepositionalMasculine",
+      "prepositionalFeminine",
+      "prepositionalNeuter",
+      "prepositionalPlural"
+    ), null
     );
     String json = objectMapper.writeValueAsString(dto);
 
-    given()
-      .body(json)
-      .contentType("application/json")
-      .when()
-      .put("/words/" + saved.getId().toString())
-      .then()
-      .statusCode(200);
+    given().body(json).contentType("application/json").when().put("/words/" + saved.getId().toString()).then().statusCode(200);
 
     WordModel updated = em.find(WordModel.class, saved.getId());
     assertNotNull(updated);
@@ -295,69 +281,27 @@ public class UpdateWordsIT extends IntegrationTest {
   @Test
   @TestSecurity(user = "user", roles = "words#update")
   public void shouldReturn404IfWordNotFound() throws Exception {
-    UpdateWordRequest dto = new UpdateWordRequest(
-      "newRussian",
-      "newSpanish",
-      "newEnglish",
-      "OTHER",
-      null,
-      null,
-      null
-    );
+    UpdateWordRequest dto = new UpdateWordRequest("newRussian", "newSpanish", "newEnglish", "OTHER", null, null, null);
     String json = objectMapper.writeValueAsString(dto);
 
-    given()
-      .body(json)
-      .contentType("application/json")
-      .when()
-      .put("/words/" + UUID.randomUUID().toString())
-      .then()
-      .statusCode(404);
+    given().body(json).contentType("application/json").when().put("/words/" + UUID.randomUUID().toString()).then().statusCode(404);
   }
 
   @Test
   public void shouldReturn401IfUserIsNotAuthenticated() throws Exception {
-    UpdateWordRequest dto = new UpdateWordRequest(
-      "newRussian",
-      "newSpanish",
-      "newEnglish",
-      "OTHER",
-      null,
-      null,
-      null
-    );
+    UpdateWordRequest dto = new UpdateWordRequest("newRussian", "newSpanish", "newEnglish", "OTHER", null, null, null);
     String json = objectMapper.writeValueAsString(dto);
 
-    given()
-      .body(json)
-      .contentType("application/json")
-      .when()
-      .put("/words/" + UUID.randomUUID().toString())
-      .then()
-      .statusCode(401);
+    given().body(json).contentType("application/json").when().put("/words/" + UUID.randomUUID().toString()).then().statusCode(401);
   }
 
   @Test
   @TestSecurity(user = "user")
   public void shouldReturn403IfUserIsNotAuthorized() throws Exception {
-    UpdateWordRequest dto = new UpdateWordRequest(
-      "newRussian",
-      "newSpanish",
-      "newEnglish",
-      "OTHER",
-      null,
-      null,
-      null
-    );
+    UpdateWordRequest dto = new UpdateWordRequest("newRussian", "newSpanish", "newEnglish", "OTHER", null, null, null);
     String json = objectMapper.writeValueAsString(dto);
 
-    given()
-      .body(json)
-      .contentType("application/json")
-      .when()
-      .put("/words/" + UUID.randomUUID().toString())
-      .then()
-      .statusCode(403);
+    given().body(json).contentType("application/json").when().put("/words/" + UUID.randomUUID().toString()).then().statusCode(403);
   }
 
 }

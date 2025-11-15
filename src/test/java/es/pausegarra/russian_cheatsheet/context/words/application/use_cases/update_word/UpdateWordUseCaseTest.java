@@ -1,7 +1,6 @@
 package es.pausegarra.russian_cheatsheet.context.words.application.use_cases.update_word;
 
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
-import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationMatrixEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.context.words.domain.exception.ConjugationsRequired;
@@ -69,54 +68,41 @@ class UpdateWordUseCaseTest {
 
   @Test
   public void shouldUpdateWordWithConjugations() {
-    WordEntity wordEntity = WordMother.random()
-      .type(WordType.NOUN)
-      .declinations(WordDeclinationMother.random().build())
-      .build();
+    WordEntity wordEntity = WordMother.random().type(WordType.NOUN).declinations(WordDeclinationMother.random().build()).build();
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.of(wordEntity));
 
-    WordEntity updated = WordMother.random()
-      .type(WordType.VERB)
-      .conjugations(WordConjugationMother.random().build())
-      .build();
+    WordEntity updated = WordMother.random().type(WordType.VERB).conjugations(WordConjugationMother.random().build()).build();
     when(wordsRepository.save(any(WordEntity.class))).thenReturn(updated);
 
     UpdateWordDto dto = new UpdateWordDto(
-      updated.id(),
-      updated.russian(),
-      updated.spanish(),
-      updated.english(),
-      updated.type(),
-      null,
-      new UpdateWordConjugationsDto(
-        updated.conjugations().imperfectivePresentFirstPersonSingular(),
-        updated.conjugations().imperfectivePresentSecondPersonSingular(),
-        updated.conjugations().imperfectivePresentThirdPersonSingular(),
-        updated.conjugations().imperfectivePresentFirstPersonPlural(),
-        updated.conjugations().imperfectivePresentSecondPersonPlural(),
-        updated.conjugations().imperfectivePresentThirdPersonPlural(),
-        updated.conjugations().imperfectivePastMasculine(),
-        updated.conjugations().imperfectivePastFeminine(),
-        updated.conjugations().imperfectivePastNeuter(),
-        updated.conjugations().imperfectivePastPlural(),
-        updated.conjugations().imperfectiveFutureFirstPersonSingular(),
-        updated.conjugations().imperfectiveFutureSecondPersonSingular(),
-        updated.conjugations().imperfectiveFutureThirdPersonSingular(),
-        updated.conjugations().imperfectiveFutureFirstPersonPlural(),
-        updated.conjugations().imperfectiveFutureSecondPersonPlural(),
-        updated.conjugations().imperfectiveFutureThirdPersonPlural(),
-        updated.conjugations().perfectivePastMasculine(),
-        updated.conjugations().perfectivePastFeminine(),
-        updated.conjugations().perfectivePastNeuter(),
-        updated.conjugations().perfectivePastPlural(),
-        updated.conjugations().perfectiveFutureFirstPersonSingular(),
-        updated.conjugations().perfectiveFutureSecondPersonSingular(),
-        updated.conjugations().perfectiveFutureThirdPersonSingular(),
-        updated.conjugations().perfectiveFutureFirstPersonPlural(),
-        updated.conjugations().perfectiveFutureSecondPersonPlural(),
-        updated.conjugations().perfectiveFutureThirdPersonPlural()
-      ),
-      null
+      updated.id(), updated.russian(), updated.spanish(), updated.english(), updated.type(), null, new UpdateWordConjugationsDto(
+      updated.conjugations().imperfectivePresentFirstPersonSingular(),
+      updated.conjugations().imperfectivePresentSecondPersonSingular(),
+      updated.conjugations().imperfectivePresentThirdPersonSingular(),
+      updated.conjugations().imperfectivePresentFirstPersonPlural(),
+      updated.conjugations().imperfectivePresentSecondPersonPlural(),
+      updated.conjugations().imperfectivePresentThirdPersonPlural(),
+      updated.conjugations().imperfectivePastMasculine(),
+      updated.conjugations().imperfectivePastFeminine(),
+      updated.conjugations().imperfectivePastNeuter(),
+      updated.conjugations().imperfectivePastPlural(),
+      updated.conjugations().imperfectiveFutureFirstPersonSingular(),
+      updated.conjugations().imperfectiveFutureSecondPersonSingular(),
+      updated.conjugations().imperfectiveFutureThirdPersonSingular(),
+      updated.conjugations().imperfectiveFutureFirstPersonPlural(),
+      updated.conjugations().imperfectiveFutureSecondPersonPlural(),
+      updated.conjugations().imperfectiveFutureThirdPersonPlural(),
+      updated.conjugations().perfectivePastMasculine(),
+      updated.conjugations().perfectivePastFeminine(),
+      updated.conjugations().perfectivePastNeuter(),
+      updated.conjugations().perfectivePastPlural(),
+      updated.conjugations().perfectiveFutureFirstPersonSingular(),
+      updated.conjugations().perfectiveFutureSecondPersonSingular(),
+      updated.conjugations().perfectiveFutureThirdPersonSingular(),
+      updated.conjugations().perfectiveFutureFirstPersonPlural(),
+      updated.conjugations().perfectiveFutureSecondPersonPlural(),
+      updated.conjugations().perfectiveFutureThirdPersonPlural()
+    ), null
     );
     WordDto result = wordsCommandService.handle(dto);
 
@@ -130,28 +116,61 @@ class UpdateWordUseCaseTest {
     assertNull(result.declinationMatrix());
 
     assertNotNull(result.conjugations());
-    assertEquals(updated.conjugations().imperfectivePresentFirstPersonSingular(), result.conjugations().imperfectivePresentFirstPersonSingular());
-    assertEquals(updated.conjugations().imperfectivePresentSecondPersonSingular(), result.conjugations().imperfectivePresentSecondPersonSingular());
-    assertEquals(updated.conjugations().imperfectivePresentThirdPersonSingular(), result.conjugations().imperfectivePresentThirdPersonSingular());
-    assertEquals(updated.conjugations().imperfectivePresentFirstPersonPlural(), result.conjugations().imperfectivePresentFirstPersonPlural());
-    assertEquals(updated.conjugations().imperfectivePresentSecondPersonPlural(), result.conjugations().imperfectivePresentSecondPersonPlural());
-    assertEquals(updated.conjugations().imperfectivePresentThirdPersonPlural(), result.conjugations().imperfectivePresentThirdPersonPlural());
+    assertEquals(
+      updated.conjugations().imperfectivePresentFirstPersonSingular(),
+      result.conjugations().imperfectivePresentFirstPersonSingular()
+    );
+    assertEquals(
+      updated.conjugations().imperfectivePresentSecondPersonSingular(),
+      result.conjugations().imperfectivePresentSecondPersonSingular()
+    );
+    assertEquals(
+      updated.conjugations().imperfectivePresentThirdPersonSingular(),
+      result.conjugations().imperfectivePresentThirdPersonSingular()
+    );
+    assertEquals(
+      updated.conjugations().imperfectivePresentFirstPersonPlural(),
+      result.conjugations().imperfectivePresentFirstPersonPlural()
+    );
+    assertEquals(
+      updated.conjugations().imperfectivePresentSecondPersonPlural(),
+      result.conjugations().imperfectivePresentSecondPersonPlural()
+    );
+    assertEquals(
+      updated.conjugations().imperfectivePresentThirdPersonPlural(),
+      result.conjugations().imperfectivePresentThirdPersonPlural()
+    );
     assertEquals(updated.conjugations().imperfectivePastMasculine(), result.conjugations().imperfectivePastMasculine());
     assertEquals(updated.conjugations().imperfectivePastFeminine(), result.conjugations().imperfectivePastFeminine());
     assertEquals(updated.conjugations().imperfectivePastNeuter(), result.conjugations().imperfectivePastNeuter());
     assertEquals(updated.conjugations().imperfectivePastPlural(), result.conjugations().imperfectivePastPlural());
-    assertEquals(updated.conjugations().imperfectiveFutureFirstPersonSingular(), result.conjugations().imperfectiveFutureFirstPersonSingular());
-    assertEquals(updated.conjugations().imperfectiveFutureSecondPersonSingular(), result.conjugations().imperfectiveFutureSecondPersonSingular());
-    assertEquals(updated.conjugations().imperfectiveFutureThirdPersonSingular(), result.conjugations().imperfectiveFutureThirdPersonSingular());
+    assertEquals(
+      updated.conjugations().imperfectiveFutureFirstPersonSingular(),
+      result.conjugations().imperfectiveFutureFirstPersonSingular()
+    );
+    assertEquals(
+      updated.conjugations().imperfectiveFutureSecondPersonSingular(),
+      result.conjugations().imperfectiveFutureSecondPersonSingular()
+    );
+    assertEquals(
+      updated.conjugations().imperfectiveFutureThirdPersonSingular(),
+      result.conjugations().imperfectiveFutureThirdPersonSingular()
+    );
     assertEquals(updated.conjugations().imperfectiveFutureFirstPersonPlural(), result.conjugations().imperfectiveFutureFirstPersonPlural());
-    assertEquals(updated.conjugations().imperfectiveFutureSecondPersonPlural(), result.conjugations().imperfectiveFutureSecondPersonPlural());
+    assertEquals(
+      updated.conjugations().imperfectiveFutureSecondPersonPlural(),
+      result.conjugations().imperfectiveFutureSecondPersonPlural()
+    );
     assertEquals(updated.conjugations().imperfectiveFutureThirdPersonPlural(), result.conjugations().imperfectiveFutureThirdPersonPlural());
     assertEquals(updated.conjugations().perfectivePastMasculine(), result.conjugations().perfectivePastMasculine());
     assertEquals(updated.conjugations().perfectivePastFeminine(), result.conjugations().perfectivePastFeminine());
     assertEquals(updated.conjugations().perfectivePastNeuter(), result.conjugations().perfectivePastNeuter());
     assertEquals(updated.conjugations().perfectivePastPlural(), result.conjugations().perfectivePastPlural());
     assertEquals(updated.conjugations().perfectiveFutureFirstPersonSingular(), result.conjugations().perfectiveFutureFirstPersonSingular());
-    assertEquals(updated.conjugations().perfectiveFutureSecondPersonSingular(), result.conjugations().perfectiveFutureSecondPersonSingular());
+    assertEquals(
+      updated.conjugations().perfectiveFutureSecondPersonSingular(),
+      result.conjugations().perfectiveFutureSecondPersonSingular()
+    );
     assertEquals(updated.conjugations().perfectiveFutureThirdPersonSingular(), result.conjugations().perfectiveFutureThirdPersonSingular());
     assertEquals(updated.conjugations().perfectiveFutureFirstPersonPlural(), result.conjugations().perfectiveFutureFirstPersonPlural());
     assertEquals(updated.conjugations().perfectiveFutureSecondPersonPlural(), result.conjugations().perfectiveFutureSecondPersonPlural());
@@ -163,34 +182,21 @@ class UpdateWordUseCaseTest {
 
   @Test
   public void shouldUpdateWordWithDeclinations() {
-    WordEntity wordEntity = WordMother.random()
-      .type(WordType.VERB)
-      .conjugations(WordConjugationMother.random().build())
-      .build();
+    WordEntity wordEntity = WordMother.random().type(WordType.VERB).conjugations(WordConjugationMother.random().build()).build();
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.of(wordEntity));
 
-    WordEntity updated = WordMother.random()
-      .type(WordType.NOUN)
-      .declinations(WordDeclinationMother.random().build())
-      .build();
+    WordEntity updated = WordMother.random().type(WordType.NOUN).declinations(WordDeclinationMother.random().build()).build();
     when(wordsRepository.save(any(WordEntity.class))).thenReturn(updated);
 
     UpdateWordDto dto = new UpdateWordDto(
-      updated.id(),
-      updated.russian(),
-      updated.spanish(),
-      updated.english(),
-      updated.type(),
-      new UpdateWordDeclinationDto(
-        updated.declinations().nominative(),
-        updated.declinations().accusative(),
-        updated.declinations().genitive(),
-        updated.declinations().dative(),
-        updated.declinations().instrumental(),
-        updated.declinations().prepositional()
-      ),
-      null,
-      null
+      updated.id(), updated.russian(), updated.spanish(), updated.english(), updated.type(), new UpdateWordDeclinationDto(
+      updated.declinations().nominative(),
+      updated.declinations().accusative(),
+      updated.declinations().genitive(),
+      updated.declinations().dative(),
+      updated.declinations().instrumental(),
+      updated.declinations().prepositional()
+    ), null, null
     );
     WordDto result = wordsCommandService.handle(dto);
 
@@ -217,10 +223,7 @@ class UpdateWordUseCaseTest {
 
   @Test
   public void shouldUpdateWordWithDeclinationMatrix() {
-    WordEntity wordEntity = WordMother.random()
-      .type(WordType.NOUN)
-      .conjugations(WordConjugationMother.random().build())
-      .build();
+    WordEntity wordEntity = WordMother.random().type(WordType.NOUN).conjugations(WordConjugationMother.random().build()).build();
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.of(wordEntity));
 
     WordEntity updated = WordMother.random()
@@ -230,39 +233,32 @@ class UpdateWordUseCaseTest {
     when(wordsRepository.save(any(WordEntity.class))).thenReturn(updated);
 
     UpdateWordDto dto = new UpdateWordDto(
-      updated.id(),
-      updated.russian(),
-      updated.spanish(),
-      updated.english(),
-      updated.type(),
-      null,
-      null,
-      new UpdateWordDeclinationMatrixDto(
-        updated.declinationMatrix().nominativeMasculine(),
-        updated.declinationMatrix().nominativeFeminine(),
-        updated.declinationMatrix().nominativeNeuter(),
-        updated.declinationMatrix().nominativePlural(),
-        updated.declinationMatrix().accusativeMasculine(),
-        updated.declinationMatrix().accusativeFeminine(),
-        updated.declinationMatrix().accusativeNeuter(),
-        updated.declinationMatrix().accusativePlural(),
-        updated.declinationMatrix().genitiveMasculine(),
-        updated.declinationMatrix().genitiveFeminine(),
-        updated.declinationMatrix().genitiveNeuter(),
-        updated.declinationMatrix().genitivePlural(),
-        updated.declinationMatrix().dativeMasculine(),
-        updated.declinationMatrix().dativeFeminine(),
-        updated.declinationMatrix().dativeNeuter(),
-        updated.declinationMatrix().dativePlural(),
-        updated.declinationMatrix().instrumentalMasculine(),
-        updated.declinationMatrix().instrumentalFeminine(),
-        updated.declinationMatrix().instrumentalNeuter(),
-        updated.declinationMatrix().instrumentalPlural(),
-        updated.declinationMatrix().prepositionalMasculine(),
-        updated.declinationMatrix().prepositionalFeminine(),
-        updated.declinationMatrix().prepositionalNeuter(),
-        updated.declinationMatrix().prepositionalPlural()
-      )
+      updated.id(), updated.russian(), updated.spanish(), updated.english(), updated.type(), null, null, new UpdateWordDeclinationMatrixDto(
+      updated.declinationMatrix().nominativeMasculine(),
+      updated.declinationMatrix().nominativeFeminine(),
+      updated.declinationMatrix().nominativeNeuter(),
+      updated.declinationMatrix().nominativePlural(),
+      updated.declinationMatrix().accusativeMasculine(),
+      updated.declinationMatrix().accusativeFeminine(),
+      updated.declinationMatrix().accusativeNeuter(),
+      updated.declinationMatrix().accusativePlural(),
+      updated.declinationMatrix().genitiveMasculine(),
+      updated.declinationMatrix().genitiveFeminine(),
+      updated.declinationMatrix().genitiveNeuter(),
+      updated.declinationMatrix().genitivePlural(),
+      updated.declinationMatrix().dativeMasculine(),
+      updated.declinationMatrix().dativeFeminine(),
+      updated.declinationMatrix().dativeNeuter(),
+      updated.declinationMatrix().dativePlural(),
+      updated.declinationMatrix().instrumentalMasculine(),
+      updated.declinationMatrix().instrumentalFeminine(),
+      updated.declinationMatrix().instrumentalNeuter(),
+      updated.declinationMatrix().instrumentalPlural(),
+      updated.declinationMatrix().prepositionalMasculine(),
+      updated.declinationMatrix().prepositionalFeminine(),
+      updated.declinationMatrix().prepositionalNeuter(),
+      updated.declinationMatrix().prepositionalPlural()
+    )
     );
     WordDto result = wordsCommandService.handle(dto);
 
@@ -307,9 +303,7 @@ class UpdateWordUseCaseTest {
 
   @Test
   public void shouldThrowExceptionWhenUpdatingWordToVerbWithoutConjugations() {
-    WordEntity wordEntity = WordMother.random()
-      .type(WordType.NOUN)
-      .build();
+    WordEntity wordEntity = WordMother.random().type(WordType.NOUN).build();
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.of(wordEntity));
 
     UpdateWordDto dto = new UpdateWordDto(
@@ -327,9 +321,7 @@ class UpdateWordUseCaseTest {
 
   @Test
   public void shouldThrowExceptionWhenUpdatingWordToNounWithoutDeclinations() {
-    WordEntity wordEntity = WordMother.random()
-      .type(WordType.VERB)
-      .build();
+    WordEntity wordEntity = WordMother.random().type(WordType.VERB).build();
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.of(wordEntity));
 
     UpdateWordDto dto = new UpdateWordDto(
@@ -347,9 +339,7 @@ class UpdateWordUseCaseTest {
 
   @Test
   public void shouldThrowExceptionWhenUpdatingWordToAdjectiveWithoutDeclinationMatrix() {
-    WordEntity wordEntity = WordMother.random()
-      .type(WordType.NOUN)
-      .build();
+    WordEntity wordEntity = WordMother.random().type(WordType.NOUN).build();
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.of(wordEntity));
 
     UpdateWordDto dto = new UpdateWordDto(

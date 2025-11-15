@@ -13,7 +13,10 @@ class WordDeclinationModelTest {
   public void shouldMapFromEntity() {
     WordDeclinationEntity wordDeclinationEntity = WordDeclinationMother.random().build();
 
-    WordDeclinationModel wordDeclinationModel = WordDeclinationModel.fromEntity(wordDeclinationEntity, WordModel.fromEntity(wordDeclinationEntity.word()));
+    WordDeclinationModel wordDeclinationModel = WordDeclinationModel.fromEntity(
+      wordDeclinationEntity,
+      WordModel.fromEntity(wordDeclinationEntity.word())
+    );
 
     assertNotNull(wordDeclinationModel);
     assertEquals(wordDeclinationEntity.id(), wordDeclinationModel.getId());
@@ -32,7 +35,10 @@ class WordDeclinationModelTest {
   @Test
   public void shouldMapToEntity() {
     WordDeclinationEntity wordDeclinationEntity = WordDeclinationMother.random().build();
-    WordDeclinationModel wordDeclinationModel = WordDeclinationModel.fromEntity(wordDeclinationEntity, WordModel.fromEntity(wordDeclinationEntity.word()));
+    WordDeclinationModel wordDeclinationModel = WordDeclinationModel.fromEntity(
+      wordDeclinationEntity,
+      WordModel.fromEntity(wordDeclinationEntity.word())
+    );
 
     WordDeclinationEntity wordDeclinationEntityFromModel = wordDeclinationModel.toEntity(wordDeclinationEntity.word());
 

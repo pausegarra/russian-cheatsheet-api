@@ -23,15 +23,9 @@ public class UpdateWordUseCase implements UseCase<UpdateWordDto, WordDto> {
   @Override
   @Transactional
   public WordDto handle(UpdateWordDto dto) {
-    WordEntity word = wordsRepository.findById(dto.id())
-      .orElseThrow(() -> new WordNotFound(dto.id().toString()));
+    WordEntity word = wordsRepository.findById(dto.id()).orElseThrow(() -> new WordNotFound(dto.id().toString()));
 
-    WordEntity updated = word.update(
-      dto.russian(),
-      dto.english(),
-      dto.spanish(),
-      dto.type()
-    );
+    WordEntity updated = word.update(dto.russian(), dto.english(), dto.spanish(), dto.type());
 
     if (updated.canHaveConjugations()) {
       WordConjugationEntity conjugation = createConjugations(dto.conjugations());

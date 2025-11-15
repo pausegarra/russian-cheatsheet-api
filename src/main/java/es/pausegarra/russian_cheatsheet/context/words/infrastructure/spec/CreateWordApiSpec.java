@@ -1,7 +1,7 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.spec;
 
-import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDto;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import org.eclipse.microprofile.openapi.annotations.Operation;
@@ -17,24 +17,19 @@ public interface CreateWordApiSpec {
   @Operation(summary = "Create a new word")
   @POST
   @APIResponse(
-    responseCode = "201",
-    description = "Created"
+    responseCode = "201", description = "Created"
   )
   @APIResponse(
-    responseCode = "400",
-    description = "Bad Request"
+    responseCode = "400", description = "Bad Request"
   )
   @APIResponse(
-    responseCode = "401",
-    description = "Unauthorized"
+    responseCode = "401", description = "Unauthorized"
   )
   @APIResponse(
-    responseCode = "403",
-    description = "Forbidden"
+    responseCode = "403", description = "Forbidden"
   )
   @APIResponse(
-    responseCode = "500",
-    description = "Internal Server Error"
+    responseCode = "500", description = "Internal Server Error"
   )
   @SecurityRequirement(
     name = "SecurityScheme"

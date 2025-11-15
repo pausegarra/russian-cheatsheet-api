@@ -16,10 +16,7 @@ import java.util.UUID;
 
 @Entity
 @Table(
-  name = "words",
-  indexes = {
-    @Index(name = "words_russian_english_spanish_idx", columnList = "russian, spanish, english")
-  }
+  name = "words", indexes = {@Index(name = "words_russian_english_spanish_idx", columnList = "russian, spanish, english")}
 )
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
@@ -91,9 +88,13 @@ public class WordModel extends AuditableModel {
       .updatedAt(updatedAt)
       .build();
 
-    return wordEntity.withConjugations(Optional.ofNullable(conjugations).map((conjugations) -> conjugations.toEntity(wordEntity)).orElse(null))
+    return wordEntity.withConjugations(Optional.ofNullable(conjugations)
+        .map((conjugations) -> conjugations.toEntity(wordEntity))
+        .orElse(null))
       .withDeclinations(Optional.ofNullable(declinations).map((declinations) -> declinations.toEntity(wordEntity)).orElse(null))
-      .withDeclinationMatrix(Optional.ofNullable(declinationMatrix).map((declinationMatrix) -> declinationMatrix.toEntity(wordEntity)).orElse(null));
+      .withDeclinationMatrix(Optional.ofNullable(declinationMatrix)
+        .map((declinationMatrix) -> declinationMatrix.toEntity(wordEntity))
+        .orElse(null));
   }
 
 }

@@ -2,7 +2,6 @@ package es.pausegarra.russian_cheatsheet.context.words.infrastructure.cron;
 
 import es.pausegarra.russian_cheatsheet.common.utils.ListUtils;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
-import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordsRepository;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.rest_clients.memrise.ListWordsResponse;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.rest_clients.memrise.MemriseRestClient;
@@ -46,10 +45,7 @@ public class FindWordsInMemrise {
           continue;
         }
 
-        WordEntity newWord = WordEntity.builder()
-          .russian(word.russian())
-          .spanish(word.spanish())
-          .build();
+        WordEntity newWord = WordEntity.builder().russian(word.russian()).spanish(word.spanish()).build();
         toSave.add(newWord);
         wordsMap.put(newWord.russian(), newWord);
       }

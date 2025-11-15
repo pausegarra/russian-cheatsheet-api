@@ -4,7 +4,9 @@ import jakarta.validation.Valid;
 
 public interface UseCase<T, R> {
 
-  R handle(@Valid
-  T dto);
+  R handle(
+    @Valid
+    T dto
+  );
 
 }

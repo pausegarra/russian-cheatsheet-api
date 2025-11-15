@@ -17,31 +17,19 @@ public class FindWordsByCriteriaIT extends IntegrationTest {
 
   @Test
   public void shouldFindWordsByCriteriaWithDefaultValues() {
-    WordEntity word = WordMother.random()
-      .id(null)
-      .build();
+    WordEntity word = WordMother.random().id(null).build();
     WordModel saved = persist(WordModel.fromEntity(word));
 
-    given()
-      .when()
-      .get("/words")
-      .then()
-      .statusCode(200)
-      .body("data.size()", is(1))
-      .body("data[0].id", is(saved.getId().toString()));
+    given().when().get("/words").then().statusCode(200).body("data.size()", is(1)).body("data[0].id", is(saved.getId().toString()));
   }
 
   @Test
   public void shouldChangePaginationParameters() {
-    List<WordEntity> words = List.of(
-      WordMother.random().id(null).build(),
-      WordMother.random().id(null).build()
-    );
+    List<WordEntity> words = List.of(WordMother.random().id(null).build(), WordMother.random().id(null).build());
     persist(WordModel.fromEntity(words.getFirst()));
     persist(WordModel.fromEntity(words.getLast()));
 
-    given()
-      .when()
+    given().when()
       .get("/words?page=1&perPage=1")
       .then()
       .statusCode(200)
@@ -63,13 +51,7 @@ public class FindWordsByCriteriaIT extends IntegrationTest {
     persist(WordModel.fromEntity(words.getFirst()));
     persist(WordModel.fromEntity(words.getLast()));
 
-    given()
-      .when()
-      .get("/words?search=search")
-      .then()
-      .statusCode(200)
-      .body("data.size()", is(1))
-      .body("data[0].russian", is("search"));
+    given().when().get("/words?search=search").then().statusCode(200).body("data.size()", is(1)).body("data[0].russian", is("search"));
   }
 
 }

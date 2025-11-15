@@ -33,11 +33,7 @@ public class UnauthenticatedExceptionMapper {
   }
 
   private ApiExceptionPresentation createPresentation(String message, String code) {
-    return ApiExceptionPresentation.create(
-      message,
-      code.toUpperCase(),
-      RestResponse.Status.UNAUTHORIZED.getStatusCode()
-    );
+    return ApiExceptionPresentation.create(message, code.toUpperCase(), RestResponse.Status.UNAUTHORIZED.getStatusCode());
   }
 
 }

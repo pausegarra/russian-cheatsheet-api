@@ -8,7 +8,8 @@ import es.pausegarra.russian_cheatsheet.mother.WordDeclinationMatrixMother;
 import es.pausegarra.russian_cheatsheet.mother.WordMother;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class WordDeclinationMatrixDtoTest {
 
@@ -18,7 +19,10 @@ class WordDeclinationMatrixDtoTest {
       .word(WordMother.random().type(WordType.OTHER).build())
       .build();
 
-    WordDeclinationMatrixDto wordDeclinationMatrixDtoDto = WordDeclinationMatrixDto.fromEntity(wordDeclinationMatrixDto, WordDto.fromEntity(wordDeclinationMatrixDto.word()));
+    WordDeclinationMatrixDto wordDeclinationMatrixDtoDto = WordDeclinationMatrixDto.fromEntity(
+      wordDeclinationMatrixDto,
+      WordDto.fromEntity(wordDeclinationMatrixDto.word())
+    );
 
     assertNotNull(wordDeclinationMatrixDtoDto);
     assertEquals(wordDeclinationMatrixDto.id(), wordDeclinationMatrixDtoDto.id());

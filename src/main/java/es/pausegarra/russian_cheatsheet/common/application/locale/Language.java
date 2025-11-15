@@ -16,11 +16,7 @@ public class Language {
   }
 
   public String getLanguageByCode(String code) {
-    Optional<String> key = LANGUAGES.entrySet()
-      .stream()
-      .filter(entry -> entry.getValue().equals(code))
-      .map(Map.Entry::getKey)
-      .findFirst();
+    Optional<String> key = LANGUAGES.entrySet().stream().filter(entry -> entry.getValue().equals(code)).map(Map.Entry::getKey).findFirst();
 
     return key.orElseGet(() -> LocaleContextHolder.getLocale().getLanguage());
   }

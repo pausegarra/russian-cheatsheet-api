@@ -20,23 +20,13 @@ public class CreateWordIT extends IntegrationTest {
 
   @Test
   @TestSecurity(
-    user = "user",
-    roles = "words#create"
+    user = "user", roles = "words#create"
   )
   public void shouldCreateWordWithoutChildren() throws JsonProcessingException {
-    CreateWordDto createWordDto = new CreateWordDto(
-      "russian",
-      "english",
-      "spanish",
-      WordType.OTHER,
-      null,
-      null,
-      null
-    );
+    CreateWordDto createWordDto = new CreateWordDto("russian", "english", "spanish", WordType.OTHER, null, null, null);
     String json = objectMapper.writeValueAsString(createWordDto);
 
-    given()
-      .contentType("application/json")
+    given().contentType("application/json")
       .body(json)
       .when()
       .post("/words")
@@ -59,8 +49,7 @@ public class CreateWordIT extends IntegrationTest {
 
   @Test
   @TestSecurity(
-    user = "user",
-    roles = "words#create"
+    user = "user", roles = "words#create"
   )
   public void shouldCreateWordWithConjugationsWhenTypeIsVerb() throws JsonProcessingException {
     CreateWordConjugationDto conjugations = new CreateWordConjugationDto(
@@ -91,19 +80,10 @@ public class CreateWordIT extends IntegrationTest {
       "perfectiveFutureSecondPersonPlural",
       "perfectiveFutureThirdPersonPlural"
     );
-    CreateWordDto createWordDto = new CreateWordDto(
-      "russian",
-      "english",
-      "spanish",
-      WordType.VERB,
-      conjugations,
-      null,
-      null
-    );
+    CreateWordDto createWordDto = new CreateWordDto("russian", "english", "spanish", WordType.VERB, conjugations, null, null);
     String json = objectMapper.writeValueAsString(createWordDto);
 
-    given()
-      .contentType("application/json")
+    given().contentType("application/json")
       .body(json)
       .when()
       .post("/words")
@@ -152,23 +132,13 @@ public class CreateWordIT extends IntegrationTest {
 
   @Test
   @TestSecurity(
-    user = "user",
-    roles = "words#create"
+    user = "user", roles = "words#create"
   )
   public void shouldReturn400WhenCreateWordWithNoConjugationsAndTypeIsVerb() throws JsonProcessingException {
-    CreateWordDto createWordDto = new CreateWordDto(
-      "russian",
-      "english",
-      "spanish",
-      WordType.VERB,
-      null,
-      null,
-      null
-    );
+    CreateWordDto createWordDto = new CreateWordDto("russian", "english", "spanish", WordType.VERB, null, null, null);
     String json = objectMapper.writeValueAsString(createWordDto);
 
-    given()
-      .contentType("application/json")
+    given().contentType("application/json")
       .body(json)
       .when()
       .post("/words")
@@ -179,23 +149,13 @@ public class CreateWordIT extends IntegrationTest {
 
   @Test
   @TestSecurity(
-    user = "user",
-    roles = "words#create"
+    user = "user", roles = "words#create"
   )
   public void shouldReturn400WhenCreateWordWithNoDeclinationsAndTypeIsNoun() throws JsonProcessingException {
-    CreateWordDto createWordDto = new CreateWordDto(
-      "russian",
-      "english",
-      "spanish",
-      WordType.NOUN,
-      null,
-      null,
-      null
-    );
+    CreateWordDto createWordDto = new CreateWordDto("russian", "english", "spanish", WordType.NOUN, null, null, null);
     String json = objectMapper.writeValueAsString(createWordDto);
 
-    given()
-      .contentType("application/json")
+    given().contentType("application/json")
       .body(json)
       .when()
       .post("/words")
@@ -206,23 +166,13 @@ public class CreateWordIT extends IntegrationTest {
 
   @Test
   @TestSecurity(
-    user = "user",
-    roles = "words#create"
+    user = "user", roles = "words#create"
   )
   public void shouldReturn400WhenCreateWordWithNoDeclinationMatrixAndTypeIsAdjectiveOrPronounOrParticipleOrOrdinal() throws JsonProcessingException {
-    CreateWordDto createWordDto = new CreateWordDto(
-      "russian",
-      "english",
-      "spanish",
-      WordType.ADJECTIVE,
-      null,
-      null,
-      null
-    );
+    CreateWordDto createWordDto = new CreateWordDto("russian", "english", "spanish", WordType.ADJECTIVE, null, null, null);
     String json = objectMapper.writeValueAsString(createWordDto);
 
-    given()
-      .contentType("application/json")
+    given().contentType("application/json")
       .body(json)
       .when()
       .post("/words")
@@ -236,22 +186,12 @@ public class CreateWordIT extends IntegrationTest {
     user = "user"
   )
   public void shouldReturn403WhenUserIsNotAuthorized() {
-    given()
-      .contentType("application/json")
-      .when()
-      .post("/words")
-      .then()
-      .statusCode(403);
+    given().contentType("application/json").when().post("/words").then().statusCode(403);
   }
 
   @Test
   public void shouldReturn401WhenUserIsNotAuthenticated() {
-    given()
-      .contentType("application/json")
-      .when()
-      .post("/words")
-      .then()
-      .statusCode(401);
+    given().contentType("application/json").when().post("/words").then().statusCode(401);
   }
 
 }

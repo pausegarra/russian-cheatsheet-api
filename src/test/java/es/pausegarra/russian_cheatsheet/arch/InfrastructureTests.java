@@ -8,8 +8,7 @@ import com.tngtech.archunit.lang.ArchRule;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 @AnalyzeClasses(
-  packages = BaseArchTest.BASE_PACKAGE,
-  importOptions = {ImportOption.DoNotIncludeTests.class}
+  packages = BaseArchTest.BASE_PACKAGE, importOptions = {ImportOption.DoNotIncludeTests.class}
 )
 public class InfrastructureTests extends BaseArchTest {
 

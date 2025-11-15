@@ -1,16 +1,11 @@
 package es.pausegarra.russian_cheatsheet.integration.audit;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import es.pausegarra.russian_cheatsheet.base.IntegrationTest;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
-import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.flywaydb.core.Flyway;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -94,5 +89,5 @@ class AuditableModelTest {
     assertEquals("anonymous", updated.getUpdatedBy());
     assertNotNull(updated.getUpdatedAt());
   }
-  
+
 }

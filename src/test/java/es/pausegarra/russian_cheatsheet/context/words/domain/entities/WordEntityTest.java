@@ -33,10 +33,7 @@ class WordEntityTest {
 
   @Test
   public void shouldAddConjugationsAndRemoveOthersWithUpdatingToVerb() {
-    WordEntity word = WordMother.random()
-      .declinations(WordDeclinationMother.random().build())
-      .type(WordType.VERB)
-      .build();
+    WordEntity word = WordMother.random().declinations(WordDeclinationMother.random().build()).type(WordType.VERB).build();
 
     WordConjugationEntity conjugations = WordConjugationMother.random().build();
     WordEntity wordWithConjugations = word.addConjugations(conjugations);
@@ -78,10 +75,7 @@ class WordEntityTest {
 
   @Test
   public void shouldAddDeclinationsAndRemoveOthersWithUpdatingToNoun() {
-    WordEntity word = WordMother.random()
-      .conjugations(WordConjugationMother.random().build())
-      .type(WordType.NOUN)
-      .build();
+    WordEntity word = WordMother.random().conjugations(WordConjugationMother.random().build()).type(WordType.NOUN).build();
 
     WordDeclinationEntity declinations = WordDeclinationMother.random().build();
     WordEntity wordWithDeclinations = word.addDeclinations(declinations);
@@ -123,10 +117,7 @@ class WordEntityTest {
 
   @Test
   public void shouldAddDeclinationMatrixAndRemoveOthersWithUpdatingToAdjective() {
-    WordEntity word = WordMother.random()
-      .conjugations(WordConjugationMother.random().build())
-      .type(WordType.ADJECTIVE)
-      .build();
+    WordEntity word = WordMother.random().conjugations(WordConjugationMother.random().build()).type(WordType.ADJECTIVE).build();
 
     WordDeclinationMatrixEntity declinationMatrix = WordDeclinationMatrixMother.random().build();
     WordEntity wordWithDeclinationMatrix = word.addDeclinationMatrix(declinationMatrix);
