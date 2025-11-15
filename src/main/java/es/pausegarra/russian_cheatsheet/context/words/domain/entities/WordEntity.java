@@ -36,12 +36,32 @@ public record WordEntity(
       .build();
   }
 
+  public WordEntity update(String russian, String english, String spanish, WordType type) {
+    return new WordEntity(
+      id(),
+      russian,
+      english,
+      spanish,
+      type,
+      conjugations(),
+      declinations(),
+      declinationMatrix(),
+      publishedAt(),
+      createdBy(),
+      createdAt(),
+      updatedBy(),
+      updatedAt()
+    );
+  }
+
   public WordEntity addConjugations(WordConjugationEntity conjugations) {
     if (!canHaveConjugations()) {
       throw new WordCannotHaveConjugations(russian());
     }
 
-    return this.withConjugations(conjugations);
+    return this.withConjugations(conjugations)
+      .withDeclinations(null)
+      .withDeclinationMatrix(null);
   }
 
   public WordEntity addDeclinations(WordDeclinationEntity declinations) {
@@ -49,7 +69,9 @@ public record WordEntity(
       throw new WordCannotHaveDeclinations(russian());
     }
 
-    return this.withDeclinations(declinations);
+    return this.withDeclinations(declinations)
+      .withConjugations(null)
+      .withDeclinationMatrix(null);
   }
 
   public WordEntity addDeclinationMatrix(WordDeclinationMatrixEntity declinationMatrix) {
@@ -57,7 +79,9 @@ public record WordEntity(
       throw new WordCannotHaveDeclinationMatrix(russian());
     }
 
-    return this.withDeclinationMatrix(declinationMatrix);
+    return this.withDeclinationMatrix(declinationMatrix)
+      .withConjugations(null)
+      .withDeclinations(null);
   }
 
   public boolean canHaveConjugations() {

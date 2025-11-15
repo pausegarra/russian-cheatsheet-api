@@ -32,6 +32,26 @@ class WordEntityTest {
   }
 
   @Test
+  public void shouldAddConjugationsAndRemoveOthersWithUpdatingToVerb() {
+    WordEntity word = WordMother.random()
+      .declinations(WordDeclinationMother.random().build())
+      .type(WordType.VERB)
+      .build();
+
+    WordConjugationEntity conjugations = WordConjugationMother.random().build();
+    WordEntity wordWithConjugations = word.addConjugations(conjugations);
+
+    assertNotNull(wordWithConjugations);
+    assertEquals(word.russian(), wordWithConjugations.russian());
+    assertEquals(word.english(), wordWithConjugations.english());
+    assertEquals(word.spanish(), wordWithConjugations.spanish());
+    assertEquals(word.type(), wordWithConjugations.type());
+    assertEquals(conjugations, wordWithConjugations.conjugations());
+    assertNull(wordWithConjugations.declinations());
+    assertNull(wordWithConjugations.declinationMatrix());
+  }
+
+  @Test
   public void shouldThrowExceptionWhenAddConjugationsWhenTypeIsNotVerb() {
     WordEntity word = WordMother.random().type(WordType.NOUN).build();
 
@@ -42,6 +62,26 @@ class WordEntityTest {
   @Test
   public void shouldAddDeclinationsWhenTypeIsNoun() {
     WordEntity word = WordMother.random().type(WordType.NOUN).build();
+
+    WordDeclinationEntity declinations = WordDeclinationMother.random().build();
+    WordEntity wordWithDeclinations = word.addDeclinations(declinations);
+
+    assertNotNull(wordWithDeclinations);
+    assertEquals(word.russian(), wordWithDeclinations.russian());
+    assertEquals(word.english(), wordWithDeclinations.english());
+    assertEquals(word.spanish(), wordWithDeclinations.spanish());
+    assertEquals(word.type(), wordWithDeclinations.type());
+    assertEquals(declinations, wordWithDeclinations.declinations());
+    assertNull(wordWithDeclinations.conjugations());
+    assertNull(wordWithDeclinations.declinationMatrix());
+  }
+
+  @Test
+  public void shouldAddDeclinationsAndRemoveOthersWithUpdatingToNoun() {
+    WordEntity word = WordMother.random()
+      .conjugations(WordConjugationMother.random().build())
+      .type(WordType.NOUN)
+      .build();
 
     WordDeclinationEntity declinations = WordDeclinationMother.random().build();
     WordEntity wordWithDeclinations = word.addDeclinations(declinations);
@@ -79,6 +119,26 @@ class WordEntityTest {
     assertNull(wordWithDeclinationMatrix.conjugations());
     assertNull(wordWithDeclinationMatrix.declinations());
     assertEquals(declinationMatrix, wordWithDeclinationMatrix.declinationMatrix());
+  }
+
+  @Test
+  public void shouldAddDeclinationMatrixAndRemoveOthersWithUpdatingToAdjective() {
+    WordEntity word = WordMother.random()
+      .conjugations(WordConjugationMother.random().build())
+      .type(WordType.ADJECTIVE)
+      .build();
+
+    WordDeclinationMatrixEntity declinationMatrix = WordDeclinationMatrixMother.random().build();
+    WordEntity wordWithDeclinationMatrix = word.addDeclinationMatrix(declinationMatrix);
+
+    assertNotNull(wordWithDeclinationMatrix);
+    assertEquals(word.russian(), wordWithDeclinationMatrix.russian());
+    assertEquals(word.english(), wordWithDeclinationMatrix.english());
+    assertEquals(word.spanish(), wordWithDeclinationMatrix.spanish());
+    assertEquals(word.type(), wordWithDeclinationMatrix.type());
+    assertEquals(declinationMatrix, wordWithDeclinationMatrix.declinationMatrix());
+    assertNull(wordWithDeclinationMatrix.conjugations());
+    assertNull(wordWithDeclinationMatrix.declinations());
   }
 
   @Test
