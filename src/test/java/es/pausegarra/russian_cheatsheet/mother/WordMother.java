@@ -15,6 +15,7 @@ public class WordMother {
       .english(MotherCreator.random().animal().name())
       .spanish(MotherCreator.random().animal().name())
       .type(WordType.NOUN)
+      .publishedAt(MotherCreator.random().date().past(10, TimeUnit.DAYS).toInstant())
       .createdBy(MotherCreator.random().name().username())
       .createdAt(MotherCreator.random().date().past(10, TimeUnit.DAYS).toInstant())
       .updatedBy(MotherCreator.random().name().username())

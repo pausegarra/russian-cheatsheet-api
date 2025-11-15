@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.With;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.FilterDefs;
+import org.hibernate.annotations.Filters;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -22,6 +26,14 @@ import java.util.UUID;
 @NoArgsConstructor(force = true)
 @Getter
 @SuperBuilder(toBuilder = true)
+@FilterDefs({
+  @FilterDef(name = "publishedAt.notNull"),
+  @FilterDef(name = "publishedAt.null")
+})
+@Filters({
+  @Filter(name = "publishedAt.notNull", condition = "published_at is not null"),
+  @Filter(name = "publishedAt.null", condition = "published_at is null")
+})
 public class WordModel extends AuditableModel {
 
   @Id

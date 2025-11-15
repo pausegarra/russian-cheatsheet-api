@@ -69,6 +69,14 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
       "%" + criteria.getSearch().toLowerCase() + "%"
     ).page(page);
 
+    if (criteria.isPublished()) {
+      query.filter("publishedAt.notNull");
+    }
+
+    if (!criteria.isPublished()) {
+      query.filter("publishedAt.null");
+    }
+
     PageInfo pageInfo = PageInfo.fromQuery(query);
 
     return new Paginated<>(
