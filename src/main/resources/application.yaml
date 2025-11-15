@@ -1,5 +1,8 @@
 quarkus:
 
+  http:
+    root-path: /api
+
   datasource:
     db-kind: postgresql
     username: russian-cheatsheet
@@ -21,7 +24,7 @@ quarkus:
   swagger-ui:
     always-include: true
     urls:
-      default: /q/openapi
+      default: /api/q/openapi
     enable: true
     theme: original
     operations-sorter: alpha

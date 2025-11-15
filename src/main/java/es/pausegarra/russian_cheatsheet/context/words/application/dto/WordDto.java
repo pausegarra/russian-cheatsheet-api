@@ -15,6 +15,7 @@ public record WordDto(
   String english,
   String spanish,
   WordType type,
+  Instant publishedAt,
   WordConjugationDto conjugations,
   WordDeclinationDto declinations,
   WordDeclinationMatrixDto declinationMatrix,
@@ -30,6 +31,7 @@ public record WordDto(
       .russian(entity.russian())
       .english(entity.english())
       .spanish(entity.spanish())
+      .publishedAt(entity.publishedAt())
       .type(entity.type())
       .createdBy(entity.createdBy())
       .createdAt(entity.createdAt())
