@@ -13,3 +13,4 @@ services:
       - QUARKUS_DATASOURCE_JDBC_URL=jdbc:postgresql://host.docker.internal:5432/russian-cheatsheet
       - QUARKUS_DATASOURCE_USERNAME=${DB_USERNAME}
       - QUARKUS_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - APP_MEMRISE_ACCESS_TOKEN=${MEMRISE_TOKEN}
