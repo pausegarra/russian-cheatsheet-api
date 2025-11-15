@@ -20,7 +20,7 @@ public record WordEntity(
   @With WordConjugationEntity conjugations,
   @With WordDeclinationEntity declinations,
   @With WordDeclinationMatrixEntity declinationMatrix,
-  Instant publishedAt,
+  @With Instant publishedAt,
   String createdBy,
   Instant createdAt,
   String updatedBy,
@@ -47,6 +47,10 @@ public record WordEntity(
       updatedBy(),
       updatedAt()
     );
+  }
+
+  public WordEntity publish() {
+    return this.withPublishedAt(Instant.now());
   }
 
   public WordEntity addConjugations(WordConjugationEntity conjugations) {

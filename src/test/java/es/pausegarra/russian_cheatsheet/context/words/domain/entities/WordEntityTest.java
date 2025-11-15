@@ -182,4 +182,13 @@ class WordEntityTest {
     assertFalse(word.canHaveDeclinationMatrix());
   }
 
+  @Test
+  public void shouldPublishWord() {
+    WordEntity word = WordMother.random().publishedAt(null).build();
+
+    WordEntity published = word.publish();
+
+    assertNotNull(published.publishedAt());
+  }
+
 }
