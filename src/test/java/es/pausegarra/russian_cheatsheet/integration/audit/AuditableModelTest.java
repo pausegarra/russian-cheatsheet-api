@@ -1,16 +1,37 @@
 package es.pausegarra.russian_cheatsheet.integration.audit;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import es.pausegarra.russian_cheatsheet.base.IntegrationTest;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
+import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.flywaydb.core.Flyway;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 @Slf4j
-class AuditableModelTest extends IntegrationTest {
+class AuditableModelTest {
+
+  @PersistenceContext
+  protected EntityManager em;
+
+  @Transactional
+  protected <T> T merge(T object) {
+    return em.merge(object);
+  }
+
+  @Transactional
+  protected <T> T persist(T object) {
+    em.persist(object);
+    return object;
+  }
 
   @Test
   @TestSecurity(user = "test")
@@ -23,8 +44,8 @@ class AuditableModelTest extends IntegrationTest {
 
     assertNotNull(persisted);
     assertNotNull(persisted.getCreatedAt());
-    assertNotNull(persisted.getUpdatedAt());
     assertEquals("test", persisted.getCreatedBy());
+    assertNull(persisted.getUpdatedAt());
     assertNull(persisted.getUpdatedBy());
   }
 
@@ -38,8 +59,8 @@ class AuditableModelTest extends IntegrationTest {
 
     assertNotNull(persisted);
     assertNotNull(persisted.getCreatedAt());
-    assertNotNull(persisted.getUpdatedAt());
     assertEquals("anonymous", persisted.getCreatedBy());
+    assertNull(persisted.getUpdatedAt());
     assertNull(persisted.getUpdatedBy());
   }
 
