@@ -3,10 +3,12 @@ package es.pausegarra.russian_cheatsheet.context.words.infrastructure.cron;
 import es.pausegarra.russian_cheatsheet.common.utils.ListUtils;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordsRepository;
+import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.SyncedWords;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.rest_clients.memrise.ListWordsResponse;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.rest_clients.memrise.MemriseRestClient;
 import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +26,15 @@ public class FindWordsInMemrise {
   @RestClient
   private MemriseRestClient memriseRestClient;
 
+  private final EntityManager em;
+
   private final WordsRepository wordsRepository;
 
-  @Scheduled(cron = "0 0 1 * * ?")
+//  @Scheduled(cron = "0 0 1 * * ?")
+  @Scheduled(every = "1h")
   @Transactional
   public void findWords() {
-    Map<String, WordEntity> wordsMap = getWordsMap();
+    Map<String, SyncedWords> wordsMap = getWordsMap();
 
     List<WordEntity> toSave = new ArrayList<>();
     ListWordsResponse response;
@@ -39,7 +44,7 @@ public class FindWordsInMemrise {
       nextPageToken = response.nextPageToken();
 
       for (MemriseWordDto word : response.learnables()) {
-        WordEntity wordEntity = wordsMap.get(word.russian());
+        SyncedWords wordEntity = wordsMap.get(word.russian());
 
         if (wordEntity != null) {
           continue;
@@ -47,17 +52,20 @@ public class FindWordsInMemrise {
 
         WordEntity newWord = WordEntity.builder().russian(word.russian()).spanish(word.spanish()).build();
         toSave.add(newWord);
-        wordsMap.put(newWord.russian(), newWord);
+        wordsMap.put(word.russian(), new SyncedWords(word.russian()));
       }
     } while (response.nextPageToken() != null);
 
     wordsRepository.save(toSave);
+    wordsMap.values().forEach(em::merge);
+
+    log.info("Words synced - Total: {}", toSave.size());
   }
 
-  private Map<String, WordEntity> getWordsMap() {
-    List<WordEntity> words = wordsRepository.getAll();
+  private Map<String, SyncedWords> getWordsMap() {
+    List<SyncedWords>  words = em.createQuery("select w from SyncedWords w", SyncedWords.class).getResultList();
 
-    return ListUtils.indexList(words, WordEntity::russian);
+    return ListUtils.indexList(words, SyncedWords::getExternalId);
   }
 
 }
