@@ -26,6 +26,12 @@ class WordDeclinationModelTest {
     assertEquals(wordDeclinationEntity.dative(), wordDeclinationModel.getDative());
     assertEquals(wordDeclinationEntity.instrumental(), wordDeclinationModel.getInstrumental());
     assertEquals(wordDeclinationEntity.prepositional(), wordDeclinationModel.getPrepositional());
+    assertEquals(wordDeclinationEntity.nominativePlural(), wordDeclinationModel.getNominativePlural());
+    assertEquals(wordDeclinationEntity.accusativePlural(), wordDeclinationModel.getAccusativePlural());
+    assertEquals(wordDeclinationEntity.genitivePlural(), wordDeclinationModel.getGenitivePlural());
+    assertEquals(wordDeclinationEntity.dativePlural(), wordDeclinationModel.getDativePlural());
+    assertEquals(wordDeclinationEntity.instrumentalPlural(), wordDeclinationModel.getInstrumentalPlural());
+    assertEquals(wordDeclinationEntity.prepositionalPlural(), wordDeclinationModel.getPrepositionalPlural());
     assertEquals(wordDeclinationEntity.createdBy(), wordDeclinationModel.getCreatedBy());
     assertEquals(wordDeclinationEntity.createdAt(), wordDeclinationModel.getCreatedAt());
     assertEquals(wordDeclinationEntity.updatedBy(), wordDeclinationModel.getUpdatedBy());

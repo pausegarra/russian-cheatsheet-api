@@ -1,6 +1,7 @@
 package es.pausegarra.russian_cheatsheet.integration.words;
 
 import es.pausegarra.russian_cheatsheet.base.IntegrationTest;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDeclinationDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.update_word.UpdateWordConjugationsDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.update_word.UpdateWordDeclinationDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.update_word.UpdateWordDeclinationMatrixDto;
@@ -180,7 +181,20 @@ public class UpdateWordsIT extends IntegrationTest {
       "newSpanish",
       "newEnglish",
       "NOUN",
-      new UpdateWordDeclinationDto("nominative", "accusative", "genitive", "dative", "instrumental", "prepositional"),
+      new UpdateWordDeclinationDto(
+        "nominative",
+        "accusative",
+        "genitive",
+        "dative",
+        "instrumental",
+        "prepositional",
+        "nominativePlural",
+        "accusativePlural",
+        "genitivePlural",
+        "dativePlural",
+        "instrumentalPlural",
+        "prepositionalPlural"
+      ),
       null,
       null
     );

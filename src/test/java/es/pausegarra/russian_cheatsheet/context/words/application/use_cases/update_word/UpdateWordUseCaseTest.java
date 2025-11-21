@@ -195,7 +195,13 @@ class UpdateWordUseCaseTest {
       updated.declinations().genitive(),
       updated.declinations().dative(),
       updated.declinations().instrumental(),
-      updated.declinations().prepositional()
+      updated.declinations().prepositional(),
+      updated.declinations().nominativePlural(),
+      updated.declinations().accusativePlural(),
+      updated.declinations().genitivePlural(),
+      updated.declinations().dativePlural(),
+      updated.declinations().instrumentalPlural(),
+      updated.declinations().prepositionalPlural()
     ), null, null
     );
     WordDto result = wordsCommandService.handle(dto);
