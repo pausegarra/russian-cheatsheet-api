@@ -124,7 +124,20 @@ class CreateWordUseCaseTest {
       wordEntity.spanish(),
       wordEntity.type(),
       null,
-      new CreateWordDeclinationDto("nominative", "accusative", "genitive", "dative", "instrumental", "prepositional"),
+      new CreateWordDeclinationDto(
+        "nominative",
+        "accusative",
+        "genitive",
+        "dative",
+        "instrumental",
+        "prepositional",
+        "nominativePlural",
+        "accusativePlural",
+        "genitivePlural",
+        "dativePlural",
+        "instrumentalPlural",
+        "prepositionalPlural"
+      ),
       null
     );
     WordDto word = wordsCommandService.handle(dto);

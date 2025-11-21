@@ -130,7 +130,13 @@ public class UpdateWordUseCase implements UseCase<UpdateWordDto, WordDto> {
       dto.genitive(),
       dto.dative(),
       dto.instrumental(),
-      dto.prepositional()
+      dto.prepositional(),
+      dto.nominativePlural(),
+      dto.accusativePlural(),
+      dto.genitivePlural(),
+      dto.dativePlural(),
+      dto.instrumentalPlural(),
+      dto.prepositionalPlural()
     );
   }
 

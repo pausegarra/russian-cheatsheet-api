@@ -15,6 +15,12 @@ public record WordDeclinationEntity(
   String dative,
   String instrumental,
   String prepositional,
+  String nominativePlural,
+  String accusativePlural,
+  String genitivePlural,
+  String dativePlural,
+  String instrumentalPlural,
+  String prepositionalPlural,
   String createdBy,
   Instant createdAt,
   String updatedBy,
@@ -27,7 +33,13 @@ public record WordDeclinationEntity(
     String genitive,
     String dative,
     String instrumental,
-    String prepositional
+    String prepositional,
+    String nominativePlural,
+    String accusativePlural,
+    String genitivePlural,
+    String dativePlural,
+    String instrumentalPlural,
+    String prepositionalPlural
   ) {
     return WordDeclinationEntity.builder()
       .nominative(nominative)
@@ -36,6 +48,12 @@ public record WordDeclinationEntity(
       .dative(dative)
       .instrumental(instrumental)
       .prepositional(prepositional)
+      .nominativePlural(nominativePlural)
+      .accusativePlural(accusativePlural)
+      .genitivePlural(genitivePlural)
+      .dativePlural(dativePlural)
+      .instrumentalPlural(instrumentalPlural)
+      .prepositionalPlural(prepositionalPlural)
       .build();
   }
 

@@ -15,7 +15,13 @@ public class WordDeclinationMother {
       .genitive(MotherCreator.random().animal().name())
       .dative(MotherCreator.random().animal().name())
       .instrumental(MotherCreator.random().animal().name())
-      .prepositional(MotherCreator.random().animal().name());
+      .prepositional(MotherCreator.random().animal().name())
+      .nominativePlural(MotherCreator.random().animal().name())
+      .accusativePlural(MotherCreator.random().animal().name())
+      .genitivePlural(MotherCreator.random().animal().name())
+      .dativePlural(MotherCreator.random().animal().name())
+      .instrumentalPlural(MotherCreator.random().animal().name())
+      .prepositionalPlural(MotherCreator.random().animal().name());
   }
 
 }

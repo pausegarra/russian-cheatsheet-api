@@ -35,6 +35,24 @@ public class WordDeclinationModel extends AuditableModel {
 
   private final String prepositional;
 
+  @Column(name = "nominative_plural")
+  private final String nominativePlural;
+
+  @Column(name = "accusative_plural")
+  private final String accusativePlural;
+
+  @Column(name = "genitive_plural")
+  private final String genitivePlural;
+
+  @Column(name = "dative_plural")
+  private final String dativePlural;
+
+  @Column(name = "instrumental_plural")
+  private final String instrumentalPlural;
+
+  @Column(name = "prepositional_plural")
+  private final String prepositionalPlural;
+
   @OneToOne
   @JoinColumn(name = "word_id")
   private final WordModel word;
@@ -51,6 +69,12 @@ public class WordDeclinationModel extends AuditableModel {
       .dative(wordDeclinationEntity.dative())
       .instrumental(wordDeclinationEntity.instrumental())
       .prepositional(wordDeclinationEntity.prepositional())
+      .nominativePlural(wordDeclinationEntity.nominativePlural())
+      .accusativePlural(wordDeclinationEntity.accusativePlural())
+      .genitivePlural(wordDeclinationEntity.genitivePlural())
+      .dativePlural(wordDeclinationEntity.dativePlural())
+      .instrumentalPlural(wordDeclinationEntity.instrumentalPlural())
+      .prepositionalPlural(wordDeclinationEntity.prepositionalPlural())
       .word(word)
       .createdBy(wordDeclinationEntity.createdBy())
       .createdAt(wordDeclinationEntity.createdAt())
@@ -68,6 +92,12 @@ public class WordDeclinationModel extends AuditableModel {
       .dative(dative)
       .instrumental(instrumental)
       .prepositional(prepositional)
+      .nominativePlural(nominativePlural)
+      .accusativePlural(accusativePlural)
+      .genitivePlural(genitivePlural)
+      .dativePlural(dativePlural)
+      .instrumentalPlural(instrumentalPlural)
+      .prepositionalPlural(prepositionalPlural)
       .word(word)
       .createdBy(createdBy)
       .createdAt(createdAt)
