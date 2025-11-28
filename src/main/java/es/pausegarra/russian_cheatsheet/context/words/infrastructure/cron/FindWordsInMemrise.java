@@ -30,7 +30,7 @@ public class FindWordsInMemrise {
 
   private final WordsRepository wordsRepository;
 
-  @Scheduled(cron = "0 0 1 * * ?")
+  @Scheduled(cron = "0 0 1 ? * MON")
   @Transactional
   public void findWords() {
     Map<String, SyncedWords> wordsMap = getWordsMap();
