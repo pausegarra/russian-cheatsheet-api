@@ -1,9 +1,11 @@
-version: '3.2'
+version: '3.8'
 
 services:
   russian-cheatsheet-api:
     container_name: russian-cheatsheet-api
     image: psegarra/russian-cheatsheet-api:${VERSION}
+    mem_limit: 512M
+    cpus: 0.50
     deploy:
       resources:
         limits:
