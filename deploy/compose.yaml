@@ -4,6 +4,14 @@ services:
   russian-cheatsheet-api:
     container_name: russian-cheatsheet-api
     image: psegarra/russian-cheatsheet-api:${VERSION}
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.50'
+        reservations:
+          memory: 512M
+          cpus: '0.50'
     ports:
       - "8001:8080"
     restart: always
