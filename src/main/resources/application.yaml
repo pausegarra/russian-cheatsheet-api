@@ -1,5 +1,12 @@
 quarkus:
 
+  otel:
+    logs:
+      enabled: true
+    exporter:
+      otlp:
+        endpoint: http://alloy:4317
+
   http:
     root-path: /api
 

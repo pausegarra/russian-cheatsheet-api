@@ -1,81 +1,141 @@
 # Russian Cheatsheet
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Backend service for managing a Russian vocabulary catalogue, exposing CRUD-style word endpoints, publication workflows, and a scheduled Memrise import.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+Built with Quarkus, Java 21, Maven, PostgreSQL, Flyway, and Keycloak-based JWT authentication.
 
-## Running the application in dev mode
+## What It Does
 
-You can run your application in dev mode that enables live coding using:
+- Stores Russian words with translations and grammatical metadata.
+- Supports declinations, conjugations, and declination matrices depending on word type.
+- Exposes public read endpoints for listing and fetching words.
+- Exposes protected write endpoints for creating, updating, publishing, and reviewing unpublished words.
+- Syncs new words from Memrise every Monday at `01:00`.
 
-```shell script
-./mvnw quarkus:dev
+## Stack
+
+- Java 21
+- Quarkus 3
+- Maven Wrapper
+- PostgreSQL 15
+- Flyway
+- Keycloak / JWT
+- OpenAPI / Swagger UI
+
+## Requirements
+
+- JDK 21
+- Docker and Docker Compose
+
+## Configuration
+
+Main configuration lives in [application.yaml](src/main/resources/application.yaml) and the local development overrides are in [application-dev.yaml](src/main/resources/application-dev.yaml).
+
+Important settings:
+
+- API root path: `/api`
+- Default HTTP port: `8080`
+- PostgreSQL URL: `jdbc:postgresql://localhost:5432/russian-cheatsheet`
+- Swagger UI: `http://localhost:8080/api/q/swagger-ui`
+- OpenAPI document: `http://localhost:8080/api/q/openapi`
+
+Environment variables used in development:
+
+- `MEMRISE_TOKEN`: bearer token used by the scheduled Memrise sync
+
+## Local Setup
+
+1. Start PostgreSQL:
+
+```sh
+docker compose up -d
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+2. Export the Memrise token if you want the sync job to work in dev mode:
 
-## Packaging and running the application
-
-The application can be packaged using:
-
-```shell script
-./mvnw package
+```sh
+export MEMRISE_TOKEN=your-token
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+3. Run the app:
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
+```sh
+./mvnw clean quarkus:dev --debug -DskipTests
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+The API will be available at `http://localhost:8080/api`.
 
-## Creating a native executable
+## Common Commands
 
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
+```sh
+make help          # list available tasks
+make dev           # run in Quarkus dev mode
+make run           # package and run
+make test          # run tests with the test profile
+make build         # create a JVM build
+make build-native  # create a native build
+make start-db      # start PostgreSQL
+make stop-db       # stop PostgreSQL
+make remove-db     # stop PostgreSQL and delete its volume
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+## API Overview
 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
+Public endpoints:
+
+- `GET /api/words`
+- `GET /api/words/{id}`
+
+Protected endpoints:
+
+- `POST /api/words`
+- `PUT /api/words/{wordId}`
+- `PATCH /api/words/{wordId}/publish`
+- `GET /api/words/unpublished`
+- `GET /api/auth/profile/permissions`
+
+Role requirements on protected word endpoints:
+
+- `words#create`
+- `words#update`
+- `words#publish`
+
+Use Swagger UI during local development for the current request and response schemas.
+
+## Database
+
+Flyway migrations run automatically on startup. Migration files live in [src/main/resources/db/migration](src/main/resources/db/migration).
+
+To generate a new migration file:
+
+```sh
+make new-migration
 ```
 
-You can then execute your native executable with: `./target/russkiy-po-moyemu-1.0-SNAPSHOT-runner`
+## Testing
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
+Run the test suite with:
 
-## Related Guides
+```sh
+./mvnw clean test -Dquarkus.profile=test
+```
 
-- REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and
-  Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on
-  it.
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus
-  REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplify your persistence code
-  for Hibernate ORM via the active record or the repository pattern
-- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
+The project includes unit, integration, and architectural tests.
 
-## Provided Code
+## Packaging
 
-### Hibernate ORM
+JVM build:
 
-Create your first JPA entity
+```sh
+./mvnw clean package -DskipTests
+```
 
-[Related guide section...](https://quarkus.io/guides/hibernate-orm)
+Native build:
 
-[Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
+```sh
+./mvnw clean package -Pnative -DskipTests
+```
 
-### REST
+## License
 
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
