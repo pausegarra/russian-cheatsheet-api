@@ -7,6 +7,8 @@ image:
 envFrom:
   - configMapRef:
       name: russian-cheatsheet-api-cm
+  - secretRef:
+      name: russian-cheatsheet-api-secret
 
 resources:
   limits:
