@@ -2,12 +2,7 @@ appName: "russian-cheatsheet-api"
 listeningPort: 8080
 
 image:
-  repository: "ghcr.io/pausegarra/russian-cheatsheet-api"
-
-imagePullSecrets:
-  enabled: true
-  secrets:
-    - ghcr-secret
+  repository: "psegarra/russian-cheatsheet-api"
 
 envFrom: []
 
