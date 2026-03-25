@@ -1,0 +1,46 @@
+appName: "russian-cheatsheet-api"
+listeningPort: 8080
+
+image:
+  repository: "ghcr.io/pausegarra/russian-cheatsheet-api"
+
+imagePullSecrets:
+  enabled: true
+  secrets:
+    - ghcr-secret
+
+envFrom: []
+
+resources:
+  limits:
+    cpu: 150m
+    memory: 120Mi
+  requests:
+    cpu: 150m
+    memory: 120Mi
+
+livenessProbe:
+  path: /api/q/health
+
+rollingUpdate:
+  enabled: true
+
+configMap:
+  enabled: true
+  values:
+    QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://postgres-svc.main.svc.cluster.local:5432/russian-cheatsheet
+
+ingress:
+  enabled: true
+  className: "traefik"
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  hosts:
+    - host: "russian-cheatsheet.pausegarra.com"
+      paths:
+        - path: /api
+          pathType: Prefix
+  tls:
+    - hosts:
+        - russian-cheatsheet.pausegarra.com
+      secretName: russian-cheatsheet-pausegarra-tls
