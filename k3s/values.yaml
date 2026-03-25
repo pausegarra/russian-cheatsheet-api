@@ -4,7 +4,9 @@ listeningPort: 8080
 image:
   repository: "psegarra/russian-cheatsheet-api"
 
-envFrom: []
+envFrom:
+  configMapRef:
+    - russian-cheatsheet-api-cm
 
 resources:
   limits:
