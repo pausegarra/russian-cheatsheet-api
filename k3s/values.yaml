@@ -5,8 +5,8 @@ image:
   repository: "psegarra/russian-cheatsheet-api"
 
 envFrom:
-  configMapRef:
-    - russian-cheatsheet-api-cm
+  - configMapRef:
+      name: russian-cheatsheet-api-cm
 
 resources:
   limits:
