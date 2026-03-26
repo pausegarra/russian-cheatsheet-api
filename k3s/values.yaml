@@ -29,7 +29,7 @@ rollingUpdate:
 configMap:
   enabled: true
   values:
-    QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://postgres-svc.main.svc.cluster.local:5432/russian_cheatsheet
+    QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://postgres-svc.common.svc.cluster.local:5432/russian_cheatsheet
 
 ingress:
   enabled: true
