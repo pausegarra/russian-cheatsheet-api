@@ -38,7 +38,7 @@ quarkus:
 
 app:
   idp:
-    url: https://auth.pausegarra.es/realms/principal
+    url: https://auth.pausegarra.com/realms/principal
     client-id: russian-cheatsheet-private
 
   memrise:
