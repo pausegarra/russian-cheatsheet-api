@@ -26,31 +26,31 @@ public record WordDto(
 ) {
 
   public static WordDto fromEntity(WordEntity entity) {
-    WordDto.WordDtoBuilder builder = WordDto.builder()
+    WordConjugationDto conjugationsDto = Optional.ofNullable(entity.conjugations())
+      .map(WordConjugationDto::fromEntity)
+      .orElse(null);
+    WordDeclinationDto declinationsDto = Optional.ofNullable(entity.declinations())
+      .map(WordDeclinationDto::fromEntity)
+      .orElse(null);
+    WordDeclinationMatrixDto declinationMatrixDto = Optional.ofNullable(entity.declinationMatrix())
+      .map(WordDeclinationMatrixDto::fromEntity)
+      .orElse(null);
+
+    return WordDto.builder()
       .id(entity.id())
       .russian(entity.russian())
       .english(entity.english())
       .spanish(entity.spanish())
       .publishedAt(entity.publishedAt())
       .type(entity.type())
+      .conjugations(conjugationsDto)
+      .declinations(declinationsDto)
+      .declinationMatrix(declinationMatrixDto)
       .createdBy(entity.createdBy())
       .createdAt(entity.createdAt())
       .updatedBy(entity.updatedBy())
-      .updatedAt(entity.updatedAt());
-
-    WordConjugationDto conjugationsDto = Optional.ofNullable(entity.conjugations())
-      .map((conjugations) -> WordConjugationDto.fromEntity(conjugations, builder.build()))
-      .orElse(null);
-    WordDeclinationDto declinationsDto = Optional.ofNullable(entity.declinations())
-      .map((declinations) -> WordDeclinationDto.fromEntity(declinations, builder.build()))
-      .orElse(null);
-    WordDeclinationMatrixDto declinationMatrixDto = Optional.ofNullable(entity.declinationMatrix())
-      .map((declinationMatrix) -> WordDeclinationMatrixDto.fromEntity(declinationMatrix, builder.build()))
-      .orElse(null);
-
-    builder.conjugations(conjugationsDto).declinations(declinationsDto).declinationMatrix(declinationMatrixDto);
-
-    return builder.build();
+      .updatedAt(entity.updatedAt())
+      .build();
   }
 
 }

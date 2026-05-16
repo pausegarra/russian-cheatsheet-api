@@ -1,11 +1,8 @@
 package es.pausegarra.russian_cheatsheet.context.words.application.dto.responses;
 
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDeclinationMatrixDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationMatrixEntity;
-import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.mother.WordDeclinationMatrixMother;
-import es.pausegarra.russian_cheatsheet.mother.WordMother;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,45 +12,35 @@ class WordDeclinationMatrixDtoTest {
 
   @Test
   public void shouldMapFromEntity() {
-    WordDeclinationMatrixEntity wordDeclinationMatrixDto = WordDeclinationMatrixMother.random()
-      .word(WordMother.random().type(WordType.OTHER).build())
-      .build();
+    WordDeclinationMatrixEntity entity = WordDeclinationMatrixMother.random().build();
 
-    WordDeclinationMatrixDto wordDeclinationMatrixDtoDto = WordDeclinationMatrixDto.fromEntity(
-      wordDeclinationMatrixDto,
-      WordDto.fromEntity(wordDeclinationMatrixDto.word())
-    );
+    WordDeclinationMatrixDto dto = WordDeclinationMatrixDto.fromEntity(entity);
 
-    assertNotNull(wordDeclinationMatrixDtoDto);
-    assertEquals(wordDeclinationMatrixDto.id(), wordDeclinationMatrixDtoDto.id());
-    assertEquals(wordDeclinationMatrixDto.nominativeMasculine(), wordDeclinationMatrixDtoDto.nominativeMasculine());
-    assertEquals(wordDeclinationMatrixDto.nominativeFeminine(), wordDeclinationMatrixDtoDto.nominativeFeminine());
-    assertEquals(wordDeclinationMatrixDto.nominativeNeuter(), wordDeclinationMatrixDtoDto.nominativeNeuter());
-    assertEquals(wordDeclinationMatrixDto.nominativePlural(), wordDeclinationMatrixDtoDto.nominativePlural());
-    assertEquals(wordDeclinationMatrixDto.accusativeMasculine(), wordDeclinationMatrixDtoDto.accusativeMasculine());
-    assertEquals(wordDeclinationMatrixDto.accusativeFeminine(), wordDeclinationMatrixDtoDto.accusativeFeminine());
-    assertEquals(wordDeclinationMatrixDto.accusativeNeuter(), wordDeclinationMatrixDtoDto.accusativeNeuter());
-    assertEquals(wordDeclinationMatrixDto.accusativePlural(), wordDeclinationMatrixDtoDto.accusativePlural());
-    assertEquals(wordDeclinationMatrixDto.genitiveMasculine(), wordDeclinationMatrixDtoDto.genitiveMasculine());
-    assertEquals(wordDeclinationMatrixDto.genitiveFeminine(), wordDeclinationMatrixDtoDto.genitiveFeminine());
-    assertEquals(wordDeclinationMatrixDto.genitiveNeuter(), wordDeclinationMatrixDtoDto.genitiveNeuter());
-    assertEquals(wordDeclinationMatrixDto.genitivePlural(), wordDeclinationMatrixDtoDto.genitivePlural());
-    assertEquals(wordDeclinationMatrixDto.dativeMasculine(), wordDeclinationMatrixDtoDto.dativeMasculine());
-    assertEquals(wordDeclinationMatrixDto.dativeFeminine(), wordDeclinationMatrixDtoDto.dativeFeminine());
-    assertEquals(wordDeclinationMatrixDto.dativeNeuter(), wordDeclinationMatrixDtoDto.dativeNeuter());
-    assertEquals(wordDeclinationMatrixDto.dativePlural(), wordDeclinationMatrixDtoDto.dativePlural());
-    assertEquals(wordDeclinationMatrixDto.instrumentalMasculine(), wordDeclinationMatrixDtoDto.instrumentalMasculine());
-    assertEquals(wordDeclinationMatrixDto.instrumentalFeminine(), wordDeclinationMatrixDtoDto.instrumentalFeminine());
-    assertEquals(wordDeclinationMatrixDto.instrumentalNeuter(), wordDeclinationMatrixDtoDto.instrumentalNeuter());
-    assertEquals(wordDeclinationMatrixDto.instrumentalPlural(), wordDeclinationMatrixDtoDto.instrumentalPlural());
-    assertEquals(wordDeclinationMatrixDto.prepositionalMasculine(), wordDeclinationMatrixDtoDto.prepositionalMasculine());
-    assertEquals(wordDeclinationMatrixDto.prepositionalFeminine(), wordDeclinationMatrixDtoDto.prepositionalFeminine());
-    assertEquals(wordDeclinationMatrixDto.prepositionalNeuter(), wordDeclinationMatrixDtoDto.prepositionalNeuter());
-    assertEquals(wordDeclinationMatrixDto.prepositionalPlural(), wordDeclinationMatrixDtoDto.prepositionalPlural());
-    assertEquals(wordDeclinationMatrixDto.createdBy(), wordDeclinationMatrixDtoDto.createdBy());
-    assertEquals(wordDeclinationMatrixDto.createdAt(), wordDeclinationMatrixDtoDto.createdAt());
-    assertEquals(wordDeclinationMatrixDto.updatedBy(), wordDeclinationMatrixDtoDto.updatedBy());
-    assertEquals(wordDeclinationMatrixDto.updatedAt(), wordDeclinationMatrixDtoDto.updatedAt());
+    assertNotNull(dto);
+    assertEquals(entity.nominativeMasculine(), dto.nominativeMasculine());
+    assertEquals(entity.nominativeFeminine(), dto.nominativeFeminine());
+    assertEquals(entity.nominativeNeuter(), dto.nominativeNeuter());
+    assertEquals(entity.nominativePlural(), dto.nominativePlural());
+    assertEquals(entity.accusativeMasculine(), dto.accusativeMasculine());
+    assertEquals(entity.accusativeFeminine(), dto.accusativeFeminine());
+    assertEquals(entity.accusativeNeuter(), dto.accusativeNeuter());
+    assertEquals(entity.accusativePlural(), dto.accusativePlural());
+    assertEquals(entity.genitiveMasculine(), dto.genitiveMasculine());
+    assertEquals(entity.genitiveFeminine(), dto.genitiveFeminine());
+    assertEquals(entity.genitiveNeuter(), dto.genitiveNeuter());
+    assertEquals(entity.genitivePlural(), dto.genitivePlural());
+    assertEquals(entity.dativeMasculine(), dto.dativeMasculine());
+    assertEquals(entity.dativeFeminine(), dto.dativeFeminine());
+    assertEquals(entity.dativeNeuter(), dto.dativeNeuter());
+    assertEquals(entity.dativePlural(), dto.dativePlural());
+    assertEquals(entity.instrumentalMasculine(), dto.instrumentalMasculine());
+    assertEquals(entity.instrumentalFeminine(), dto.instrumentalFeminine());
+    assertEquals(entity.instrumentalNeuter(), dto.instrumentalNeuter());
+    assertEquals(entity.instrumentalPlural(), dto.instrumentalPlural());
+    assertEquals(entity.prepositionalMasculine(), dto.prepositionalMasculine());
+    assertEquals(entity.prepositionalFeminine(), dto.prepositionalFeminine());
+    assertEquals(entity.prepositionalNeuter(), dto.prepositionalNeuter());
+    assertEquals(entity.prepositionalPlural(), dto.prepositionalPlural());
   }
 
 }

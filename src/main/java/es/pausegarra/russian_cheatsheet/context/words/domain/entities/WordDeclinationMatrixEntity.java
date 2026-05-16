@@ -2,13 +2,8 @@ package es.pausegarra.russian_cheatsheet.context.words.domain.entities;
 
 import lombok.Builder;
 
-import java.time.Instant;
-import java.util.UUID;
-
 @Builder
 public record WordDeclinationMatrixEntity(
-  UUID id,
-  WordEntity word,
   String nominativeMasculine,
   String nominativeFeminine,
   String nominativeNeuter,
@@ -32,11 +27,7 @@ public record WordDeclinationMatrixEntity(
   String prepositionalMasculine,
   String prepositionalFeminine,
   String prepositionalNeuter,
-  String prepositionalPlural,
-  String createdBy,
-  Instant createdAt,
-  String updatedBy,
-  Instant updatedAt
+  String prepositionalPlural
 ) {
 
   public static WordDeclinationMatrixEntity create(

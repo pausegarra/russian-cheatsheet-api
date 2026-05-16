@@ -2,13 +2,8 @@ package es.pausegarra.russian_cheatsheet.context.words.domain.entities;
 
 import lombok.Builder;
 
-import java.time.Instant;
-import java.util.UUID;
-
 @Builder
 public record WordConjugationEntity(
-  UUID id,
-  WordEntity word,
   String imperfectivePresentFirstPersonSingular,
   String imperfectivePresentSecondPersonSingular,
   String imperfectivePresentThirdPersonSingular,
@@ -34,11 +29,7 @@ public record WordConjugationEntity(
   String perfectiveFutureThirdPersonSingular,
   String perfectiveFutureFirstPersonPlural,
   String perfectiveFutureSecondPersonPlural,
-  String perfectiveFutureThirdPersonPlural,
-  String createdBy,
-  Instant createdAt,
-  String updatedBy,
-  Instant updatedAt
+  String perfectiveFutureThirdPersonPlural
 ) {
 
   public static WordConjugationEntity create(

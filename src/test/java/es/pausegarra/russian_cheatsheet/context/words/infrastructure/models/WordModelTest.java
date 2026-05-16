@@ -26,9 +26,9 @@ class WordModelTest {
     assertEquals(wordEntity.english(), wordModel.getEnglish());
     assertEquals(wordEntity.spanish(), wordModel.getSpanish());
     assertEquals(wordEntity.type(), wordModel.getType());
-    assertEquals(wordEntity.conjugations().id(), wordModel.getConjugations().getId());
-    assertEquals(wordEntity.declinations().id(), wordModel.getDeclinations().getId());
-    assertEquals(wordEntity.declinationMatrix().id(), wordModel.getDeclinationMatrix().getId());
+    assertNotNull(wordModel.getConjugations());
+    assertNotNull(wordModel.getDeclinations());
+    assertNotNull(wordModel.getDeclinationMatrix());
     assertEquals(wordEntity.createdBy(), wordModel.getCreatedBy());
     assertEquals(wordEntity.createdAt(), wordModel.getCreatedAt());
     assertEquals(wordEntity.updatedBy(), wordModel.getUpdatedBy());
@@ -52,9 +52,9 @@ class WordModelTest {
     assertEquals(wordEntity.english(), wordEntityFromModel.english());
     assertEquals(wordEntity.spanish(), wordEntityFromModel.spanish());
     assertEquals(wordEntity.type(), wordEntityFromModel.type());
-    assertEquals(wordEntity.conjugations().id(), wordEntityFromModel.conjugations().id());
-    assertEquals(wordEntity.declinations().id(), wordEntityFromModel.declinations().id());
-    assertEquals(wordEntity.declinationMatrix().id(), wordEntityFromModel.declinationMatrix().id());
+    assertNotNull(wordEntityFromModel.conjugations());
+    assertNotNull(wordEntityFromModel.declinations());
+    assertNotNull(wordEntityFromModel.declinationMatrix());
     assertEquals(wordEntity.createdBy(), wordEntityFromModel.createdBy());
     assertEquals(wordEntity.createdAt(), wordEntityFromModel.createdAt());
     assertEquals(wordEntity.updatedBy(), wordEntityFromModel.updatedBy());
@@ -81,6 +81,45 @@ class WordModelTest {
     assertEquals(wordEntity.createdAt(), wordEntityFromModel.createdAt());
     assertEquals(wordEntity.updatedBy(), wordEntityFromModel.updatedBy());
     assertEquals(wordEntity.updatedAt(), wordEntityFromModel.updatedAt());
+  }
+
+  @Test
+  public void shouldPreserveConjugationFieldsWhenMapping() {
+    WordEntity wordEntity = WordMother.random()
+      .conjugations(WordConjugationMother.random().build())
+      .build();
+    WordModel wordModel = WordModel.fromEntity(wordEntity);
+
+    WordEntity wordEntityFromModel = wordModel.toEntity();
+
+    assertEquals(wordEntity.conjugations().imperfectivePresentFirstPersonSingular(), wordEntityFromModel.conjugations().imperfectivePresentFirstPersonSingular());
+    assertEquals(wordEntity.conjugations().perfectiveFutureThirdPersonPlural(), wordEntityFromModel.conjugations().perfectiveFutureThirdPersonPlural());
+  }
+
+  @Test
+  public void shouldPreserveDeclinationFieldsWhenMapping() {
+    WordEntity wordEntity = WordMother.random()
+      .declinations(WordDeclinationMother.random().build())
+      .build();
+    WordModel wordModel = WordModel.fromEntity(wordEntity);
+
+    WordEntity wordEntityFromModel = wordModel.toEntity();
+
+    assertEquals(wordEntity.declinations().nominative(), wordEntityFromModel.declinations().nominative());
+    assertEquals(wordEntity.declinations().prepositionalPlural(), wordEntityFromModel.declinations().prepositionalPlural());
+  }
+
+  @Test
+  public void shouldPreserveDeclinationMatrixFieldsWhenMapping() {
+    WordEntity wordEntity = WordMother.random()
+      .declinationMatrix(WordDeclinationMatrixMother.random().build())
+      .build();
+    WordModel wordModel = WordModel.fromEntity(wordEntity);
+
+    WordEntity wordEntityFromModel = wordModel.toEntity();
+
+    assertEquals(wordEntity.declinationMatrix().nominativeMasculine(), wordEntityFromModel.declinationMatrix().nominativeMasculine());
+    assertEquals(wordEntity.declinationMatrix().prepositionalPlural(), wordEntityFromModel.declinationMatrix().prepositionalPlural());
   }
 
 }

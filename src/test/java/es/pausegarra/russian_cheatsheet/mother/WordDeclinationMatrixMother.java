@@ -2,14 +2,10 @@ package es.pausegarra.russian_cheatsheet.mother;
 
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationMatrixEntity;
 
-import java.util.UUID;
-
 public class WordDeclinationMatrixMother {
 
   public static WordDeclinationMatrixEntity.WordDeclinationMatrixEntityBuilder random() {
     return WordDeclinationMatrixEntity.builder()
-      .id(UUID.randomUUID())
-      .word(WordMother.random().build())
       .nominativeMasculine(MotherCreator.random().animal().name())
       .nominativeFeminine(MotherCreator.random().animal().name())
       .nominativeNeuter(MotherCreator.random().animal().name())

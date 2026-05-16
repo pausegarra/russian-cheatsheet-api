@@ -2,12 +2,7 @@ package es.pausegarra.russian_cheatsheet.context.words.application.dto;
 
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordConjugationEntity;
 
-import java.time.Instant;
-import java.util.UUID;
-
 public record WordConjugationDto(
-  UUID id,
-  WordDto word,
   String imperfectivePresentFirstPersonSingular,
   String imperfectivePresentSecondPersonSingular,
   String imperfectivePresentThirdPersonSingular,
@@ -33,17 +28,11 @@ public record WordConjugationDto(
   String perfectiveFutureThirdPersonSingular,
   String perfectiveFutureFirstPersonPlural,
   String perfectiveFutureSecondPersonPlural,
-  String perfectiveFutureThirdPersonPlural,
-  String createdBy,
-  Instant createdAt,
-  String updatedBy,
-  Instant updatedAt
+  String perfectiveFutureThirdPersonPlural
 ) {
 
-  public static WordConjugationDto fromEntity(WordConjugationEntity entity, WordDto word) {
+  public static WordConjugationDto fromEntity(WordConjugationEntity entity) {
     return new WordConjugationDto(
-      entity.id(),
-      word,
       entity.imperfectivePresentFirstPersonSingular(),
       entity.imperfectivePresentSecondPersonSingular(),
       entity.imperfectivePresentThirdPersonSingular(),
@@ -69,11 +58,7 @@ public record WordConjugationDto(
       entity.perfectiveFutureThirdPersonSingular(),
       entity.perfectiveFutureFirstPersonPlural(),
       entity.perfectiveFutureSecondPersonPlural(),
-      entity.perfectiveFutureThirdPersonPlural(),
-      entity.createdBy(),
-      entity.createdAt(),
-      entity.updatedBy(),
-      entity.updatedAt()
+      entity.perfectiveFutureThirdPersonPlural()
     );
   }
 

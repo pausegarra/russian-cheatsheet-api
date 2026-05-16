@@ -2,15 +2,10 @@ package es.pausegarra.russian_cheatsheet.mother;
 
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordConjugationEntity;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
 public class WordConjugationMother {
 
   public static WordConjugationEntity.WordConjugationEntityBuilder random() {
     return WordConjugationEntity.builder()
-      .id(UUID.randomUUID())
-      .word(WordMother.random().build())
       .imperfectivePresentFirstPersonSingular(MotherCreator.random().animal().name())
       .imperfectivePresentSecondPersonSingular(MotherCreator.random().animal().name())
       .imperfectivePresentThirdPersonSingular(MotherCreator.random().animal().name())
@@ -36,11 +31,7 @@ public class WordConjugationMother {
       .perfectiveFutureThirdPersonSingular(MotherCreator.random().animal().name())
       .perfectiveFutureFirstPersonPlural(MotherCreator.random().animal().name())
       .perfectiveFutureSecondPersonPlural(MotherCreator.random().animal().name())
-      .perfectiveFutureThirdPersonPlural(MotherCreator.random().animal().name())
-      .createdBy(MotherCreator.random().name().username())
-      .createdAt(MotherCreator.random().date().past(10, TimeUnit.DAYS).toInstant())
-      .updatedBy(MotherCreator.random().name().username())
-      .updatedAt(MotherCreator.random().date().past(10, TimeUnit.DAYS).toInstant());
+      .perfectiveFutureThirdPersonPlural(MotherCreator.random().animal().name());
   }
 
 }

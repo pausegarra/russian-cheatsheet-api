@@ -1,7 +1,6 @@
 package es.pausegarra.russian_cheatsheet.context.words.application.dto.responses;
 
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordConjugationDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordConjugationEntity;
 import es.pausegarra.russian_cheatsheet.mother.WordConjugationMother;
 import org.junit.jupiter.api.Test;
@@ -14,10 +13,9 @@ class WordConjugationDtoTest {
   @Test
   public void shouldMapFromEntity() {
     WordConjugationEntity entity = WordConjugationMother.random().build();
-    WordConjugationDto wordConjugationDto = WordConjugationDto.fromEntity(entity, WordDto.fromEntity(entity.word()));
+    WordConjugationDto wordConjugationDto = WordConjugationDto.fromEntity(entity);
 
     assertNotNull(wordConjugationDto);
-    assertEquals(entity.id(), wordConjugationDto.id());
     assertEquals(entity.imperfectivePresentFirstPersonSingular(), wordConjugationDto.imperfectivePresentFirstPersonSingular());
     assertEquals(entity.imperfectivePresentSecondPersonSingular(), wordConjugationDto.imperfectivePresentSecondPersonSingular());
     assertEquals(entity.imperfectivePresentThirdPersonSingular(), wordConjugationDto.imperfectivePresentThirdPersonSingular());
@@ -44,10 +42,6 @@ class WordConjugationDtoTest {
     assertEquals(entity.perfectiveFutureFirstPersonPlural(), wordConjugationDto.perfectiveFutureFirstPersonPlural());
     assertEquals(entity.perfectiveFutureSecondPersonPlural(), wordConjugationDto.perfectiveFutureSecondPersonPlural());
     assertEquals(entity.perfectiveFutureThirdPersonPlural(), wordConjugationDto.perfectiveFutureThirdPersonPlural());
-    assertEquals(entity.createdBy(), wordConjugationDto.createdBy());
-    assertEquals(entity.createdAt(), wordConjugationDto.createdAt());
-    assertEquals(entity.updatedBy(), wordConjugationDto.updatedBy());
-    assertEquals(entity.updatedAt(), wordConjugationDto.updatedAt());
   }
 
 }

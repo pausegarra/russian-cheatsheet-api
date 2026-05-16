@@ -2,12 +2,7 @@ package es.pausegarra.russian_cheatsheet.context.words.application.dto;
 
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationEntity;
 
-import java.time.Instant;
-import java.util.UUID;
-
 public record WordDeclinationDto(
-  UUID id,
-  WordDto word,
   String nominative,
   String accusative,
   String genitive,
@@ -19,17 +14,11 @@ public record WordDeclinationDto(
   String genitivePlural,
   String dativePlural,
   String instrumentalPlural,
-  String prepositionalPlural,
-  String createdBy,
-  Instant createdAt,
-  String updatedBy,
-  Instant updatedAt
+  String prepositionalPlural
 ) {
 
-  public static WordDeclinationDto fromEntity(WordDeclinationEntity entity, WordDto word) {
+  public static WordDeclinationDto fromEntity(WordDeclinationEntity entity) {
     return new WordDeclinationDto(
-      entity.id(),
-      word,
       entity.nominative(),
       entity.accusative(),
       entity.genitive(),
@@ -41,11 +30,7 @@ public record WordDeclinationDto(
       entity.genitivePlural(),
       entity.dativePlural(),
       entity.instrumentalPlural(),
-      entity.prepositionalPlural(),
-      entity.createdBy(),
-      entity.createdAt(),
-      entity.updatedBy(),
-      entity.updatedAt()
+      entity.prepositionalPlural()
     );
   }
 

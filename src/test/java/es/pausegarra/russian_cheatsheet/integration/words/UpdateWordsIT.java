@@ -94,80 +94,32 @@ public class UpdateWordsIT extends IntegrationTest {
     assertEquals(dto.type(), updated.getType().toString());
 
     assertNotNull(updated.getConjugations());
-    assertEquals(
-      dto.conjugations().imperfectivePresentFirstPersonSingular(),
-      updated.getConjugations().getImperfectivePresentFirstPersonSingular()
-    );
-    assertEquals(
-      dto.conjugations().imperfectivePresentSecondPersonSingular(),
-      updated.getConjugations().getImperfectivePresentSecondPersonSingular()
-    );
-    assertEquals(
-      dto.conjugations().imperfectivePresentThirdPersonSingular(),
-      updated.getConjugations().getImperfectivePresentThirdPersonSingular()
-    );
-    assertEquals(
-      dto.conjugations().imperfectivePresentFirstPersonPlural(),
-      updated.getConjugations().getImperfectivePresentFirstPersonPlural()
-    );
-    assertEquals(
-      dto.conjugations().imperfectivePresentSecondPersonPlural(),
-      updated.getConjugations().getImperfectivePresentSecondPersonPlural()
-    );
-    assertEquals(
-      dto.conjugations().imperfectivePresentThirdPersonPlural(),
-      updated.getConjugations().getImperfectivePresentThirdPersonPlural()
-    );
-    assertEquals(dto.conjugations().imperfectivePastMasculine(), updated.getConjugations().getImperfectivePastMasculine());
-    assertEquals(dto.conjugations().imperfectivePastFeminine(), updated.getConjugations().getImperfectivePastFeminine());
-    assertEquals(dto.conjugations().imperfectivePastNeuter(), updated.getConjugations().getImperfectivePastNeuter());
-    assertEquals(dto.conjugations().imperfectivePastPlural(), updated.getConjugations().getImperfectivePastPlural());
-    assertEquals(
-      dto.conjugations().imperfectiveFutureFirstPersonSingular(),
-      updated.getConjugations().getImperfectiveFutureFirstPersonSingular()
-    );
-    assertEquals(
-      dto.conjugations().imperfectiveFutureSecondPersonSingular(),
-      updated.getConjugations().getImperfectiveFutureSecondPersonSingular()
-    );
-    assertEquals(
-      dto.conjugations().imperfectiveFutureThirdPersonSingular(),
-      updated.getConjugations().getImperfectiveFutureThirdPersonSingular()
-    );
-    assertEquals(
-      dto.conjugations().imperfectiveFutureFirstPersonPlural(),
-      updated.getConjugations().getImperfectiveFutureFirstPersonPlural()
-    );
-    assertEquals(
-      dto.conjugations().imperfectiveFutureSecondPersonPlural(),
-      updated.getConjugations().getImperfectiveFutureSecondPersonPlural()
-    );
-    assertEquals(
-      dto.conjugations().imperfectiveFutureThirdPersonPlural(),
-      updated.getConjugations().getImperfectiveFutureThirdPersonPlural()
-    );
-    assertEquals(dto.conjugations().perfectivePastMasculine(), updated.getConjugations().getPerfectivePastMasculine());
-    assertEquals(dto.conjugations().perfectivePastFeminine(), updated.getConjugations().getPerfectivePastFeminine());
-    assertEquals(dto.conjugations().perfectivePastNeuter(), updated.getConjugations().getPerfectivePastNeuter());
-    assertEquals(dto.conjugations().perfectivePastPlural(), updated.getConjugations().getPerfectivePastPlural());
-    assertEquals(
-      dto.conjugations().perfectiveFutureFirstPersonSingular(),
-      updated.getConjugations().getPerfectiveFutureFirstPersonSingular()
-    );
-    assertEquals(
-      dto.conjugations().perfectiveFutureSecondPersonSingular(),
-      updated.getConjugations().getPerfectiveFutureSecondPersonSingular()
-    );
-    assertEquals(
-      dto.conjugations().perfectiveFutureThirdPersonSingular(),
-      updated.getConjugations().getPerfectiveFutureThirdPersonSingular()
-    );
-    assertEquals(dto.conjugations().perfectiveFutureFirstPersonPlural(), updated.getConjugations().getPerfectiveFutureFirstPersonPlural());
-    assertEquals(
-      dto.conjugations().perfectiveFutureSecondPersonPlural(),
-      updated.getConjugations().getPerfectiveFutureSecondPersonPlural()
-    );
-    assertEquals(dto.conjugations().perfectiveFutureThirdPersonPlural(), updated.getConjugations().getPerfectiveFutureThirdPersonPlural());
+    assertEquals(dto.conjugations().imperfectivePresentFirstPersonSingular(), updated.getConjugations().imperfectivePresentFirstPersonSingular());
+    assertEquals(dto.conjugations().imperfectivePresentSecondPersonSingular(), updated.getConjugations().imperfectivePresentSecondPersonSingular());
+    assertEquals(dto.conjugations().imperfectivePresentThirdPersonSingular(), updated.getConjugations().imperfectivePresentThirdPersonSingular());
+    assertEquals(dto.conjugations().imperfectivePresentFirstPersonPlural(), updated.getConjugations().imperfectivePresentFirstPersonPlural());
+    assertEquals(dto.conjugations().imperfectivePresentSecondPersonPlural(), updated.getConjugations().imperfectivePresentSecondPersonPlural());
+    assertEquals(dto.conjugations().imperfectivePresentThirdPersonPlural(), updated.getConjugations().imperfectivePresentThirdPersonPlural());
+    assertEquals(dto.conjugations().imperfectivePastMasculine(), updated.getConjugations().imperfectivePastMasculine());
+    assertEquals(dto.conjugations().imperfectivePastFeminine(), updated.getConjugations().imperfectivePastFeminine());
+    assertEquals(dto.conjugations().imperfectivePastNeuter(), updated.getConjugations().imperfectivePastNeuter());
+    assertEquals(dto.conjugations().imperfectivePastPlural(), updated.getConjugations().imperfectivePastPlural());
+    assertEquals(dto.conjugations().imperfectiveFutureFirstPersonSingular(), updated.getConjugations().imperfectiveFutureFirstPersonSingular());
+    assertEquals(dto.conjugations().imperfectiveFutureSecondPersonSingular(), updated.getConjugations().imperfectiveFutureSecondPersonSingular());
+    assertEquals(dto.conjugations().imperfectiveFutureThirdPersonSingular(), updated.getConjugations().imperfectiveFutureThirdPersonSingular());
+    assertEquals(dto.conjugations().imperfectiveFutureFirstPersonPlural(), updated.getConjugations().imperfectiveFutureFirstPersonPlural());
+    assertEquals(dto.conjugations().imperfectiveFutureSecondPersonPlural(), updated.getConjugations().imperfectiveFutureSecondPersonPlural());
+    assertEquals(dto.conjugations().imperfectiveFutureThirdPersonPlural(), updated.getConjugations().imperfectiveFutureThirdPersonPlural());
+    assertEquals(dto.conjugations().perfectivePastMasculine(), updated.getConjugations().perfectivePastMasculine());
+    assertEquals(dto.conjugations().perfectivePastFeminine(), updated.getConjugations().perfectivePastFeminine());
+    assertEquals(dto.conjugations().perfectivePastNeuter(), updated.getConjugations().perfectivePastNeuter());
+    assertEquals(dto.conjugations().perfectivePastPlural(), updated.getConjugations().perfectivePastPlural());
+    assertEquals(dto.conjugations().perfectiveFutureFirstPersonSingular(), updated.getConjugations().perfectiveFutureFirstPersonSingular());
+    assertEquals(dto.conjugations().perfectiveFutureSecondPersonSingular(), updated.getConjugations().perfectiveFutureSecondPersonSingular());
+    assertEquals(dto.conjugations().perfectiveFutureThirdPersonSingular(), updated.getConjugations().perfectiveFutureThirdPersonSingular());
+    assertEquals(dto.conjugations().perfectiveFutureFirstPersonPlural(), updated.getConjugations().perfectiveFutureFirstPersonPlural());
+    assertEquals(dto.conjugations().perfectiveFutureSecondPersonPlural(), updated.getConjugations().perfectiveFutureSecondPersonPlural());
+    assertEquals(dto.conjugations().perfectiveFutureThirdPersonPlural(), updated.getConjugations().perfectiveFutureThirdPersonPlural());
   }
 
   @Test
@@ -211,12 +163,12 @@ public class UpdateWordsIT extends IntegrationTest {
     assertEquals(dto.type(), updated.getType().toString());
 
     assertNotNull(updated.getDeclinations());
-    assertEquals(dto.declinations().nominative(), updated.getDeclinations().getNominative());
-    assertEquals(dto.declinations().accusative(), updated.getDeclinations().getAccusative());
-    assertEquals(dto.declinations().genitive(), updated.getDeclinations().getGenitive());
-    assertEquals(dto.declinations().dative(), updated.getDeclinations().getDative());
-    assertEquals(dto.declinations().instrumental(), updated.getDeclinations().getInstrumental());
-    assertEquals(dto.declinations().prepositional(), updated.getDeclinations().getPrepositional());
+    assertEquals(dto.declinations().nominative(), updated.getDeclinations().nominative());
+    assertEquals(dto.declinations().accusative(), updated.getDeclinations().accusative());
+    assertEquals(dto.declinations().genitive(), updated.getDeclinations().genitive());
+    assertEquals(dto.declinations().dative(), updated.getDeclinations().dative());
+    assertEquals(dto.declinations().instrumental(), updated.getDeclinations().instrumental());
+    assertEquals(dto.declinations().prepositional(), updated.getDeclinations().prepositional());
   }
 
   @Test
@@ -266,30 +218,30 @@ public class UpdateWordsIT extends IntegrationTest {
     assertEquals(dto.type(), updated.getType().toString());
 
     assertNotNull(updated.getDeclinationMatrix());
-    assertEquals(dto.declinationMatrix().nominativeMasculine(), updated.getDeclinationMatrix().getNominativeMasculine());
-    assertEquals(dto.declinationMatrix().nominativeFeminine(), updated.getDeclinationMatrix().getNominativeFeminine());
-    assertEquals(dto.declinationMatrix().nominativeNeuter(), updated.getDeclinationMatrix().getNominativeNeuter());
-    assertEquals(dto.declinationMatrix().nominativePlural(), updated.getDeclinationMatrix().getNominativePlural());
-    assertEquals(dto.declinationMatrix().accusativeMasculine(), updated.getDeclinationMatrix().getAccusativeMasculine());
-    assertEquals(dto.declinationMatrix().accusativeFeminine(), updated.getDeclinationMatrix().getAccusativeFeminine());
-    assertEquals(dto.declinationMatrix().accusativeNeuter(), updated.getDeclinationMatrix().getAccusativeNeuter());
-    assertEquals(dto.declinationMatrix().accusativePlural(), updated.getDeclinationMatrix().getAccusativePlural());
-    assertEquals(dto.declinationMatrix().genitiveMasculine(), updated.getDeclinationMatrix().getGenitiveMasculine());
-    assertEquals(dto.declinationMatrix().genitiveFeminine(), updated.getDeclinationMatrix().getGenitiveFeminine());
-    assertEquals(dto.declinationMatrix().genitiveNeuter(), updated.getDeclinationMatrix().getGenitiveNeuter());
-    assertEquals(dto.declinationMatrix().genitivePlural(), updated.getDeclinationMatrix().getGenitivePlural());
-    assertEquals(dto.declinationMatrix().dativeMasculine(), updated.getDeclinationMatrix().getDativeMasculine());
-    assertEquals(dto.declinationMatrix().dativeFeminine(), updated.getDeclinationMatrix().getDativeFeminine());
-    assertEquals(dto.declinationMatrix().dativeNeuter(), updated.getDeclinationMatrix().getDativeNeuter());
-    assertEquals(dto.declinationMatrix().dativePlural(), updated.getDeclinationMatrix().getDativePlural());
-    assertEquals(dto.declinationMatrix().instrumentalMasculine(), updated.getDeclinationMatrix().getInstrumentalMasculine());
-    assertEquals(dto.declinationMatrix().instrumentalFeminine(), updated.getDeclinationMatrix().getInstrumentalFeminine());
-    assertEquals(dto.declinationMatrix().instrumentalNeuter(), updated.getDeclinationMatrix().getInstrumentalNeuter());
-    assertEquals(dto.declinationMatrix().instrumentalPlural(), updated.getDeclinationMatrix().getInstrumentalPlural());
-    assertEquals(dto.declinationMatrix().prepositionalMasculine(), updated.getDeclinationMatrix().getPrepositionalMasculine());
-    assertEquals(dto.declinationMatrix().prepositionalFeminine(), updated.getDeclinationMatrix().getPrepositionalFeminine());
-    assertEquals(dto.declinationMatrix().prepositionalNeuter(), updated.getDeclinationMatrix().getPrepositionalNeuter());
-    assertEquals(dto.declinationMatrix().prepositionalPlural(), updated.getDeclinationMatrix().getPrepositionalPlural());
+    assertEquals(dto.declinationMatrix().nominativeMasculine(), updated.getDeclinationMatrix().nominativeMasculine());
+    assertEquals(dto.declinationMatrix().nominativeFeminine(), updated.getDeclinationMatrix().nominativeFeminine());
+    assertEquals(dto.declinationMatrix().nominativeNeuter(), updated.getDeclinationMatrix().nominativeNeuter());
+    assertEquals(dto.declinationMatrix().nominativePlural(), updated.getDeclinationMatrix().nominativePlural());
+    assertEquals(dto.declinationMatrix().accusativeMasculine(), updated.getDeclinationMatrix().accusativeMasculine());
+    assertEquals(dto.declinationMatrix().accusativeFeminine(), updated.getDeclinationMatrix().accusativeFeminine());
+    assertEquals(dto.declinationMatrix().accusativeNeuter(), updated.getDeclinationMatrix().accusativeNeuter());
+    assertEquals(dto.declinationMatrix().accusativePlural(), updated.getDeclinationMatrix().accusativePlural());
+    assertEquals(dto.declinationMatrix().genitiveMasculine(), updated.getDeclinationMatrix().genitiveMasculine());
+    assertEquals(dto.declinationMatrix().genitiveFeminine(), updated.getDeclinationMatrix().genitiveFeminine());
+    assertEquals(dto.declinationMatrix().genitiveNeuter(), updated.getDeclinationMatrix().genitiveNeuter());
+    assertEquals(dto.declinationMatrix().genitivePlural(), updated.getDeclinationMatrix().genitivePlural());
+    assertEquals(dto.declinationMatrix().dativeMasculine(), updated.getDeclinationMatrix().dativeMasculine());
+    assertEquals(dto.declinationMatrix().dativeFeminine(), updated.getDeclinationMatrix().dativeFeminine());
+    assertEquals(dto.declinationMatrix().dativeNeuter(), updated.getDeclinationMatrix().dativeNeuter());
+    assertEquals(dto.declinationMatrix().dativePlural(), updated.getDeclinationMatrix().dativePlural());
+    assertEquals(dto.declinationMatrix().instrumentalMasculine(), updated.getDeclinationMatrix().instrumentalMasculine());
+    assertEquals(dto.declinationMatrix().instrumentalFeminine(), updated.getDeclinationMatrix().instrumentalFeminine());
+    assertEquals(dto.declinationMatrix().instrumentalNeuter(), updated.getDeclinationMatrix().instrumentalNeuter());
+    assertEquals(dto.declinationMatrix().instrumentalPlural(), updated.getDeclinationMatrix().instrumentalPlural());
+    assertEquals(dto.declinationMatrix().prepositionalMasculine(), updated.getDeclinationMatrix().prepositionalMasculine());
+    assertEquals(dto.declinationMatrix().prepositionalFeminine(), updated.getDeclinationMatrix().prepositionalFeminine());
+    assertEquals(dto.declinationMatrix().prepositionalNeuter(), updated.getDeclinationMatrix().prepositionalNeuter());
+    assertEquals(dto.declinationMatrix().prepositionalPlural(), updated.getDeclinationMatrix().prepositionalPlural());
   }
 
   @Test

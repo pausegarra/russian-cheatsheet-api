@@ -2,12 +2,7 @@ package es.pausegarra.russian_cheatsheet.context.words.application.dto;
 
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationMatrixEntity;
 
-import java.time.Instant;
-import java.util.UUID;
-
 public record WordDeclinationMatrixDto(
-  UUID id,
-  WordDto word,
   String nominativeMasculine,
   String nominativeFeminine,
   String nominativeNeuter,
@@ -31,17 +26,11 @@ public record WordDeclinationMatrixDto(
   String prepositionalMasculine,
   String prepositionalFeminine,
   String prepositionalNeuter,
-  String prepositionalPlural,
-  String createdBy,
-  Instant createdAt,
-  String updatedBy,
-  Instant updatedAt
+  String prepositionalPlural
 ) {
 
-  public static WordDeclinationMatrixDto fromEntity(WordDeclinationMatrixEntity entity, WordDto word) {
+  public static WordDeclinationMatrixDto fromEntity(WordDeclinationMatrixEntity entity) {
     return new WordDeclinationMatrixDto(
-      entity.id(),
-      word,
       entity.nominativeMasculine(),
       entity.nominativeFeminine(),
       entity.nominativeNeuter(),
@@ -65,11 +54,7 @@ public record WordDeclinationMatrixDto(
       entity.prepositionalMasculine(),
       entity.prepositionalFeminine(),
       entity.prepositionalNeuter(),
-      entity.prepositionalPlural(),
-      entity.createdBy(),
-      entity.createdAt(),
-      entity.updatedBy(),
-      entity.updatedAt()
+      entity.prepositionalPlural()
     );
   }
 
