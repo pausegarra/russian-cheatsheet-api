@@ -1,9 +1,6 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.models;
 
 import es.pausegarra.russian_cheatsheet.common.infrastructure.audit.AuditableModel;
-import es.pausegarra.russian_cheatsheet.common.infrastructure.jsonb.WordConjugationJsonConverter;
-import es.pausegarra.russian_cheatsheet.common.infrastructure.jsonb.WordDeclinationJsonConverter;
-import es.pausegarra.russian_cheatsheet.common.infrastructure.jsonb.WordDeclinationMatrixJsonConverter;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordConjugationEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationMatrixEntity;
@@ -18,6 +15,8 @@ import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.FilterDefs;
 import org.hibernate.annotations.Filters;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -55,15 +54,15 @@ public class WordModel extends AuditableModel {
   private final WordType type;
 
   @Column(name = "conjugations", columnDefinition = "jsonb")
-  @Convert(converter = WordConjugationJsonConverter.class)
+  @JdbcTypeCode(SqlTypes.JSON)
   private final WordConjugationJson conjugations;
 
   @Column(name = "declinations", columnDefinition = "jsonb")
-  @Convert(converter = WordDeclinationJsonConverter.class)
+  @JdbcTypeCode(SqlTypes.JSON)
   private final WordDeclinationJson declinations;
 
   @Column(name = "declination_matrix", columnDefinition = "jsonb")
-  @Convert(converter = WordDeclinationMatrixJsonConverter.class)
+  @JdbcTypeCode(SqlTypes.JSON)
   private final WordDeclinationMatrixJson declinationMatrix;
 
   @Column(name = "published_at")

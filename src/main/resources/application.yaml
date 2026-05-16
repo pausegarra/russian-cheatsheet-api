@@ -10,6 +10,9 @@ quarkus:
     database:
       generation: none
     format-sql: true
+    mapping:
+      format:
+        global: ignore
 
   banner:
     path: banner.txt
