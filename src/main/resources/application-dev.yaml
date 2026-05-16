@@ -19,7 +19,7 @@ quarkus:
 
   security:
     auth:
-      enabled-in-dev-mode: false
+      enabled-in-dev-mode: true
 
 app:
   memrise:
