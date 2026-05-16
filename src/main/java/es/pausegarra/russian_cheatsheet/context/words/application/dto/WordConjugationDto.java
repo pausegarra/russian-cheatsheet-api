@@ -28,7 +28,11 @@ public record WordConjugationDto(
   String perfectiveFutureThirdPersonSingular,
   String perfectiveFutureFirstPersonPlural,
   String perfectiveFutureSecondPersonPlural,
-  String perfectiveFutureThirdPersonPlural
+  String perfectiveFutureThirdPersonPlural,
+  String imperfectiveImperativeSecondPersonSingular,
+  String imperfectiveImperativeSecondPersonPlural,
+  String perfectiveImperativeSecondPersonSingular,
+  String perfectiveImperativeSecondPersonPlural
 ) {
 
   public static WordConjugationDto fromEntity(WordConjugationEntity entity) {
@@ -58,7 +62,11 @@ public record WordConjugationDto(
       entity.perfectiveFutureThirdPersonSingular(),
       entity.perfectiveFutureFirstPersonPlural(),
       entity.perfectiveFutureSecondPersonPlural(),
-      entity.perfectiveFutureThirdPersonPlural()
+      entity.perfectiveFutureThirdPersonPlural(),
+      entity.imperfectiveImperativeSecondPersonSingular(),
+      entity.imperfectiveImperativeSecondPersonPlural(),
+      entity.perfectiveImperativeSecondPersonSingular(),
+      entity.perfectiveImperativeSecondPersonPlural()
     );
   }
 

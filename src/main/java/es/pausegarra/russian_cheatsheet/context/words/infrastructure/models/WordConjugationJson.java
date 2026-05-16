@@ -28,6 +28,10 @@ public record WordConjugationJson(
   @JsonProperty("perfective_future_third_person_singular") String perfectiveFutureThirdPersonSingular,
   @JsonProperty("perfective_future_first_person_plural") String perfectiveFutureFirstPersonPlural,
   @JsonProperty("perfective_future_second_person_plural") String perfectiveFutureSecondPersonPlural,
-  @JsonProperty("perfective_future_third_person_plural") String perfectiveFutureThirdPersonPlural
+  @JsonProperty("perfective_future_third_person_plural") String perfectiveFutureThirdPersonPlural,
+  @JsonProperty("imperfective_imperative_second_person_singular") String imperfectiveImperativeSecondPersonSingular,
+  @JsonProperty("imperfective_imperative_second_person_plural") String imperfectiveImperativeSecondPersonPlural,
+  @JsonProperty("perfective_imperative_second_person_singular") String perfectiveImperativeSecondPersonSingular,
+  @JsonProperty("perfective_imperative_second_person_plural") String perfectiveImperativeSecondPersonPlural
 ) {
 }

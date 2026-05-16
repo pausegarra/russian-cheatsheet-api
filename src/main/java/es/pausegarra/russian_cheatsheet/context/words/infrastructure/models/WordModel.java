@@ -140,7 +140,11 @@ public class WordModel extends AuditableModel {
       entity.perfectiveFutureThirdPersonSingular(),
       entity.perfectiveFutureFirstPersonPlural(),
       entity.perfectiveFutureSecondPersonPlural(),
-      entity.perfectiveFutureThirdPersonPlural()
+      entity.perfectiveFutureThirdPersonPlural(),
+      entity.imperfectiveImperativeSecondPersonSingular(),
+      entity.imperfectiveImperativeSecondPersonPlural(),
+      entity.perfectiveImperativeSecondPersonSingular(),
+      entity.perfectiveImperativeSecondPersonPlural()
     );
   }
 
@@ -172,6 +176,10 @@ public class WordModel extends AuditableModel {
       .perfectiveFutureFirstPersonPlural(json.perfectiveFutureFirstPersonPlural())
       .perfectiveFutureSecondPersonPlural(json.perfectiveFutureSecondPersonPlural())
       .perfectiveFutureThirdPersonPlural(json.perfectiveFutureThirdPersonPlural())
+      .imperfectiveImperativeSecondPersonSingular(json.imperfectiveImperativeSecondPersonSingular())
+      .imperfectiveImperativeSecondPersonPlural(json.imperfectiveImperativeSecondPersonPlural())
+      .perfectiveImperativeSecondPersonSingular(json.perfectiveImperativeSecondPersonSingular())
+      .perfectiveImperativeSecondPersonPlural(json.perfectiveImperativeSecondPersonPlural())
       .build();
   }
 

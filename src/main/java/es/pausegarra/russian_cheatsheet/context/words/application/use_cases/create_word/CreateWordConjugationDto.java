@@ -26,5 +26,9 @@ public record CreateWordConjugationDto(
   String perfectiveFutureThirdPersonSingular,
   String perfectiveFutureFirstPersonPlural,
   String perfectiveFutureSecondPersonPlural,
-  String perfectiveFutureThirdPersonPlural
+  String perfectiveFutureThirdPersonPlural,
+  String imperfectiveImperativeSecondPersonSingular,
+  String imperfectiveImperativeSecondPersonPlural,
+  String perfectiveImperativeSecondPersonSingular,
+  String perfectiveImperativeSecondPersonPlural
 ) {}

@@ -114,7 +114,11 @@ public class CreateWordUseCase implements UseCase<CreateWordDto, WordDto> {
       dto.perfectiveFutureThirdPersonSingular(),
       dto.perfectiveFutureFirstPersonPlural(),
       dto.perfectiveFutureSecondPersonPlural(),
-      dto.perfectiveFutureThirdPersonPlural()
+      dto.perfectiveFutureThirdPersonPlural(),
+      dto.imperfectiveImperativeSecondPersonSingular(),
+      dto.imperfectiveImperativeSecondPersonPlural(),
+      dto.perfectiveImperativeSecondPersonSingular(),
+      dto.perfectiveImperativeSecondPersonPlural()
     );
   }
 

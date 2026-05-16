@@ -115,7 +115,11 @@ public class UpdateWordUseCase implements UseCase<UpdateWordDto, WordDto> {
       dto.perfectiveFutureThirdPersonSingular(),
       dto.perfectiveFutureFirstPersonPlural(),
       dto.perfectiveFutureSecondPersonPlural(),
-      dto.perfectiveFutureThirdPersonPlural()
+      dto.perfectiveFutureThirdPersonPlural(),
+      dto.imperfectiveImperativeSecondPersonSingular(),
+      dto.imperfectiveImperativeSecondPersonPlural(),
+      dto.perfectiveImperativeSecondPersonSingular(),
+      dto.perfectiveImperativeSecondPersonPlural()
     );
   }
 

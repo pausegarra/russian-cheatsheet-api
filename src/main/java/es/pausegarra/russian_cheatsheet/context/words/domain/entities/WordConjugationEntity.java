@@ -29,7 +29,11 @@ public record WordConjugationEntity(
   String perfectiveFutureThirdPersonSingular,
   String perfectiveFutureFirstPersonPlural,
   String perfectiveFutureSecondPersonPlural,
-  String perfectiveFutureThirdPersonPlural
+  String perfectiveFutureThirdPersonPlural,
+  String imperfectiveImperativeSecondPersonSingular,
+  String imperfectiveImperativeSecondPersonPlural,
+  String perfectiveImperativeSecondPersonSingular,
+  String perfectiveImperativeSecondPersonPlural
 ) {
 
   public static WordConjugationEntity create(
@@ -58,7 +62,11 @@ public record WordConjugationEntity(
     String perfectiveFutureThirdPersonSingular,
     String perfectiveFutureFirstPersonPlural,
     String perfectiveFutureSecondPersonPlural,
-    String perfectiveFutureThirdPersonPlural
+    String perfectiveFutureThirdPersonPlural,
+    String imperfectiveImperativeSecondPersonSingular,
+    String imperfectiveImperativeSecondPersonPlural,
+    String perfectiveImperativeSecondPersonSingular,
+    String perfectiveImperativeSecondPersonPlural
   ) {
     return WordConjugationEntity.builder()
       .imperfectivePresentFirstPersonSingular(imperfectivePresentFirstPersonSingular)
@@ -87,6 +95,10 @@ public record WordConjugationEntity(
       .perfectiveFutureFirstPersonPlural(perfectiveFutureFirstPersonPlural)
       .perfectiveFutureSecondPersonPlural(perfectiveFutureSecondPersonPlural)
       .perfectiveFutureThirdPersonPlural(perfectiveFutureThirdPersonPlural)
+      .imperfectiveImperativeSecondPersonSingular(imperfectiveImperativeSecondPersonSingular)
+      .imperfectiveImperativeSecondPersonPlural(imperfectiveImperativeSecondPersonPlural)
+      .perfectiveImperativeSecondPersonSingular(perfectiveImperativeSecondPersonSingular)
+      .perfectiveImperativeSecondPersonPlural(perfectiveImperativeSecondPersonPlural)
       .build();
   }
 
