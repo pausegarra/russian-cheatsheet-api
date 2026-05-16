@@ -78,7 +78,11 @@ public class UpdateWordsIT extends IntegrationTest {
       "perfectiveFutureThirdPersonSingular",
       "perfectiveFutureFirstPersonPlural",
       "perfectiveFutureSecondPersonPlural",
-      "perfectiveFutureThirdPersonPlural"
+      "perfectiveFutureThirdPersonPlural",
+      "imperfectiveImperativeSecondPersonSingular",
+      "imperfectiveImperativeSecondPersonPlural",
+      "perfectiveImperativeSecondPersonSingular",
+      "perfectiveImperativeSecondPersonPlural"
     )
     );
     String json = objectMapper.writeValueAsString(dto);
@@ -120,6 +124,22 @@ public class UpdateWordsIT extends IntegrationTest {
     assertEquals(dto.conjugations().perfectiveFutureFirstPersonPlural(), updated.getConjugations().perfectiveFutureFirstPersonPlural());
     assertEquals(dto.conjugations().perfectiveFutureSecondPersonPlural(), updated.getConjugations().perfectiveFutureSecondPersonPlural());
     assertEquals(dto.conjugations().perfectiveFutureThirdPersonPlural(), updated.getConjugations().perfectiveFutureThirdPersonPlural());
+    assertEquals(
+      dto.conjugations().imperfectiveImperativeSecondPersonSingular(),
+      updated.getConjugations().imperfectiveImperativeSecondPersonSingular()
+    );
+    assertEquals(
+      dto.conjugations().imperfectiveImperativeSecondPersonPlural(),
+      updated.getConjugations().imperfectiveImperativeSecondPersonPlural()
+    );
+    assertEquals(
+      dto.conjugations().perfectiveImperativeSecondPersonSingular(),
+      updated.getConjugations().perfectiveImperativeSecondPersonSingular()
+    );
+    assertEquals(
+      dto.conjugations().perfectiveImperativeSecondPersonPlural(),
+      updated.getConjugations().perfectiveImperativeSecondPersonPlural()
+    );
   }
 
   @Test

@@ -42,6 +42,10 @@ class WordConjugationDtoTest {
     assertEquals(entity.perfectiveFutureFirstPersonPlural(), wordConjugationDto.perfectiveFutureFirstPersonPlural());
     assertEquals(entity.perfectiveFutureSecondPersonPlural(), wordConjugationDto.perfectiveFutureSecondPersonPlural());
     assertEquals(entity.perfectiveFutureThirdPersonPlural(), wordConjugationDto.perfectiveFutureThirdPersonPlural());
+    assertEquals(entity.imperfectiveImperativeSecondPersonSingular(), wordConjugationDto.imperfectiveImperativeSecondPersonSingular());
+    assertEquals(entity.imperfectiveImperativeSecondPersonPlural(), wordConjugationDto.imperfectiveImperativeSecondPersonPlural());
+    assertEquals(entity.perfectiveImperativeSecondPersonSingular(), wordConjugationDto.perfectiveImperativeSecondPersonSingular());
+    assertEquals(entity.perfectiveImperativeSecondPersonPlural(), wordConjugationDto.perfectiveImperativeSecondPersonPlural());
   }
 
 }

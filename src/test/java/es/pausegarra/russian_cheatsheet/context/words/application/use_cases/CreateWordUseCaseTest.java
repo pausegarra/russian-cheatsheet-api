@@ -94,7 +94,11 @@ class CreateWordUseCaseTest {
       "perfectiveFutureThirdPersonSingular",
       "perfectiveFutureFirstPersonPlural",
       "perfectiveFutureSecondPersonPlural",
-      "perfectiveFutureThirdPersonPlural"
+      "perfectiveFutureThirdPersonPlural",
+      "imperfectiveImperativeSecondPersonSingular",
+      "imperfectiveImperativeSecondPersonPlural",
+      "perfectiveImperativeSecondPersonSingular",
+      "perfectiveImperativeSecondPersonPlural"
     ), null, null
     );
     WordDto word = wordsCommandService.handle(dto);

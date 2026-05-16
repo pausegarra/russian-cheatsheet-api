@@ -31,7 +31,11 @@ public class WordConjugationMother {
       .perfectiveFutureThirdPersonSingular(MotherCreator.random().animal().name())
       .perfectiveFutureFirstPersonPlural(MotherCreator.random().animal().name())
       .perfectiveFutureSecondPersonPlural(MotherCreator.random().animal().name())
-      .perfectiveFutureThirdPersonPlural(MotherCreator.random().animal().name());
+      .perfectiveFutureThirdPersonPlural(MotherCreator.random().animal().name())
+      .imperfectiveImperativeSecondPersonSingular(MotherCreator.random().animal().name())
+      .imperfectiveImperativeSecondPersonPlural(MotherCreator.random().animal().name())
+      .perfectiveImperativeSecondPersonSingular(MotherCreator.random().animal().name())
+      .perfectiveImperativeSecondPersonPlural(MotherCreator.random().animal().name());
   }
 
 }

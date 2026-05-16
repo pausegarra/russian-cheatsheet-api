@@ -78,7 +78,11 @@ public class CreateWordIT extends IntegrationTest {
       "perfectiveFutureThirdPersonSingular",
       "perfectiveFutureFirstPersonPlural",
       "perfectiveFutureSecondPersonPlural",
-      "perfectiveFutureThirdPersonPlural"
+      "perfectiveFutureThirdPersonPlural",
+      "imperfectiveImperativeSecondPersonSingular",
+      "imperfectiveImperativeSecondPersonPlural",
+      "perfectiveImperativeSecondPersonSingular",
+      "perfectiveImperativeSecondPersonPlural"
     );
     CreateWordDto createWordDto = new CreateWordDto("russian", "english", "spanish", WordType.VERB, conjugations, null, null);
     String json = objectMapper.writeValueAsString(createWordDto);
@@ -118,7 +122,11 @@ public class CreateWordIT extends IntegrationTest {
       .body("conjugations.perfectiveFutureThirdPersonSingular", equalTo("perfectiveFutureThirdPersonSingular"))
       .body("conjugations.perfectiveFutureFirstPersonPlural", equalTo("perfectiveFutureFirstPersonPlural"))
       .body("conjugations.perfectiveFutureSecondPersonPlural", equalTo("perfectiveFutureSecondPersonPlural"))
-      .body("conjugations.perfectiveFutureThirdPersonPlural", equalTo("perfectiveFutureThirdPersonPlural"));
+      .body("conjugations.perfectiveFutureThirdPersonPlural", equalTo("perfectiveFutureThirdPersonPlural"))
+      .body("conjugations.imperfectiveImperativeSecondPersonSingular", equalTo("imperfectiveImperativeSecondPersonSingular"))
+      .body("conjugations.imperfectiveImperativeSecondPersonPlural", equalTo("imperfectiveImperativeSecondPersonPlural"))
+      .body("conjugations.perfectiveImperativeSecondPersonSingular", equalTo("perfectiveImperativeSecondPersonSingular"))
+      .body("conjugations.perfectiveImperativeSecondPersonPlural", equalTo("perfectiveImperativeSecondPersonPlural"));
 
     WordModel saved = em.createQuery("select w from WordModel w", WordModel.class).getSingleResult();
 

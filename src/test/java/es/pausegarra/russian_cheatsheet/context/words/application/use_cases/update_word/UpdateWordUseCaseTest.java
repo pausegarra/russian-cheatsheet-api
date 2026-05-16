@@ -101,7 +101,11 @@ class UpdateWordUseCaseTest {
       updated.conjugations().perfectiveFutureThirdPersonSingular(),
       updated.conjugations().perfectiveFutureFirstPersonPlural(),
       updated.conjugations().perfectiveFutureSecondPersonPlural(),
-      updated.conjugations().perfectiveFutureThirdPersonPlural()
+      updated.conjugations().perfectiveFutureThirdPersonPlural(),
+      updated.conjugations().imperfectiveImperativeSecondPersonSingular(),
+      updated.conjugations().imperfectiveImperativeSecondPersonPlural(),
+      updated.conjugations().perfectiveImperativeSecondPersonSingular(),
+      updated.conjugations().perfectiveImperativeSecondPersonPlural()
     ), null
     );
     WordDto result = wordsCommandService.handle(dto);
@@ -175,6 +179,22 @@ class UpdateWordUseCaseTest {
     assertEquals(updated.conjugations().perfectiveFutureFirstPersonPlural(), result.conjugations().perfectiveFutureFirstPersonPlural());
     assertEquals(updated.conjugations().perfectiveFutureSecondPersonPlural(), result.conjugations().perfectiveFutureSecondPersonPlural());
     assertEquals(updated.conjugations().perfectiveFutureThirdPersonPlural(), result.conjugations().perfectiveFutureThirdPersonPlural());
+    assertEquals(
+      updated.conjugations().imperfectiveImperativeSecondPersonSingular(),
+      result.conjugations().imperfectiveImperativeSecondPersonSingular()
+    );
+    assertEquals(
+      updated.conjugations().imperfectiveImperativeSecondPersonPlural(),
+      result.conjugations().imperfectiveImperativeSecondPersonPlural()
+    );
+    assertEquals(
+      updated.conjugations().perfectiveImperativeSecondPersonSingular(),
+      result.conjugations().perfectiveImperativeSecondPersonSingular()
+    );
+    assertEquals(
+      updated.conjugations().perfectiveImperativeSecondPersonPlural(),
+      result.conjugations().perfectiveImperativeSecondPersonPlural()
+    );
 
     verify(wordsRepository).findById(any(UUID.class));
     verify(wordsRepository).save(any(WordEntity.class));
