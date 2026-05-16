@@ -45,3 +45,4 @@ nb-configuration.xml
 .certs/
 
 schema.sql
+sql_data/
