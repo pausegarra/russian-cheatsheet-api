@@ -46,9 +46,9 @@ public abstract class BaseArchTest {
 
   protected static final String RESOURCE = "Resource";
 
-  protected static final String SERVICE = "Service";
+  protected static final String SERVICE = "UseCase";
 
-  protected static final String SERVICE_IMPL = "ServiceImpl";
+  protected static final String SERVICE_IMPL = "UseCaseImpl";
 
   protected static final String CONFIG = "Config";
 

@@ -1,4 +1,11 @@
 quarkus:
+  datasource:
+    devservices:
+      enabled: true
+      image-name: postgres:16
+    jdbc:
+      url:
+
   hibernate-orm:
     database:
       generation: drop-and-create

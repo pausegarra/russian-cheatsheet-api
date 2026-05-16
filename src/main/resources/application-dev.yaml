@@ -1,13 +1,11 @@
 quarkus:
 
-#  rest-client:
-#    logging:
-#      scope: request-response
-#
-#  log:
-#    category:
-#      "org.jboss.resteasy.reactive.client.logging":
-#        level: DEBUG
+  datasource:
+    devservices:
+      port: 5432
+      reuse: false
+      volumes:
+        "./sql-data": /var/lib/postgresql/data
 
   flyway:
     clean-at-start: false

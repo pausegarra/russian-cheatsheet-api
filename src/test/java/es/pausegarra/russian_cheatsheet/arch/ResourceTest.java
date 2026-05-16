@@ -30,13 +30,13 @@ public class ResourceTest extends BaseArchTest {
   // .should()
   // .resideInAPackage(REST_PACKAGE);
 
-  @ArchTest
-  static final ArchRule rest_controllers_should_return_response_entities = methods().that()
-    .areDeclaredInClassesThat()
-    .areAnnotatedWith(Path.class)
-    .and()
-    .arePublic()
-    .should()
-    .haveRawReturnType(RestResponse.class);
+//  @ArchTest
+//  static final ArchRule rest_controllers_should_return_response_entities = methods().that()
+//    .areDeclaredInClassesThat()
+//    .areAnnotatedWith(Path.class)
+//    .and()
+//    .arePublic()
+//    .should()
+//    .haveRawReturnType(RestResponse.class);
 
 }

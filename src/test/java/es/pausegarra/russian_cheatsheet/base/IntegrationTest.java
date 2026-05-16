@@ -1,8 +1,6 @@
 package es.pausegarra.russian_cheatsheet.base;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import es.pausegarra.russian_cheatsheet.config.PostgreSqlTestContainer;
-import io.quarkus.test.common.QuarkusTestResource;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -10,9 +8,6 @@ import jakarta.transaction.Transactional;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.AfterEach;
 
-@QuarkusTestResource(
-  PostgreSqlTestContainer.class
-)
 public class IntegrationTest {
 
   protected final ObjectMapper objectMapper = new ObjectMapper();
