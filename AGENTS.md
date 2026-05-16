@@ -35,7 +35,7 @@ context/
   words/                 # bounded context: Russian word CRUD
     domain/              # entities, repository interfaces, enums (WordType)
     application/         # use cases (create/update/publish/find), DTOs
-    infrastructure/      # REST resources, Panache repos, models, Memrise cron/client
+    infrastructure/      # REST resources, Panache repos, models
   auth/                  # bounded context: Keycloak role lookup
     domain/              # KeycloakRepository interface
     application/         # FindAuthRolesService
@@ -84,7 +84,6 @@ make test   # runs: ./mvnw clean test -Dquarkus.profile=test
 - Test overrides: `application-test.yaml`
 - API root path: `/api`
 - Swagger UI: `/api/q/swagger-ui`
-- `MEMRISE_TOKEN` env var required for Memrise sync cron job
 
 ## Deployment
 
@@ -99,4 +98,4 @@ make test   # runs: ./mvnw clean test -Dquarkus.profile=test
 - Tests use `@TestSecurity` to mock JWT roles; integration tests specify exact roles like `words#create`, `words#update`, `words#publish`.
 - Lombok is used — entities/DTOs use `@Data`, `@Getter`, `@Builder` etc. Generated methods exist without source.
 - `compose.yaml` (not `docker-compose.yaml`) — the Makefile `start-db`/`stop-db` targets use `docker-compose` (legacy binary), but `README.md` uses `docker compose`. Either works.
-- `.env` is in `.gitignore` but still tracked by git (contains `MEMRISE_TOKEN` and `OPENAI_API_KEY`). Run `git rm --cached .env` to untrack without deleting.
+- `.env` is in `.gitignore` but still tracked by git (contains `OPENAI_API_KEY`). Run `git rm --cached .env` to untrack without deleting.

@@ -1,6 +1,6 @@
 # Russian Cheatsheet
 
-Backend service for managing a Russian vocabulary catalogue, exposing CRUD-style word endpoints, publication workflows, and a scheduled Memrise import.
+Backend service for managing a Russian vocabulary catalogue, exposing CRUD-style word endpoints and publication workflows.
 
 Built with Quarkus, Java 21, Maven, PostgreSQL, Flyway, and Keycloak-based JWT authentication.
 
@@ -10,7 +10,6 @@ Built with Quarkus, Java 21, Maven, PostgreSQL, Flyway, and Keycloak-based JWT a
 - Supports declinations, conjugations, and declination matrices depending on word type.
 - Exposes public read endpoints for listing and fetching words.
 - Exposes protected write endpoints for creating, updating, publishing, and reviewing unpublished words.
-- Syncs new words from Memrise every Monday at `01:00`.
 
 ## Stack
 
@@ -39,10 +38,6 @@ Important settings:
 - Swagger UI: `http://localhost:8080/api/q/swagger-ui`
 - OpenAPI document: `http://localhost:8080/api/q/openapi`
 
-Environment variables used in development:
-
-- `MEMRISE_TOKEN`: bearer token used by the scheduled Memrise sync
-
 ## Local Setup
 
 1. Start PostgreSQL:
@@ -51,13 +46,7 @@ Environment variables used in development:
 docker compose up -d
 ```
 
-2. Export the Memrise token if you want the sync job to work in dev mode:
-
-```sh
-export MEMRISE_TOKEN=your-token
-```
-
-3. Run the app:
+2. Run the app:
 
 ```sh
 ./mvnw clean quarkus:dev --debug -DskipTests

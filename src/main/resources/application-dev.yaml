@@ -20,7 +20,3 @@ quarkus:
   security:
     auth:
       enabled-in-dev-mode: true
-
-app:
-  memrise:
-    access-token: ${MEMRISE_TOKEN}

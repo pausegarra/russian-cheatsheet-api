@@ -111,7 +111,6 @@ jobs:
           DB_SECRET_NAME: ${{ vars.DB_SECRET_NAME }}
           DB_USER: ${{ secrets.DB_USER || secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          APP_MEMRISE_ACCESS_TOKEN: ${{ secrets.APP_MEMRISE_ACCESS_TOKEN }}
         run: |
           namespace="${HELM_NAMESPACE:-main}"
           secret_name="russian-cheatsheet-api-secret"
@@ -121,7 +120,6 @@ jobs:
             --namespace "$namespace" \
             --from-literal=QUARKUS_DATASOURCE_USERNAME="$DB_USER" \
             --from-literal=QUARKUS_DATASOURCE_PASSWORD="$DB_PASSWORD" \
-            --from-literal=APP_MEMRISE_ACCESS_TOKEN="$APP_MEMRISE_ACCESS_TOKEN" \
             --dry-run=client -o yaml | kubectl apply -f -
 
       - name: Helm upgrade
