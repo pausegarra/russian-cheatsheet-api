@@ -193,6 +193,82 @@ public class UpdateWordsIT extends IntegrationTest {
 
   @Test
   @TestSecurity(user = "user", roles = "words#update")
+  public void shouldUpdateWordWithDeclinationsWhenTypeIsPronounNoun() throws Exception {
+    WordEntity word = WordMother.random().id(null).type(WordType.VERB).build();
+    WordModel saved = persist(WordModel.fromEntity(word));
+
+    UpdateWordRequest dto = new UpdateWordRequest(
+      "newRussian",
+      "newSpanish",
+      "newEnglish",
+      "PRONOUN_NOUN",
+      new UpdateWordDeclinationDto(
+        "nominative",
+        "accusative",
+        "genitive",
+        "dative",
+        "instrumental",
+        "prepositional",
+        "nominativePlural",
+        "accusativePlural",
+        "genitivePlural",
+        "dativePlural",
+        "instrumentalPlural",
+        "prepositionalPlural"
+      ),
+      null,
+      null
+    );
+    String json = objectMapper.writeValueAsString(dto);
+
+    given().body(json).contentType("application/json").when().put("/words/" + saved.getId().toString()).then().statusCode(200);
+
+    WordModel updated = em.find(WordModel.class, saved.getId());
+    assertNotNull(updated);
+    assertEquals("PRONOUN_NOUN", updated.getType().toString());
+    assertNotNull(updated.getDeclinations());
+  }
+
+  @Test
+  @TestSecurity(user = "user", roles = "words#update")
+  public void shouldUpdateWordWithDeclinationsWhenTypeIsNumeralCardinal() throws Exception {
+    WordEntity word = WordMother.random().id(null).type(WordType.VERB).build();
+    WordModel saved = persist(WordModel.fromEntity(word));
+
+    UpdateWordRequest dto = new UpdateWordRequest(
+      "newRussian",
+      "newSpanish",
+      "newEnglish",
+      "NUMERAL_CARDINAL",
+      new UpdateWordDeclinationDto(
+        "nominative",
+        "accusative",
+        "genitive",
+        "dative",
+        "instrumental",
+        "prepositional",
+        "nominativePlural",
+        "accusativePlural",
+        "genitivePlural",
+        "dativePlural",
+        "instrumentalPlural",
+        "prepositionalPlural"
+      ),
+      null,
+      null
+    );
+    String json = objectMapper.writeValueAsString(dto);
+
+    given().body(json).contentType("application/json").when().put("/words/" + saved.getId().toString()).then().statusCode(200);
+
+    WordModel updated = em.find(WordModel.class, saved.getId());
+    assertNotNull(updated);
+    assertEquals("NUMERAL_CARDINAL", updated.getType().toString());
+    assertNotNull(updated.getDeclinations());
+  }
+
+  @Test
+  @TestSecurity(user = "user", roles = "words#update")
   public void shouldUpdateWordWithDeclinationMatrix() throws Exception {
     WordEntity word = WordMother.random().id(null).type(WordType.NOUN).build();
     WordModel saved = persist(WordModel.fromEntity(word));
@@ -262,6 +338,94 @@ public class UpdateWordsIT extends IntegrationTest {
     assertEquals(dto.declinationMatrix().prepositionalFeminine(), updated.getDeclinationMatrix().prepositionalFeminine());
     assertEquals(dto.declinationMatrix().prepositionalNeuter(), updated.getDeclinationMatrix().prepositionalNeuter());
     assertEquals(dto.declinationMatrix().prepositionalPlural(), updated.getDeclinationMatrix().prepositionalPlural());
+  }
+
+  @Test
+  @TestSecurity(user = "user", roles = "words#update")
+  public void shouldUpdateWordWithDeclinationMatrixWhenTypeIsPronounAdjective() throws Exception {
+    WordEntity word = WordMother.random().id(null).type(WordType.NOUN).build();
+    WordModel saved = persist(WordModel.fromEntity(word));
+
+    UpdateWordRequest dto = new UpdateWordRequest(
+      "newRussian", "newSpanish", "newEnglish", "PRONOUN_ADJECTIVE", null, new UpdateWordDeclinationMatrixDto(
+      "nominativeMasculine",
+      "nominativeFeminine",
+      "nominativeNeuter",
+      "nominativePlural",
+      "accusativeMasculine",
+      "accusativeFeminine",
+      "accusativeNeuter",
+      "accusativePlural",
+      "genitiveMasculine",
+      "genitiveFeminine",
+      "genitiveNeuter",
+      "genitivePlural",
+      "dativeMasculine",
+      "dativeFeminine",
+      "dativeNeuter",
+      "dativePlural",
+      "instrumentalMasculine",
+      "instrumentalFeminine",
+      "instrumentalNeuter",
+      "instrumentalPlural",
+      "prepositionalMasculine",
+      "prepositionalFeminine",
+      "prepositionalNeuter",
+      "prepositionalPlural"
+    ), null
+    );
+    String json = objectMapper.writeValueAsString(dto);
+
+    given().body(json).contentType("application/json").when().put("/words/" + saved.getId().toString()).then().statusCode(200);
+
+    WordModel updated = em.find(WordModel.class, saved.getId());
+    assertNotNull(updated);
+    assertEquals("PRONOUN_ADJECTIVE", updated.getType().toString());
+    assertNotNull(updated.getDeclinationMatrix());
+  }
+
+  @Test
+  @TestSecurity(user = "user", roles = "words#update")
+  public void shouldUpdateWordWithDeclinationMatrixWhenTypeIsNumeralAdjective() throws Exception {
+    WordEntity word = WordMother.random().id(null).type(WordType.NOUN).build();
+    WordModel saved = persist(WordModel.fromEntity(word));
+
+    UpdateWordRequest dto = new UpdateWordRequest(
+      "newRussian", "newSpanish", "newEnglish", "NUMERAL_ADJECTIVE", null, new UpdateWordDeclinationMatrixDto(
+      "nominativeMasculine",
+      "nominativeFeminine",
+      "nominativeNeuter",
+      "nominativePlural",
+      "accusativeMasculine",
+      "accusativeFeminine",
+      "accusativeNeuter",
+      "accusativePlural",
+      "genitiveMasculine",
+      "genitiveFeminine",
+      "genitiveNeuter",
+      "genitivePlural",
+      "dativeMasculine",
+      "dativeFeminine",
+      "dativeNeuter",
+      "dativePlural",
+      "instrumentalMasculine",
+      "instrumentalFeminine",
+      "instrumentalNeuter",
+      "instrumentalPlural",
+      "prepositionalMasculine",
+      "prepositionalFeminine",
+      "prepositionalNeuter",
+      "prepositionalPlural"
+    ), null
+    );
+    String json = objectMapper.writeValueAsString(dto);
+
+    given().body(json).contentType("application/json").when().put("/words/" + saved.getId().toString()).then().statusCode(200);
+
+    WordModel updated = em.find(WordModel.class, saved.getId());
+    assertNotNull(updated);
+    assertEquals("NUMERAL_ADJECTIVE", updated.getType().toString());
+    assertNotNull(updated.getDeclinationMatrix());
   }
 
   @Test

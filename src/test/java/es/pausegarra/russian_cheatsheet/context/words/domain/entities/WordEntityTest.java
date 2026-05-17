@@ -57,7 +57,7 @@ class WordEntityTest {
   }
 
   @Test
-  public void shouldAddDeclinationsWhenTypeIsNoun() {
+  public void shouldAddDeclinationsWhenTypeIsNounPronounNounOrNumeral() {
     WordEntity word = WordMother.random().type(WordType.NOUN).build();
 
     WordDeclinationEntity declinations = WordDeclinationMother.random().build();
@@ -91,7 +91,7 @@ class WordEntityTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenAddDeclinationsWhenTypeIsNotNoun() {
+  public void shouldThrowExceptionWhenAddDeclinationsWhenTypeCannotHaveDeclinations() {
     WordEntity word = WordMother.random().type(WordType.VERB).build();
 
     WordDeclinationEntity declinations = WordDeclinationMother.random().build();
@@ -99,7 +99,7 @@ class WordEntityTest {
   }
 
   @Test
-  public void shouldAddDeclinationMatrixWhenTypeIsAdjectiveOrPronounOrParticipleOrOrdinal() {
+  public void shouldAddDeclinationMatrixWhenTypeSupportsDeclinationMatrix() {
     WordEntity word = WordMother.random().type(WordType.ADJECTIVE).build();
 
     WordDeclinationMatrixEntity declinationMatrix = WordDeclinationMatrixMother.random().build();
@@ -133,7 +133,7 @@ class WordEntityTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenAddDeclinationMatrixWhenTypeIsNotAdjectiveOrPronounOrParticipleOrOrdinal() {
+  public void shouldThrowExceptionWhenAddDeclinationMatrixWhenTypeCannotHaveDeclinationMatrix() {
     WordEntity word = WordMother.random().type(WordType.NOUN).build();
 
     WordDeclinationMatrixEntity declinationMatrix = WordDeclinationMatrixMother.random().build();
@@ -162,6 +162,20 @@ class WordEntityTest {
   }
 
   @Test
+  public void shouldReturnTrueWhenCanHaveDeclinationsForPronounNoun() {
+    WordEntity word = WordMother.random().type(WordType.PRONOUN_NOUN).build();
+
+    assertTrue(word.canHaveDeclinations());
+  }
+
+  @Test
+  public void shouldReturnTrueWhenCanHaveDeclinationsForNumeralCardinal() {
+    WordEntity word = WordMother.random().type(WordType.NUMERAL_CARDINAL).build();
+
+    assertTrue(word.canHaveDeclinations());
+  }
+
+  @Test
   public void shouldReturnFalseWhenCanHaveDeclinations() {
     WordEntity word = WordMother.random().type(WordType.VERB).build();
 
@@ -171,6 +185,27 @@ class WordEntityTest {
   @Test
   public void shouldReturnTrueWhenCanHaveDeclinationMatrix() {
     WordEntity word = WordMother.random().type(WordType.ADJECTIVE).build();
+
+    assertTrue(word.canHaveDeclinationMatrix());
+  }
+
+  @Test
+  public void shouldReturnTrueWhenCanHaveDeclinationMatrixForShortAdjective() {
+    WordEntity word = WordMother.random().type(WordType.SHORT_ADJECTIVE).build();
+
+    assertTrue(word.canHaveDeclinationMatrix());
+  }
+
+  @Test
+  public void shouldReturnTrueWhenCanHaveDeclinationMatrixForPronounAdjective() {
+    WordEntity word = WordMother.random().type(WordType.PRONOUN_ADJECTIVE).build();
+
+    assertTrue(word.canHaveDeclinationMatrix());
+  }
+
+  @Test
+  public void shouldReturnTrueWhenCanHaveDeclinationMatrixForNumeralAdjective() {
+    WordEntity word = WordMother.random().type(WordType.NUMERAL_ADJECTIVE).build();
 
     assertTrue(word.canHaveDeclinationMatrix());
   }

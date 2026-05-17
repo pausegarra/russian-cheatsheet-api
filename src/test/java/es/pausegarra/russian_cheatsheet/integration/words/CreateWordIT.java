@@ -3,6 +3,8 @@ package es.pausegarra.russian_cheatsheet.integration.words;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import es.pausegarra.russian_cheatsheet.base.IntegrationTest;
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordConjugationDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDeclinationDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDeclinationMatrixDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.WordModel;
@@ -170,6 +172,186 @@ public class CreateWordIT extends IntegrationTest {
       .then()
       .statusCode(400)
       .body("code", equalTo("DECLINATIONS_REQUIRED"));
+  }
+
+  @Test
+  @TestSecurity(
+    user = "user", roles = "words#create"
+  )
+  public void shouldCreateWordWithDeclinationsWhenTypeIsPronounNoun() throws JsonProcessingException {
+    CreateWordDto createWordDto = new CreateWordDto(
+      "russian",
+      "english",
+      "spanish",
+      WordType.PRONOUN_NOUN,
+      null,
+      new CreateWordDeclinationDto(
+        "nominative",
+        "accusative",
+        "genitive",
+        "dative",
+        "instrumental",
+        "prepositional",
+        "nominativePlural",
+        "accusativePlural",
+        "genitivePlural",
+        "dativePlural",
+        "instrumentalPlural",
+        "prepositionalPlural"
+      ),
+      null
+    );
+    String json = objectMapper.writeValueAsString(createWordDto);
+
+    given().contentType("application/json")
+      .body(json)
+      .when()
+      .post("/words")
+      .then()
+      .statusCode(201)
+      .body("type", equalTo("PRONOUN_NOUN"))
+      .body("declinations.nominative", equalTo("nominative"));
+  }
+
+  @Test
+  @TestSecurity(
+    user = "user", roles = "words#create"
+  )
+  public void shouldCreateWordWithDeclinationMatrixWhenTypeIsPronounAdjective() throws JsonProcessingException {
+    CreateWordDto createWordDto = new CreateWordDto(
+      "russian",
+      "english",
+      "spanish",
+      WordType.PRONOUN_ADJECTIVE,
+      null,
+      null,
+      new CreateWordDeclinationMatrixDto(
+        "nominativeMasculine",
+        "nominativeFeminine",
+        "nominativeNeuter",
+        "nominativePlural",
+        "accusativeMasculine",
+        "accusativeFeminine",
+        "accusativeNeuter",
+        "accusativePlural",
+        "genitiveMasculine",
+        "genitiveFeminine",
+        "genitiveNeuter",
+        "genitivePlural",
+        "dativeMasculine",
+        "dativeFeminine",
+        "dativeNeuter",
+        "dativePlural",
+        "instrumentalMasculine",
+        "instrumentalFeminine",
+        "instrumentalNeuter",
+        "instrumentalPlural",
+        "prepositionalMasculine",
+        "prepositionalFeminine",
+        "prepositionalNeuter",
+        "prepositionalPlural"
+      )
+    );
+    String json = objectMapper.writeValueAsString(createWordDto);
+
+    given().contentType("application/json")
+      .body(json)
+      .when()
+      .post("/words")
+      .then()
+      .statusCode(201)
+      .body("type", equalTo("PRONOUN_ADJECTIVE"))
+      .body("declinationMatrix.nominativeMasculine", equalTo("nominativeMasculine"));
+  }
+
+  @Test
+  @TestSecurity(
+    user = "user", roles = "words#create"
+  )
+  public void shouldCreateWordWithDeclinationsWhenTypeIsNumeralCardinal() throws JsonProcessingException {
+    CreateWordDto createWordDto = new CreateWordDto(
+      "russian",
+      "english",
+      "spanish",
+      WordType.NUMERAL_CARDINAL,
+      null,
+      new CreateWordDeclinationDto(
+        "nominative",
+        "accusative",
+        "genitive",
+        "dative",
+        "instrumental",
+        "prepositional",
+        "nominativePlural",
+        "accusativePlural",
+        "genitivePlural",
+        "dativePlural",
+        "instrumentalPlural",
+        "prepositionalPlural"
+      ),
+      null
+    );
+    String json = objectMapper.writeValueAsString(createWordDto);
+
+    given().contentType("application/json")
+      .body(json)
+      .when()
+      .post("/words")
+      .then()
+      .statusCode(201)
+      .body("type", equalTo("NUMERAL_CARDINAL"))
+      .body("declinations.nominative", equalTo("nominative"));
+  }
+
+  @Test
+  @TestSecurity(
+    user = "user", roles = "words#create"
+  )
+  public void shouldCreateWordWithDeclinationMatrixWhenTypeIsNumeralAdjective() throws JsonProcessingException {
+    CreateWordDto createWordDto = new CreateWordDto(
+      "russian",
+      "english",
+      "spanish",
+      WordType.NUMERAL_ADJECTIVE,
+      null,
+      null,
+      new CreateWordDeclinationMatrixDto(
+        "nominativeMasculine",
+        "nominativeFeminine",
+        "nominativeNeuter",
+        "nominativePlural",
+        "accusativeMasculine",
+        "accusativeFeminine",
+        "accusativeNeuter",
+        "accusativePlural",
+        "genitiveMasculine",
+        "genitiveFeminine",
+        "genitiveNeuter",
+        "genitivePlural",
+        "dativeMasculine",
+        "dativeFeminine",
+        "dativeNeuter",
+        "dativePlural",
+        "instrumentalMasculine",
+        "instrumentalFeminine",
+        "instrumentalNeuter",
+        "instrumentalPlural",
+        "prepositionalMasculine",
+        "prepositionalFeminine",
+        "prepositionalNeuter",
+        "prepositionalPlural"
+      )
+    );
+    String json = objectMapper.writeValueAsString(createWordDto);
+
+    given().contentType("application/json")
+      .body(json)
+      .when()
+      .post("/words")
+      .then()
+      .statusCode(201)
+      .body("type", equalTo("NUMERAL_ADJECTIVE"))
+      .body("declinationMatrix.nominativeMasculine", equalTo("nominativeMasculine"));
   }
 
   @Test
