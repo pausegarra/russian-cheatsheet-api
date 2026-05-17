@@ -12,9 +12,10 @@ create table words
     russian            varchar(255) unique,
     spanish            varchar(255),
     type               varchar(255) check ((type in
-                                            ('NOUN', 'PRONOUN', 'VERB', 'ADJECTIVE', 'ADVERB', 'NUMERAL', 'ORDINAL',
-                                             'PREPOSITION', 'CONJUNCTION', 'PARTICLE', 'INTERJECTION', 'GERUND',
-                                             'PARTICIPLE', 'PREFIX', 'SUFFIX', 'ROOT', 'LETTER', 'SENTENCE', 'OTHER', 'SHORT_ADJECTIVE', 'COMPARATIVE', 'PREDICATIVE'))),
+                                            ('NOUN', 'PRONOUN_NOUN', 'PRONOUN_ADJECTIVE', 'VERB', 'ADJECTIVE', 'ADVERB',
+                                             'NUMERAL_CARDINAL', 'NUMERAL_ADJECTIVE', 'ORDINAL', 'PREPOSITION', 'CONJUNCTION',
+                                             'PARTICLE', 'INTERJECTION', 'GERUND', 'PARTICIPLE', 'PREFIX', 'SUFFIX', 'ROOT',
+                                             'LETTER', 'SENTENCE', 'OTHER', 'SHORT_ADJECTIVE', 'COMPARATIVE', 'PREDICATIVE'))),
     updated_by         varchar(255),
     primary key (id)
 );
