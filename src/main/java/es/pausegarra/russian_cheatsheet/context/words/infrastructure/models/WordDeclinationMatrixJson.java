@@ -1,7 +1,9 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
+@RegisterForReflection
 public record WordDeclinationMatrixJson(
   @JsonProperty("nominative_masculine") String nominativeMasculine,
   @JsonProperty("nominative_feminine") String nominativeFeminine,

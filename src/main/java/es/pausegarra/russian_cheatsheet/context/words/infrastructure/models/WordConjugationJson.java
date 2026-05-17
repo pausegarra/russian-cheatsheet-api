@@ -1,7 +1,9 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
+@RegisterForReflection
 public record WordConjugationJson(
   @JsonProperty("imperfective_present_first_person_singular") String imperfectivePresentFirstPersonSingular,
   @JsonProperty("imperfective_present_second_person_singular") String imperfectivePresentSecondPersonSingular,
