@@ -82,11 +82,16 @@ public record WordEntity(
   }
 
   public boolean canHaveDeclinations() {
-    return type() == WordType.NOUN;
+    return type() == WordType.NOUN || type() == WordType.PRONOUN_NOUN || type() == WordType.NUMERAL_CARDINAL;
   }
 
   public boolean canHaveDeclinationMatrix() {
-    return type() == WordType.ADJECTIVE || type() == WordType.PRONOUN || type() == WordType.PARTICIPLE || type() == WordType.ORDINAL;
+    return type() == WordType.ADJECTIVE
+      || type() == WordType.SHORT_ADJECTIVE
+      || type() == WordType.PARTICIPLE
+      || type() == WordType.ORDINAL
+      || type() == WordType.PRONOUN_ADJECTIVE
+      || type() == WordType.NUMERAL_ADJECTIVE;
   }
 
 }

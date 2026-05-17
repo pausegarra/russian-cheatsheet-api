@@ -5,7 +5,11 @@ import es.pausegarra.russian_cheatsheet.common.domain.exception.BadRequest;
 public class WordCannotHaveDeclinationMatrix extends BadRequest {
 
   public WordCannotHaveDeclinationMatrix(String word) {
-    super("Trying to add declination matrix to the word " + word + " that is not an adjective, pronoun, participle or ordinal");
+    super(
+      "Trying to add declination matrix to the word "
+        + word
+        + " that is not an ADJECTIVE, SHORT_ADJECTIVE, PARTICIPLE, ORDINAL, PRONOUN_ADJECTIVE or NUMERAL_ADJECTIVE"
+    );
   }
 
 }
