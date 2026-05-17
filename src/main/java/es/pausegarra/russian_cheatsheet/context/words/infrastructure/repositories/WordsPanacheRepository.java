@@ -54,6 +54,11 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
   }
 
   @Override
+  public void delete(WordEntity word) {
+    find("id", word.id()).firstResultOptional().ifPresent(this::delete);
+  }
+
+  @Override
   public List<WordEntity> getAll() {
     return findAll().stream().map(WordModel::toEntity).toList();
   }

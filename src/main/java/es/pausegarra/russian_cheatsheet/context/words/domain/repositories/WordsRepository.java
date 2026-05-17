@@ -18,6 +18,8 @@ public interface WordsRepository {
 
   Optional<WordEntity> findById(UUID id);
 
+  void delete(WordEntity word);
+
   List<WordEntity> getAll();
 
   Paginated<WordEntity> findByCriteria(WordSearchCriteria criteria);
