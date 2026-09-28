@@ -9,6 +9,8 @@ import jakarta.annotation.security.RolesAllowed;
 import lombok.RequiredArgsConstructor;
 import org.jboss.resteasy.reactive.RestResponse;
 
+import java.util.UUID;
+
 @RequiredArgsConstructor
 public class UpdateWordResource implements UpdateWordApiSpec {
 
@@ -17,15 +19,16 @@ public class UpdateWordResource implements UpdateWordApiSpec {
   @Override
   @RolesAllowed("words#update")
   public RestResponse<WordDto> updateWord(String wordId, UpdateWordRequest request) {
-    UpdateWordDto updateWordDto = UpdateWordDto.from(
-      wordId,
+    UpdateWordDto updateWordDto = new UpdateWordDto(
+      UUID.fromString(wordId),
       request.russian(),
-      request.spanish(),
-      request.english(),
+      request.externalId(),
+      request.translations(),
+      request.usage(),
+      request.audioUrl(),
       request.type(),
-      request.declinations(),
-      request.conjugations(),
-      request.declinationMatrix()
+      request.aspect(),
+      request.forms()
     );
     WordDto wordDto = updateWordUseCase.handle(updateWordDto);
 

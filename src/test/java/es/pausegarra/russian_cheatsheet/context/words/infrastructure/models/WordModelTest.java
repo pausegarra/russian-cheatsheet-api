@@ -1,9 +1,9 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.models;
 
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
-import es.pausegarra.russian_cheatsheet.mother.WordConjugationMother;
-import es.pausegarra.russian_cheatsheet.mother.WordDeclinationMatrixMother;
-import es.pausegarra.russian_cheatsheet.mother.WordDeclinationMother;
+import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordFormsEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordAspect;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.mother.WordMother;
 import org.junit.jupiter.api.Test;
 
@@ -12,114 +12,54 @@ import static org.junit.jupiter.api.Assertions.*;
 class WordModelTest {
 
   @Test
-  public void shouldMapFromEntity() {
-    WordEntity wordEntity = WordMother.random()
-      .conjugations(WordConjugationMother.random().build())
-      .declinations(WordDeclinationMother.random().build())
-      .declinationMatrix(WordDeclinationMatrixMother.random().build())
+  void shouldMapFromEntity() {
+    WordFormsEntity forms = WordFormsEntity.builder()
+      .ru_verb_presfut_sg1("ввожу")
+      .ru_verb_gerund_present("вводя")
       .build();
-    WordModel wordModel = WordModel.fromEntity(wordEntity);
+    WordEntity entity = WordMother.random()
+      .type(WordType.VERB)
+      .aspect(WordAspect.IMPERFECTIVE)
+      .forms(forms)
+      .build();
 
-    assertNotNull(wordModel);
-    assertEquals(wordEntity.id(), wordModel.getId());
-    assertEquals(wordEntity.russian(), wordModel.getRussian());
-    assertEquals(wordEntity.english(), wordModel.getEnglish());
-    assertEquals(wordEntity.spanish(), wordModel.getSpanish());
-    assertEquals(wordEntity.type(), wordModel.getType());
-    assertNotNull(wordModel.getConjugations());
-    assertNotNull(wordModel.getDeclinations());
-    assertNotNull(wordModel.getDeclinationMatrix());
-    assertEquals(wordEntity.createdBy(), wordModel.getCreatedBy());
-    assertEquals(wordEntity.createdAt(), wordModel.getCreatedAt());
-    assertEquals(wordEntity.updatedBy(), wordModel.getUpdatedBy());
-    assertEquals(wordEntity.updatedAt(), wordModel.getUpdatedAt());
+    WordModel model = WordModel.fromEntity(entity);
+
+    assertNotNull(model);
+    assertEquals(entity.id(), model.getId());
+    assertEquals(entity.russian(), model.getRussian());
+    assertEquals(entity.translations(), model.getTranslations().stream().map(WordTranslationModel::toEntity).toList());
+    assertEquals(entity.type(), model.getType());
+    assertEquals(entity.aspect(), model.getAspect());
+    assertEquals(forms, model.getForms());
   }
 
   @Test
-  public void shouldMapToEntity() {
-    WordEntity wordEntity = WordMother.random()
-      .conjugations(WordConjugationMother.random().build())
-      .declinations(WordDeclinationMother.random().build())
-      .declinationMatrix(WordDeclinationMatrixMother.random().build())
+  void shouldMapToEntity() {
+    WordFormsEntity forms = WordFormsEntity.builder()
+      .ru_adj_m_nom("новый")
+      .ru_adj_comparative("новее")
       .build();
-    WordModel wordModel = WordModel.fromEntity(wordEntity);
+    WordEntity entity = WordMother.random().type(WordType.ADJECTIVE).forms(forms).build();
 
-    WordEntity wordEntityFromModel = wordModel.toEntity();
+    WordEntity roundTrip = WordModel.fromEntity(entity).toEntity();
 
-    assertNotNull(wordEntityFromModel);
-    assertEquals(wordEntity.id(), wordEntityFromModel.id());
-    assertEquals(wordEntity.russian(), wordEntityFromModel.russian());
-    assertEquals(wordEntity.english(), wordEntityFromModel.english());
-    assertEquals(wordEntity.spanish(), wordEntityFromModel.spanish());
-    assertEquals(wordEntity.type(), wordEntityFromModel.type());
-    assertNotNull(wordEntityFromModel.conjugations());
-    assertNotNull(wordEntityFromModel.declinations());
-    assertNotNull(wordEntityFromModel.declinationMatrix());
-    assertEquals(wordEntity.createdBy(), wordEntityFromModel.createdBy());
-    assertEquals(wordEntity.createdAt(), wordEntityFromModel.createdAt());
-    assertEquals(wordEntity.updatedBy(), wordEntityFromModel.updatedBy());
-    assertEquals(wordEntity.updatedAt(), wordEntityFromModel.updatedAt());
+    assertNotNull(roundTrip);
+    assertEquals(entity.id(), roundTrip.id());
+    assertEquals(entity.russian(), roundTrip.russian());
+    assertEquals(entity.translations(), roundTrip.translations());
+    assertEquals(entity.type(), roundTrip.type());
+    assertEquals(forms, roundTrip.forms());
+    assertEquals(entity.createdBy(), roundTrip.createdBy());
+    assertEquals(entity.createdAt(), roundTrip.createdAt());
+    assertEquals(entity.updatedBy(), roundTrip.updatedBy());
+    assertEquals(entity.updatedAt(), roundTrip.updatedAt());
   }
 
   @Test
-  public void shouldMapToEntityWithChildrenNull() {
-    WordEntity wordEntity = WordMother.random().conjugations(null).declinations(null).declinationMatrix(null).build();
-    WordModel wordModel = WordModel.fromEntity(wordEntity);
+  void shouldPreserveNullForms() {
+    WordEntity entity = WordMother.random().forms(null).build();
 
-    WordEntity wordEntityFromModel = wordModel.toEntity();
-
-    assertNotNull(wordEntityFromModel);
-    assertEquals(wordEntity.id(), wordEntityFromModel.id());
-    assertEquals(wordEntity.russian(), wordEntityFromModel.russian());
-    assertEquals(wordEntity.english(), wordEntityFromModel.english());
-    assertEquals(wordEntity.spanish(), wordEntityFromModel.spanish());
-    assertEquals(wordEntity.type(), wordEntityFromModel.type());
-    assertNull(wordEntityFromModel.conjugations());
-    assertNull(wordEntityFromModel.declinations());
-    assertNull(wordEntityFromModel.declinationMatrix());
-    assertEquals(wordEntity.createdBy(), wordEntityFromModel.createdBy());
-    assertEquals(wordEntity.createdAt(), wordEntityFromModel.createdAt());
-    assertEquals(wordEntity.updatedBy(), wordEntityFromModel.updatedBy());
-    assertEquals(wordEntity.updatedAt(), wordEntityFromModel.updatedAt());
+    assertNull(WordModel.fromEntity(entity).toEntity().forms());
   }
-
-  @Test
-  public void shouldPreserveConjugationFieldsWhenMapping() {
-    WordEntity wordEntity = WordMother.random()
-      .conjugations(WordConjugationMother.random().build())
-      .build();
-    WordModel wordModel = WordModel.fromEntity(wordEntity);
-
-    WordEntity wordEntityFromModel = wordModel.toEntity();
-
-    assertEquals(wordEntity.conjugations().imperfectivePresentFirstPersonSingular(), wordEntityFromModel.conjugations().imperfectivePresentFirstPersonSingular());
-    assertEquals(wordEntity.conjugations().perfectiveFutureThirdPersonPlural(), wordEntityFromModel.conjugations().perfectiveFutureThirdPersonPlural());
-  }
-
-  @Test
-  public void shouldPreserveDeclinationFieldsWhenMapping() {
-    WordEntity wordEntity = WordMother.random()
-      .declinations(WordDeclinationMother.random().build())
-      .build();
-    WordModel wordModel = WordModel.fromEntity(wordEntity);
-
-    WordEntity wordEntityFromModel = wordModel.toEntity();
-
-    assertEquals(wordEntity.declinations().nominative(), wordEntityFromModel.declinations().nominative());
-    assertEquals(wordEntity.declinations().prepositionalPlural(), wordEntityFromModel.declinations().prepositionalPlural());
-  }
-
-  @Test
-  public void shouldPreserveDeclinationMatrixFieldsWhenMapping() {
-    WordEntity wordEntity = WordMother.random()
-      .declinationMatrix(WordDeclinationMatrixMother.random().build())
-      .build();
-    WordModel wordModel = WordModel.fromEntity(wordEntity);
-
-    WordEntity wordEntityFromModel = wordModel.toEntity();
-
-    assertEquals(wordEntity.declinationMatrix().nominativeMasculine(), wordEntityFromModel.declinationMatrix().nominativeMasculine());
-    assertEquals(wordEntity.declinationMatrix().prepositionalPlural(), wordEntityFromModel.declinationMatrix().prepositionalPlural());
-  }
-
 }

@@ -2,6 +2,8 @@ package es.pausegarra.russian_cheatsheet.context.words.infrastructure.rest;
 
 import es.pausegarra.russian_cheatsheet.common.application.use_cases.UseCase;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordTranslationInputDto;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.update_word.UpdateWordDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.requests.UpdateWordRequest;
@@ -14,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.UUID;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -35,7 +38,11 @@ class UpdateWordResourceTest {
     WordEntity word = WordMother.random().build();
     when(updateWordUseCase.handle(any(UpdateWordDto.class))).thenReturn(WordDto.fromEntity(word));
 
-    UpdateWordRequest request = new UpdateWordRequest("russian", "spanish", "english", "OTHER", null, null, null);
+    UpdateWordRequest request = new UpdateWordRequest(
+      "russian", WordType.OTHER, null, null, null,
+      List.of(new WordTranslationInputDto("en", "english", 0), new WordTranslationInputDto("es", "spanish", 1)),
+      null, null
+    );
     RestResponse<WordDto> response = updateWordResource.updateWord(UUID.randomUUID().toString(), request);
 
     assertNotNull(response);

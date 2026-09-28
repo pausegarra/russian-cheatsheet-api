@@ -3,6 +3,7 @@ package es.pausegarra.russian_cheatsheet.context.words.application.use_cases.fin
 import es.pausegarra.russian_cheatsheet.common.application.pagination.PaginatedDto;
 import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.Paginated;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordTranslationDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.criterias.WordSearchCriteria;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordsRepository;
@@ -58,8 +59,7 @@ class FindUnpublishedWordsUseCaseTest {
     WordDto entity = result.data().getFirst();
     assertNotNull(entity);
     assertEquals(word.russian(), entity.russian());
-    assertEquals(word.english(), entity.english());
-    assertEquals(word.spanish(), entity.spanish());
+    assertEquals(word.translations().stream().map(WordTranslationDto::fromEntity).toList(), entity.translations());
     assertEquals(word.type(), entity.type());
   }
 

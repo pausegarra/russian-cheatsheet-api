@@ -32,6 +32,10 @@ public abstract class BaseArchTest {
 
   protected static final String RESPONSE = "Response";
 
+  protected static final String LEGACY_USE_CASE = "UseCase";
+
+  protected static final String APPLICATION_USE_CASES_PACKAGE = BASE_PACKAGE + "..application..use_cases..";
+
   protected static final String COMMAND = "Command";
 
   protected static final String QUERY = "Query";
@@ -46,9 +50,7 @@ public abstract class BaseArchTest {
 
   protected static final String RESOURCE = "Resource";
 
-  protected static final String SERVICE = "UseCase";
-
-  protected static final String SERVICE_IMPL = "UseCaseImpl";
+  protected static final String SERVICE = "Service";
 
   protected static final String CONFIG = "Config";
 
