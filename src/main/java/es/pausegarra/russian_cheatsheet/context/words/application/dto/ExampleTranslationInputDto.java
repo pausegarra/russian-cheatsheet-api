@@ -1,4 +1,4 @@
-package es.pausegarra.russian_cheatsheet.context.words.application.use_cases.import_example;
+package es.pausegarra.russian_cheatsheet.context.words.application.dto;
 
 public record ExampleTranslationInputDto(
   String language,

@@ -2,10 +2,13 @@ package es.pausegarra.russian_cheatsheet.context.words.infrastructure.models;
 
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordFormsEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordTranslationEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordAspect;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.mother.WordMother;
 import org.junit.jupiter.api.Test;
+
+import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +31,14 @@ class WordModelTest {
     assertNotNull(model);
     assertEquals(entity.id(), model.getId());
     assertEquals(entity.russian(), model.getRussian());
-    assertEquals(entity.translations(), model.getTranslations().stream().map(WordTranslationModel::toEntity).toList());
+    assertEquals(
+      entity.translations().stream().sorted(Comparator
+        .comparing(WordTranslationEntity::language)
+        .thenComparingInt(WordTranslationEntity::position)
+        .thenComparing(translation -> translation.managedBy().name())
+        .thenComparing(WordTranslationEntity::text)).toList(),
+      model.getTranslations().stream().map(WordTranslationJson::toEntity).toList()
+    );
     assertEquals(entity.type(), model.getType());
     assertEquals(entity.aspect(), model.getAspect());
     assertEquals(forms, model.getForms());
@@ -47,7 +57,14 @@ class WordModelTest {
     assertNotNull(roundTrip);
     assertEquals(entity.id(), roundTrip.id());
     assertEquals(entity.russian(), roundTrip.russian());
-    assertEquals(entity.translations(), roundTrip.translations());
+    assertEquals(
+      entity.translations().stream().sorted(Comparator
+        .comparing(WordTranslationEntity::language)
+        .thenComparingInt(WordTranslationEntity::position)
+        .thenComparing(translation -> translation.managedBy().name())
+        .thenComparing(WordTranslationEntity::text)).toList(),
+      roundTrip.translations()
+    );
     assertEquals(entity.type(), roundTrip.type());
     assertEquals(forms, roundTrip.forms());
     assertEquals(entity.createdBy(), roundTrip.createdBy());

@@ -1,0 +1,14 @@
+package es.pausegarra.russian_cheatsheet.context.words.infrastructure.requests;
+
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.ExampleTranslationInputDto;
+
+import java.util.List;
+import java.util.UUID;
+
+public record UpdateExampleRequest(
+  String russian,
+  List<ExampleTranslationInputDto> translations,
+  String contributor,
+  String audioUrl,
+  List<UUID> linkedWordIds
+) {}

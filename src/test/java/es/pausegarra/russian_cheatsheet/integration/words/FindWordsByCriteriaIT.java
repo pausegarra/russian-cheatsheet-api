@@ -2,6 +2,8 @@ package es.pausegarra.russian_cheatsheet.integration.words;
 
 import es.pausegarra.russian_cheatsheet.base.IntegrationTest;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordTranslationEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.TranslationOrigin;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.WordModel;
 import es.pausegarra.russian_cheatsheet.mother.WordMother;
 import io.quarkus.test.junit.QuarkusTest;
@@ -52,6 +54,27 @@ public class FindWordsByCriteriaIT extends IntegrationTest {
     persist(WordModel.fromEntity(words.getLast()));
 
     given().when().get("/words?search=search").then().statusCode(200).body("data.size()", is(1)).body("data[0].russian", is("search"));
+  }
+
+  @Test
+  public void shouldSearchByTranslationText() {
+    WordEntity matching = WordMother.random()
+      .russian("matching")
+      .translations(List.of(new WordTranslationEntity("en", "unique-translation-term", TranslationOrigin.MANUAL, 0)))
+      .build();
+    WordEntity notMatching = WordMother.random()
+      .russian("not-matching")
+      .translations(List.of(new WordTranslationEntity("en", "different translation", TranslationOrigin.MANUAL, 0)))
+      .build();
+    persist(WordModel.fromEntity(matching));
+    persist(WordModel.fromEntity(notMatching));
+
+    given().when()
+      .get("/words?search=unique-translation-term")
+      .then()
+      .statusCode(200)
+      .body("data.size()", is(1))
+      .body("data[0].russian", is("matching"));
   }
 
 }

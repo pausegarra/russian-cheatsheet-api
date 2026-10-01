@@ -2,7 +2,6 @@ package es.pausegarra.russian_cheatsheet.context.words.infrastructure.repositori
 
 import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.PageInfo;
 import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.Paginated;
-import es.pausegarra.russian_cheatsheet.context.words.domain.entities.ExternalChecksumEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.ExampleSentenceEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordNotFound;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.ExampleSentencesRepository;
@@ -34,20 +33,15 @@ public class ExampleSentencesPanacheRepository implements ExampleSentencesReposi
   }
 
   @Override
-  public Optional<ExampleSentenceEntity> findByExternalId(String externalId) {
-    return find("externalId", externalId).firstResultOptional().map(ExampleSentenceModel::toEntity);
-  }
-
-  @Override
   public ExampleSentenceEntity save(ExampleSentenceEntity sentence) {
-    List<WordModel> words = findLinkedWords(sentence.linkedWordExternalIds());
+    List<WordModel> words = findLinkedWords(sentence.linkedWordIds());
     ExampleSentenceModel model = ExampleSentenceModel.fromEntity(sentence, words);
     return getEntityManager().merge(model).toEntity();
   }
 
   @Override
   public Paginated<ExampleSentenceEntity> findAll(int page, int perPage) {
-    PanacheQuery<ExampleSentenceModel> query = findAll(Sort.by("externalId")).page(Page.of(page, perPage));
+    PanacheQuery<ExampleSentenceModel> query = findAll(Sort.by("id")).page(Page.of(page, perPage));
     PageInfo pageInfo = PageInfo.fromQuery(query);
     List<ExampleSentenceEntity> data = query.list().stream().map(ExampleSentenceModel::toEntity).toList();
 
@@ -60,8 +54,8 @@ public class ExampleSentencesPanacheRepository implements ExampleSentencesReposi
   @Override
   public Paginated<ExampleSentenceEntity> findByWordId(UUID wordId, int page, int perPage) {
     PanacheQuery<ExampleSentenceModel> query = find(
-      "select distinct sentence from ExampleSentenceModel sentence join sentence.linkedWords word where word.id = ?1",
-      Sort.by("externalId"),
+      "select distinct sentence from ExampleSentenceModel sentence join sentence.linkedWords word " +
+        "where word.id = ?1 order by sentence.id",
       wordId
     ).page(Page.of(page, perPage));
     PageInfo pageInfo = PageInfo.fromQuery(query);
@@ -73,46 +67,23 @@ public class ExampleSentencesPanacheRepository implements ExampleSentencesReposi
     );
   }
 
-  @Override
-  public Paginated<ExternalChecksumEntity> findImportChecksums(int page, int perPage) {
-    Page.of(page, perPage);
-    long total = ((Number) entityManager.createNativeQuery(
-      "select count(*) from example_sentences where external_id is not null and checksum is not null"
-    ).getSingleResult()).longValue();
-    List<?> rows = entityManager.createNativeQuery(
-        "select external_id, checksum from example_sentences where external_id is not null and checksum is not null order by external_id"
-      )
-      .setFirstResult(page * perPage)
-      .setMaxResults(perPage)
-      .getResultList();
-    List<ExternalChecksumEntity> data = rows.stream()
-      .map(row -> (Object[]) row)
-      .map(columns -> new ExternalChecksumEntity((String) columns[0], (String) columns[1]))
-      .toList();
-    int totalPages = (int) Math.ceil((double) total / perPage);
-
-    return new Paginated<>(
-      data, page, perPage, totalPages, total, page + 1 < totalPages, page > 0
-    );
-  }
-
-  private List<WordModel> findLinkedWords(List<String> externalIds) {
-    if (externalIds.isEmpty()) {
+  private List<WordModel> findLinkedWords(List<UUID> wordIds) {
+    if (wordIds.isEmpty()) {
       return List.of();
     }
 
     List<WordModel> words = entityManager.createQuery(
-        "select word from WordModel word where word.externalId in :externalIds", WordModel.class
+        "select word from WordModel word where word.id in :wordIds", WordModel.class
       )
-      .setParameter("externalIds", externalIds)
+      .setParameter("wordIds", wordIds)
       .getResultList();
-    Set<String> foundIds = new HashSet<>();
-    words.forEach(word -> foundIds.add(word.getExternalId()));
-    externalIds.stream()
-      .filter(externalId -> !foundIds.contains(externalId))
+    Set<UUID> foundIds = new HashSet<>();
+    words.forEach(word -> foundIds.add(word.getId()));
+    wordIds.stream()
+      .filter(wordId -> !foundIds.contains(wordId))
       .findFirst()
-      .ifPresent(externalId -> {
-        throw new WordNotFound(externalId);
+      .ifPresent(wordId -> {
+        throw new WordNotFound(wordId.toString());
       });
 
     return words;

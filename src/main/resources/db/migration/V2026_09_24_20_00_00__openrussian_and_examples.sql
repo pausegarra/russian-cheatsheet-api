@@ -12,6 +12,7 @@ alter table words drop column if exists conjugations;
 alter table words drop column if exists declinations;
 alter table words drop column if exists declination_matrix;
 alter table words add column forms jsonb;
+alter table words add column translations jsonb not null default '[]'::jsonb;
 alter table words add constraint words_aspect_check check (
   (type = 'verb' and aspect is not null and aspect in ('imperfective', 'perfective', 'both'))
   or (type <> 'verb' and aspect is null)
@@ -26,22 +27,9 @@ alter table words add constraint words_type_check check (type in (
   'adjective', 'adverb', 'expression', 'noun', 'other', 'pronoun', 'verb'
 ));
 
-create table word_translations
-(
-  translation_id       uuid primary key,
-  word_id              uuid not null references words (id) on delete cascade,
-  language             varchar(16) not null,
-  text                 text not null,
-  managed_by           varchar(32) not null check (managed_by in ('OPENRUSSIAN', 'MANUAL')),
-  translation_position integer not null default 0,
-  unique (word_id, language, managed_by, translation_position)
-);
-create index word_translations_language_word_idx on word_translations (language, word_id);
-
 create table example_sentences
 (
   id          uuid primary key,
-  external_id varchar(255) not null unique,
   russian     text not null,
   translations jsonb not null default '[]'::jsonb,
   contributor varchar(255),

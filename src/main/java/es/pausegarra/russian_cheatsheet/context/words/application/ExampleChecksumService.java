@@ -15,6 +15,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Comparator;
 import java.util.HexFormat;
+import java.util.UUID;
 
 @ApplicationScoped
 @RegisterForReflection(targets = {ExampleTranslationEntity.class})
@@ -33,7 +34,7 @@ public class ExampleChecksumService {
       .map(translation -> new ChecksumTranslation(translation.language(), translation.text(), translation.position()))
       .toList();
     CanonicalSentence payload = new CanonicalSentence(
-      sentence.russian(), translations, sentence.contributor(), sentence.audioUrl(), sentence.linkedWordExternalIds()
+      sentence.russian(), translations, sentence.contributor(), sentence.audioUrl(), sentence.linkedWordIds()
     );
 
     try {
@@ -51,7 +52,7 @@ public class ExampleChecksumService {
     java.util.List<ChecksumTranslation> translations,
     String contributor,
     String audioUrl,
-    java.util.List<String> linkedWordExternalIds
+    java.util.List<UUID> linkedWordIds
   ) {}
 
   @RegisterForReflection
