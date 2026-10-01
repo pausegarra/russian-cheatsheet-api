@@ -41,10 +41,9 @@ public class WordChecksumService {
       .map(translation -> new ChecksumTranslation(translation.language(), translation.text(), translation.position()))
       .toList();
     List<ChecksumRelation> relations = outgoingRelations.stream()
-      .filter(relatedWord -> relatedWord.externalId() != null)
-      .sorted(Comparator.comparing(RelatedWordEntity::externalId)
+      .sorted(Comparator.comparing(RelatedWordEntity::russian)
         .thenComparing(relatedWord -> relatedWord.relation().value()))
-      .map(relatedWord -> new ChecksumRelation(relatedWord.externalId(), relatedWord.relation().value()))
+      .map(relatedWord -> new ChecksumRelation(relatedWord.russian(), relatedWord.relation().value()))
       .toList();
 
     CanonicalWord payload = new CanonicalWord(
@@ -79,6 +78,6 @@ public class WordChecksumService {
 
   @RegisterForReflection
   @JsonInclude(JsonInclude.Include.ALWAYS)
-  private record ChecksumRelation(String externalId, String relation) {}
+  private record ChecksumRelation(String russian, String relation) {}
 
 }
