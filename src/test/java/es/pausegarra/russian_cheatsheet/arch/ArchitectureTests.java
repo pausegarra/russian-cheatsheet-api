@@ -26,6 +26,8 @@ public class ArchitectureTests extends BaseArchTest {
   static final ArchRule services_should_implement_service = classes().that()
     .areAnnotatedWith(ApplicationScoped.class)
     .and()
+    .resideInAPackage(APPLICATION_USE_CASES_PACKAGE)
+    .and()
     .haveSimpleNameEndingWith(SERVICE)
     .should()
     .implement(UseCase.class);

@@ -1,11 +1,11 @@
 package es.pausegarra.russian_cheatsheet.context.words.application.dto.responses;
 
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordTranslationDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordFormsEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordAspect;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
-import es.pausegarra.russian_cheatsheet.mother.WordConjugationMother;
-import es.pausegarra.russian_cheatsheet.mother.WordDeclinationMatrixMother;
-import es.pausegarra.russian_cheatsheet.mother.WordDeclinationMother;
 import es.pausegarra.russian_cheatsheet.mother.WordMother;
 import org.junit.jupiter.api.Test;
 
@@ -15,77 +15,26 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class WordDtoTest {
 
   @Test
-  public void shouldMapFromEntity() {
-    WordEntity word = WordMother.random().type(WordType.OTHER).build();
-    WordDto wordDto = WordDto.fromEntity(word);
+  void shouldMapWordIncludingRootAspectAndSourceForms() {
+    WordFormsEntity forms = WordFormsEntity.builder()
+      .ru_verb_presfut_sg1("ввожу")
+      .ru_verb_gerund_present("вводя")
+      .ru_verb_participle_active_past("вводивший")
+      .build();
+    WordEntity word = WordMother.random()
+      .type(WordType.VERB)
+      .aspect(WordAspect.IMPERFECTIVE)
+      .forms(forms)
+      .build();
 
-    assertNotNull(wordDto);
-    assertEquals(word.id(), wordDto.id());
-    assertEquals(word.russian(), wordDto.russian());
-    assertEquals(word.english(), wordDto.english());
-    assertEquals(word.spanish(), wordDto.spanish());
-    assertEquals(word.type(), wordDto.type());
-    assertEquals(word.createdBy(), wordDto.createdBy());
-    assertEquals(word.createdAt(), wordDto.createdAt());
-    assertEquals(word.updatedBy(), wordDto.updatedBy());
-    assertEquals(word.updatedAt(), wordDto.updatedAt());
+    WordDto dto = WordDto.fromEntity(word);
+
+    assertNotNull(dto);
+    assertEquals(word.id(), dto.id());
+    assertEquals(word.russian(), dto.russian());
+    assertEquals(word.translations().stream().map(WordTranslationDto::fromEntity).toList(), dto.translations());
+    assertEquals(WordType.VERB, dto.type());
+    assertEquals(WordAspect.IMPERFECTIVE, dto.aspect());
+    assertEquals(forms, dto.forms());
   }
-
-  @Test
-  public void shouldMapFromEntityWithConjugationsIfVerb() {
-    WordEntity word = WordMother.random().type(WordType.VERB).conjugations(WordConjugationMother.random().build()).build();
-    WordDto wordDto = WordDto.fromEntity(word);
-
-    assertNotNull(wordDto);
-    assertEquals(word.id(), wordDto.id());
-    assertEquals(word.russian(), wordDto.russian());
-    assertEquals(word.english(), wordDto.english());
-    assertEquals(word.spanish(), wordDto.spanish());
-    assertEquals(word.type(), wordDto.type());
-    assertEquals(word.createdBy(), wordDto.createdBy());
-    assertEquals(word.createdAt(), wordDto.createdAt());
-    assertEquals(word.updatedBy(), wordDto.updatedBy());
-    assertEquals(word.updatedAt(), wordDto.updatedAt());
-
-    assertNotNull(wordDto.conjugations());
-  }
-
-  @Test
-  public void shouldMapFromEntityWithDeclinationsIfNoun() {
-    WordEntity word = WordMother.random().type(WordType.NOUN).declinations(WordDeclinationMother.random().build()).build();
-    WordDto wordDto = WordDto.fromEntity(word);
-
-    assertNotNull(wordDto);
-    assertEquals(word.id(), wordDto.id());
-    assertEquals(word.russian(), wordDto.russian());
-    assertEquals(word.english(), wordDto.english());
-    assertEquals(word.spanish(), wordDto.spanish());
-    assertEquals(word.type(), wordDto.type());
-    assertEquals(word.createdBy(), wordDto.createdBy());
-    assertEquals(word.createdAt(), wordDto.createdAt());
-    assertEquals(word.updatedBy(), wordDto.updatedBy());
-    assertEquals(word.updatedAt(), wordDto.updatedAt());
-
-    assertNotNull(wordDto.declinations());
-  }
-
-  @Test
-  public void shouldMapFromEntityWithDeclinationMatrixIfAdjectiveOrPronounOrParticipleOrOrdinal() {
-    WordEntity word = WordMother.random().type(WordType.ADJECTIVE).declinationMatrix(WordDeclinationMatrixMother.random().build()).build();
-    WordDto wordDto = WordDto.fromEntity(word);
-
-    assertNotNull(wordDto);
-    assertEquals(word.id(), wordDto.id());
-    assertEquals(word.russian(), wordDto.russian());
-    assertEquals(word.english(), wordDto.english());
-    assertEquals(word.spanish(), wordDto.spanish());
-    assertEquals(word.type(), wordDto.type());
-    assertEquals(word.createdBy(), wordDto.createdBy());
-    assertEquals(word.createdAt(), wordDto.createdAt());
-    assertEquals(word.updatedBy(), wordDto.updatedBy());
-    assertEquals(word.updatedAt(), wordDto.updatedAt());
-
-    assertNotNull(wordDto.declinationMatrix());
-  }
-
 }

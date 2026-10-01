@@ -1,15 +1,19 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.requests;
 
-import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.update_word.UpdateWordConjugationsDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.update_word.UpdateWordDeclinationDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.update_word.UpdateWordDeclinationMatrixDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordTranslationInputDto;
+import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordFormsEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordAspect;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
+
+import java.util.List;
 
 public record UpdateWordRequest(
   String russian,
-  String spanish,
-  String english,
-  String type,
-  UpdateWordDeclinationDto declinations,
-  UpdateWordDeclinationMatrixDto declinationMatrix,
-  UpdateWordConjugationsDto conjugations
+  WordType type,
+  WordAspect aspect,
+  WordFormsEntity forms,
+  String externalId,
+  List<WordTranslationInputDto> translations,
+  String usage,
+  String audioUrl
 ) {}

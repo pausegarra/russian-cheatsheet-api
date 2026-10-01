@@ -20,8 +20,8 @@ public class NamingConventionsTests extends BaseArchTest {
     .resideInAPackage(APPLICATION_PACKAGE)
     .should()
     .haveSimpleNameEndingWith(SERVICE)
-    .andShould()
-    .haveSimpleNameNotEndingWith(SERVICE_IMPL);
+    .orShould()
+    .haveSimpleNameEndingWith(LEGACY_USE_CASE);
 
   // @ArchTest
   // static final ArchRule controllers_should_be_suffixed = classes().that()

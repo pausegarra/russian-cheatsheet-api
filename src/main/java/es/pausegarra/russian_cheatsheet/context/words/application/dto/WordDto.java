@@ -1,24 +1,29 @@
 package es.pausegarra.russian_cheatsheet.context.words.application.dto;
 
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordFormsEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordAspect;
 import lombok.Builder;
 
 import java.time.Instant;
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 @Builder
 public record WordDto(
   UUID id,
+  String externalId,
   String russian,
-  String english,
-  String spanish,
+  List<WordTranslationDto> translations,
+  String usage,
+  String audioUrl,
+  String checksum,
   WordType type,
+  WordAspect aspect,
   Instant publishedAt,
-  WordConjugationDto conjugations,
-  WordDeclinationDto declinations,
-  WordDeclinationMatrixDto declinationMatrix,
+  WordFormsEntity forms,
+  List<RelatedWordDto> relatedWords,
   String createdBy,
   Instant createdAt,
   String updatedBy,
@@ -26,26 +31,23 @@ public record WordDto(
 ) {
 
   public static WordDto fromEntity(WordEntity entity) {
-    WordConjugationDto conjugationsDto = Optional.ofNullable(entity.conjugations())
-      .map(WordConjugationDto::fromEntity)
-      .orElse(null);
-    WordDeclinationDto declinationsDto = Optional.ofNullable(entity.declinations())
-      .map(WordDeclinationDto::fromEntity)
-      .orElse(null);
-    WordDeclinationMatrixDto declinationMatrixDto = Optional.ofNullable(entity.declinationMatrix())
-      .map(WordDeclinationMatrixDto::fromEntity)
-      .orElse(null);
+    return fromEntity(entity, List.of());
+  }
 
+  public static WordDto fromEntity(WordEntity entity, List<RelatedWordDto> relatedWords) {
     return WordDto.builder()
       .id(entity.id())
+      .externalId(entity.externalId())
       .russian(entity.russian())
-      .english(entity.english())
-      .spanish(entity.spanish())
+      .translations(entity.translations().stream().map(WordTranslationDto::fromEntity).toList())
+      .usage(entity.usage())
+      .audioUrl(entity.audioUrl())
+      .checksum(entity.checksum())
       .publishedAt(entity.publishedAt())
       .type(entity.type())
-      .conjugations(conjugationsDto)
-      .declinations(declinationsDto)
-      .declinationMatrix(declinationMatrixDto)
+      .aspect(entity.aspect())
+      .forms(entity.forms())
+      .relatedWords(relatedWords)
       .createdBy(entity.createdBy())
       .createdAt(entity.createdAt())
       .updatedBy(entity.updatedBy())

@@ -1,147 +1,111 @@
 package es.pausegarra.russian_cheatsheet.context.words.application.use_cases.update_word;
 
 import es.pausegarra.russian_cheatsheet.common.application.use_cases.UseCase;
+import es.pausegarra.russian_cheatsheet.common.domain.exception.BadRequest;
+import es.pausegarra.russian_cheatsheet.context.words.application.WordRelationsService;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
-import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordConjugationEntity;
-import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationEntity;
-import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordDeclinationMatrixEntity;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordTranslationInputDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
-import es.pausegarra.russian_cheatsheet.context.words.domain.exception.ConjugationsRequired;
-import es.pausegarra.russian_cheatsheet.context.words.domain.exception.DeclinationsRequired;
-import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordNotFound;
+import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordFormsEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordTranslationEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.TranslationOrigin;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordAspect;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordsRepository;
+import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordNotFound;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 @ApplicationScoped
 @RequiredArgsConstructor
 public class UpdateWordUseCase implements UseCase<UpdateWordDto, WordDto> {
 
   private final WordsRepository wordsRepository;
+  private final WordRelationsService relationsService;
 
   @Override
   @Transactional
   public WordDto handle(UpdateWordDto dto) {
-    WordEntity word = wordsRepository.findById(dto.id()).orElseThrow(() -> new WordNotFound(dto.id().toString()));
+    WordEntity word = wordsRepository.findById(dto.id())
+      .orElseThrow(() -> new WordNotFound(dto.id().toString()));
+    WordFormsEntity forms = validatedForms(dto.type(), dto.aspect(), dto.forms());
 
-    WordEntity updated = word.update(dto.russian(), dto.english(), dto.spanish(), dto.type());
-
-    if (updated.canHaveConjugations()) {
-      WordConjugationEntity conjugation = createConjugations(dto.conjugations());
-      WordEntity wordWithConjugations = updated.addConjugations(conjugation);
-
-      return WordDto.fromEntity(wordsRepository.save(wordWithConjugations));
+    WordEntity updated;
+    if (dto.externalId() != null) {
+      if (word.externalId() == null || !word.externalId().equals(dto.externalId())) {
+        throw new BadRequest("External ID does not match the word being updated");
+      }
+      if (dto.translations() == null) {
+        throw new BadRequest("Imported word updates must include translations");
+      }
+      updated = word.replaceImportedData(
+        dto.externalId(), dto.russian(), translationsFrom(dto.translations(), TranslationOrigin.OPENRUSSIAN),
+        dto.usage(), dto.audioUrl(), dto.type(), dto.aspect(), forms
+      );
+    } else if (dto.translations() != null) {
+      updated = word.replaceManualTranslations(
+        dto.russian(), translationsFrom(dto.translations(), TranslationOrigin.MANUAL), dto.type(), dto.aspect(), forms
+      );
+    } else {
+      updated = word.updateWordDetails(dto.russian(), dto.type(), dto.aspect(), forms);
     }
 
-    if (updated.canHaveDeclinations()) {
-      WordDeclinationEntity declination = createDeclinations(dto.declinations());
-      WordEntity wordWithDeclinations = updated.addDeclinations(declination);
-
-      return WordDto.fromEntity(wordsRepository.save(wordWithDeclinations));
+    if (updated.forms() != null && !updated.forms().isCompatibleWith(updated.type())) {
+      throw new BadRequest("Word forms do not match the word type");
     }
 
-    if (updated.canHaveDeclinationMatrix()) {
-      WordDeclinationMatrixEntity declinationMatrix = createDeclinationMatrix(dto.declinationMatrix());
-      WordEntity wordWithDeclinationMatrix = updated.addDeclinationMatrix(declinationMatrix);
-
-      return WordDto.fromEntity(wordsRepository.save(wordWithDeclinationMatrix));
+    WordEntity saved = wordsRepository.save(updated);
+    if (saved.externalId() != null) {
+      relationsService.refreshChecksums(List.of(saved.id()));
+      saved = wordsRepository.findById(saved.id()).orElseThrow();
     }
-
-    return WordDto.fromEntity(wordsRepository.save(updated));
+    return WordDto.fromEntity(saved, relationsService.findOutgoingWordDtos(saved.id()));
   }
 
-  private WordDeclinationMatrixEntity createDeclinationMatrix(UpdateWordDeclinationMatrixDto dto) {
-    if (dto == null) {
-      throw new DeclinationsRequired();
+  private WordFormsEntity validatedForms(WordType type, WordAspect aspect, WordFormsEntity forms) {
+    if (type == null) {
+      throw new BadRequest("Word type is required");
     }
-
-    return WordDeclinationMatrixEntity.create(
-      dto.nominativeMasculine(),
-      dto.nominativeFeminine(),
-      dto.nominativeNeuter(),
-      dto.nominativePlural(),
-      dto.accusativeMasculine(),
-      dto.accusativeFeminine(),
-      dto.accusativeNeuter(),
-      dto.accusativePlural(),
-      dto.genitiveMasculine(),
-      dto.genitiveFeminine(),
-      dto.genitiveNeuter(),
-      dto.genitivePlural(),
-      dto.dativeMasculine(),
-      dto.dativeFeminine(),
-      dto.dativeNeuter(),
-      dto.dativePlural(),
-      dto.instrumentalMasculine(),
-      dto.instrumentalFeminine(),
-      dto.instrumentalNeuter(),
-      dto.instrumentalPlural(),
-      dto.prepositionalMasculine(),
-      dto.prepositionalFeminine(),
-      dto.prepositionalNeuter(),
-      dto.prepositionalPlural()
-    );
+    if (type == WordType.VERB && aspect == null) {
+      throw new BadRequest("Verb words require an aspect");
+    }
+    if (type != WordType.VERB && aspect != null) {
+      throw new BadRequest("Only verb words can have an aspect");
+    }
+    if (forms != null && !forms.isCompatibleWith(type)) {
+      throw new BadRequest("Word forms do not match the word type");
+    }
+    return forms;
   }
 
-  private WordConjugationEntity createConjugations(UpdateWordConjugationsDto dto) {
-    if (dto == null) {
-      throw new ConjugationsRequired();
+  private List<WordTranslationEntity> translationsFrom(
+    List<WordTranslationInputDto> translations,
+    TranslationOrigin origin
+  ) {
+    if (translations == null) {
+      return List.of();
     }
-
-    return WordConjugationEntity.create(
-      dto.imperfectivePresentFirstPersonSingular(),
-      dto.imperfectivePresentSecondPersonSingular(),
-      dto.imperfectivePresentThirdPersonSingular(),
-      dto.imperfectivePresentFirstPersonPlural(),
-      dto.imperfectivePresentSecondPersonPlural(),
-      dto.imperfectivePresentThirdPersonPlural(),
-      dto.imperfectivePastMasculine(),
-      dto.imperfectivePastFeminine(),
-      dto.imperfectivePastNeuter(),
-      dto.imperfectivePastPlural(),
-      dto.imperfectiveFutureFirstPersonSingular(),
-      dto.imperfectiveFutureSecondPersonSingular(),
-      dto.imperfectiveFutureThirdPersonSingular(),
-      dto.imperfectiveFutureFirstPersonPlural(),
-      dto.imperfectiveFutureSecondPersonPlural(),
-      dto.imperfectiveFutureThirdPersonPlural(),
-      dto.perfectivePastMasculine(),
-      dto.perfectivePastFeminine(),
-      dto.perfectivePastNeuter(),
-      dto.perfectivePastPlural(),
-      dto.perfectiveFutureFirstPersonSingular(),
-      dto.perfectiveFutureSecondPersonSingular(),
-      dto.perfectiveFutureThirdPersonSingular(),
-      dto.perfectiveFutureFirstPersonPlural(),
-      dto.perfectiveFutureSecondPersonPlural(),
-      dto.perfectiveFutureThirdPersonPlural(),
-      dto.imperfectiveImperativeSecondPersonSingular(),
-      dto.imperfectiveImperativeSecondPersonPlural(),
-      dto.perfectiveImperativeSecondPersonSingular(),
-      dto.perfectiveImperativeSecondPersonPlural()
-    );
-  }
-
-  private WordDeclinationEntity createDeclinations(UpdateWordDeclinationDto dto) {
-    if (dto == null) {
-      throw new DeclinationsRequired();
+    List<WordTranslationEntity> result = new ArrayList<>();
+    for (int index = 0; index < translations.size(); index++) {
+      WordTranslationInputDto translation = translations.get(index);
+      if (translation.text() == null || translation.text().isBlank()) {
+        continue;
+      }
+      if (translation.language() == null || translation.language().isBlank()) {
+        throw new BadRequest("Translation language is required");
+      }
+      result.add(new WordTranslationEntity(
+        translation.language().toLowerCase(Locale.ROOT),
+        translation.text(),
+        origin,
+        translation.position() == null ? index : translation.position()
+      ));
     }
-
-    return WordDeclinationEntity.create(
-      dto.nominative(),
-      dto.accusative(),
-      dto.genitive(),
-      dto.dative(),
-      dto.instrumental(),
-      dto.prepositional(),
-      dto.nominativePlural(),
-      dto.accusativePlural(),
-      dto.genitivePlural(),
-      dto.dativePlural(),
-      dto.instrumentalPlural(),
-      dto.prepositionalPlural()
-    );
+    return List.copyOf(result);
   }
-
 }

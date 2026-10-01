@@ -2,7 +2,9 @@ package es.pausegarra.russian_cheatsheet.context.words.application.use_cases.del
 
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordNotFound;
+import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordRelationsRepository;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordsRepository;
+import es.pausegarra.russian_cheatsheet.context.words.application.WordRelationsService;
 import es.pausegarra.russian_cheatsheet.mother.WordMother;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,6 +26,12 @@ class DeleteWordUseCaseTest {
   @Mock
   private WordsRepository wordsRepository;
 
+  @Mock
+  private WordRelationsRepository relationsRepository;
+
+  @Mock
+  private WordRelationsService relationsService;
+
   @InjectMocks
   private DeleteWordUseCase deleteWordUseCase;
 
@@ -31,6 +39,7 @@ class DeleteWordUseCaseTest {
   public void shouldDeleteWord() {
     WordEntity word = WordMother.random().build();
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.of(word));
+    when(relationsRepository.findIncomingSourceIds(word.id())).thenReturn(java.util.List.of());
 
     DeleteWordDto dto = new DeleteWordDto(word.id());
     deleteWordUseCase.handle(dto);

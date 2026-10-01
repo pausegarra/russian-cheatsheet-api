@@ -53,9 +53,15 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
     return find("id", id).firstResultOptional().map(WordModel::toEntity);
   }
 
+
   @Override
   public void delete(WordEntity word) {
-    find("id", word.id()).firstResultOptional().ifPresent(this::delete);
+    find("id", word.id()).firstResultOptional().ifPresent(model -> {
+      getEntityManager().createNativeQuery("delete from word_examples where word_id = :wordId")
+        .setParameter("wordId", model.getId())
+        .executeUpdate();
+      delete(model);
+    });
   }
 
   @Override
@@ -69,7 +75,8 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
     Sort sort = Sort.by(criteria.getSorting().sortBy(), Sort.Direction.valueOf(criteria.getSorting().sortDirection().getValue()));
 
     PanacheQuery<WordModel> query = find(
-      "lower(russian) like ?1 or lower(spanish) like ?1 or lower(english) like ?1",
+      "select distinct word from WordModel word left join word.translations translation " +
+        "where lower(word.russian) like ?1 or lower(translation.text) like ?1",
       sort,
       "%" + criteria.getSearch().toLowerCase() + "%"
     ).page(page);

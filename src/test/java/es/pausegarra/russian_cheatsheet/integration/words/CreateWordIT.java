@@ -2,379 +2,100 @@ package es.pausegarra.russian_cheatsheet.integration.words;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import es.pausegarra.russian_cheatsheet.base.IntegrationTest;
-import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordConjugationDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDeclinationDto;
-import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDeclinationMatrixDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordTranslationInputDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDto;
+import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordFormsEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordAspect;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.WordModel;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 public class CreateWordIT extends IntegrationTest {
 
   @Test
-  @TestSecurity(
-    user = "user", roles = "words#create"
-  )
-  public void shouldCreateWordWithoutChildren() throws JsonProcessingException {
-    CreateWordDto createWordDto = new CreateWordDto("russian", "english", "spanish", WordType.OTHER, null, null, null);
-    String json = objectMapper.writeValueAsString(createWordDto);
+  @TestSecurity(user = "user", roles = "words#create")
+  public void shouldCreateWordWithTranslations() throws JsonProcessingException {
+    CreateWordDto dto = new CreateWordDto(
+      "russian", null,
+      List.of(new WordTranslationInputDto("en", "english", 0), new WordTranslationInputDto("es", "spanish", 1)),
+      null, null, WordType.OTHER, null, null
+    );
 
     given().contentType("application/json")
-      .body(json)
-      .when()
-      .post("/words")
+      .body(objectMapper.writeValueAsString(dto))
+      .when().post("/words")
       .then()
       .statusCode(201)
       .body("russian", equalTo("russian"))
-      .body("english", equalTo("english"))
-      .body("spanish", equalTo("spanish"))
-      .body("type", equalTo("OTHER"))
-      .body("createdBy", equalTo("user"));
+      .body("translations[0].language", equalTo("en"))
+      .body("translations[0].text", equalTo("english"))
+      .body("translations[1].language", equalTo("es"))
+      .body("translations[1].text", equalTo("spanish"))
+      .body("type", equalTo("other"));
 
     WordModel saved = em.createQuery("select w from WordModel w", WordModel.class).getSingleResult();
-
     assertNotNull(saved);
-    assertEquals("russian", saved.getRussian());
-    assertEquals("english", saved.getEnglish());
-    assertEquals("spanish", saved.getSpanish());
     assertEquals(WordType.OTHER, saved.getType());
   }
 
   @Test
-  @TestSecurity(
-    user = "user", roles = "words#create"
-  )
-  public void shouldCreateWordWithConjugationsWhenTypeIsVerb() throws JsonProcessingException {
-    CreateWordConjugationDto conjugations = new CreateWordConjugationDto(
-      "imperfectivePresentFirstPersonSingular",
-      "imperfectivePresentSecondPersonSingular",
-      "imperfectivePresentThirdPersonSingular",
-      "imperfectivePresentFirstPersonPlural",
-      "imperfectivePresentSecondPersonPlural",
-      "imperfectivePresentThirdPersonPlural",
-      "imperfectivePastMasculine",
-      "imperfectivePastFeminine",
-      "imperfectivePastNeuter",
-      "imperfectivePastPlural",
-      "imperfectiveFutureFirstPersonSingular",
-      "imperfectiveFutureSecondPersonSingular",
-      "imperfectiveFutureThirdPersonSingular",
-      "imperfectiveFutureFirstPersonPlural",
-      "imperfectiveFutureSecondPersonPlural",
-      "imperfectiveFutureThirdPersonPlural",
-      "perfectivePastMasculine",
-      "perfectivePastFeminine",
-      "perfectivePastNeuter",
-      "perfectivePastPlural",
-      "perfectiveFutureFirstPersonSingular",
-      "perfectiveFutureSecondPersonSingular",
-      "perfectiveFutureThirdPersonSingular",
-      "perfectiveFutureFirstPersonPlural",
-      "perfectiveFutureSecondPersonPlural",
-      "perfectiveFutureThirdPersonPlural",
-      "imperfectiveImperativeSecondPersonSingular",
-      "imperfectiveImperativeSecondPersonPlural",
-      "perfectiveImperativeSecondPersonSingular",
-      "perfectiveImperativeSecondPersonPlural"
+  @TestSecurity(user = "user", roles = "words#create")
+  public void shouldCreateVerbWithRootAspectAndSourceNamedForms() throws JsonProcessingException {
+    WordFormsEntity forms = WordFormsEntity.builder()
+      .ru_verb_presfut_sg1("ввожу")
+      .ru_verb_gerund_present("вводя")
+      .ru_verb_participle_active_past("вводивший")
+      .build();
+    CreateWordDto dto = new CreateWordDto(
+      "вводить", null,
+      List.of(new WordTranslationInputDto("es", "introducir", 0)),
+      "Usage text", "https://example.org/audio.mp3", WordType.VERB, WordAspect.IMPERFECTIVE, forms
     );
-    CreateWordDto createWordDto = new CreateWordDto("russian", "english", "spanish", WordType.VERB, conjugations, null, null);
-    String json = objectMapper.writeValueAsString(createWordDto);
 
     given().contentType("application/json")
-      .body(json)
-      .when()
-      .post("/words")
+      .body(objectMapper.writeValueAsString(dto))
+      .when().post("/words")
       .then()
       .statusCode(201)
-      .body("russian", equalTo("russian"))
-      .body("english", equalTo("english"))
-      .body("spanish", equalTo("spanish"))
-      .body("type", equalTo("VERB"))
-      .body("conjugations.imperfectivePresentFirstPersonSingular", equalTo("imperfectivePresentFirstPersonSingular"))
-      .body("conjugations.imperfectivePresentSecondPersonSingular", equalTo("imperfectivePresentSecondPersonSingular"))
-      .body("conjugations.imperfectivePresentThirdPersonSingular", equalTo("imperfectivePresentThirdPersonSingular"))
-      .body("conjugations.imperfectivePresentFirstPersonPlural", equalTo("imperfectivePresentFirstPersonPlural"))
-      .body("conjugations.imperfectivePresentSecondPersonPlural", equalTo("imperfectivePresentSecondPersonPlural"))
-      .body("conjugations.imperfectivePresentThirdPersonPlural", equalTo("imperfectivePresentThirdPersonPlural"))
-      .body("conjugations.imperfectivePastMasculine", equalTo("imperfectivePastMasculine"))
-      .body("conjugations.imperfectivePastFeminine", equalTo("imperfectivePastFeminine"))
-      .body("conjugations.imperfectivePastNeuter", equalTo("imperfectivePastNeuter"))
-      .body("conjugations.imperfectivePastPlural", equalTo("imperfectivePastPlural"))
-      .body("conjugations.imperfectiveFutureFirstPersonSingular", equalTo("imperfectiveFutureFirstPersonSingular"))
-      .body("conjugations.imperfectiveFutureSecondPersonSingular", equalTo("imperfectiveFutureSecondPersonSingular"))
-      .body("conjugations.imperfectiveFutureThirdPersonSingular", equalTo("imperfectiveFutureThirdPersonSingular"))
-      .body("conjugations.imperfectiveFutureFirstPersonPlural", equalTo("imperfectiveFutureFirstPersonPlural"))
-      .body("conjugations.imperfectiveFutureSecondPersonPlural", equalTo("imperfectiveFutureSecondPersonPlural"))
-      .body("conjugations.imperfectiveFutureThirdPersonPlural", equalTo("imperfectiveFutureThirdPersonPlural"))
-      .body("conjugations.perfectivePastMasculine", equalTo("perfectivePastMasculine"))
-      .body("conjugations.perfectivePastFeminine", equalTo("perfectivePastFeminine"))
-      .body("conjugations.perfectivePastNeuter", equalTo("perfectivePastNeuter"))
-      .body("conjugations.perfectivePastPlural", equalTo("perfectivePastPlural"))
-      .body("conjugations.perfectiveFutureFirstPersonSingular", equalTo("perfectiveFutureFirstPersonSingular"))
-      .body("conjugations.perfectiveFutureSecondPersonSingular", equalTo("perfectiveFutureSecondPersonSingular"))
-      .body("conjugations.perfectiveFutureThirdPersonSingular", equalTo("perfectiveFutureThirdPersonSingular"))
-      .body("conjugations.perfectiveFutureFirstPersonPlural", equalTo("perfectiveFutureFirstPersonPlural"))
-      .body("conjugations.perfectiveFutureSecondPersonPlural", equalTo("perfectiveFutureSecondPersonPlural"))
-      .body("conjugations.perfectiveFutureThirdPersonPlural", equalTo("perfectiveFutureThirdPersonPlural"))
-      .body("conjugations.imperfectiveImperativeSecondPersonSingular", equalTo("imperfectiveImperativeSecondPersonSingular"))
-      .body("conjugations.imperfectiveImperativeSecondPersonPlural", equalTo("imperfectiveImperativeSecondPersonPlural"))
-      .body("conjugations.perfectiveImperativeSecondPersonSingular", equalTo("perfectiveImperativeSecondPersonSingular"))
-      .body("conjugations.perfectiveImperativeSecondPersonPlural", equalTo("perfectiveImperativeSecondPersonPlural"));
+      .body("type", equalTo("verb"))
+      .body("aspect", equalTo("imperfective"))
+      .body("forms.ru_verb_presfut_sg1", equalTo("ввожу"))
+      .body("forms.ru_verb_gerund_present", equalTo("вводя"))
+      .body("usage", equalTo("Usage text"))
+      .body("audioUrl", equalTo("https://example.org/audio.mp3"));
 
     WordModel saved = em.createQuery("select w from WordModel w", WordModel.class).getSingleResult();
-
-    assertNotNull(saved);
-    assertEquals("russian", saved.getRussian());
-    assertEquals("english", saved.getEnglish());
-    assertEquals("spanish", saved.getSpanish());
-    assertEquals(WordType.VERB, saved.getType());
-    assertNotNull(saved.getConjugations());
+    assertEquals(WordAspect.IMPERFECTIVE, saved.getAspect());
+    assertEquals(forms, saved.getForms());
   }
 
   @Test
-  @TestSecurity(
-    user = "user", roles = "words#create"
-  )
-  public void shouldReturn400WhenCreateWordWithNoConjugationsAndTypeIsVerb() throws JsonProcessingException {
-    CreateWordDto createWordDto = new CreateWordDto("russian", "english", "spanish", WordType.VERB, null, null, null);
-    String json = objectMapper.writeValueAsString(createWordDto);
+  @TestSecurity(user = "user", roles = "words#create")
+  public void shouldRejectFormsFromAnotherWordType() throws JsonProcessingException {
+    CreateWordDto dto = new CreateWordDto(
+      "вводить", null, List.of(), null, null, WordType.VERB, WordAspect.PERFECTIVE,
+      WordFormsEntity.builder().ru_noun_sg_nom("дом").build()
+    );
 
     given().contentType("application/json")
-      .body(json)
-      .when()
-      .post("/words")
+      .body(objectMapper.writeValueAsString(dto))
+      .when().post("/words")
       .then()
       .statusCode(400)
-      .body("code", equalTo("CONJUGATIONS_REQUIRED"));
+      .body("code", equalTo("BAD_REQUEST"));
   }
 
   @Test
-  @TestSecurity(
-    user = "user", roles = "words#create"
-  )
-  public void shouldReturn400WhenCreateWordWithNoDeclinationsAndTypeIsNoun() throws JsonProcessingException {
-    CreateWordDto createWordDto = new CreateWordDto("russian", "english", "spanish", WordType.NOUN, null, null, null);
-    String json = objectMapper.writeValueAsString(createWordDto);
-
-    given().contentType("application/json")
-      .body(json)
-      .when()
-      .post("/words")
-      .then()
-      .statusCode(400)
-      .body("code", equalTo("DECLINATIONS_REQUIRED"));
-  }
-
-  @Test
-  @TestSecurity(
-    user = "user", roles = "words#create"
-  )
-  public void shouldCreateWordWithDeclinationsWhenTypeIsPronounNoun() throws JsonProcessingException {
-    CreateWordDto createWordDto = new CreateWordDto(
-      "russian",
-      "english",
-      "spanish",
-      WordType.PRONOUN_NOUN,
-      null,
-      new CreateWordDeclinationDto(
-        "nominative",
-        "accusative",
-        "genitive",
-        "dative",
-        "instrumental",
-        "prepositional",
-        "nominativePlural",
-        "accusativePlural",
-        "genitivePlural",
-        "dativePlural",
-        "instrumentalPlural",
-        "prepositionalPlural"
-      ),
-      null
-    );
-    String json = objectMapper.writeValueAsString(createWordDto);
-
-    given().contentType("application/json")
-      .body(json)
-      .when()
-      .post("/words")
-      .then()
-      .statusCode(201)
-      .body("type", equalTo("PRONOUN_NOUN"))
-      .body("declinations.nominative", equalTo("nominative"));
-  }
-
-  @Test
-  @TestSecurity(
-    user = "user", roles = "words#create"
-  )
-  public void shouldCreateWordWithDeclinationMatrixWhenTypeIsPronounAdjective() throws JsonProcessingException {
-    CreateWordDto createWordDto = new CreateWordDto(
-      "russian",
-      "english",
-      "spanish",
-      WordType.PRONOUN_ADJECTIVE,
-      null,
-      null,
-      new CreateWordDeclinationMatrixDto(
-        "nominativeMasculine",
-        "nominativeFeminine",
-        "nominativeNeuter",
-        "nominativePlural",
-        "accusativeMasculine",
-        "accusativeFeminine",
-        "accusativeNeuter",
-        "accusativePlural",
-        "genitiveMasculine",
-        "genitiveFeminine",
-        "genitiveNeuter",
-        "genitivePlural",
-        "dativeMasculine",
-        "dativeFeminine",
-        "dativeNeuter",
-        "dativePlural",
-        "instrumentalMasculine",
-        "instrumentalFeminine",
-        "instrumentalNeuter",
-        "instrumentalPlural",
-        "prepositionalMasculine",
-        "prepositionalFeminine",
-        "prepositionalNeuter",
-        "prepositionalPlural"
-      )
-    );
-    String json = objectMapper.writeValueAsString(createWordDto);
-
-    given().contentType("application/json")
-      .body(json)
-      .when()
-      .post("/words")
-      .then()
-      .statusCode(201)
-      .body("type", equalTo("PRONOUN_ADJECTIVE"))
-      .body("declinationMatrix.nominativeMasculine", equalTo("nominativeMasculine"));
-  }
-
-  @Test
-  @TestSecurity(
-    user = "user", roles = "words#create"
-  )
-  public void shouldCreateWordWithDeclinationsWhenTypeIsNumeralCardinal() throws JsonProcessingException {
-    CreateWordDto createWordDto = new CreateWordDto(
-      "russian",
-      "english",
-      "spanish",
-      WordType.NUMERAL_CARDINAL,
-      null,
-      new CreateWordDeclinationDto(
-        "nominative",
-        "accusative",
-        "genitive",
-        "dative",
-        "instrumental",
-        "prepositional",
-        "nominativePlural",
-        "accusativePlural",
-        "genitivePlural",
-        "dativePlural",
-        "instrumentalPlural",
-        "prepositionalPlural"
-      ),
-      null
-    );
-    String json = objectMapper.writeValueAsString(createWordDto);
-
-    given().contentType("application/json")
-      .body(json)
-      .when()
-      .post("/words")
-      .then()
-      .statusCode(201)
-      .body("type", equalTo("NUMERAL_CARDINAL"))
-      .body("declinations.nominative", equalTo("nominative"));
-  }
-
-  @Test
-  @TestSecurity(
-    user = "user", roles = "words#create"
-  )
-  public void shouldCreateWordWithDeclinationMatrixWhenTypeIsNumeralAdjective() throws JsonProcessingException {
-    CreateWordDto createWordDto = new CreateWordDto(
-      "russian",
-      "english",
-      "spanish",
-      WordType.NUMERAL_ADJECTIVE,
-      null,
-      null,
-      new CreateWordDeclinationMatrixDto(
-        "nominativeMasculine",
-        "nominativeFeminine",
-        "nominativeNeuter",
-        "nominativePlural",
-        "accusativeMasculine",
-        "accusativeFeminine",
-        "accusativeNeuter",
-        "accusativePlural",
-        "genitiveMasculine",
-        "genitiveFeminine",
-        "genitiveNeuter",
-        "genitivePlural",
-        "dativeMasculine",
-        "dativeFeminine",
-        "dativeNeuter",
-        "dativePlural",
-        "instrumentalMasculine",
-        "instrumentalFeminine",
-        "instrumentalNeuter",
-        "instrumentalPlural",
-        "prepositionalMasculine",
-        "prepositionalFeminine",
-        "prepositionalNeuter",
-        "prepositionalPlural"
-      )
-    );
-    String json = objectMapper.writeValueAsString(createWordDto);
-
-    given().contentType("application/json")
-      .body(json)
-      .when()
-      .post("/words")
-      .then()
-      .statusCode(201)
-      .body("type", equalTo("NUMERAL_ADJECTIVE"))
-      .body("declinationMatrix.nominativeMasculine", equalTo("nominativeMasculine"));
-  }
-
-  @Test
-  @TestSecurity(
-    user = "user", roles = "words#create"
-  )
-  public void shouldReturn400WhenCreateWordWithNoDeclinationMatrixAndTypeIsAdjectiveOrPronounOrParticipleOrOrdinal() throws JsonProcessingException {
-    CreateWordDto createWordDto = new CreateWordDto("russian", "english", "spanish", WordType.ADJECTIVE, null, null, null);
-    String json = objectMapper.writeValueAsString(createWordDto);
-
-    given().contentType("application/json")
-      .body(json)
-      .when()
-      .post("/words")
-      .then()
-      .statusCode(400)
-      .body("code", equalTo("DECLINATIONS_REQUIRED"));
-  }
-
-  @Test
-  @TestSecurity(
-    user = "user"
-  )
+  @TestSecurity(user = "user")
   public void shouldReturn403WhenUserIsNotAuthorized() {
     given().contentType("application/json").when().post("/words").then().statusCode(403);
   }
@@ -383,5 +104,4 @@ public class CreateWordIT extends IntegrationTest {
   public void shouldReturn401WhenUserIsNotAuthenticated() {
     given().contentType("application/json").when().post("/words").then().statusCode(401);
   }
-
 }

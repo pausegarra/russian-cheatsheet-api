@@ -1,12 +1,6 @@
 package es.pausegarra.russian_cheatsheet.context.words.domain.entities;
 
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
-import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordCannotHaveConjugations;
-import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordCannotHaveDeclinationMatrix;
-import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordCannotHaveDeclinations;
-import es.pausegarra.russian_cheatsheet.mother.WordConjugationMother;
-import es.pausegarra.russian_cheatsheet.mother.WordDeclinationMatrixMother;
-import es.pausegarra.russian_cheatsheet.mother.WordDeclinationMother;
 import es.pausegarra.russian_cheatsheet.mother.WordMother;
 import org.junit.jupiter.api.Test;
 
@@ -15,215 +9,32 @@ import static org.junit.jupiter.api.Assertions.*;
 class WordEntityTest {
 
   @Test
-  public void shouldAddConjugationsWhenTypeIsVerb() {
-    WordEntity word = WordMother.random().type(WordType.VERB).build();
+  void formsMustMatchTheWordType() {
+    WordFormsEntity nounForms = WordFormsEntity.builder().ru_noun_sg_nom("дом").build();
+    WordFormsEntity verbForms = WordFormsEntity.builder().ru_verb_presfut_sg1("иду").build();
+    WordFormsEntity adjectiveForms = WordFormsEntity.builder().ru_adj_m_nom("новый").build();
 
-    WordConjugationEntity conjugations = WordConjugationMother.random().build();
-    WordEntity wordWithConjugations = word.addConjugations(conjugations);
-
-    assertNotNull(wordWithConjugations);
-    assertEquals(word.russian(), wordWithConjugations.russian());
-    assertEquals(word.english(), wordWithConjugations.english());
-    assertEquals(word.spanish(), wordWithConjugations.spanish());
-    assertEquals(word.type(), wordWithConjugations.type());
-    assertEquals(conjugations, wordWithConjugations.conjugations());
-    assertNull(wordWithConjugations.declinations());
-    assertNull(wordWithConjugations.declinationMatrix());
+    assertTrue(nounForms.isCompatibleWith(WordType.NOUN));
+    assertFalse(nounForms.isCompatibleWith(WordType.VERB));
+    assertTrue(verbForms.isCompatibleWith(WordType.VERB));
+    assertFalse(verbForms.isCompatibleWith(WordType.NOUN));
+    assertTrue(adjectiveForms.isCompatibleWith(WordType.PRONOUN));
+    assertFalse(adjectiveForms.isCompatibleWith(WordType.OTHER));
   }
 
   @Test
-  public void shouldAddConjugationsAndRemoveOthersWithUpdatingToVerb() {
-    WordEntity word = WordMother.random().declinations(WordDeclinationMother.random().build()).type(WordType.VERB).build();
+  void baseFormCanBeUsedWithAnyType() {
+    WordFormsEntity forms = WordFormsEntity.builder().ru_base("быстро").build();
 
-    WordConjugationEntity conjugations = WordConjugationMother.random().build();
-    WordEntity wordWithConjugations = word.addConjugations(conjugations);
-
-    assertNotNull(wordWithConjugations);
-    assertEquals(word.russian(), wordWithConjugations.russian());
-    assertEquals(word.english(), wordWithConjugations.english());
-    assertEquals(word.spanish(), wordWithConjugations.spanish());
-    assertEquals(word.type(), wordWithConjugations.type());
-    assertEquals(conjugations, wordWithConjugations.conjugations());
-    assertNull(wordWithConjugations.declinations());
-    assertNull(wordWithConjugations.declinationMatrix());
+    assertTrue(forms.isCompatibleWith(WordType.ADVERB));
+    assertTrue(forms.isCompatibleWith(WordType.NOUN));
+    assertTrue(forms.isCompatibleWith(WordType.VERB));
   }
 
   @Test
-  public void shouldThrowExceptionWhenAddConjugationsWhenTypeIsNotVerb() {
-    WordEntity word = WordMother.random().type(WordType.NOUN).build();
-
-    WordConjugationEntity conjugations = WordConjugationMother.random().build();
-    assertThrows(WordCannotHaveConjugations.class, () -> word.addConjugations(conjugations));
-  }
-
-  @Test
-  public void shouldAddDeclinationsWhenTypeIsNounPronounNounOrNumeral() {
-    WordEntity word = WordMother.random().type(WordType.NOUN).build();
-
-    WordDeclinationEntity declinations = WordDeclinationMother.random().build();
-    WordEntity wordWithDeclinations = word.addDeclinations(declinations);
-
-    assertNotNull(wordWithDeclinations);
-    assertEquals(word.russian(), wordWithDeclinations.russian());
-    assertEquals(word.english(), wordWithDeclinations.english());
-    assertEquals(word.spanish(), wordWithDeclinations.spanish());
-    assertEquals(word.type(), wordWithDeclinations.type());
-    assertEquals(declinations, wordWithDeclinations.declinations());
-    assertNull(wordWithDeclinations.conjugations());
-    assertNull(wordWithDeclinations.declinationMatrix());
-  }
-
-  @Test
-  public void shouldAddDeclinationsAndRemoveOthersWithUpdatingToNoun() {
-    WordEntity word = WordMother.random().conjugations(WordConjugationMother.random().build()).type(WordType.NOUN).build();
-
-    WordDeclinationEntity declinations = WordDeclinationMother.random().build();
-    WordEntity wordWithDeclinations = word.addDeclinations(declinations);
-
-    assertNotNull(wordWithDeclinations);
-    assertEquals(word.russian(), wordWithDeclinations.russian());
-    assertEquals(word.english(), wordWithDeclinations.english());
-    assertEquals(word.spanish(), wordWithDeclinations.spanish());
-    assertEquals(word.type(), wordWithDeclinations.type());
-    assertEquals(declinations, wordWithDeclinations.declinations());
-    assertNull(wordWithDeclinations.conjugations());
-    assertNull(wordWithDeclinations.declinationMatrix());
-  }
-
-  @Test
-  public void shouldThrowExceptionWhenAddDeclinationsWhenTypeCannotHaveDeclinations() {
-    WordEntity word = WordMother.random().type(WordType.VERB).build();
-
-    WordDeclinationEntity declinations = WordDeclinationMother.random().build();
-    assertThrows(WordCannotHaveDeclinations.class, () -> word.addDeclinations(declinations));
-  }
-
-  @Test
-  public void shouldAddDeclinationMatrixWhenTypeSupportsDeclinationMatrix() {
-    WordEntity word = WordMother.random().type(WordType.ADJECTIVE).build();
-
-    WordDeclinationMatrixEntity declinationMatrix = WordDeclinationMatrixMother.random().build();
-    WordEntity wordWithDeclinationMatrix = word.addDeclinationMatrix(declinationMatrix);
-
-    assertNotNull(wordWithDeclinationMatrix);
-    assertEquals(word.russian(), wordWithDeclinationMatrix.russian());
-    assertEquals(word.english(), wordWithDeclinationMatrix.english());
-    assertEquals(word.spanish(), wordWithDeclinationMatrix.spanish());
-    assertEquals(word.type(), wordWithDeclinationMatrix.type());
-    assertNull(wordWithDeclinationMatrix.conjugations());
-    assertNull(wordWithDeclinationMatrix.declinations());
-    assertEquals(declinationMatrix, wordWithDeclinationMatrix.declinationMatrix());
-  }
-
-  @Test
-  public void shouldAddDeclinationMatrixAndRemoveOthersWithUpdatingToAdjective() {
-    WordEntity word = WordMother.random().conjugations(WordConjugationMother.random().build()).type(WordType.ADJECTIVE).build();
-
-    WordDeclinationMatrixEntity declinationMatrix = WordDeclinationMatrixMother.random().build();
-    WordEntity wordWithDeclinationMatrix = word.addDeclinationMatrix(declinationMatrix);
-
-    assertNotNull(wordWithDeclinationMatrix);
-    assertEquals(word.russian(), wordWithDeclinationMatrix.russian());
-    assertEquals(word.english(), wordWithDeclinationMatrix.english());
-    assertEquals(word.spanish(), wordWithDeclinationMatrix.spanish());
-    assertEquals(word.type(), wordWithDeclinationMatrix.type());
-    assertEquals(declinationMatrix, wordWithDeclinationMatrix.declinationMatrix());
-    assertNull(wordWithDeclinationMatrix.conjugations());
-    assertNull(wordWithDeclinationMatrix.declinations());
-  }
-
-  @Test
-  public void shouldThrowExceptionWhenAddDeclinationMatrixWhenTypeCannotHaveDeclinationMatrix() {
-    WordEntity word = WordMother.random().type(WordType.NOUN).build();
-
-    WordDeclinationMatrixEntity declinationMatrix = WordDeclinationMatrixMother.random().build();
-    assertThrows(WordCannotHaveDeclinationMatrix.class, () -> word.addDeclinationMatrix(declinationMatrix));
-  }
-
-  @Test
-  public void shouldReturnTrueWhenCanHaveConjugations() {
-    WordEntity word = WordMother.random().type(WordType.VERB).build();
-
-    assertTrue(word.canHaveConjugations());
-  }
-
-  @Test
-  public void shouldReturnFalseWhenCanHaveConjugations() {
-    WordEntity word = WordMother.random().type(WordType.NOUN).build();
-
-    assertFalse(word.canHaveConjugations());
-  }
-
-  @Test
-  public void shouldReturnTrueWhenCanHaveDeclinations() {
-    WordEntity word = WordMother.random().type(WordType.NOUN).build();
-
-    assertTrue(word.canHaveDeclinations());
-  }
-
-  @Test
-  public void shouldReturnTrueWhenCanHaveDeclinationsForPronounNoun() {
-    WordEntity word = WordMother.random().type(WordType.PRONOUN_NOUN).build();
-
-    assertTrue(word.canHaveDeclinations());
-  }
-
-  @Test
-  public void shouldReturnTrueWhenCanHaveDeclinationsForNumeralCardinal() {
-    WordEntity word = WordMother.random().type(WordType.NUMERAL_CARDINAL).build();
-
-    assertTrue(word.canHaveDeclinations());
-  }
-
-  @Test
-  public void shouldReturnFalseWhenCanHaveDeclinations() {
-    WordEntity word = WordMother.random().type(WordType.VERB).build();
-
-    assertFalse(word.canHaveDeclinations());
-  }
-
-  @Test
-  public void shouldReturnTrueWhenCanHaveDeclinationMatrix() {
-    WordEntity word = WordMother.random().type(WordType.ADJECTIVE).build();
-
-    assertTrue(word.canHaveDeclinationMatrix());
-  }
-
-  @Test
-  public void shouldReturnTrueWhenCanHaveDeclinationMatrixForShortAdjective() {
-    WordEntity word = WordMother.random().type(WordType.SHORT_ADJECTIVE).build();
-
-    assertTrue(word.canHaveDeclinationMatrix());
-  }
-
-  @Test
-  public void shouldReturnTrueWhenCanHaveDeclinationMatrixForPronounAdjective() {
-    WordEntity word = WordMother.random().type(WordType.PRONOUN_ADJECTIVE).build();
-
-    assertTrue(word.canHaveDeclinationMatrix());
-  }
-
-  @Test
-  public void shouldReturnTrueWhenCanHaveDeclinationMatrixForNumeralAdjective() {
-    WordEntity word = WordMother.random().type(WordType.NUMERAL_ADJECTIVE).build();
-
-    assertTrue(word.canHaveDeclinationMatrix());
-  }
-
-  @Test
-  public void shouldReturnFalseWhenCanHaveDeclinationMatrix() {
-    WordEntity word = WordMother.random().type(WordType.NOUN).build();
-
-    assertFalse(word.canHaveDeclinationMatrix());
-  }
-
-  @Test
-  public void shouldPublishWord() {
+  void shouldPublishWord() {
     WordEntity word = WordMother.random().publishedAt(null).build();
 
-    WordEntity published = word.publish();
-
-    assertNotNull(published.publishedAt());
+    assertNotNull(word.publish().publishedAt());
   }
-
 }

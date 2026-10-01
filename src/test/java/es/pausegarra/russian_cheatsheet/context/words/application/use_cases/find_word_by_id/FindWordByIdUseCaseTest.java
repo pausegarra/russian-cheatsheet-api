@@ -1,6 +1,8 @@
 package es.pausegarra.russian_cheatsheet.context.words.application.use_cases.find_word_by_id;
 
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordTranslationDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.WordRelationsService;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordNotFound;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordsRepository;
@@ -13,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,6 +27,9 @@ class FindWordByIdUseCaseTest {
   @Mock
   private WordsRepository wordsRepository;
 
+  @Mock
+  private WordRelationsService relationsService;
+
   @InjectMocks
   private FindWordByIdUseCase findWordByIdUseCase;
 
@@ -31,6 +37,7 @@ class FindWordByIdUseCaseTest {
   public void shouldFindWordById() {
     WordEntity word = WordMother.random().build();
     when(wordsRepository.findById(any(UUID.class))).thenReturn(Optional.of(word));
+    when(relationsService.findOutgoingWordDtos(word.id())).thenReturn(List.of());
 
     FindWordByIdDto dto = new FindWordByIdDto(word.id());
     WordDto result = findWordByIdUseCase.handle(dto);
@@ -38,8 +45,7 @@ class FindWordByIdUseCaseTest {
     assertNotNull(result);
     assertEquals(word.id(), result.id());
     assertEquals(word.russian(), result.russian());
-    assertEquals(word.english(), result.english());
-    assertEquals(word.spanish(), result.spanish());
+    assertEquals(word.translations().stream().map(WordTranslationDto::fromEntity).toList(), result.translations());
     assertEquals(word.type(), result.type());
     assertEquals(word.createdBy(), result.createdBy());
     assertEquals(word.createdAt(), result.createdAt());
