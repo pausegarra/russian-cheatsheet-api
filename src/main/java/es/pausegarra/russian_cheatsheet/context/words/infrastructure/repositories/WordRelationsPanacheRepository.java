@@ -102,17 +102,6 @@ public class WordRelationsPanacheRepository implements WordRelationsRepository, 
     }
   }
 
-  @Override
-  public List<UUID> findIncomingSourceIds(UUID targetWordId) {
-    return entityManager.createQuery(
-        "select distinct relation.sourceWord.id from WordRelationModel relation " +
-          "where relation.targetWord.id = :wordId",
-        UUID.class
-      )
-      .setParameter("wordId", targetWordId)
-      .getResultList();
-  }
-
   private RelatedWordEntity relatedWord(WordRelationModel relation) {
     WordModel otherWord = relation.getTargetWord();
     return new RelatedWordEntity(

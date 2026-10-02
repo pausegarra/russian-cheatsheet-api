@@ -13,10 +13,8 @@ import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordNotFo
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordRelationsRepository;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordsRepository;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,10 +24,8 @@ public class WordRelationsService {
 
   private final WordRelationsRepository relationsRepository;
   private final WordsRepository wordsRepository;
-  private final WordChecksumService checksumService;
 
-  @Transactional
-  public CreateWordRelationResultDto createOutgoingAndRefresh(
+  public CreateWordRelationResultDto createOutgoing(
     UUID sourceWordId,
     WordRelationInputDto requestedRelation
   ) {
@@ -40,27 +36,11 @@ public class WordRelationsService {
     WordRelationWriteResult result = relationsRepository.createOutgoing(
       new WordRelationEntity(sourceWordId, requestedRelation.relatedWordId(), requestedRelation.relation())
     );
-    if (result.created()) {
-      refreshChecksums(List.of(sourceWordId));
-    }
     return new CreateWordRelationResultDto(result.created(), WordRelationDto.fromEntity(result.relation()));
   }
 
-  @Transactional
-  public void deleteOutgoingAndRefresh(UUID sourceWordId, UUID relationId) {
+  public void deleteOutgoing(UUID sourceWordId, UUID relationId) {
     relationsRepository.deleteOutgoing(sourceWordId, relationId);
-    refreshChecksums(List.of(sourceWordId));
-  }
-
-  @Transactional
-  public void refreshChecksums(Collection<UUID> wordIds) {
-    wordIds.stream().distinct().forEach(wordId -> wordsRepository.findById(wordId).ifPresent(word -> {
-      if (word.externalId() == null) {
-        return;
-      }
-      List<RelatedWordEntity> outgoingRelations = relationsRepository.findOutgoing(wordId);
-      wordsRepository.save(word.withChecksum(checksumService.calculate(word, outgoingRelations)));
-    }));
   }
 
   public List<WordRelationDto> findOutgoingDtos(UUID wordId) {

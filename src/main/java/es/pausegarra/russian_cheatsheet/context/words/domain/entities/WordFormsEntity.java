@@ -72,6 +72,10 @@ public record WordFormsEntity(
   String ru_adj_pl_prep
 ) {
 
+  public boolean isEmpty() {
+    return (ru_base == null || ru_base.isBlank()) && isCompatibleWith(WordType.OTHER);
+  }
+
   public boolean isCompatibleWith(WordType type) {
     if (type == null) {
       return false;

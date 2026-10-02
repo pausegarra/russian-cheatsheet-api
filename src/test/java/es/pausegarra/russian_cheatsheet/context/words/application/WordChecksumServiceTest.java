@@ -1,9 +1,7 @@
 package es.pausegarra.russian_cheatsheet.context.words.application;
 
-import es.pausegarra.russian_cheatsheet.context.words.domain.entities.RelatedWordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordAspect;
-import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordRelationType;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import org.junit.jupiter.api.Test;
 
@@ -19,57 +17,14 @@ class WordChecksumServiceTest {
   private final WordChecksumService checksumService = new WordChecksumService();
 
   @Test
-  void shouldIgnoreIdsAndSortRelationsByRussianWordAndType() {
+  void shouldIgnoreIdsAndAuditTimestamps() {
     WordEntity firstWord = word(UUID.randomUUID(), "external-word-1", Instant.parse("2026-01-01T00:00:00Z"));
     WordEntity secondWord = word(UUID.randomUUID(), "external-word-2", Instant.parse("2026-02-01T00:00:00Z"));
 
-    List<RelatedWordEntity> firstRelations = List.of(
-      related("external-target-2", "слово", WordRelationType.ANTONYM),
-      related("external-target-1", "дом", WordRelationType.RELATED),
-      related("external-target-3", "дом", WordRelationType.SYNONYM)
-    );
-    List<RelatedWordEntity> secondRelations = List.of(
-      related("different-target-1", "дом", WordRelationType.SYNONYM),
-      related("different-target-2", "слово", WordRelationType.ANTONYM),
-      related("different-target-3", "дом", WordRelationType.RELATED)
-    );
-
     assertEquals(
-      checksumService.calculate(firstWord, firstRelations),
-      checksumService.calculate(secondWord, secondRelations)
+      checksumService.calculate(firstWord),
+      checksumService.calculate(secondWord)
     );
-  }
-
-  @Test
-  void shouldChangeChecksumWhenRelationTypeChanges() {
-    WordEntity word = word(UUID.randomUUID(), "external-word", Instant.parse("2026-01-01T00:00:00Z"));
-
-    String synonymChecksum = checksumService.calculate(
-      word,
-      List.of(related("target-1", "дом", WordRelationType.SYNONYM))
-    );
-    String antonymChecksum = checksumService.calculate(
-      word,
-      List.of(related("target-1", "дом", WordRelationType.ANTONYM))
-    );
-
-    assertNotEquals(synonymChecksum, antonymChecksum);
-  }
-
-  @Test
-  void shouldChangeChecksumWhenRelatedRussianWordChanges() {
-    WordEntity word = word(UUID.randomUUID(), "external-word", Instant.parse("2026-01-01T00:00:00Z"));
-
-    String checksumForHouse = checksumService.calculate(
-      word,
-      List.of(related("target-1", "дом", WordRelationType.RELATED))
-    );
-    String checksumForBook = checksumService.calculate(
-      word,
-      List.of(related("target-1", "книга", WordRelationType.RELATED))
-    );
-
-    assertNotEquals(checksumForHouse, checksumForBook);
   }
 
   private WordEntity word(UUID id, String externalId, Instant timestamp) {
@@ -88,11 +43,5 @@ class WordChecksumServiceTest {
       .updatedBy("importer")
       .updatedAt(timestamp)
       .build();
-  }
-
-  private RelatedWordEntity related(String externalId, String russian, WordRelationType relationType) {
-    return new RelatedWordEntity(
-      UUID.randomUUID(), UUID.randomUUID(), externalId, russian, relationType
-    );
   }
 }

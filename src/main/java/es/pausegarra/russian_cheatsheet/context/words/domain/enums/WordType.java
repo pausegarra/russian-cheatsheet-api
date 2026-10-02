@@ -6,7 +6,7 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
 import java.util.Arrays;
 
-@Schema(enumeration = {"adjective", "adverb", "expression", "noun", "other", "pronoun", "verb"})
+@Schema(nullable = true, enumeration = {"adjective", "adverb", "expression", "noun", "other", "pronoun", "verb"})
 public enum WordType {
 
   ADJECTIVE("adjective"),
@@ -30,6 +30,9 @@ public enum WordType {
 
   @JsonCreator
   public static WordType fromValue(String value) {
+    if (value == null || value.isBlank()) {
+      return null;
+    }
     return Arrays.stream(values())
       .filter(type -> type.value.equals(value))
       .findFirst()

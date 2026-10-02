@@ -2,6 +2,7 @@ package es.pausegarra.russian_cheatsheet.context.words.application.use_cases.cre
 
 import es.pausegarra.russian_cheatsheet.common.application.use_cases.UseCase;
 import es.pausegarra.russian_cheatsheet.common.domain.exception.BadRequest;
+import es.pausegarra.russian_cheatsheet.context.words.application.WordChecksumService;
 import es.pausegarra.russian_cheatsheet.context.words.application.WordRelationsService;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordTranslationInputDto;
@@ -26,15 +27,16 @@ public class CreateWordUseCase implements UseCase<CreateWordDto, WordDto> {
 
   private final WordsRepository wordsRepository;
   private final WordRelationsService relationsService;
+  private final WordChecksumService checksumService;
 
   @Transactional
   @Override
   public WordDto handle(CreateWordDto dto) {
-    WordEntity created = wordsRepository.create(createWord(dto));
-    if (created.externalId() != null) {
-      relationsService.refreshChecksums(List.of(created.id()));
-      created = wordsRepository.findById(created.id()).orElseThrow();
+    WordEntity word = createWord(dto);
+    if (word.externalId() != null) {
+      word = word.withChecksum(checksumService.calculate(word));
     }
+    WordEntity created = wordsRepository.create(word);
     return WordDto.fromEntity(created, relationsService.findOutgoingWordDtos(created.id()));
   }
 
@@ -48,21 +50,33 @@ public class CreateWordUseCase implements UseCase<CreateWordDto, WordDto> {
       }
       return WordEntity.createImported(
         dto.externalId(), dto.russian(), translationsFrom(dto.translations(), TranslationOrigin.OPENRUSSIAN),
-        dto.usage(), dto.audioUrl(), dto.type(), dto.aspect(), validatedForms(dto.type(), dto.aspect(), dto.forms())
+        dto.usage(), dto.audioUrl(), dto.type(), dto.aspect(),
+        validatedForms(dto.type(), dto.aspect(), dto.forms(), true)
       );
     }
 
     return WordEntity.createManual(
       dto.russian(), translationsFrom(dto.translations(), TranslationOrigin.MANUAL), dto.type(), dto.aspect(),
-      validatedForms(dto.type(), dto.aspect(), dto.forms())
+      validatedForms(dto.type(), dto.aspect(), dto.forms(), false)
     );
   }
 
-  private WordFormsEntity validatedForms(WordType type, WordAspect aspect, WordFormsEntity forms) {
+  private WordFormsEntity validatedForms(
+    WordType type,
+    WordAspect aspect,
+    WordFormsEntity forms,
+    boolean importedWord
+  ) {
     if (type == null) {
-      throw new BadRequest("Word type is required");
+      if (!importedWord) {
+        throw new BadRequest("Word type is required");
+      }
+      if (aspect != null || (forms != null && !forms.isEmpty())) {
+        throw new BadRequest("Words without a type cannot include aspect or forms");
+      }
+      return null;
     }
-    if (type == WordType.VERB && aspect == null) {
+    if (type == WordType.VERB && aspect == null && !importedWord) {
       throw new BadRequest("Verb words require an aspect");
     }
     if (type != WordType.VERB && aspect != null) {

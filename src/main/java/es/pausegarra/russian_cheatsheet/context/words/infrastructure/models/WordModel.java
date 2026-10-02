@@ -45,7 +45,6 @@ import java.util.UUID;
 public class WordModel extends AuditableModel {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
   private final UUID id;
 
   @Column(name = "external_id")

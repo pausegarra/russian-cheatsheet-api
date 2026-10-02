@@ -14,6 +14,4 @@ public interface WordRelationsRepository {
   List<RelatedWordEntity> findOutgoing(UUID sourceWordId);
 
   void deleteOutgoing(UUID sourceWordId, UUID relationId);
-
-  List<UUID> findIncomingSourceIds(UUID targetWordId);
 }

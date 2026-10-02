@@ -2,6 +2,7 @@ package es.pausegarra.russian_cheatsheet.context.words.application.use_cases.upd
 
 import es.pausegarra.russian_cheatsheet.common.application.use_cases.UseCase;
 import es.pausegarra.russian_cheatsheet.common.domain.exception.BadRequest;
+import es.pausegarra.russian_cheatsheet.context.words.application.WordChecksumService;
 import es.pausegarra.russian_cheatsheet.context.words.application.WordRelationsService;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordTranslationInputDto;
@@ -27,13 +28,15 @@ public class UpdateWordUseCase implements UseCase<UpdateWordDto, WordDto> {
 
   private final WordsRepository wordsRepository;
   private final WordRelationsService relationsService;
+  private final WordChecksumService checksumService;
 
   @Override
   @Transactional
   public WordDto handle(UpdateWordDto dto) {
     WordEntity word = wordsRepository.findById(dto.id())
       .orElseThrow(() -> new WordNotFound(dto.id().toString()));
-    WordFormsEntity forms = validatedForms(dto.type(), dto.aspect(), dto.forms());
+    boolean importedWord = dto.externalId() != null || word.externalId() != null;
+    WordFormsEntity forms = validatedForms(dto.type(), dto.aspect(), dto.forms(), importedWord);
 
     WordEntity updated;
     if (dto.externalId() != null) {
@@ -59,19 +62,29 @@ public class UpdateWordUseCase implements UseCase<UpdateWordDto, WordDto> {
       throw new BadRequest("Word forms do not match the word type");
     }
 
-    WordEntity saved = wordsRepository.save(updated);
-    if (saved.externalId() != null) {
-      relationsService.refreshChecksums(List.of(saved.id()));
-      saved = wordsRepository.findById(saved.id()).orElseThrow();
+    if (updated.externalId() != null) {
+      updated = updated.withChecksum(checksumService.calculate(updated));
     }
+    WordEntity saved = wordsRepository.save(updated);
     return WordDto.fromEntity(saved, relationsService.findOutgoingWordDtos(saved.id()));
   }
 
-  private WordFormsEntity validatedForms(WordType type, WordAspect aspect, WordFormsEntity forms) {
+  private WordFormsEntity validatedForms(
+    WordType type,
+    WordAspect aspect,
+    WordFormsEntity forms,
+    boolean importedWord
+  ) {
     if (type == null) {
-      throw new BadRequest("Word type is required");
+      if (!importedWord) {
+        throw new BadRequest("Word type is required");
+      }
+      if (aspect != null || (forms != null && !forms.isEmpty())) {
+        throw new BadRequest("Words without a type cannot include aspect or forms");
+      }
+      return null;
     }
-    if (type == WordType.VERB && aspect == null) {
+    if (type == WordType.VERB && aspect == null && !importedWord) {
       throw new BadRequest("Verb words require an aspect");
     }
     if (type != WordType.VERB && aspect != null) {

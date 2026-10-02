@@ -13,7 +13,7 @@ public class DeleteWordRelationService implements UseCase<DeleteWordRelationDto,
 
   @Override
   public Void handle(DeleteWordRelationDto dto) {
-    relationsService.deleteOutgoingAndRefresh(dto.sourceWordId(), dto.relationId());
+    relationsService.deleteOutgoing(dto.sourceWordId(), dto.relationId());
     return null;
   }
 

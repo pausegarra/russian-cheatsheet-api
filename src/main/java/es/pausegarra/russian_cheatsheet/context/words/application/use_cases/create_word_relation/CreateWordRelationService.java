@@ -13,7 +13,7 @@ public class CreateWordRelationService implements UseCase<CreateWordRelationDto,
 
   @Override
   public CreateWordRelationResultDto handle(CreateWordRelationDto dto) {
-    return relationsService.createOutgoingAndRefresh(dto.sourceWordId(), dto.relation());
+    return relationsService.createOutgoing(dto.sourceWordId(), dto.relation());
   }
 
 }

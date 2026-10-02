@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import es.pausegarra.russian_cheatsheet.common.domain.exception.InternalServerError;
-import es.pausegarra.russian_cheatsheet.context.words.domain.entities.RelatedWordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordFormsEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordTranslationEntity;
@@ -32,23 +31,17 @@ public class WordChecksumService {
     .enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
     .enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
 
-  public String calculate(WordEntity word, List<RelatedWordEntity> outgoingRelations) {
+  public String calculate(WordEntity word) {
     List<ChecksumTranslation> translations = word.translations().stream()
       .filter(translation -> translation.managedBy() == TranslationOrigin.OPENRUSSIAN)
       .sorted(Comparator.comparing(WordTranslationEntity::language)
-        .thenComparingInt(WordTranslationEntity::position)
         .thenComparing(WordTranslationEntity::text))
-      .map(translation -> new ChecksumTranslation(translation.language(), translation.text(), translation.position()))
-      .toList();
-    List<ChecksumRelation> relations = outgoingRelations.stream()
-      .sorted(Comparator.comparing(RelatedWordEntity::russian)
-        .thenComparing(relatedWord -> relatedWord.relation().value()))
-      .map(relatedWord -> new ChecksumRelation(relatedWord.russian(), relatedWord.relation().value()))
+      .map(translation -> new ChecksumTranslation(translation.language(), translation.text()))
       .toList();
 
     CanonicalWord payload = new CanonicalWord(
       word.russian(), word.type() == null ? null : word.type().value(), translations, word.usage(), word.audioUrl(),
-      word.aspect() == null ? null : word.aspect().value(), word.forms(), relations
+      word.aspect() == null ? null : word.aspect().value(), word.forms()
     );
 
     try {
@@ -68,16 +61,11 @@ public class WordChecksumService {
     String usage,
     String audioUrl,
     String aspect,
-    WordFormsEntity forms,
-    List<ChecksumRelation> relations
+    WordFormsEntity forms
   ) {}
 
   @RegisterForReflection
   @JsonInclude(JsonInclude.Include.ALWAYS)
-  private record ChecksumTranslation(String language, String text, int position) {}
-
-  @RegisterForReflection
-  @JsonInclude(JsonInclude.Include.ALWAYS)
-  private record ChecksumRelation(String russian, String relation) {}
+  private record ChecksumTranslation(String language, String text) {}
 
 }
