@@ -7,7 +7,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -24,10 +23,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(
-  name = "example_sentences",
-  indexes = {@Index(name = "example_sentences_external_id_idx", columnList = "external_id", unique = true)}
-)
+@Table(name = "example_sentences")
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
 @Getter
@@ -36,9 +32,6 @@ public class ExampleSentenceModel extends AuditableModel {
 
   @Id
   private final UUID id;
-
-  @Column(name = "external_id", nullable = false)
-  private final String externalId;
 
   @Column(nullable = false, columnDefinition = "text")
   private final String russian;
@@ -70,7 +63,6 @@ public class ExampleSentenceModel extends AuditableModel {
 
     return ExampleSentenceModel.builder()
       .id(entity.id())
-      .externalId(entity.externalId())
       .russian(entity.russian())
       .translations(translationsJson)
       .contributor(entity.contributor())
@@ -90,17 +82,16 @@ public class ExampleSentenceModel extends AuditableModel {
       : translations.stream()
         .map(translation -> new ExampleTranslationEntity(translation.language(), translation.text(), translation.position()))
         .toList();
-    List<String> wordExternalIds = linkedWords == null
+    List<UUID> wordIds = linkedWords == null
       ? List.of()
       : linkedWords.stream()
-        .map(WordModel::getExternalId)
-        .filter(externalId -> externalId != null)
+        .map(WordModel::getId)
         .sorted()
         .toList();
 
     return new ExampleSentenceEntity(
-      id, externalId, russian, translationEntities, contributor, audioUrl, checksum,
-      wordExternalIds, getCreatedBy(), getCreatedAt(), getUpdatedBy(), getUpdatedAt()
+      id, russian, translationEntities, contributor, audioUrl, checksum,
+      wordIds, getCreatedBy(), getCreatedAt(), getUpdatedBy(), getUpdatedAt()
     );
   }
 

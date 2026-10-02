@@ -3,13 +3,13 @@ package es.pausegarra.russian_cheatsheet.context.words.infrastructure.models;
 import es.pausegarra.russian_cheatsheet.common.infrastructure.audit.AuditableModel;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordFormsEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordTranslationEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordAspect;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
@@ -19,7 +19,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.time.Instant;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -76,10 +76,15 @@ public class WordModel extends AuditableModel {
   @Column(name = "published_at")
   private final Instant publishedAt;
 
-  @Setter
-  @OneToMany(mappedBy = "word", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-  @OrderBy("language ASC, position ASC, managedBy ASC, text ASC")
-  private List<WordTranslationModel> translations = new ArrayList<>();
+  @Column(name = "translations", columnDefinition = "jsonb", nullable = false)
+  @JdbcTypeCode(SqlTypes.JSON)
+  private final List<WordTranslationJson> translations;
+
+  private static final Comparator<WordTranslationEntity> TRANSLATION_ORDER = Comparator
+    .comparing(WordTranslationEntity::language)
+    .thenComparingInt(WordTranslationEntity::position)
+    .thenComparing(translation -> translation.managedBy().name())
+    .thenComparing(WordTranslationEntity::text);
 
   public static WordModel fromEntity(WordEntity word) {
     UUID id = word.id() != null ? word.id() : UUID.randomUUID();
@@ -98,13 +103,8 @@ public class WordModel extends AuditableModel {
       .createdAt(word.createdAt())
       .updatedBy(word.updatedBy())
       .updatedAt(word.updatedAt())
-      .translations(new ArrayList<>())
+      .translations(toJson(word.translations()))
       .build();
-
-    List<WordTranslationModel> translationModels = new ArrayList<>(word.translations().stream()
-      .map(translation -> WordTranslationModel.fromEntity(model, translation))
-      .toList());
-    model.setTranslations(translationModels);
 
     return model;
   }
@@ -114,7 +114,7 @@ public class WordModel extends AuditableModel {
       .id(id)
       .externalId(externalId)
       .russian(russian)
-      .translations(translations.stream().map(WordTranslationModel::toEntity).toList())
+      .translations(translations == null ? List.of() : translations.stream().map(WordTranslationJson::toEntity).toList())
       .usage(usage)
       .audioUrl(audioUrl)
       .checksum(checksum)
@@ -127,5 +127,12 @@ public class WordModel extends AuditableModel {
       .updatedBy(updatedBy)
       .updatedAt(updatedAt)
       .build();
+  }
+
+  private static List<WordTranslationJson> toJson(List<WordTranslationEntity> translations) {
+    return translations.stream()
+      .sorted(TRANSLATION_ORDER)
+      .map(WordTranslationJson::fromEntity)
+      .toList();
   }
 }

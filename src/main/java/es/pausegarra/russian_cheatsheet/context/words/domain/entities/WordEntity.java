@@ -8,7 +8,11 @@ import lombok.With;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -125,24 +129,38 @@ public record WordEntity(
   }
 
   private static List<WordTranslationEntity> importedTranslationsWithOrigin(List<WordTranslationEntity> translations) {
-    if (translations == null) {
-      return List.of();
-    }
-    return translations.stream()
-      .map(translation -> new WordTranslationEntity(
-        translation.language(), translation.text(), TranslationOrigin.OPENRUSSIAN, translation.position()
-      ))
-      .toList();
+    return translationsWithOriginAndUniquePositions(translations, TranslationOrigin.OPENRUSSIAN);
   }
 
   private static List<WordTranslationEntity> manualTranslationsWithOrigin(List<WordTranslationEntity> translations) {
+    return translationsWithOriginAndUniquePositions(translations, TranslationOrigin.MANUAL);
+  }
+
+  private static List<WordTranslationEntity> translationsWithOriginAndUniquePositions(
+    List<WordTranslationEntity> translations,
+    TranslationOrigin origin
+  ) {
     if (translations == null) {
       return List.of();
     }
-    return translations.stream()
-      .map(translation -> new WordTranslationEntity(
-        translation.language(), translation.text(), TranslationOrigin.MANUAL, translation.position()
-      ))
-      .toList();
+
+    Map<String, Set<Integer>> positionsByLanguage = new HashMap<>();
+    List<WordTranslationEntity> normalized = new ArrayList<>(translations.size());
+    for (WordTranslationEntity translation : translations) {
+      Set<Integer> usedPositions = positionsByLanguage.computeIfAbsent(
+        translation.language(), ignored -> new HashSet<>()
+      );
+      int position = translation.position();
+      while (!usedPositions.add(position)) {
+        if (position == Integer.MAX_VALUE) {
+          throw new IllegalArgumentException("Translation positions exceed supported range");
+        }
+        position++;
+      }
+      normalized.add(new WordTranslationEntity(
+        translation.language(), translation.text(), origin, position
+      ));
+    }
+    return List.copyOf(normalized);
   }
 }

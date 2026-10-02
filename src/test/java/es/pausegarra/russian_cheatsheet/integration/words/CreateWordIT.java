@@ -38,13 +38,22 @@ public class CreateWordIT extends IntegrationTest {
       .body("russian", equalTo("russian"))
       .body("translations[0].language", equalTo("en"))
       .body("translations[0].text", equalTo("english"))
+      .body("translations[0].managedBy", equalTo("MANUAL"))
+      .body("translations[0].position", equalTo(0))
       .body("translations[1].language", equalTo("es"))
       .body("translations[1].text", equalTo("spanish"))
+      .body("translations[1].managedBy", equalTo("MANUAL"))
+      .body("translations[1].position", equalTo(1))
       .body("type", equalTo("other"));
 
     WordModel saved = em.createQuery("select w from WordModel w", WordModel.class).getSingleResult();
     assertNotNull(saved);
     assertEquals(WordType.OTHER, saved.getType());
+    Object storedTranslationText = em.createNativeQuery(
+        "select translations -> 0 ->> 'text' from words where id = :id")
+      .setParameter("id", saved.getId())
+      .getSingleResult();
+    assertEquals("english", storedTranslationText);
   }
 
   @Test
