@@ -16,7 +16,6 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @QuarkusTest
@@ -47,7 +46,7 @@ class WordRelationsIT extends IntegrationTest {
       .body("relatedWords[0].id", equalTo(target.getId().toString()));
 
     WordModel savedSource = em.find(WordModel.class, source.getId());
-    assertNotNull(savedSource.getChecksum());
+    assertEquals("initial-checksum", savedSource.getChecksum());
   }
 
   @Test
@@ -76,7 +75,7 @@ class WordRelationsIT extends IntegrationTest {
       .statusCode(201).extract().path("id");
     createRelation(target.getId(), source.getId()).then().statusCode(201);
     String checksumWithOutgoingRelation = checksum(source.getId());
-    assertNotNull(checksumWithOutgoingRelation);
+    assertEquals("initial-checksum", checksumWithOutgoingRelation);
 
     given().when().delete("/words/" + source.getId() + "/relations/" + sourceRelationId)
       .then().statusCode(204);
@@ -88,8 +87,8 @@ class WordRelationsIT extends IntegrationTest {
     given().when().get("/words/" + source.getId())
       .then().statusCode(200).body("relatedWords", hasSize(0));
     String checksumWithoutOutgoingRelation = checksum(source.getId());
-    assertNotNull(checksumWithoutOutgoingRelation);
-    assertNotEquals(checksumWithOutgoingRelation, checksumWithoutOutgoingRelation);
+    assertEquals(checksumWithOutgoingRelation, checksumWithoutOutgoingRelation);
+    assertEquals("initial-checksum", checksumWithoutOutgoingRelation);
   }
 
   @Test
@@ -182,8 +181,10 @@ class WordRelationsIT extends IntegrationTest {
 
   private WordModel importedWord(String suffix) {
     WordModel word = WordModel.builder()
+      .id(UUID.randomUUID())
       .externalId(suffix + "-" + UUID.randomUUID())
       .russian(suffix)
+      .checksum("initial-checksum")
       .type(WordType.OTHER)
       .translations(new ArrayList<>())
       .build();

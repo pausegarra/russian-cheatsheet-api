@@ -79,7 +79,7 @@ public class UpdateWordUseCase implements UseCase<UpdateWordDto, WordDto> {
       if (!importedWord) {
         throw new BadRequest("Word type is required");
       }
-      if (aspect != null || (forms != null && !forms.isEmpty())) {
+      if (aspect != null || (forms != null && !forms.hasNoForms())) {
         throw new BadRequest("Words without a type cannot include aspect or forms");
       }
       return null;

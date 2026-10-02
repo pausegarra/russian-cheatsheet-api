@@ -41,12 +41,14 @@ public record WordEntity(
   public static WordEntity createManual(
     String russian,
     List<WordTranslationEntity> translations,
+    String usage,
+    String audioUrl,
     WordType type,
     WordAspect aspect,
     WordFormsEntity forms
   ) {
     return new WordEntity(
-      UUID.randomUUID(), null, russian, manualTranslationsWithOrigin(translations), null, null, null,
+      UUID.randomUUID(), null, russian, manualTranslationsWithOrigin(translations), usage, audioUrl, null,
       type, aspect, forms, null, null, null, null, null
     );
   }

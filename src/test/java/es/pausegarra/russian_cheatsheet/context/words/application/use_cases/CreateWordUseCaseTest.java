@@ -54,6 +54,8 @@ class CreateWordUseCaseTest {
     assertEquals(WordType.VERB, created.type());
     assertEquals(WordAspect.IMPERFECTIVE, created.aspect());
     assertEquals(forms, created.forms());
+    assertEquals("Usage note", created.usage());
+    assertEquals("https://example.org/audio.mp3", created.audioUrl());
     verify(wordsRepository).create(any(WordEntity.class));
   }
 

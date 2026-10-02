@@ -1,5 +1,6 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.models;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordFormsEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordTranslationEntity;
@@ -78,5 +79,16 @@ class WordModelTest {
     WordEntity entity = WordMother.random().forms(null).build();
 
     assertNull(WordModel.fromEntity(entity).toEntity().forms());
+  }
+
+  @Test
+  void shouldRoundTripFormsWithoutSerializingDerivedProperties() throws Exception {
+    WordFormsEntity forms = WordFormsEntity.builder().ru_verb_presfut_sg1("иду").build();
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    String json = objectMapper.writeValueAsString(forms);
+
+    assertFalse(objectMapper.readTree(json).has("empty"));
+    assertEquals(forms, objectMapper.readValue(json, WordFormsEntity.class));
   }
 }

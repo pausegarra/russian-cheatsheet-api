@@ -56,8 +56,8 @@ public class CreateWordUseCase implements UseCase<CreateWordDto, WordDto> {
     }
 
     return WordEntity.createManual(
-      dto.russian(), translationsFrom(dto.translations(), TranslationOrigin.MANUAL), dto.type(), dto.aspect(),
-      validatedForms(dto.type(), dto.aspect(), dto.forms(), false)
+      dto.russian(), translationsFrom(dto.translations(), TranslationOrigin.MANUAL), dto.usage(), dto.audioUrl(),
+      dto.type(), dto.aspect(), validatedForms(dto.type(), dto.aspect(), dto.forms(), false)
     );
   }
 
@@ -71,7 +71,7 @@ public class CreateWordUseCase implements UseCase<CreateWordDto, WordDto> {
       if (!importedWord) {
         throw new BadRequest("Word type is required");
       }
-      if (aspect != null || (forms != null && !forms.isEmpty())) {
+      if (aspect != null || (forms != null && !forms.hasNoForms())) {
         throw new BadRequest("Words without a type cannot include aspect or forms");
       }
       return null;
