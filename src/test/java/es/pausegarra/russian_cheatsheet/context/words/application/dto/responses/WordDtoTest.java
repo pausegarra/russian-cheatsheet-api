@@ -1,5 +1,7 @@
 package es.pausegarra.russian_cheatsheet.context.words.application.dto.responses;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordTranslationDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
@@ -10,7 +12,9 @@ import es.pausegarra.russian_cheatsheet.mother.WordMother;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WordDtoTest {
 
@@ -36,5 +40,17 @@ class WordDtoTest {
     assertEquals(WordType.VERB, dto.type());
     assertEquals(WordAspect.IMPERFECTIVE, dto.aspect());
     assertEquals(forms, dto.forms());
+  }
+
+  @Test
+  void shouldExposeWordTranslationPositionWithoutOrigin() {
+    WordEntity word = WordMother.random().build();
+    WordTranslationDto translation = WordTranslationDto.fromEntity(word.translations().getFirst());
+    JsonNode json = new ObjectMapper().valueToTree(translation);
+
+    assertTrue(json.has("language"));
+    assertTrue(json.has("text"));
+    assertTrue(json.has("position"));
+    assertFalse(json.has("managedBy"));
   }
 }
