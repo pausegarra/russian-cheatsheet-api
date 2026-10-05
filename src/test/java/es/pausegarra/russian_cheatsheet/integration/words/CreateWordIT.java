@@ -16,6 +16,8 @@ import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
@@ -38,12 +40,12 @@ public class CreateWordIT extends IntegrationTest {
       .body("russian", equalTo("russian"))
       .body("translations[0].language", equalTo("en"))
       .body("translations[0].text", equalTo("english"))
-      .body("translations[0].managedBy", equalTo("MANUAL"))
       .body("translations[0].position", equalTo(0))
+      .body("translations[0]", not(hasKey("managedBy")))
       .body("translations[1].language", equalTo("es"))
       .body("translations[1].text", equalTo("spanish"))
-      .body("translations[1].managedBy", equalTo("MANUAL"))
       .body("translations[1].position", equalTo(1))
+      .body("translations[1]", not(hasKey("managedBy")))
       .body("type", equalTo("other"));
 
     WordModel saved = em.createQuery("select w from WordModel w", WordModel.class).getSingleResult();
