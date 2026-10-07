@@ -12,7 +12,7 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
 
-@Path("/words/unpublished")
+@Path("/api/v1/words/unpublished")
 @Tag(name = "Words")
 public interface FindUnpublishedWordsApiSpec {
 

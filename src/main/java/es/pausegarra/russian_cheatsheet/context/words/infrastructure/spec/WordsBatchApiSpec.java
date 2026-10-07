@@ -15,7 +15,7 @@ import org.jboss.resteasy.reactive.RestResponse;
 
 import java.util.List;
 
-@Path("/words/batch")
+@Path("/api/v1/words/batch")
 @Tag(name = "Words")
 public interface WordsBatchApiSpec {
 

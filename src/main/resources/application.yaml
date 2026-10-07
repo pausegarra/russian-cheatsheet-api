@@ -1,8 +1,5 @@
 quarkus:
 
-  http:
-    root-path: /api
-
   flyway:
     migrate-at-start: true
 
@@ -20,7 +17,7 @@ quarkus:
   swagger-ui:
     always-include: true
     urls:
-      default: /api/q/openapi
+      default: /q/openapi
     enable: true
     theme: original
     operations-sorter: alpha

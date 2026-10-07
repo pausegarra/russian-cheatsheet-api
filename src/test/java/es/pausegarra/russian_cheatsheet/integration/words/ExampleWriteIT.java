@@ -32,7 +32,7 @@ public class ExampleWriteIT extends IntegrationTest {
       .contentType("application/json")
       .body(requestBody)
       .when()
-      .post("/examples");
+      .post("/api/v1/examples");
 
     response.then().statusCode(201);
     assertDoesNotThrow(() -> UUID.fromString(response.jsonPath().getString("id")));
@@ -56,7 +56,7 @@ public class ExampleWriteIT extends IntegrationTest {
       .contentType("application/json")
       .body(requestBody)
       .when()
-      .put("/examples/" + exampleId)
+      .put("/api/v1/examples/" + exampleId)
       .then()
       .statusCode(200)
       .body("id", equalTo(exampleId))
@@ -73,7 +73,7 @@ public class ExampleWriteIT extends IntegrationTest {
       .contentType("application/json")
       .body("{\"russian\":\"дом\",\"translations\":[],\"linkedWordIds\":[]}")
       .when()
-      .put("/examples/" + id)
+      .put("/api/v1/examples/" + id)
       .then()
       .statusCode(404)
       .body("message", equalTo("Example with id " + id + " not found"))
@@ -87,7 +87,7 @@ public class ExampleWriteIT extends IntegrationTest {
       .contentType("application/json")
       .body("{\"russian\":\"дом\",\"translations\":[],\"linkedWordIds\":[]}")
       .when()
-      .put("/examples/not-a-uuid")
+      .put("/api/v1/examples/not-a-uuid")
       .then()
       .statusCode(400);
   }
@@ -103,7 +103,7 @@ public class ExampleWriteIT extends IntegrationTest {
       .contentType("application/json")
       .body(requestBody)
       .when()
-      .post("/examples")
+      .post("/api/v1/examples")
       .then()
       .statusCode(404);
   }
@@ -115,7 +115,7 @@ public class ExampleWriteIT extends IntegrationTest {
       .contentType("application/json")
       .body("{\"russian\":\"дом\",\"translations\":[{\"language\":\" \",\"text\":\"house\"}]}")
       .when()
-      .post("/examples")
+      .post("/api/v1/examples")
       .then()
       .statusCode(400);
   }
@@ -128,7 +128,7 @@ public class ExampleWriteIT extends IntegrationTest {
       .contentType("application/json")
       .body(requestBody)
       .when()
-      .post("/examples");
+      .post("/api/v1/examples");
     response.then().statusCode(201);
     return response.jsonPath().getString("id");
   }

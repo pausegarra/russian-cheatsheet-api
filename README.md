@@ -32,11 +32,11 @@ Main configuration lives in [application.yaml](src/main/resources/application.ya
 
 Important settings:
 
-- API root path: `/api`
+- API version prefix: `/api/v1`, declared in each endpoint spec
 - Default HTTP port: `8080`
 - PostgreSQL URL: `jdbc:postgresql://localhost:5432/russian-cheatsheet`
-- Swagger UI: `http://localhost:8080/api/q/swagger-ui`
-- OpenAPI document: `http://localhost:8080/api/q/openapi`
+- Swagger UI: `http://localhost:8080/q/swagger-ui`
+- OpenAPI document: `http://localhost:8080/q/openapi`
 
 ## Local Setup
 
@@ -52,7 +52,7 @@ docker compose up -d
 ./mvnw clean quarkus:dev --debug -DskipTests
 ```
 
-The API will be available at `http://localhost:8080/api`.
+The API will be available at `http://localhost:8080/api/v1`.
 
 ## Common Commands
 
@@ -72,26 +72,33 @@ make remove-db     # stop PostgreSQL and delete its volume
 
 Public endpoints:
 
-- `GET /api/words`
-- `GET /api/words/{id}`
-- `GET /api/examples`
-- `GET /api/examples?externalIdOnly=true` (IDs and checksums only)
-- `GET /api/words/{wordId}/examples`
+- `GET /api/v1/words`
+- `GET /api/v1/words/{id}`
+- `GET /api/v1/examples`
+- `GET /api/v1/examples?externalIdOnly=true` (IDs and checksums only)
+- `GET /api/v1/words/{wordId}/examples`
+- `GET /api/v1/words/{wordId}/relations`
 
 Protected endpoints:
 
-- `POST /api/words`
-- `PUT /api/words/{wordId}`
-- `POST /api/examples`
-- `PUT /api/examples/{id}`
-- `PATCH /api/words/{wordId}/publish`
-- `GET /api/words/unpublished`
-- `GET /api/auth/profile/permissions`
+- `POST /api/v1/words`
+- `PUT /api/v1/words/{wordId}`
+- `DELETE /api/v1/words/{wordId}`
+- `POST /api/v1/examples`
+- `PUT /api/v1/examples/{id}`
+- `POST /api/v1/words/{wordId}/relations`
+- `DELETE /api/v1/words/{wordId}/relations/{relationId}`
+- `POST /api/v1/words/relations/batch`
+- `DELETE /api/v1/words/relations/batch`
+- `PATCH /api/v1/words/{wordId}/publish`
+- `GET /api/v1/words/unpublished`
+- `GET /api/v1/auth/profile/permissions`
 
 Role requirements on protected word endpoints:
 
 - `words#create`
 - `words#update`
+- `words#delete`
 - `words#publish`
 
 Role requirements on protected example endpoints:
@@ -99,19 +106,30 @@ Role requirements on protected example endpoints:
 - `examples#create`
 - `examples#update`
 
-The external process uses existing `POST /api/words` for new words and `PUT /api/words/{wordId}` for changes; requests carry `externalId` and `translations[]`. New imported words are published immediately because source entries are already public. Requests must omit checksums. Word translation objects in requests and responses contain `language`, `text`, and `position`; responses omit the internal translation origin (`managedBy`). If position is omitted from a request, API uses entry's array index. Repeated positions within one language and owner are moved to the next available position, preserving duplicate translations without violating the storage key. `translations[]` is the only translation representation; the API replaces imported translations while preserving manually managed translations, including Spanish (`language: "es"`).
+The external process uses existing `POST /api/v1/words` for new words and `PUT /api/v1/words/{wordId}` for changes; requests carry `externalId` and `translations[]`. New imported words are published immediately because source entries are already public. Requests must omit checksums. Word translation objects in requests and responses contain `language`, `text`, and `position`; responses omit the internal translation origin (`managedBy`). If position is omitted from a request, API uses entry's array index. Repeated positions within one language and owner are moved to the next available position, preserving duplicate translations without violating the storage key. `translations[]` is the only translation representation; the API replaces imported translations while preserving manually managed translations, including Spanish (`language: "es"`).
 
-OpenRussian word relations use `related`, `synonym`, and `antonym`. Create one directed row with `POST /api/words/{wordId}/relations` and body `{ "relatedWordId": "<API word UUID>", "relation": "related" }`. Each POST creates one direction; send a second POST with reversed source and target to create a mutual pair. An identical POST returns the existing relation row. `GET /api/words/{wordId}/relations` lists outgoing rows as `{id, relatedWordId, russian, relation}`, where `id` is the relation-row UUID. `DELETE /api/words/{wordId}/relations/{relationId}` removes only that directed row; change a relation by deleting and creating it again. Word POST/PUT requests do not manage relations. Relation source and target must be existing imported words with `externalId`; manual words cannot own or be targets of imported relations. Word detail keeps `relatedWords` for compatibility and returns outgoing edges only; existing edges receive inverse rows during migration. The paginated word list stays relation-free.
+OpenRussian word relations use `related`, `synonym`, and `antonym`. Create one directed row with `POST /api/v1/words/{wordId}/relations` and body `{ "relatedWordId": "<API word UUID>", "relation": "related" }`. Each POST creates one direction; send a second POST with reversed source and target to create a mutual pair. An identical POST returns the existing relation row. `GET /api/v1/words/{wordId}/relations` lists outgoing rows as `{id, relatedWordId, russian, relation}`, where `id` is the relation-row UUID. `DELETE /api/v1/words/{wordId}/relations/{relationId}` removes only that directed row; change a relation by deleting and creating it again. Word POST/PUT requests do not manage relations. Relation source and target must be existing imported words with `externalId`; manual words cannot own or be targets of imported relations. Word detail keeps `relatedWords` for compatibility and returns outgoing edges only; existing edges receive inverse rows during migration. The paginated word list stays relation-free.
+
+Batch mutations accept relations across multiple source words. `POST /api/v1/words/relations/batch` creates items; `DELETE /api/v1/words/relations/batch` accepts the same JSON array to delete exact directed `(wordId, relatedWordId, relation)` triples. For example:
+
+```json
+[
+  {"wordId":"<source word UUID>","relatedWordId":"<target word UUID>","relation":"synonym"},
+  {"wordId":"<another source UUID>","relatedWordId":"<another target UUID>","relation":"antonym"}
+]
+```
+
+Batch POST requires `words#create` and returns `201` when it creates any rows or `200` when all rows already exist. Its response includes `wordId`, a per-item `created` flag, and the persisted relation. Batch DELETE requires `words#delete` and returns `204`. Both operations are atomic, reject empty arrays, repeated triples, and arrays over the configured batch limit (1000 by default). A DELETE fails with `404` and rolls back the full array if any exact relation is missing. Inverse edges and other relation types change only when included as separate array items.
 
 Word `type` uses the exact OpenRussian values: `noun`, `pronoun`, `verb`, `adjective`, `adverb`, `expression`, and `other`. Imported words may have `type: null` when their OpenRussian source type is blank; manual words still require a type. Such imported words cannot include forms or aspect. Morphology is sent and returned as one `forms` object whose keys are the original `form_type` names (for example `ru_verb_presfut_sg1`, `ru_verb_gerund_present`, `ru_noun_sg_gen`, or `ru_adj_m_nom`). The API rejects noun, verb, and adjective form fields that do not match the word's type; `adjective` and `pronoun` share the `ru_adj_*` forms. `ru_base` is supported for every type. Verb `aspect` is a root-level value (`imperfective`, `perfective`, or `both`); imported verbs may leave it null when OpenRussian has no aspect, while manual verbs still require it.
 
-`GET /api/words` returns paginated published words with `id`, `externalId`, and `checksum`, which intake uses to select `POST` versus `PUT`. Example endpoints use API UUIDs: `POST /api/examples` creates an example and returns its generated `id`; `PUT /api/examples/{id}` updates an existing example; `GET /api/words/{wordId}/examples` returns linked examples with `linkedWordIds`.
+`GET /api/v1/words` returns paginated published words with `id`, `externalId`, and `checksum`, which intake uses to select `POST` versus `PUT`. Example endpoints use API UUIDs: `POST /api/v1/examples` creates an example and returns its generated `id`; `PUT /api/v1/examples/{id}` updates an existing example; `GET /api/v1/words/{wordId}/examples` returns linked examples with `linkedWordIds`.
 
-Examples also expose nullable `externalId`. OpenRussian intake stores `sentences.id` there; manually created examples leave it null. Non-null example `externalId` values are unique. The migration preserves existing OpenRussian IDs if the prior example schema still contains them. Intake reads `GET /api/examples?externalIdOnly=true`, which populates only the paginated `id`, `externalId`, and `checksum` values; other example fields are null and translations/links are not loaded. It uses that list to select `POST` for a missing source ID, skip a matching checksum, or `PUT /api/examples/{id}` when content changes. `PUT` preserves the existing `externalId`; callers do not send it in update requests. Example checksums exclude `externalId` and continue to cover mutable sentence content and linked word UUIDs.
+Examples also expose nullable `externalId`. OpenRussian intake stores `sentences.id` there; manually created examples leave it null. Non-null example `externalId` values are unique. The migration preserves existing OpenRussian IDs if the prior example schema still contains them. Intake reads `GET /api/v1/examples?externalIdOnly=true`, which populates only the paginated `id`, `externalId`, and `checksum` values; other example fields are null and translations/links are not loaded. It uses that list to select `POST` for a missing source ID, skip a matching checksum, or `PUT /api/v1/examples/{id}` when content changes. `PUT` preserves the existing `externalId`; callers do not send it in update requests. Example checksums exclude `externalId` and continue to cover mutable sentence content and linked word UUIDs.
 
 Word detail and list responses include `checksum`. Example sentence responses include their own `checksum` and linked word UUIDs. Checksums are lowercase SHA-256 hex over compact UTF-8 JSON with property names sorted alphabetically and null values included. Word checksums cover Russian text, type, aspect, imported translations sorted by `(language, text)`, usage, audio URL, and the complete `forms` object. Translation positions and relations are excluded, so relation operations do not change word checksums. Manual translations, generated UUIDs, audit fields, publication state, `externalId`, and the checksum itself are also excluded. Existing imported checksums are cleared once by migration so the intake can recompute them with this projection. Example checksums cover Russian text, translations, contributor, audio URL, and sorted linked word UUIDs. Missing translation positions use original array index; missing example link arrays normalize to `[]`. Preserve Unicode text and stress marks when reproducing hashes.
 
-`POST /api/examples` accepts Russian text, translations, contributor, audio URL, and `linkedWordIds` as API word UUIDs. `PUT /api/examples/{id}` uses the example's API UUID; a missing or empty `linkedWordIds` list clears links. `GET /api/words/{wordId}/examples` is paginated.
+`POST /api/v1/examples` accepts Russian text, translations, contributor, audio URL, and `linkedWordIds` as API word UUIDs. `PUT /api/v1/examples/{id}` uses the example's API UUID; a missing or empty `linkedWordIds` list clears links. `GET /api/v1/words/{wordId}/examples` is paginated.
 
 ## Imported data attribution
 

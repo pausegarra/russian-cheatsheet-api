@@ -20,12 +20,12 @@ public class FindWordByIdIT extends IntegrationTest {
     WordEntity word = WordMother.random().id(null).build();
     WordModel saved = persist(WordModel.fromEntity(word));
 
-    given().when().get("/words/" + saved.getId().toString()).then().statusCode(200).body("id", is(saved.getId().toString()));
+    given().when().get("/api/v1/words/" + saved.getId().toString()).then().statusCode(200).body("id", is(saved.getId().toString()));
   }
 
   @Test
   public void shouldReturn404IfWordNotFound() {
-    given().when().get("/words/" + UUID.randomUUID().toString()).then().statusCode(404);
+    given().when().get("/api/v1/words/" + UUID.randomUUID().toString()).then().statusCode(404);
   }
 
 }

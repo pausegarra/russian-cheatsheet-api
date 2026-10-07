@@ -36,12 +36,12 @@ class WordRelationsIT extends IntegrationTest {
     String relationId = created.then().extract().path("id");
     assertNotNull(UUID.fromString(relationId));
 
-    given().when().get("/words/" + source.getId() + "/relations")
+    given().when().get("/api/v1/words/" + source.getId() + "/relations")
       .then().statusCode(200).body("", hasSize(1))
       .body("[0].id", equalTo(relationId));
-    given().when().get("/words/" + target.getId() + "/relations")
+    given().when().get("/api/v1/words/" + target.getId() + "/relations")
       .then().statusCode(200).body("", hasSize(0));
-    given().when().get("/words/" + source.getId())
+    given().when().get("/api/v1/words/" + source.getId())
       .then().statusCode(200).body("relatedWords", hasSize(1))
       .body("relatedWords[0].id", equalTo(target.getId().toString()));
 
@@ -60,9 +60,9 @@ class WordRelationsIT extends IntegrationTest {
 
     assertEquals(2L, em.createQuery("select count(relation) from WordRelationModel relation", Long.class)
       .getSingleResult());
-    given().when().get("/words/" + source.getId() + "/relations")
+    given().when().get("/api/v1/words/" + source.getId() + "/relations")
       .then().statusCode(200).body("", hasSize(1));
-    given().when().get("/words/" + target.getId() + "/relations")
+    given().when().get("/api/v1/words/" + target.getId() + "/relations")
       .then().statusCode(200).body("", hasSize(1));
   }
 
@@ -77,14 +77,14 @@ class WordRelationsIT extends IntegrationTest {
     String checksumWithOutgoingRelation = checksum(source.getId());
     assertEquals("initial-checksum", checksumWithOutgoingRelation);
 
-    given().when().delete("/words/" + source.getId() + "/relations/" + sourceRelationId)
+    given().when().delete("/api/v1/words/" + source.getId() + "/relations/" + sourceRelationId)
       .then().statusCode(204);
 
-    given().when().get("/words/" + source.getId() + "/relations")
+    given().when().get("/api/v1/words/" + source.getId() + "/relations")
       .then().statusCode(200).body("", hasSize(0));
-    given().when().get("/words/" + target.getId() + "/relations")
+    given().when().get("/api/v1/words/" + target.getId() + "/relations")
       .then().statusCode(200).body("", hasSize(1));
-    given().when().get("/words/" + source.getId())
+    given().when().get("/api/v1/words/" + source.getId())
       .then().statusCode(200).body("relatedWords", hasSize(0));
     String checksumWithoutOutgoingRelation = checksum(source.getId());
     assertEquals(checksumWithOutgoingRelation, checksumWithoutOutgoingRelation);
@@ -95,7 +95,7 @@ class WordRelationsIT extends IntegrationTest {
   void shouldAllowAnonymousRelationList() {
     WordModel source = importedWord("source");
 
-    given().when().get("/words/" + source.getId() + "/relations")
+    given().when().get("/api/v1/words/" + source.getId() + "/relations")
       .then().statusCode(200).body("", hasSize(0));
   }
 
@@ -123,7 +123,7 @@ class WordRelationsIT extends IntegrationTest {
     createRelation(missingId, source.getId()).then().statusCode(404);
     createRelation(source.getId(), missingId).then().statusCode(404);
     createRelation(source.getId(), source.getId()).then().statusCode(400);
-    given().when().get("/words/" + missingId + "/relations").then().statusCode(404);
+    given().when().get("/api/v1/words/" + missingId + "/relations").then().statusCode(404);
   }
 
   @Test
@@ -151,7 +151,7 @@ class WordRelationsIT extends IntegrationTest {
     String relationId = createRelation(source.getId(), target.getId()).then()
       .statusCode(201).extract().path("id");
 
-    given().when().delete("/words/" + source.getId() + "/relations/" + relationId)
+    given().when().delete("/api/v1/words/" + source.getId() + "/relations/" + relationId)
       .then().statusCode(403);
   }
 
@@ -163,14 +163,14 @@ class WordRelationsIT extends IntegrationTest {
     String relationId = createRelation(source.getId(), target.getId()).then()
       .statusCode(201).extract().path("id");
 
-    given().when().delete("/words/" + target.getId() + "/relations/" + relationId)
+    given().when().delete("/api/v1/words/" + target.getId() + "/relations/" + relationId)
       .then().statusCode(404);
   }
 
   private Response createRelation(UUID sourceWordId, UUID relatedWordId) {
     return given().contentType("application/json")
       .body("{\"relatedWordId\":\"" + relatedWordId + "\",\"relation\":\"related\"}")
-      .when().post("/words/" + sourceWordId + "/relations");
+      .when().post("/api/v1/words/" + sourceWordId + "/relations");
   }
 
   private String checksum(UUID wordId) {

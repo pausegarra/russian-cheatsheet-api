@@ -82,8 +82,8 @@ make test   # runs: ./mvnw clean test -Dquarkus.profile=test
 - Main: `src/main/resources/application.yaml`
 - Dev overrides: `application-dev.yaml` (disables auth, CORS for localhost:5173)
 - Test overrides: `application-test.yaml`
-- API root path: `/api`
-- Swagger UI: `/api/q/swagger-ui`
+- API version prefix: `/api/v1`, declared in each REST API spec `@Path`
+- Swagger UI: `/q/swagger-ui`
 
 ## Deployment
 
