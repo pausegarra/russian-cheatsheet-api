@@ -16,7 +16,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 @RequiredArgsConstructor
@@ -53,6 +55,14 @@ public class WordRelationsService {
     return findOutgoing(wordId).stream()
       .map(RelatedWordDto::fromEntity)
       .toList();
+  }
+
+  public Map<UUID, List<RelatedWordDto>> findOutgoingWordDtosByIds(List<UUID> wordIds) {
+    return relationsRepository.findOutgoingBySourceIds(wordIds).entrySet().stream()
+      .collect(Collectors.toUnmodifiableMap(
+        Map.Entry::getKey,
+        entry -> entry.getValue().stream().map(RelatedWordDto::fromEntity).toList()
+      ));
   }
 
   private List<RelatedWordEntity> findOutgoing(UUID wordId) {

@@ -36,6 +36,8 @@ quarkus:
     info-description: Template
 
 app:
+  batch:
+    max-size: 1000
   idp:
     url: https://auth.pausegarra.com/realms/principal
     client-id: russian-cheatsheet-private

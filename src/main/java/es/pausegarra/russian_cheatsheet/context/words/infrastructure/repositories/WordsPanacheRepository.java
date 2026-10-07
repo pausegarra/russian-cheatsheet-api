@@ -49,6 +49,13 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
   }
 
   @Override
+  public List<WordEntity> create(List<WordEntity> words) {
+    List<WordModel> wordModels = words.stream().map(WordModel::fromEntity).toList();
+    wordModels.forEach(model -> getEntityManager().persist(model));
+    return wordModels.stream().map(WordModel::toEntity).toList();
+  }
+
+  @Override
   public WordEntity save(WordEntity word) {
     WordModel wordModel = WordModel.fromEntity(word);
 
@@ -69,6 +76,14 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
   @Override
   public Optional<WordEntity> findById(UUID id) {
     return find("id", id).firstResultOptional().map(WordModel::toEntity);
+  }
+
+  @Override
+  public List<WordEntity> findAllByIds(List<UUID> ids) {
+    if (ids.isEmpty()) {
+      return List.of();
+    }
+    return find("id in ?1", ids).list().stream().map(WordModel::toEntity).toList();
   }
 
 

@@ -16,8 +16,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -35,9 +37,35 @@ public class ExampleSentencesPanacheRepository implements ExampleSentencesReposi
 
   @Override
   public ExampleSentenceEntity save(ExampleSentenceEntity sentence) {
-    List<WordModel> words = findLinkedWords(sentence.linkedWordIds());
-    ExampleSentenceModel model = ExampleSentenceModel.fromEntity(sentence, words);
-    return getEntityManager().merge(model).toEntity();
+    return save(List.of(sentence)).get(0);
+  }
+
+  @Override
+  public List<ExampleSentenceEntity> create(List<ExampleSentenceEntity> sentences) {
+    Map<UUID, WordModel> linkedWordsById = findLinkedWords(sentences);
+    List<ExampleSentenceModel> models = sentences.stream()
+      .map(sentence -> ExampleSentenceModel.fromEntity(sentence, linkedWordsFor(sentence, linkedWordsById)))
+      .toList();
+    models.forEach(entityManager::persist);
+    return models.stream().map(ExampleSentenceModel::toEntity).toList();
+  }
+
+  @Override
+  public List<ExampleSentenceEntity> save(List<ExampleSentenceEntity> sentences) {
+    Map<UUID, WordModel> linkedWordsById = findLinkedWords(sentences);
+    List<ExampleSentenceModel> models = sentences.stream()
+      .map(sentence -> ExampleSentenceModel.fromEntity(sentence, linkedWordsFor(sentence, linkedWordsById)))
+      .toList();
+    List<ExampleSentenceModel> saved = models.stream().map(entityManager::merge).toList();
+    return saved.stream().map(ExampleSentenceModel::toEntity).toList();
+  }
+
+  @Override
+  public List<ExampleSentenceEntity> findAllByIds(List<UUID> ids) {
+    if (ids.isEmpty()) {
+      return List.of();
+    }
+    return find("id in ?1", ids).list().stream().map(ExampleSentenceModel::toEntity).toList();
   }
 
   @Override
@@ -104,9 +132,13 @@ public class ExampleSentencesPanacheRepository implements ExampleSentencesReposi
     );
   }
 
-  private List<WordModel> findLinkedWords(List<UUID> wordIds) {
+  private Map<UUID, WordModel> findLinkedWords(List<ExampleSentenceEntity> sentences) {
+    List<UUID> wordIds = sentences.stream()
+      .flatMap(sentence -> sentence.linkedWordIds().stream())
+      .distinct()
+      .toList();
     if (wordIds.isEmpty()) {
-      return List.of();
+      return Map.of();
     }
 
     List<WordModel> words = entityManager.createQuery(
@@ -123,7 +155,16 @@ public class ExampleSentencesPanacheRepository implements ExampleSentencesReposi
         throw new WordNotFound(wordId.toString());
       });
 
-    return words;
+    Map<UUID, WordModel> wordsById = new HashMap<>();
+    words.forEach(word -> wordsById.put(word.getId(), word));
+    return wordsById;
+  }
+
+  private List<WordModel> linkedWordsFor(
+    ExampleSentenceEntity sentence,
+    Map<UUID, WordModel> linkedWordsById
+  ) {
+    return sentence.linkedWordIds().stream().map(linkedWordsById::get).toList();
   }
 
 }
