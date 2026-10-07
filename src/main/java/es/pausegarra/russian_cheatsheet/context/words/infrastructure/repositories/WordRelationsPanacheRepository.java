@@ -75,6 +75,15 @@ public class WordRelationsPanacheRepository implements WordRelationsRepository, 
   }
 
   @Override
+  @Transactional
+  public List<WordRelationWriteResult> createOutgoingBatch(List<WordRelationEntity> relations) {
+    if (relations == null || relations.isEmpty()) {
+      throw new BadRequest("Batch must contain at least one item");
+    }
+    return relations.stream().map(this::createOutgoing).toList();
+  }
+
+  @Override
   public List<RelatedWordEntity> findOutgoing(UUID sourceWordId) {
     return entityManager.createQuery(
         "select relation from WordRelationModel relation " +
@@ -130,6 +139,42 @@ public class WordRelationsPanacheRepository implements WordRelationsRepository, 
     long deleted = delete("id = ?1 and sourceWord.id = ?2", relationId, sourceWordId);
     if (deleted == 0) {
       throw new WordRelationNotFound(relationId);
+    }
+  }
+
+  @Override
+  @Transactional
+  public void deleteOutgoingBatch(List<WordRelationEntity> relations) {
+    if (relations == null || relations.isEmpty()) {
+      throw new BadRequest("Batch must contain at least one item");
+    }
+
+    for (WordRelationEntity relation : relations) {
+      if (relation == null || relation.sourceWordId() == null || relation.relatedWordId() == null
+        || relation.relation() == null) {
+        throw new BadRequest("Relation source, target, and type are required");
+      }
+      if (relation.sourceWordId().equals(relation.relatedWordId())) {
+        throw new BadRequest("A word cannot be related to itself");
+      }
+      if (entityManager.find(WordModel.class, relation.sourceWordId()) == null) {
+        throw new WordNotFound(relation.sourceWordId().toString());
+      }
+      if (entityManager.find(WordModel.class, relation.relatedWordId()) == null) {
+        throw new WordNotFound(relation.relatedWordId().toString());
+      }
+
+      int deleted = entityManager.createNativeQuery(
+          "delete from word_relations " +
+            "where source_word_id = :sourceWordId and target_word_id = :targetWordId and relation = :relationType"
+        )
+        .setParameter("sourceWordId", relation.sourceWordId())
+        .setParameter("targetWordId", relation.relatedWordId())
+        .setParameter("relationType", relation.relation().value())
+        .executeUpdate();
+      if (deleted == 0) {
+        throw new WordRelationNotFound(relation);
+      }
     }
   }
 

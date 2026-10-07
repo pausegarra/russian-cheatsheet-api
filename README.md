@@ -77,13 +77,19 @@ Public endpoints:
 - `GET /api/examples`
 - `GET /api/examples?externalIdOnly=true` (IDs and checksums only)
 - `GET /api/words/{wordId}/examples`
+- `GET /api/words/{wordId}/relations`
 
 Protected endpoints:
 
 - `POST /api/words`
 - `PUT /api/words/{wordId}`
+- `DELETE /api/words/{wordId}`
 - `POST /api/examples`
 - `PUT /api/examples/{id}`
+- `POST /api/words/{wordId}/relations`
+- `DELETE /api/words/{wordId}/relations/{relationId}`
+- `POST /api/words/relations/batch`
+- `DELETE /api/words/relations/batch`
 - `PATCH /api/words/{wordId}/publish`
 - `GET /api/words/unpublished`
 - `GET /api/auth/profile/permissions`
@@ -92,6 +98,7 @@ Role requirements on protected word endpoints:
 
 - `words#create`
 - `words#update`
+- `words#delete`
 - `words#publish`
 
 Role requirements on protected example endpoints:
@@ -102,6 +109,17 @@ Role requirements on protected example endpoints:
 The external process uses existing `POST /api/words` for new words and `PUT /api/words/{wordId}` for changes; requests carry `externalId` and `translations[]`. New imported words are published immediately because source entries are already public. Requests must omit checksums. Word translation objects in requests and responses contain `language`, `text`, and `position`; responses omit the internal translation origin (`managedBy`). If position is omitted from a request, API uses entry's array index. Repeated positions within one language and owner are moved to the next available position, preserving duplicate translations without violating the storage key. `translations[]` is the only translation representation; the API replaces imported translations while preserving manually managed translations, including Spanish (`language: "es"`).
 
 OpenRussian word relations use `related`, `synonym`, and `antonym`. Create one directed row with `POST /api/words/{wordId}/relations` and body `{ "relatedWordId": "<API word UUID>", "relation": "related" }`. Each POST creates one direction; send a second POST with reversed source and target to create a mutual pair. An identical POST returns the existing relation row. `GET /api/words/{wordId}/relations` lists outgoing rows as `{id, relatedWordId, russian, relation}`, where `id` is the relation-row UUID. `DELETE /api/words/{wordId}/relations/{relationId}` removes only that directed row; change a relation by deleting and creating it again. Word POST/PUT requests do not manage relations. Relation source and target must be existing imported words with `externalId`; manual words cannot own or be targets of imported relations. Word detail keeps `relatedWords` for compatibility and returns outgoing edges only; existing edges receive inverse rows during migration. The paginated word list stays relation-free.
+
+Batch mutations accept relations across multiple source words. `POST /api/words/relations/batch` creates items; `DELETE /api/words/relations/batch` accepts the same JSON array to delete exact directed `(wordId, relatedWordId, relation)` triples. For example:
+
+```json
+[
+  {"wordId":"<source word UUID>","relatedWordId":"<target word UUID>","relation":"synonym"},
+  {"wordId":"<another source UUID>","relatedWordId":"<another target UUID>","relation":"antonym"}
+]
+```
+
+Batch POST requires `words#create` and returns `201` when it creates any rows or `200` when all rows already exist. Its response includes `wordId`, a per-item `created` flag, and the persisted relation. Batch DELETE requires `words#delete` and returns `204`. Both operations are atomic, reject empty arrays, repeated triples, and arrays over the configured batch limit (1000 by default). A DELETE fails with `404` and rolls back the full array if any exact relation is missing. Inverse edges and other relation types change only when included as separate array items.
 
 Word `type` uses the exact OpenRussian values: `noun`, `pronoun`, `verb`, `adjective`, `adverb`, `expression`, and `other`. Imported words may have `type: null` when their OpenRussian source type is blank; manual words still require a type. Such imported words cannot include forms or aspect. Morphology is sent and returned as one `forms` object whose keys are the original `form_type` names (for example `ru_verb_presfut_sg1`, `ru_verb_gerund_present`, `ru_noun_sg_gen`, or `ru_adj_m_nom`). The API rejects noun, verb, and adjective form fields that do not match the word's type; `adjective` and `pronoun` share the `ru_adj_*` forms. `ru_base` is supported for every type. Verb `aspect` is a root-level value (`imperfective`, `perfective`, or `both`); imported verbs may leave it null when OpenRussian has no aspect, while manual verbs still require it.
 

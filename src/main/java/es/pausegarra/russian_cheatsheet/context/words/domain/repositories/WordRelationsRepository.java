@@ -12,9 +12,13 @@ public interface WordRelationsRepository {
 
   WordRelationWriteResult createOutgoing(WordRelationEntity relation);
 
+  List<WordRelationWriteResult> createOutgoingBatch(List<WordRelationEntity> relations);
+
   List<RelatedWordEntity> findOutgoing(UUID sourceWordId);
 
   Map<UUID, List<RelatedWordEntity>> findOutgoingBySourceIds(List<UUID> sourceWordIds);
 
   void deleteOutgoing(UUID sourceWordId, UUID relationId);
+
+  void deleteOutgoingBatch(List<WordRelationEntity> relations);
 }
