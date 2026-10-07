@@ -19,9 +19,9 @@ resources:
     memory: 120Mi
 
 livenessProbe:
-  path: /api/q/health/live
+  path: /api/v1/q/health/live
 readinessProbe:
-  path: /api/q/health/ready
+  path: /api/v1/q/health/ready
 
 rollingUpdate:
   enabled: true
@@ -39,7 +39,7 @@ ingress:
   hosts:
     - host: "russian-cheatsheet.pausegarra.com"
       paths:
-        - path: /api
+        - path: /api/v1
           pathType: Prefix
   tls:
     - hosts:
