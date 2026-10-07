@@ -21,6 +21,7 @@ public class CreateExampleService implements UseCase<CreateExampleDto, ExampleSe
   @Transactional
   public ExampleSentenceDto handle(CreateExampleDto dto) {
     ExampleSentenceEntity example = ExampleSentenceEntity.create(
+      dto.externalId(),
       dto.russian(),
       ExampleTranslationMapper.fromInputs(dto.translations()),
       dto.contributor(),

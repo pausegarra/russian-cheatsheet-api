@@ -3,6 +3,7 @@ package es.pausegarra.russian_cheatsheet.context.words.infrastructure.repositori
 import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.PageInfo;
 import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.Paginated;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.ExampleSentenceEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.entities.ImportedExampleReferenceEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordNotFound;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.ExampleSentencesRepository;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.ExampleSentenceModel;
@@ -48,6 +49,42 @@ public class ExampleSentencesPanacheRepository implements ExampleSentencesReposi
     return new Paginated<>(
       data, pageInfo.page(), pageInfo.pageSize(), pageInfo.totalPages(), pageInfo.totalElements(),
       pageInfo.hasNextPage(), pageInfo.hasPreviousPage()
+    );
+  }
+
+  @Override
+  public Paginated<ImportedExampleReferenceEntity> findImportIndex(int page, int perPage) {
+    Page pagination = Page.of(page, perPage);
+    long total = count("externalId is not null");
+    int offset = pagination.index * pagination.size;
+    List<ImportedExampleReferenceEntity> data = entityManager.createQuery(
+        "select new es.pausegarra.russian_cheatsheet.context.words.domain.entities.ImportedExampleReferenceEntity(" +
+          "sentence.id, sentence.externalId, sentence.checksum) " +
+          "from ExampleSentenceModel sentence where sentence.externalId is not null " +
+          "order by sentence.externalId, sentence.id",
+        ImportedExampleReferenceEntity.class
+      )
+      .setFirstResult(offset)
+      .setMaxResults(pagination.size)
+      .getResultList();
+    int totalPages = (int) Math.ceil((double) total / pagination.size);
+    PageInfo pageInfo = new PageInfo(
+      page,
+      perPage,
+      totalPages,
+      total,
+      offset + pagination.size < total,
+      page > 0
+    );
+
+    return new Paginated<>(
+      data,
+      pageInfo.page(),
+      pageInfo.pageSize(),
+      pageInfo.totalPages(),
+      pageInfo.totalElements(),
+      pageInfo.hasNextPage(),
+      pageInfo.hasPreviousPage()
     );
   }
 

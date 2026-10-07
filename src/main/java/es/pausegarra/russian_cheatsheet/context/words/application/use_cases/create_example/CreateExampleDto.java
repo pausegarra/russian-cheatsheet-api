@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public record CreateExampleDto(
+  String externalId,
   String russian,
   List<ExampleTranslationInputDto> translations,
   String contributor,

@@ -6,6 +6,7 @@ import java.util.UUID;
 
 public record ExampleSentenceEntity(
   UUID id,
+  String externalId,
   String russian,
   List<ExampleTranslationEntity> translations,
   String contributor,
@@ -30,8 +31,19 @@ public record ExampleSentenceEntity(
     String audioUrl,
     List<UUID> linkedWordIds
   ) {
+    return create(null, russian, translations, contributor, audioUrl, linkedWordIds);
+  }
+
+  public static ExampleSentenceEntity create(
+    String externalId,
+    String russian,
+    List<ExampleTranslationEntity> translations,
+    String contributor,
+    String audioUrl,
+    List<UUID> linkedWordIds
+  ) {
     return new ExampleSentenceEntity(
-      UUID.randomUUID(), russian, translations, contributor, audioUrl, null,
+      UUID.randomUUID(), externalId, russian, translations, contributor, audioUrl, null,
       linkedWordIds, null, null, null, null
     );
   }
@@ -44,14 +56,14 @@ public record ExampleSentenceEntity(
     List<UUID> linkedWordIds
   ) {
     return new ExampleSentenceEntity(
-      id, russian, translations, contributor, audioUrl, checksum,
+      id, externalId, russian, translations, contributor, audioUrl, checksum,
       linkedWordIds, createdBy, createdAt, updatedBy, updatedAt
     );
   }
 
   public ExampleSentenceEntity withChecksum(String checksum) {
     return new ExampleSentenceEntity(
-      id, russian, translations, contributor, audioUrl, checksum,
+      id, externalId, russian, translations, contributor, audioUrl, checksum,
       linkedWordIds, createdBy, createdAt, updatedBy, updatedAt
     );
   }

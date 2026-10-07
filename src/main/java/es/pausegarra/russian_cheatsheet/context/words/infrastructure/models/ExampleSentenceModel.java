@@ -33,6 +33,9 @@ public class ExampleSentenceModel extends AuditableModel {
   @Id
   private final UUID id;
 
+  @Column(name = "external_id", length = 255)
+  private final String externalId;
+
   @Column(nullable = false, columnDefinition = "text")
   private final String russian;
 
@@ -63,6 +66,7 @@ public class ExampleSentenceModel extends AuditableModel {
 
     return ExampleSentenceModel.builder()
       .id(entity.id())
+      .externalId(entity.externalId())
       .russian(entity.russian())
       .translations(translationsJson)
       .contributor(entity.contributor())
@@ -90,7 +94,7 @@ public class ExampleSentenceModel extends AuditableModel {
         .toList();
 
     return new ExampleSentenceEntity(
-      id, russian, translationEntities, contributor, audioUrl, checksum,
+      id, externalId, russian, translationEntities, contributor, audioUrl, checksum,
       wordIds, getCreatedBy(), getCreatedAt(), getUpdatedBy(), getUpdatedAt()
     );
   }
