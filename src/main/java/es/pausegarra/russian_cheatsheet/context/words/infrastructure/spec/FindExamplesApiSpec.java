@@ -7,6 +7,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
@@ -22,7 +23,10 @@ public interface FindExamplesApiSpec {
   @APIResponse(responseCode = "500", description = "An unexpected error occurred")
   RestResponse<PaginatedDto<ExampleSentenceDto>> findExamples(
     @QueryParam("page") @DefaultValue("0") int page,
-    @QueryParam("perPage") @DefaultValue("25") int perPage
+    @QueryParam("perPage") @DefaultValue("25") int perPage,
+    @QueryParam("externalIdOnly") @DefaultValue("false")
+    @Parameter(description = "Populate id, externalId, and checksum only; other fields are null for import reconciliation")
+    boolean externalIdOnly
   );
 
 }

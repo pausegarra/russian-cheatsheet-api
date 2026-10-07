@@ -5,5 +5,6 @@ import java.util.UUID;
 public record FindExamplesDto(
   UUID wordId,
   int page,
-  int perPage
+  int perPage,
+  boolean externalIdOnly
 ) {}

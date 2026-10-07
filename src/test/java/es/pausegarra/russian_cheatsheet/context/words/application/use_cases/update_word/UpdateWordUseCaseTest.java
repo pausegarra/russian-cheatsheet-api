@@ -2,6 +2,7 @@ package es.pausegarra.russian_cheatsheet.context.words.application.use_cases.upd
 
 import es.pausegarra.russian_cheatsheet.common.domain.exception.BadRequest;
 import es.pausegarra.russian_cheatsheet.context.words.application.WordRelationsService;
+import es.pausegarra.russian_cheatsheet.context.words.application.WordWriteMapper;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordTranslationInputDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordFormsEntity;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
@@ -32,6 +34,9 @@ class UpdateWordUseCaseTest {
 
   @Mock
   private WordRelationsService relationsService;
+
+  @Spy
+  private WordWriteMapper wordWriteMapper = new WordWriteMapper();
 
   @InjectMocks
   private UpdateWordUseCase useCase;

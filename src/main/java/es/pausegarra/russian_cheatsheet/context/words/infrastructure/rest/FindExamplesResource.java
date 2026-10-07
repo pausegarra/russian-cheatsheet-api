@@ -14,8 +14,14 @@ public class FindExamplesResource implements FindExamplesApiSpec {
   private final UseCase<FindExamplesDto, PaginatedDto<ExampleSentenceDto>> findExamplesUseCase;
 
   @Override
-  public RestResponse<PaginatedDto<ExampleSentenceDto>> findExamples(int page, int perPage) {
-    return RestResponse.ok(findExamplesUseCase.handle(new FindExamplesDto(null, page, perPage)));
+  public RestResponse<PaginatedDto<ExampleSentenceDto>> findExamples(
+    int page,
+    int perPage,
+    boolean externalIdOnly
+  ) {
+    return RestResponse.ok(findExamplesUseCase.handle(
+      new FindExamplesDto(null, page, perPage, externalIdOnly)
+    ));
   }
 
 }

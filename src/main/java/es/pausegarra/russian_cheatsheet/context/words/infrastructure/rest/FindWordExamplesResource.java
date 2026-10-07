@@ -17,7 +17,7 @@ public class FindWordExamplesResource implements FindWordExamplesApiSpec {
 
   @Override
   public RestResponse<PaginatedDto<ExampleSentenceDto>> findWordExamples(String wordId, int page, int perPage) {
-    FindExamplesDto dto = new FindExamplesDto(UUID.fromString(wordId), page, perPage);
+    FindExamplesDto dto = new FindExamplesDto(UUID.fromString(wordId), page, perPage, false);
     return RestResponse.ok(findExamplesUseCase.handle(dto));
   }
 

@@ -15,8 +15,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -87,6 +90,34 @@ public class WordRelationsPanacheRepository implements WordRelationsRepository, 
         .thenComparing(related -> related.relation().value())
         .thenComparing(RelatedWordEntity::id))
       .toList();
+  }
+
+  @Override
+  public Map<UUID, List<RelatedWordEntity>> findOutgoingBySourceIds(List<UUID> sourceWordIds) {
+    if (sourceWordIds.isEmpty()) {
+      return Map.of();
+    }
+
+    Map<UUID, List<RelatedWordEntity>> grouped = new HashMap<>();
+    entityManager.createQuery(
+        "select relation from WordRelationModel relation " +
+          "join fetch relation.targetWord targetWord " +
+          "where relation.sourceWord.id in :wordIds",
+        WordRelationModel.class
+      )
+      .setParameter("wordIds", sourceWordIds)
+      .getResultList()
+      .forEach(relation -> grouped
+        .computeIfAbsent(relation.getSourceWord().getId(), ignored -> new ArrayList<>())
+        .add(relatedWord(relation)));
+
+    Comparator<RelatedWordEntity> relationOrder = Comparator
+      .comparing(RelatedWordEntity::russian, Comparator.nullsFirst(String::compareTo))
+      .thenComparing(related -> related.relation().value())
+      .thenComparing(RelatedWordEntity::id);
+    grouped.values().forEach(relatedWords -> relatedWords.sort(relationOrder));
+    grouped.replaceAll((sourceId, relatedWords) -> List.copyOf(relatedWords));
+    return Map.copyOf(grouped);
   }
 
   @Override

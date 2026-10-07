@@ -12,11 +12,15 @@ public interface WordsRepository {
 
   WordEntity create(WordEntity word);
 
+  List<WordEntity> create(List<WordEntity> words);
+
   WordEntity save(WordEntity word);
 
   List<WordEntity> save(List<WordEntity> words);
 
   Optional<WordEntity> findById(UUID id);
+
+  List<WordEntity> findAllByIds(List<UUID> ids);
 
   void delete(WordEntity word);
 
