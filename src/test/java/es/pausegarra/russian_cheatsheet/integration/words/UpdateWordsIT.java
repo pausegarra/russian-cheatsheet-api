@@ -34,7 +34,7 @@ public class UpdateWordsIT extends IntegrationTest {
     );
 
     given().body(objectMapper.writeValueAsString(request)).contentType("application/json")
-      .when().put("/words/" + saved.getId())
+      .when().put("/api/v1/words/" + saved.getId())
       .then().statusCode(200).body("checksum", equalTo(null));
 
     WordModel updated = em.find(WordModel.class, saved.getId());
@@ -60,7 +60,7 @@ public class UpdateWordsIT extends IntegrationTest {
     );
 
     given().body(objectMapper.writeValueAsString(request)).contentType("application/json")
-      .when().put("/words/" + saved.getId())
+      .when().put("/api/v1/words/" + saved.getId())
       .then().statusCode(200)
         .body("aspect", equalTo("imperfective"))
         .body("forms.ru_verb_presfut_sg1", equalTo("иду"))
@@ -82,7 +82,7 @@ public class UpdateWordsIT extends IntegrationTest {
     );
 
     given().body(objectMapper.writeValueAsString(request)).contentType("application/json")
-      .when().put("/words/" + saved.getId())
+      .when().put("/api/v1/words/" + saved.getId())
       .then().statusCode(400).body("code", equalTo("BAD_REQUEST"));
   }
 
@@ -93,7 +93,7 @@ public class UpdateWordsIT extends IntegrationTest {
       "newRussian", WordType.OTHER, null, null, null, List.of(), null, null
     );
     given().body(objectMapper.writeValueAsString(request)).contentType("application/json")
-      .when().put("/words/" + UUID.randomUUID()).then().statusCode(404);
+      .when().put("/api/v1/words/" + UUID.randomUUID()).then().statusCode(404);
   }
 
   @Test
@@ -102,7 +102,7 @@ public class UpdateWordsIT extends IntegrationTest {
       "newRussian", WordType.OTHER, null, null, null, List.of(), null, null
     );
     given().body(objectMapper.writeValueAsString(request)).contentType("application/json")
-      .when().put("/words/" + UUID.randomUUID()).then().statusCode(401);
+      .when().put("/api/v1/words/" + UUID.randomUUID()).then().statusCode(401);
   }
 
   @Test
@@ -112,6 +112,6 @@ public class UpdateWordsIT extends IntegrationTest {
       "newRussian", WordType.OTHER, null, null, null, List.of(), null, null
     );
     given().body(objectMapper.writeValueAsString(request)).contentType("application/json")
-      .when().put("/words/" + UUID.randomUUID()).then().statusCode(403);
+      .when().put("/api/v1/words/" + UUID.randomUUID()).then().statusCode(403);
   }
 }

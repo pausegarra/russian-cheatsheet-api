@@ -22,7 +22,7 @@ public class PublishWordIT extends IntegrationTest {
     WordEntity word = WordMother.random().id(null).publishedAt(null).build();
     WordModel saved = persist(WordModel.fromEntity(word));
 
-    given().when().patch("/words/" + saved.getId().toString() + "/publish").then().statusCode(204);
+    given().when().patch("/api/v1/words/" + saved.getId().toString() + "/publish").then().statusCode(204);
 
     WordModel updated = em.find(WordModel.class, saved.getId());
     assertNotNull(updated);
@@ -32,18 +32,18 @@ public class PublishWordIT extends IntegrationTest {
   @Test
   @TestSecurity(user = "user", roles = "words#publish")
   public void shouldReturn404IfWordNotFound() {
-    given().when().patch("/words/" + UUID.randomUUID().toString() + "/publish").then().statusCode(404);
+    given().when().patch("/api/v1/words/" + UUID.randomUUID().toString() + "/publish").then().statusCode(404);
   }
 
   @Test
   public void shouldReturn401IfUserIsNotAuthenticated() {
-    given().when().patch("/words/" + UUID.randomUUID().toString() + "/publish").then().statusCode(401);
+    given().when().patch("/api/v1/words/" + UUID.randomUUID().toString() + "/publish").then().statusCode(401);
   }
 
   @Test
   @TestSecurity(user = "user")
   public void shouldReturn403IfUserIsNotAuthorized() {
-    given().when().patch("/words/" + UUID.randomUUID().toString() + "/publish").then().statusCode(403);
+    given().when().patch("/api/v1/words/" + UUID.randomUUID().toString() + "/publish").then().statusCode(403);
   }
 
 }

@@ -19,9 +19,9 @@ resources:
     memory: 120Mi
 
 livenessProbe:
-  path: /api/v1/q/health/live
+  path: /q/health/live
 readinessProbe:
-  path: /api/v1/q/health/ready
+  path: /q/health/ready
 
 rollingUpdate:
   enabled: true

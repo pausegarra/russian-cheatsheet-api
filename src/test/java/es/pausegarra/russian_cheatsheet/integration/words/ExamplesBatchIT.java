@@ -38,7 +38,7 @@ class ExamplesBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body(requestBody)
       .when()
-      .post("/examples/batch")
+      .post("/api/v1/examples/batch")
       .then()
       .statusCode(201)
       .body("size()", equalTo(2))
@@ -63,7 +63,7 @@ class ExamplesBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body(requestBody)
       .when()
-      .put("/examples/batch")
+      .put("/api/v1/examples/batch")
       .then()
       .statusCode(200)
       .body("size()", equalTo(2))
@@ -80,7 +80,7 @@ class ExamplesBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body("[]")
       .when()
-      .post("/examples/batch")
+      .post("/api/v1/examples/batch")
       .then()
       .statusCode(400);
 
@@ -94,7 +94,7 @@ class ExamplesBatchIT extends IntegrationTest {
         ]
         """)
       .when()
-      .post("/examples/batch")
+      .post("/api/v1/examples/batch")
       .then()
       .statusCode(400);
 
@@ -110,7 +110,7 @@ class ExamplesBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body("[]")
       .when()
-      .put("/examples/batch")
+      .put("/api/v1/examples/batch")
       .then()
       .statusCode(400);
 
@@ -124,7 +124,7 @@ class ExamplesBatchIT extends IntegrationTest {
         ]
         """.formatted(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID()))
       .when()
-      .put("/examples/batch")
+      .put("/api/v1/examples/batch")
       .then()
       .statusCode(400);
   }
@@ -144,7 +144,7 @@ class ExamplesBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body(requestBody)
       .when()
-      .post("/examples/batch")
+      .post("/api/v1/examples/batch")
       .then()
       .statusCode(404);
 
@@ -169,7 +169,7 @@ class ExamplesBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body(requestBody)
       .when()
-      .put("/examples/batch")
+      .put("/api/v1/examples/batch")
       .then()
       .statusCode(404);
 
@@ -192,7 +192,7 @@ class ExamplesBatchIT extends IntegrationTest {
         ]
         """.formatted(existingId, missingId))
       .when()
-      .put("/examples/batch")
+      .put("/api/v1/examples/batch")
       .then()
       .statusCode(404);
 
@@ -207,7 +207,7 @@ class ExamplesBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body("[{\"russian\":\"слово\",\"translations\":[]}]")
       .when()
-      .post("/examples/batch")
+      .post("/api/v1/examples/batch")
       .then()
       .statusCode(403);
 
@@ -216,7 +216,7 @@ class ExamplesBatchIT extends IntegrationTest {
       .body("[{\"id\":\"%s\",\"russian\":\"слово\",\"translations\":[]}]"
         .formatted(UUID.randomUUID()))
       .when()
-      .put("/examples/batch")
+      .put("/api/v1/examples/batch")
       .then()
       .statusCode(403);
   }
@@ -227,7 +227,7 @@ class ExamplesBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body("[{\"russian\":\"слово\",\"translations\":[]}]")
       .when()
-      .post("/examples/batch")
+      .post("/api/v1/examples/batch")
       .then()
       .statusCode(401);
   }
@@ -240,7 +240,7 @@ class ExamplesBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body(dto)
       .when()
-      .post("/examples");
+      .post("/api/v1/examples");
     response.then().statusCode(201);
     String id = response.jsonPath().getString("id");
     assertNotNull(UUID.fromString(id));

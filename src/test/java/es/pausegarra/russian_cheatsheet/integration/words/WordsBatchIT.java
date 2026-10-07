@@ -39,7 +39,7 @@ class WordsBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body(requestBody)
       .when()
-      .post("/words/batch")
+      .post("/api/v1/words/batch")
       .then()
       .statusCode(201)
       .body("size()", equalTo(2))
@@ -63,7 +63,7 @@ class WordsBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body(requestBody)
       .when()
-      .put("/words/batch")
+      .put("/api/v1/words/batch")
       .then()
       .statusCode(200)
       .body("size()", equalTo(2))
@@ -92,7 +92,7 @@ class WordsBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body("[{\"id\":\"%s\",\"russian\":\"изменено\",\"type\":\"noun\"}]".formatted(source.getId()))
       .when()
-      .put("/words/batch")
+      .put("/api/v1/words/batch")
       .then()
       .statusCode(200)
       .body("[0].relatedWords.size()", equalTo(1))
@@ -107,7 +107,7 @@ class WordsBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body("[]")
       .when()
-      .post("/words/batch")
+      .post("/api/v1/words/batch")
       .then()
       .statusCode(400);
 
@@ -121,7 +121,7 @@ class WordsBatchIT extends IntegrationTest {
         ]
         """)
       .when()
-      .post("/words/batch")
+      .post("/api/v1/words/batch")
       .then()
       .statusCode(400);
 
@@ -136,7 +136,7 @@ class WordsBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body("[]")
       .when()
-      .put("/words/batch")
+      .put("/api/v1/words/batch")
       .then()
       .statusCode(400);
 
@@ -150,7 +150,7 @@ class WordsBatchIT extends IntegrationTest {
         ]
         """.formatted(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID()))
       .when()
-      .put("/words/batch")
+      .put("/api/v1/words/batch")
       .then()
       .statusCode(400);
   }
@@ -167,7 +167,7 @@ class WordsBatchIT extends IntegrationTest {
         ]
         """)
       .when()
-      .post("/words/batch")
+      .post("/api/v1/words/batch")
       .then()
       .statusCode(400);
 
@@ -190,7 +190,7 @@ class WordsBatchIT extends IntegrationTest {
         ]
         """.formatted(firstId, secondId))
       .when()
-      .put("/words/batch")
+      .put("/api/v1/words/batch")
       .then()
       .statusCode(400);
 
@@ -213,7 +213,7 @@ class WordsBatchIT extends IntegrationTest {
         ]
         """.formatted(existingId, missingId))
       .when()
-      .put("/words/batch")
+      .put("/api/v1/words/batch")
       .then()
       .statusCode(404);
 
@@ -228,7 +228,7 @@ class WordsBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body("[{\"russian\":\"слово\",\"type\":\"other\"}]")
       .when()
-      .post("/words/batch")
+      .post("/api/v1/words/batch")
       .then()
       .statusCode(403);
   }
@@ -239,7 +239,7 @@ class WordsBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body("[{\"russian\":\"слово\",\"type\":\"other\"}]")
       .when()
-      .post("/words/batch")
+      .post("/api/v1/words/batch")
       .then()
       .statusCode(401);
   }
@@ -253,7 +253,7 @@ class WordsBatchIT extends IntegrationTest {
       .contentType("application/json")
       .body(objectMapper.writeValueAsString(dto))
       .when()
-      .post("/words");
+      .post("/api/v1/words");
     response.then().statusCode(201);
     String id = response.jsonPath().getString("id");
     assertNotNull(UUID.fromString(id));

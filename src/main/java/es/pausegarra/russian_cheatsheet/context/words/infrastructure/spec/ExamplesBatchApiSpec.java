@@ -15,7 +15,7 @@ import org.jboss.resteasy.reactive.RestResponse;
 
 import java.util.List;
 
-@Path("/examples/batch")
+@Path("/api/v1/examples/batch")
 @Tag(name = "Examples")
 public interface ExamplesBatchApiSpec {
 

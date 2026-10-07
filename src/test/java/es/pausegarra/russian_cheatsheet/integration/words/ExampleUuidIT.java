@@ -33,7 +33,7 @@ public class ExampleUuidIT extends IntegrationTest {
     persist(ExampleSentenceModel.fromEntity(sentence, List.of(word)));
 
     given().when()
-      .get("/words/" + word.getId() + "/examples")
+      .get("/api/v1/words/" + word.getId() + "/examples")
       .then()
       .statusCode(200)
       .body("data[0].id", notNullValue())

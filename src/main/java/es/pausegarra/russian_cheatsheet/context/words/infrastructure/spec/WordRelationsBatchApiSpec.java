@@ -14,7 +14,7 @@ import org.jboss.resteasy.reactive.RestResponse;
 
 import java.util.List;
 
-@Path("/words/relations/batch")
+@Path("/api/v1/words/relations/batch")
 @Tag(name = "Word Relations")
 public interface WordRelationsBatchApiSpec {
 

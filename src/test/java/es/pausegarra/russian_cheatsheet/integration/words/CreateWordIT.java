@@ -34,7 +34,7 @@ public class CreateWordIT extends IntegrationTest {
 
     given().contentType("application/json")
       .body(objectMapper.writeValueAsString(dto))
-      .when().post("/words")
+      .when().post("/api/v1/words")
       .then()
       .statusCode(201)
       .body("russian", equalTo("russian"))
@@ -74,7 +74,7 @@ public class CreateWordIT extends IntegrationTest {
 
     given().contentType("application/json")
       .body(objectMapper.writeValueAsString(dto))
-      .when().post("/words")
+      .when().post("/api/v1/words")
       .then()
       .statusCode(201)
       .body("type", equalTo("verb"))
@@ -99,7 +99,7 @@ public class CreateWordIT extends IntegrationTest {
 
     given().contentType("application/json")
       .body(objectMapper.writeValueAsString(dto))
-      .when().post("/words")
+      .when().post("/api/v1/words")
       .then()
       .statusCode(400)
       .body("code", equalTo("BAD_REQUEST"));
@@ -108,11 +108,11 @@ public class CreateWordIT extends IntegrationTest {
   @Test
   @TestSecurity(user = "user")
   public void shouldReturn403WhenUserIsNotAuthorized() {
-    given().contentType("application/json").when().post("/words").then().statusCode(403);
+    given().contentType("application/json").when().post("/api/v1/words").then().statusCode(403);
   }
 
   @Test
   public void shouldReturn401WhenUserIsNotAuthenticated() {
-    given().contentType("application/json").when().post("/words").then().statusCode(401);
+    given().contentType("application/json").when().post("/api/v1/words").then().statusCode(401);
   }
 }

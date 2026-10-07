@@ -46,9 +46,9 @@ class WordRelationsBatchIT extends IntegrationTest {
       .body("[1].relation.relatedWordId", equalTo(secondTarget.getId().toString()))
       .body("[1].relation.relation", equalTo("synonym"));
 
-    given().when().get("/words/" + firstSource.getId() + "/relations")
+    given().when().get("/api/v1/words/" + firstSource.getId() + "/relations")
       .then().statusCode(200).body("", hasSize(1));
-    given().when().get("/words/" + secondSource.getId() + "/relations")
+    given().when().get("/api/v1/words/" + secondSource.getId() + "/relations")
       .then().statusCode(200).body("", hasSize(1));
   }
 
@@ -85,7 +85,7 @@ class WordRelationsBatchIT extends IntegrationTest {
       relationJson(source.getId(), manualTarget.getId(), WordRelationType.RELATED)
     )).then().statusCode(400);
 
-    given().when().get("/words/" + source.getId() + "/relations")
+    given().when().get("/api/v1/words/" + source.getId() + "/relations")
       .then().statusCode(200).body("", hasSize(0));
   }
 
@@ -103,11 +103,11 @@ class WordRelationsBatchIT extends IntegrationTest {
     deleteBatch(relationArray(relationJson(source.getId(), target.getId(), WordRelationType.RELATED)))
       .then().statusCode(204);
 
-    given().when().get("/words/" + source.getId() + "/relations")
+    given().when().get("/api/v1/words/" + source.getId() + "/relations")
       .then().statusCode(200).body("", hasSize(1))
       .body("[0].relatedWordId", equalTo(target.getId().toString()))
       .body("[0].relation", equalTo("synonym"));
-    given().when().get("/words/" + target.getId() + "/relations")
+    given().when().get("/api/v1/words/" + target.getId() + "/relations")
       .then().statusCode(200).body("", hasSize(1))
       .body("[0].relatedWordId", equalTo(source.getId().toString()))
       .body("[0].relation", equalTo("related"));
@@ -129,7 +129,7 @@ class WordRelationsBatchIT extends IntegrationTest {
       relationJson(source.getId(), secondTarget.getId(), WordRelationType.RELATED)
     )).then().statusCode(404);
 
-    given().when().get("/words/" + source.getId() + "/relations")
+    given().when().get("/api/v1/words/" + source.getId() + "/relations")
       .then().statusCode(200).body("", hasSize(2));
   }
 
@@ -208,12 +208,12 @@ class WordRelationsBatchIT extends IntegrationTest {
 
   private Response createBatch(String body) {
     return given().contentType("application/json").body(body)
-      .when().post("/words/relations/batch");
+      .when().post("/api/v1/words/relations/batch");
   }
 
   private Response deleteBatch(String body) {
     return given().contentType("application/json").body(body)
-      .when().delete("/words/relations/batch");
+      .when().delete("/api/v1/words/relations/batch");
   }
 
   private String relationJson(UUID wordId, UUID relatedWordId, WordRelationType relation) {

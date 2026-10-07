@@ -6,9 +6,10 @@ import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.hasKey;
 
 @QuarkusTest
-class ApiV1RootPathIT extends IntegrationTest {
+class ApiV1EndpointPathsIT extends IntegrationTest {
 
   @Test
   void shouldExposeWordEndpointsUnderV1Prefix() {
@@ -17,8 +18,15 @@ class ApiV1RootPathIT extends IntegrationTest {
   }
 
   @Test
-  void shouldExposeOpenApiDocumentUnderV1Prefix() {
-    given().when().get("http://localhost:" + RestAssured.port + "/api/v1/q/openapi")
+  void shouldExposeOpenApiDocumentOutsideApiVersionPrefix() {
+    given().accept("application/json")
+      .when().get("http://localhost:" + RestAssured.port + "/q/openapi")
+      .then().statusCode(200).body("paths", hasKey("/api/v1/words"));
+  }
+
+  @Test
+  void shouldExposeHealthProbeOutsideApiVersionPrefix() {
+    given().when().get("http://localhost:" + RestAssured.port + "/q/health/live")
       .then().statusCode(200);
   }
 

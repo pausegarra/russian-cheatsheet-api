@@ -24,7 +24,7 @@ public class FindUnpublishedWordsIT extends IntegrationTest {
     persist(WordModel.fromEntity(WordMother.random().id(null).build()));
 
     given().when()
-      .get("/words/unpublished")
+      .get("/api/v1/words/unpublished")
       .then()
       .statusCode(200)
       .body("data.size()", is(1))
@@ -39,7 +39,7 @@ public class FindUnpublishedWordsIT extends IntegrationTest {
     persist(WordModel.fromEntity(words.getLast()));
 
     given().when()
-      .get("/words/unpublished?page=1&perPage=1")
+      .get("/api/v1/words/unpublished?page=1&perPage=1")
       .then()
       .statusCode(200)
       .body("data.size()", is(1))
@@ -61,18 +61,18 @@ public class FindUnpublishedWordsIT extends IntegrationTest {
     persist(WordModel.fromEntity(words.getFirst()));
     persist(WordModel.fromEntity(words.getLast()));
 
-    given().when().get("/words/unpublished?search=search").then().statusCode(200).body("data.size()", is(1)).body("data[0].russian", is("search"));
+    given().when().get("/api/v1/words/unpublished?search=search").then().statusCode(200).body("data.size()", is(1)).body("data[0].russian", is("search"));
   }
 
   @Test
   public void shouldReturn401IfUserIsNotAuthenticated() {
-    given().when().get("/words/unpublished").then().statusCode(401);
+    given().when().get("/api/v1/words/unpublished").then().statusCode(401);
   }
 
   @Test
   @TestSecurity(user = "user")
   public void shouldReturn403IfUserIsNotAuthorized() {
-    given().when().get("/words/unpublished").then().statusCode(403);
+    given().when().get("/api/v1/words/unpublished").then().statusCode(403);
   }
 
 }
