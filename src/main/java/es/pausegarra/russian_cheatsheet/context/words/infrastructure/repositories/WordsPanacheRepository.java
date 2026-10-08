@@ -10,6 +10,7 @@ import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.Sor
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -84,6 +85,19 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
       return List.of();
     }
     return find("id in ?1", ids).list().stream().map(WordModel::toEntity).toList();
+  }
+
+  @Override
+  public List<WordEntity> findAllByIdsForUpdate(List<UUID> ids) {
+    if (ids.isEmpty()) {
+      return List.of();
+    }
+    return find("id in ?1 order by id", ids)
+      .withLock(LockModeType.PESSIMISTIC_WRITE)
+      .list()
+      .stream()
+      .map(WordModel::toEntity)
+      .toList();
   }
 
 

@@ -18,6 +18,7 @@ import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordNotFo
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordRelationsRepository;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordsRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class WordRelationsService {
   private final WordsRepository wordsRepository;
   private final WordRelationChecksumService checksumService;
 
+  @Transactional
   public CreateWordRelationResultDto createOutgoing(
     UUID sourceWordId,
     WordRelationInputDto requestedRelation
@@ -52,7 +54,9 @@ public class WordRelationsService {
     WordRelationEntity relation = new WordRelationEntity(
       sourceWordId, requestedRelation.relatedWordId(), requestedRelation.relation()
     );
-    Map<UUID, WordEntity> wordsById = findWordsByIds(List.of(sourceWordId, requestedRelation.relatedWordId()));
+    Map<UUID, WordEntity> wordsById = findWordsByIdsForUpdate(
+      List.of(sourceWordId, requestedRelation.relatedWordId())
+    );
     String checksum = calculateChecksum(relation, wordsById);
     WordRelationWriteResult result = relationsRepository.createOutgoing(relation, checksum);
     return new CreateWordRelationResultDto(result.created(), WordRelationDto.fromEntity(result.relation()));
@@ -62,6 +66,7 @@ public class WordRelationsService {
     relationsRepository.deleteOutgoing(sourceWordId, relationId);
   }
 
+  @Transactional
   public List<WordRelationBatchResultDto> createOutgoingBatch(List<WordRelationBatchInputDto> relations) {
     List<WordRelationEntity> entities = relations.stream()
       .map(relation -> new WordRelationEntity(relation.wordId(), relation.relatedWordId(), relation.relation()))
@@ -70,8 +75,9 @@ public class WordRelationsService {
       .flatMap(relation -> Stream.of(relation.sourceWordId(), relation.relatedWordId()))
       .filter(Objects::nonNull)
       .distinct()
+      .sorted()
       .toList();
-    Map<UUID, WordEntity> wordsById = findWordsByIds(wordIds);
+    Map<UUID, WordEntity> wordsById = findWordsByIdsForUpdate(wordIds);
     List<String> checksums = entities.stream().map(relation -> calculateChecksum(relation, wordsById)).toList();
     List<WordRelationWriteResult> results = relationsRepository.createOutgoingBatch(entities, checksums);
     List<WordRelationBatchResultDto> batchResults = new ArrayList<>(results.size());
@@ -130,9 +136,9 @@ public class WordRelationsService {
     return relationsRepository.findOutgoing(wordId);
   }
 
-  private Map<UUID, WordEntity> findWordsByIds(List<UUID> wordIds) {
+  private Map<UUID, WordEntity> findWordsByIdsForUpdate(List<UUID> wordIds) {
     Map<UUID, WordEntity> wordsById = new LinkedHashMap<>();
-    wordsRepository.findAllByIds(wordIds).forEach(word -> wordsById.put(word.id(), word));
+    wordsRepository.findAllByIdsForUpdate(wordIds).forEach(word -> wordsById.put(word.id(), word));
     return wordsById;
   }
 

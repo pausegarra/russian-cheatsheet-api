@@ -21,12 +21,14 @@ import java.util.UUID;
 public class FindAllWordRelationsService
   implements UseCase<FindAllWordRelationsDto, PaginatedDto<WordRelationListItemDto>> {
 
+  private static final int MAX_PER_PAGE = 100;
+
   private final WordRelationsService relationsService;
 
   @Override
   public PaginatedDto<WordRelationListItemDto> handle(FindAllWordRelationsDto dto) {
-    if (dto.page() < 0 || dto.perPage() < 1) {
-      throw new BadRequest("Page must be non-negative and perPage must be greater than zero");
+    if (dto.page() < 0 || dto.perPage() < 1 || dto.perPage() > MAX_PER_PAGE) {
+      throw new BadRequest("Page must be non-negative and perPage must be between 1 and " + MAX_PER_PAGE);
     }
 
     Paginated<WordRelationDetailsEntity> paginated = relationsService.findAll(dto.page(), dto.perPage());
