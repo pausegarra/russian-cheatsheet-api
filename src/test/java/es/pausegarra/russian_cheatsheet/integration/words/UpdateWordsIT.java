@@ -14,7 +14,9 @@ import es.pausegarra.russian_cheatsheet.context.words.infrastructure.requests.Up
 import es.pausegarra.russian_cheatsheet.mother.WordMother;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
+import org.flywaydb.core.Flyway;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +27,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 public class UpdateWordsIT extends IntegrationTest {
+
+  @Inject
+  Flyway flyway;
 
   @Test
   @TestSecurity(user = "user", roles = "words#update")
@@ -51,6 +56,8 @@ public class UpdateWordsIT extends IntegrationTest {
   @Test
   @TestSecurity(user = "user", roles = "words#update")
   public void shouldRefreshIncomingRelationChecksumWhenTargetRussianChanges() throws Exception {
+    flyway.clean();
+    flyway.migrate();
     WordModel source = persist(WordModel.fromEntity(WordEntity.createImported(
       "source-word", "источник", List.of(), null, null, WordType.NOUN, null, null
     )));
@@ -60,6 +67,8 @@ public class UpdateWordsIT extends IntegrationTest {
     WordRelationModel relation = new WordRelationModel();
     relation.setSourceWord(source);
     relation.setTargetWord(target);
+    relation.setSourceRussian("источник");
+    relation.setRelatedRussian("цель");
     relation.setRelation(WordRelationType.RELATED);
     relation.setChecksum(new WordRelationChecksumService().calculate(
       "источник", "цель", WordRelationType.RELATED

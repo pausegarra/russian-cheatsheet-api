@@ -195,6 +195,40 @@ class WordRelationsIT extends IntegrationTest {
   }
 
   @Test
+  void shouldKeepChecksumCurrentWhenBothRelatedWordsChangeConcurrently() throws Exception {
+    flyway.clean();
+    flyway.migrate();
+    WordModel source = importedWord("concurrent-source");
+    WordModel target = importedWord("concurrent-target");
+    UUID relationId = persistRelation(source, target);
+    CountDownLatch sourceUpdated = new CountDownLatch(1);
+    CountDownLatch allowSourceCommit = new CountDownLatch(1);
+    ExecutorService executor = Executors.newFixedThreadPool(2);
+    Future<?> sourceUpdate = executor.submit(() -> updateRussianAndHold(
+      source.getId(), "concurrent-source-updated", sourceUpdated, allowSourceCommit
+    ));
+
+    try {
+      assertTrue(sourceUpdated.await(5, TimeUnit.SECONDS));
+      Future<?> targetUpdate = executor.submit(() -> updateRussian(target.getId(), "concurrent-target-updated"));
+      assertThrows(TimeoutException.class, () -> targetUpdate.get(1, TimeUnit.SECONDS));
+      allowSourceCommit.countDown();
+      sourceUpdate.get(5, TimeUnit.SECONDS);
+      targetUpdate.get(5, TimeUnit.SECONDS);
+    } finally {
+      allowSourceCommit.countDown();
+      executor.shutdownNow();
+    }
+
+    assertEquals(
+      new WordRelationChecksumService().calculate(
+        "concurrent-source-updated", "concurrent-target-updated", WordRelationType.RELATED
+      ),
+      storedRelationChecksum(relationId)
+    );
+  }
+
+  @Test
   @TestSecurity(user = "importer", roles = "words#create")
   void shouldCreateAndListOnlyOutgoingRelation() {
     WordModel source = importedWord("source");
@@ -380,15 +414,65 @@ class WordRelationsIT extends IntegrationTest {
       .getSingleResult();
   }
 
-  private void persistRelation(WordModel source, WordModel target) {
+  private UUID persistRelation(WordModel source, WordModel target) {
     WordRelationModel relation = new WordRelationModel();
     relation.setSourceWord(source);
     relation.setTargetWord(target);
+    relation.setSourceRussian(source.getRussian());
+    relation.setRelatedRussian(target.getRussian());
     relation.setRelation(WordRelationType.RELATED);
     relation.setChecksum(new WordRelationChecksumService().calculate(
       source.getRussian(), target.getRussian(), WordRelationType.RELATED
     ));
     persist(relation);
+    return relation.getId();
+  }
+
+  private void updateRussianAndHold(
+    UUID wordId,
+    String russian,
+    CountDownLatch updated,
+    CountDownLatch allowCommit
+  ) {
+    try {
+      userTransaction.begin();
+      int updatedRows = em.createNativeQuery("update words set russian = :russian where id = :wordId")
+        .setParameter("russian", russian)
+        .setParameter("wordId", wordId)
+        .executeUpdate();
+      assertEquals(1, updatedRows);
+      updated.countDown();
+      if (!allowCommit.await(5, TimeUnit.SECONDS)) {
+        throw new IllegalStateException("Timed out waiting to commit Russian update");
+      }
+      userTransaction.commit();
+    } catch (Exception | Error failure) {
+      try {
+        userTransaction.rollback();
+      } catch (Exception rollbackException) {
+        failure.addSuppressed(rollbackException);
+      }
+      throw new RuntimeException(failure);
+    }
+  }
+
+  private void updateRussian(UUID wordId, String russian) {
+    try {
+      userTransaction.begin();
+      int updatedRows = em.createNativeQuery("update words set russian = :russian where id = :wordId")
+        .setParameter("russian", russian)
+        .setParameter("wordId", wordId)
+        .executeUpdate();
+      assertEquals(1, updatedRows);
+      userTransaction.commit();
+    } catch (Exception | Error failure) {
+      try {
+        userTransaction.rollback();
+      } catch (Exception rollbackException) {
+        failure.addSuppressed(rollbackException);
+      }
+      throw new RuntimeException(failure);
+    }
   }
 
   private WordModel importedWord(String suffix) {

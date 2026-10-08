@@ -12,26 +12,29 @@ as $$
   )
 $$;
 
-alter table word_relations add column checksum varchar(64);
+alter table word_relations
+  add column source_russian text,
+  add column related_russian text,
+  add column checksum varchar(64);
 
 update word_relations relation
-set checksum = calculate_word_relation_checksum(source_word.russian, target_word.russian, relation.relation)
+set source_russian = source_word.russian,
+    related_russian = target_word.russian,
+    checksum = calculate_word_relation_checksum(source_word.russian, target_word.russian, relation.relation)
 from words source_word, words target_word
 where source_word.id = relation.source_word_id
   and target_word.id = relation.target_word_id;
 
-create function set_legacy_word_relation_checksum()
+alter table word_relations
+  alter column source_russian set not null,
+  alter column related_russian set not null,
+  alter column checksum set not null;
+
+create function set_word_relation_values_before_insert()
 returns trigger
 language plpgsql
 as $$
-declare
-  source_russian text;
-  related_russian text;
 begin
-  if new.checksum is not null then
-    return new;
-  end if;
-
   perform word.id
   from words word
   where word.id in (new.source_word_id, new.target_word_id)
@@ -39,34 +42,47 @@ begin
   for update;
 
   select source_word.russian, target_word.russian
-  into source_russian, related_russian
+  into new.source_russian, new.related_russian
   from words source_word
   join words target_word on target_word.id = new.target_word_id
   where source_word.id = new.source_word_id;
 
-  new.checksum := calculate_word_relation_checksum(source_russian, related_russian, new.relation);
+  new.checksum := calculate_word_relation_checksum(new.source_russian, new.related_russian, new.relation);
   return new;
 end;
 $$;
 
-create trigger word_relations_checksum_before_insert
+create trigger word_relations_values_before_insert
 before insert on word_relations
-for each row execute function set_legacy_word_relation_checksum();
+for each row execute function set_word_relation_values_before_insert();
 
-create function refresh_word_relation_checksums_after_russian_update()
+create function refresh_word_relation_checksum_from_snapshots()
+returns trigger
+language plpgsql
+as $$
+begin
+  new.checksum := calculate_word_relation_checksum(new.source_russian, new.related_russian, new.relation);
+  return new;
+end;
+$$;
+
+create trigger word_relations_checksum_before_snapshot_update
+before update of source_russian, related_russian, relation on word_relations
+for each row execute function refresh_word_relation_checksum_from_snapshots();
+
+create function refresh_word_relation_russian_snapshots_after_word_update()
 returns trigger
 language plpgsql
 as $$
 begin
   if new.russian is distinct from old.russian then
-    update word_relations relation
-    set checksum = calculate_word_relation_checksum(
-      source_word.russian, target_word.russian, relation.relation
-    )
-    from words source_word, words target_word
-    where source_word.id = relation.source_word_id
-      and target_word.id = relation.target_word_id
-      and (relation.source_word_id = new.id or relation.target_word_id = new.id);
+    update word_relations
+    set source_russian = new.russian
+    where source_word_id = new.id;
+
+    update word_relations
+    set related_russian = new.russian
+    where target_word_id = new.id;
   end if;
   return new;
 end;
@@ -74,6 +90,4 @@ $$;
 
 create trigger words_relation_checksum_after_russian_update
 after update of russian on words
-for each row execute function refresh_word_relation_checksums_after_russian_update();
-
-alter table word_relations alter column checksum set not null;
+for each row execute function refresh_word_relation_russian_snapshots_after_word_update();

@@ -6,7 +6,6 @@ import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.Pag
 import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordNotFound;
 import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordRelationNotFound;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.RelatedWordEntity;
-import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordRelationChecksumEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordRelationDetailsEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordRelationEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordRelationWriteResult;
@@ -66,16 +65,19 @@ public class WordRelationsPanacheRepository implements WordRelationsRepository, 
 
     UUID candidateRelationId = UUID.randomUUID();
     UUID storedRelationId = (UUID) entityManager.createNativeQuery(
-        "insert into word_relations (id, source_word_id, target_word_id, relation, checksum) " +
-          "values (:relationId, :sourceWordId, :targetWordId, :relationType, :checksum) " +
+        "insert into word_relations (id, source_word_id, target_word_id, relation, source_russian, related_russian, checksum) " +
+          "values (:relationId, :sourceWordId, :targetWordId, :relationType, :sourceRussian, :relatedRussian, :checksum) " +
           "on conflict (source_word_id, target_word_id, relation) " +
-          "do update set relation = excluded.relation, checksum = excluded.checksum " +
+          "do update set relation = excluded.relation, source_russian = excluded.source_russian, " +
+          "related_russian = excluded.related_russian, checksum = excluded.checksum " +
           "returning id"
       )
       .setParameter("relationId", candidateRelationId)
       .setParameter("sourceWordId", sourceWordId)
       .setParameter("targetWordId", relation.relatedWordId())
       .setParameter("relationType", relation.relation().value())
+      .setParameter("sourceRussian", sourceWord.getRussian())
+      .setParameter("relatedRussian", targetWord.getRussian())
       .setParameter("checksum", checksum)
       .getSingleResult();
 
@@ -143,31 +145,6 @@ public class WordRelationsPanacheRepository implements WordRelationsRepository, 
     grouped.values().forEach(relatedWords -> relatedWords.sort(relationOrder));
     grouped.replaceAll((sourceId, relatedWords) -> List.copyOf(relatedWords));
     return Map.copyOf(grouped);
-  }
-
-  @Override
-  public List<WordRelationChecksumEntity> findInvolvingWords(List<UUID> wordIds) {
-    if (wordIds.isEmpty()) {
-      return List.of();
-    }
-
-    return entityManager.createQuery(
-        "select new es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordRelationChecksumEntity(" +
-          "relation.id, source.russian, target.russian, relation.relation) " +
-          "from WordRelationModel relation " +
-          "join relation.sourceWord source " +
-          "join relation.targetWord target " +
-          "where source.id in :wordIds or target.id in :wordIds",
-        WordRelationChecksumEntity.class
-      )
-      .setParameter("wordIds", wordIds)
-      .getResultList();
-  }
-
-  @Override
-  @Transactional
-  public void updateChecksums(Map<UUID, String> checksums) {
-    checksums.forEach((relationId, checksum) -> update("checksum = ?1 where id = ?2", checksum, relationId));
   }
 
   @Override

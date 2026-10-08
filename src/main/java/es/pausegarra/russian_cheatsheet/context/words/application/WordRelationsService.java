@@ -10,7 +10,6 @@ import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordRelati
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word_relation.CreateWordRelationResultDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.RelatedWordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
-import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordRelationChecksumEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordRelationDetailsEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordRelationEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordRelationWriteResult;
@@ -114,17 +113,6 @@ public class WordRelationsService {
         Map.Entry::getKey,
         entry -> entry.getValue().stream().map(RelatedWordDto::fromEntity).toList()
       ));
-  }
-
-  public void refreshChecksumsForWords(List<UUID> wordIds) {
-    Map<UUID, String> checksums = relationsRepository.findInvolvingWords(wordIds).stream()
-      .collect(Collectors.toMap(
-        WordRelationChecksumEntity::id,
-        relation -> checksumService.calculate(
-          relation.sourceRussian(), relation.relatedRussian(), relation.relation()
-        )
-      ));
-    relationsRepository.updateChecksums(checksums);
   }
 
   public Paginated<WordRelationDetailsEntity> findAll(int page, int perPage) {
