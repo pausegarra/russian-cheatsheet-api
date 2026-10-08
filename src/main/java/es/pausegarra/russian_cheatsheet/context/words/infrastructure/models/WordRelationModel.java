@@ -52,4 +52,7 @@ public class WordRelationModel {
   @Convert(converter = WordRelationTypeConverter.class)
   @Column(name = "relation", nullable = false, length = 16)
   private WordRelationType relation;
+
+  @Column(name = "checksum", nullable = false, length = 64)
+  private String checksum;
 }

@@ -21,7 +21,9 @@ class ApiV1EndpointPathsIT extends IntegrationTest {
   void shouldExposeOpenApiDocumentOutsideApiVersionPrefix() {
     given().accept("application/json")
       .when().get("http://localhost:" + RestAssured.port + "/q/openapi")
-      .then().statusCode(200).body("paths", hasKey("/api/v1/words"));
+      .then().statusCode(200)
+      .body("paths", hasKey("/api/v1/words"))
+      .body("paths", hasKey("/api/v1/words/relations"));
   }
 
   @Test

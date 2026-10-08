@@ -4,11 +4,10 @@ import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordRelationT
 
 import java.util.UUID;
 
-public record RelatedWordEntity(
+public record WordRelationDetailsEntity(
   UUID id,
-  UUID relationId,
-  String externalId,
-  String russian,
+  UUID sourceWordId,
+  WordEntity relatedWord,
   WordRelationType relation,
   String checksum
 ) {}

@@ -1,15 +1,20 @@
 package es.pausegarra.russian_cheatsheet.context.words.infrastructure.repositories;
 
 import es.pausegarra.russian_cheatsheet.common.domain.exception.BadRequest;
+import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.PageInfo;
+import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.Paginated;
 import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordNotFound;
 import es.pausegarra.russian_cheatsheet.context.words.domain.exception.WordRelationNotFound;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.RelatedWordEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordRelationChecksumEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordRelationDetailsEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordRelationEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordRelationWriteResult;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordRelationsRepository;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.WordModel;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.WordRelationModel;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -30,10 +35,13 @@ public class WordRelationsPanacheRepository implements WordRelationsRepository, 
 
   @Override
   @Transactional
-  public WordRelationWriteResult createOutgoing(WordRelationEntity relation) {
+  public WordRelationWriteResult createOutgoing(WordRelationEntity relation, String checksum) {
     if (relation == null || relation.sourceWordId() == null || relation.relatedWordId() == null
       || relation.relation() == null) {
       throw new BadRequest("Relation source, target, and type are required");
+    }
+    if (checksum == null) {
+      throw new BadRequest("Relation checksum is required");
     }
 
     UUID sourceWordId = relation.sourceWordId();
@@ -58,16 +66,17 @@ public class WordRelationsPanacheRepository implements WordRelationsRepository, 
 
     UUID candidateRelationId = UUID.randomUUID();
     UUID storedRelationId = (UUID) entityManager.createNativeQuery(
-        "insert into word_relations (id, source_word_id, target_word_id, relation) " +
-          "values (:relationId, :sourceWordId, :targetWordId, :relationType) " +
+        "insert into word_relations (id, source_word_id, target_word_id, relation, checksum) " +
+          "values (:relationId, :sourceWordId, :targetWordId, :relationType, :checksum) " +
           "on conflict (source_word_id, target_word_id, relation) " +
-          "do update set relation = excluded.relation " +
+          "do update set relation = excluded.relation, checksum = excluded.checksum " +
           "returning id"
       )
       .setParameter("relationId", candidateRelationId)
       .setParameter("sourceWordId", sourceWordId)
       .setParameter("targetWordId", relation.relatedWordId())
       .setParameter("relationType", relation.relation().value())
+      .setParameter("checksum", checksum)
       .getSingleResult();
 
     WordRelationModel saved = entityManager.find(WordRelationModel.class, storedRelationId);
@@ -76,11 +85,18 @@ public class WordRelationsPanacheRepository implements WordRelationsRepository, 
 
   @Override
   @Transactional
-  public List<WordRelationWriteResult> createOutgoingBatch(List<WordRelationEntity> relations) {
+  public List<WordRelationWriteResult> createOutgoingBatch(List<WordRelationEntity> relations, List<String> checksums) {
     if (relations == null || relations.isEmpty()) {
       throw new BadRequest("Batch must contain at least one item");
     }
-    return relations.stream().map(this::createOutgoing).toList();
+    if (checksums == null || relations.size() != checksums.size()) {
+      throw new BadRequest("Every relation in the batch requires a checksum");
+    }
+    List<WordRelationWriteResult> results = new ArrayList<>(relations.size());
+    for (int index = 0; index < relations.size(); index++) {
+      results.add(createOutgoing(relations.get(index), checksums.get(index)));
+    }
+    return List.copyOf(results);
   }
 
   @Override
@@ -127,6 +143,67 @@ public class WordRelationsPanacheRepository implements WordRelationsRepository, 
     grouped.values().forEach(relatedWords -> relatedWords.sort(relationOrder));
     grouped.replaceAll((sourceId, relatedWords) -> List.copyOf(relatedWords));
     return Map.copyOf(grouped);
+  }
+
+  @Override
+  public List<WordRelationChecksumEntity> findInvolvingWords(List<UUID> wordIds) {
+    if (wordIds.isEmpty()) {
+      return List.of();
+    }
+
+    return entityManager.createQuery(
+        "select new es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordRelationChecksumEntity(" +
+          "relation.id, source.russian, target.russian, relation.relation) " +
+          "from WordRelationModel relation " +
+          "join relation.sourceWord source " +
+          "join relation.targetWord target " +
+          "where source.id in :wordIds or target.id in :wordIds",
+        WordRelationChecksumEntity.class
+      )
+      .setParameter("wordIds", wordIds)
+      .getResultList();
+  }
+
+  @Override
+  @Transactional
+  public void updateChecksums(Map<UUID, String> checksums) {
+    checksums.forEach((relationId, checksum) -> update("checksum = ?1 where id = ?2", checksum, relationId));
+  }
+
+  @Override
+  public Paginated<WordRelationDetailsEntity> findAll(int page, int perPage) {
+    Page pagination = Page.of(page, perPage);
+    long total = count();
+    long offset = (long) pagination.index * pagination.size;
+    List<WordRelationDetailsEntity> data = offset > Integer.MAX_VALUE
+      ? List.of()
+      : entityManager.createQuery(
+          "select relation from WordRelationModel relation " +
+            "join fetch relation.sourceWord sourceWord " +
+            "join fetch relation.targetWord targetWord " +
+            "order by sourceWord.russian, targetWord.russian, relation.relation, relation.id",
+          WordRelationModel.class
+        )
+        .setFirstResult((int) offset)
+        .setMaxResults(pagination.size)
+        .getResultList()
+        .stream()
+        .map(this::details)
+        .toList();
+
+    int totalPages = (int) Math.ceil((double) total / pagination.size);
+    PageInfo pageInfo = new PageInfo(
+      pagination.index,
+      pagination.size,
+      totalPages,
+      total,
+      offset + pagination.size < total,
+      pagination.index > 0
+    );
+    return new Paginated<>(
+      data, pageInfo.page(), pageInfo.pageSize(), pageInfo.totalPages(), pageInfo.totalElements(),
+      pageInfo.hasNextPage(), pageInfo.hasPreviousPage()
+    );
   }
 
   @Override
@@ -181,7 +258,15 @@ public class WordRelationsPanacheRepository implements WordRelationsRepository, 
   private RelatedWordEntity relatedWord(WordRelationModel relation) {
     WordModel otherWord = relation.getTargetWord();
     return new RelatedWordEntity(
-      otherWord.getId(), relation.getId(), otherWord.getExternalId(), otherWord.getRussian(), relation.getRelation()
+      otherWord.getId(), relation.getId(), otherWord.getExternalId(), otherWord.getRussian(), relation.getRelation(),
+      relation.getChecksum()
+    );
+  }
+
+  private WordRelationDetailsEntity details(WordRelationModel relation) {
+    return new WordRelationDetailsEntity(
+      relation.getId(), relation.getSourceWord().getId(), relation.getTargetWord().toEntity(), relation.getRelation(),
+      relation.getChecksum()
     );
   }
 }

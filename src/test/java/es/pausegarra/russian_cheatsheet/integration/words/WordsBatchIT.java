@@ -3,6 +3,7 @@ package es.pausegarra.russian_cheatsheet.integration.words;
 import es.pausegarra.russian_cheatsheet.base.IntegrationTest;
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordTranslationInputDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.WordRelationChecksumService;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordRelationType;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
@@ -86,8 +87,12 @@ class WordsBatchIT extends IntegrationTest {
     relation.setSourceWord(source);
     relation.setTargetWord(target);
     relation.setRelation(WordRelationType.SYNONYM);
+    relation.setChecksum(new WordRelationChecksumService().calculate("источник", "цель", WordRelationType.SYNONYM));
     persist(relation);
 
+    String expectedChecksum = new WordRelationChecksumService().calculate(
+      "изменено", "цель", WordRelationType.SYNONYM
+    );
     given()
       .contentType("application/json")
       .body("[{\"id\":\"%s\",\"russian\":\"изменено\",\"type\":\"noun\"}]".formatted(source.getId()))
@@ -97,7 +102,15 @@ class WordsBatchIT extends IntegrationTest {
       .statusCode(200)
       .body("[0].relatedWords.size()", equalTo(1))
       .body("[0].relatedWords[0].id", equalTo(target.getId().toString()))
-      .body("[0].relatedWords[0].relation", equalTo("synonym"));
+      .body("[0].relatedWords[0].relation", equalTo("synonym"))
+      .body("[0].relatedWords[0].checksum", equalTo(expectedChecksum));
+
+    String storedChecksum = (String) em.createNativeQuery(
+        "select checksum from word_relations where id = :relationId"
+      )
+      .setParameter("relationId", relation.getId())
+      .getSingleResult();
+    assertEquals(expectedChecksum, storedChecksum);
   }
 
   @Test

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -47,6 +48,10 @@ public class UpdateWordsBatchService implements UseCase<List<UpdateWordDto>, Lis
       .map(this::withChecksumIfImported)
       .toList();
     Map<UUID, WordEntity> savedWords = indexById(wordsRepository.save(updates));
+    List<UUID> changedRussianIds = ids.stream()
+      .filter(id -> !Objects.equals(existingWords.get(id).russian(), savedWords.get(id).russian()))
+      .toList();
+    relationsService.refreshChecksumsForWords(changedRussianIds);
     Map<UUID, List<RelatedWordDto>> relations = relationsService.findOutgoingWordDtosByIds(ids);
 
     return dtos.stream()

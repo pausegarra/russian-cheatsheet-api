@@ -12,6 +12,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+import java.util.Objects;
+
 @ApplicationScoped
 @RequiredArgsConstructor
 public class UpdateWordUseCase implements UseCase<UpdateWordDto, WordDto> {
@@ -32,6 +35,9 @@ public class UpdateWordUseCase implements UseCase<UpdateWordDto, WordDto> {
       updated = updated.withChecksum(checksumService.calculate(updated));
     }
     WordEntity saved = wordsRepository.save(updated);
+    if (!Objects.equals(word.russian(), saved.russian())) {
+      relationsService.refreshChecksumsForWords(List.of(saved.id()));
+    }
     return WordDto.fromEntity(saved, relationsService.findOutgoingWordDtos(saved.id()));
   }
 }

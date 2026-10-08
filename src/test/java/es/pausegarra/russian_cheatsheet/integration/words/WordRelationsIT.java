@@ -4,6 +4,8 @@ import es.pausegarra.russian_cheatsheet.base.IntegrationTest;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.WordModel;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.WordRelationModel;
+import es.pausegarra.russian_cheatsheet.context.words.application.WordRelationChecksumService;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordRelationType;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import io.restassured.response.Response;
@@ -20,6 +22,57 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @QuarkusTest
 class WordRelationsIT extends IntegrationTest {
+
+  @Test
+  void shouldListAllRelationsInPagesWithFullRelatedWord() {
+    WordModel firstSource = importedWord("источник-а");
+    WordModel firstTarget = importedWord("цель-а");
+    WordModel secondSource = importedWord("источник-б");
+    WordModel secondTarget = importedWord("цель-б");
+    persistRelation(firstSource, firstTarget);
+    persistRelation(secondSource, secondTarget);
+
+    given().when().get("/api/v1/words/relations?page=0&perPage=1")
+      .then().statusCode(200)
+      .body("page", equalTo(0))
+      .body("pageSize", equalTo(1))
+      .body("totalPages", equalTo(2))
+      .body("totalElements", equalTo(2))
+      .body("hasNextPage", equalTo(true))
+      .body("hasPreviousPage", equalTo(false))
+      .body("data", hasSize(1))
+      .body("data[0].sourceWordId", equalTo(firstSource.getId().toString()))
+      .body("data[0].relatedWordId", equalTo(firstTarget.getId().toString()))
+      .body("data[0].relatedWord.id", equalTo(firstTarget.getId().toString()))
+      .body("data[0].relatedWord.russian", equalTo("цель-а"))
+      .body("data[0].relatedWord.type", equalTo("other"))
+      .body("data[0].relatedWord.translations", hasSize(0))
+      .body("data[0].relation", equalTo("related"))
+      .body("data[0].checksum", equalTo(
+        new WordRelationChecksumService().calculate("источник-а", "цель-а", WordRelationType.RELATED)
+      ));
+
+    given().when().get("/api/v1/words/relations?page=1&perPage=1")
+      .then().statusCode(200)
+      .body("page", equalTo(1))
+      .body("hasNextPage", equalTo(false))
+      .body("hasPreviousPage", equalTo(true))
+      .body("data", hasSize(1))
+      .body("data[0].sourceWordId", equalTo(secondSource.getId().toString()))
+      .body("data[0].relatedWord.russian", equalTo("цель-б"));
+  }
+
+  @Test
+  void shouldReturnEmptyPageAndRejectInvalidPagination() {
+    given().when().get("/api/v1/words/relations")
+      .then().statusCode(200)
+      .body("data", hasSize(0))
+      .body("totalPages", equalTo(0))
+      .body("totalElements", equalTo(0));
+
+    given().when().get("/api/v1/words/relations?page=-1&perPage=1")
+      .then().statusCode(400);
+  }
 
   @Test
   @TestSecurity(user = "importer", roles = "words#create")
@@ -47,6 +100,28 @@ class WordRelationsIT extends IntegrationTest {
 
     WordModel savedSource = em.find(WordModel.class, source.getId());
     assertEquals("initial-checksum", savedSource.getChecksum());
+  }
+
+  @Test
+  @TestSecurity(user = "importer", roles = "words#create")
+  void shouldPersistChecksumCalculatedFromRussianValues() {
+    WordModel source = importedWord("машина");
+    WordModel target = importedWord("автомобиль");
+    String expectedChecksum = "88f462a165b9e825ea004b0dad94e5b9f192636819ea68b206fa73cd098af586";
+
+    Response created = createRelation(source.getId(), target.getId());
+
+    created.then()
+      .statusCode(201)
+      .body("checksum", equalTo(expectedChecksum));
+    UUID relationId = UUID.fromString(created.then().extract().path("id"));
+    String storedChecksum = (String) em.createNativeQuery(
+        "select checksum from word_relations where id = :relationId"
+      )
+      .setParameter("relationId", relationId)
+      .getSingleResult();
+
+    assertEquals(expectedChecksum, storedChecksum);
   }
 
   @Test
@@ -177,6 +252,17 @@ class WordRelationsIT extends IntegrationTest {
     return (String) em.createNativeQuery("select checksum from words where id = :wordId")
       .setParameter("wordId", wordId)
       .getSingleResult();
+  }
+
+  private void persistRelation(WordModel source, WordModel target) {
+    WordRelationModel relation = new WordRelationModel();
+    relation.setSourceWord(source);
+    relation.setTargetWord(target);
+    relation.setRelation(WordRelationType.RELATED);
+    relation.setChecksum(new WordRelationChecksumService().calculate(
+      source.getRussian(), target.getRussian(), WordRelationType.RELATED
+    ));
+    persist(relation);
   }
 
   private WordModel importedWord(String suffix) {
