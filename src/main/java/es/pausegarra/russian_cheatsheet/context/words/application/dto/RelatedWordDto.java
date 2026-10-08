@@ -8,10 +8,11 @@ import java.util.UUID;
 public record RelatedWordDto(
   UUID id,
   String russian,
-  WordRelationType relation
+  WordRelationType relation,
+  String checksum
 ) {
 
   public static RelatedWordDto fromEntity(RelatedWordEntity entity) {
-    return new RelatedWordDto(entity.id(), entity.russian(), entity.relation());
+    return new RelatedWordDto(entity.id(), entity.russian(), entity.relation(), entity.checksum());
   }
 }

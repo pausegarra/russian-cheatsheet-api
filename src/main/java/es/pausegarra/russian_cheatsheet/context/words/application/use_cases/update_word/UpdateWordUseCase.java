@@ -12,6 +12,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+
 @ApplicationScoped
 @RequiredArgsConstructor
 public class UpdateWordUseCase implements UseCase<UpdateWordDto, WordDto> {

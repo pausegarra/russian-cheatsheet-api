@@ -22,6 +22,8 @@ public interface WordsRepository {
 
   List<WordEntity> findAllByIds(List<UUID> ids);
 
+  List<WordEntity> findAllByIdsForUpdate(List<UUID> ids);
+
   void delete(WordEntity word);
 
   List<WordEntity> getAll();

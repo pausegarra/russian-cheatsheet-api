@@ -2,16 +2,21 @@ package es.pausegarra.russian_cheatsheet.integration.words;
 
 import es.pausegarra.russian_cheatsheet.base.IntegrationTest;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordTranslationInputDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.WordRelationChecksumService;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordFormsEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordAspect;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordRelationType;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.WordModel;
+import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.WordRelationModel;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.requests.UpdateWordRequest;
 import es.pausegarra.russian_cheatsheet.mother.WordMother;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
+import org.flywaydb.core.Flyway;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,6 +27,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 public class UpdateWordsIT extends IntegrationTest {
+
+  @Inject
+  Flyway flyway;
 
   @Test
   @TestSecurity(user = "user", roles = "words#update")
@@ -43,6 +51,46 @@ public class UpdateWordsIT extends IntegrationTest {
     assertEquals(WordType.OTHER, updated.getType());
     assertNull(updated.getForms());
     assertNull(updated.getAspect());
+  }
+
+  @Test
+  @TestSecurity(user = "user", roles = "words#update")
+  public void shouldRefreshIncomingRelationChecksumWhenTargetRussianChanges() throws Exception {
+    flyway.clean();
+    flyway.migrate();
+    WordModel source = persist(WordModel.fromEntity(WordEntity.createImported(
+      "source-word", "источник", List.of(), null, null, WordType.NOUN, null, null
+    )));
+    WordModel target = persist(WordModel.fromEntity(WordEntity.createImported(
+      "target-word", "цель", List.of(), null, null, WordType.NOUN, null, null
+    )));
+    WordRelationModel relation = new WordRelationModel();
+    relation.setSourceWord(source);
+    relation.setTargetWord(target);
+    relation.setSourceRussian("источник");
+    relation.setRelatedRussian("цель");
+    relation.setRelation(WordRelationType.RELATED);
+    relation.setChecksum(new WordRelationChecksumService().calculate(
+      "источник", "цель", WordRelationType.RELATED
+    ));
+    persist(relation);
+
+    UpdateWordRequest request = new UpdateWordRequest(
+      "новая цель", WordType.NOUN, null, null, target.getExternalId(), List.of(), null, null
+    );
+    given().body(objectMapper.writeValueAsString(request)).contentType("application/json")
+      .when().put("/api/v1/words/" + target.getId())
+      .then().statusCode(200);
+
+    String storedChecksum = (String) em.createNativeQuery(
+        "select checksum from word_relations where id = :relationId"
+      )
+      .setParameter("relationId", relation.getId())
+      .getSingleResult();
+    assertEquals(
+      new WordRelationChecksumService().calculate("источник", "новая цель", WordRelationType.RELATED),
+      storedChecksum
+    );
   }
 
   @Test

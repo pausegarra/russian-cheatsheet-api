@@ -17,6 +17,7 @@ import java.util.stream.IntStream;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @QuarkusTest
@@ -41,6 +42,7 @@ class WordRelationsBatchIT extends IntegrationTest {
       .body("[0].created", equalTo(true))
       .body("[0].relation.relatedWordId", equalTo(firstTarget.getId().toString()))
       .body("[0].relation.relation", equalTo("related"))
+      .body("[0].relation.checksum", notNullValue())
       .body("[1].wordId", equalTo(secondSource.getId().toString()))
       .body("[1].created", equalTo(true))
       .body("[1].relation.relatedWordId", equalTo(secondTarget.getId().toString()))

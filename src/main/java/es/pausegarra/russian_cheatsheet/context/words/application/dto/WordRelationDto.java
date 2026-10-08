@@ -9,11 +9,14 @@ public record WordRelationDto(
   UUID id,
   UUID relatedWordId,
   String russian,
-  WordRelationType relation
+  WordRelationType relation,
+  String checksum
 ) {
 
   public static WordRelationDto fromEntity(RelatedWordEntity entity) {
-    return new WordRelationDto(entity.relationId(), entity.id(), entity.russian(), entity.relation());
+    return new WordRelationDto(
+      entity.relationId(), entity.id(), entity.russian(), entity.relation(), entity.checksum()
+    );
   }
 
 }

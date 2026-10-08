@@ -35,7 +35,9 @@ public class UpdateWordsBatchService implements UseCase<List<UpdateWordDto>, Lis
   @Transactional
   public List<WordDto> handle(List<UpdateWordDto> dtos) {
     List<UUID> ids = validateAndGetIds(dtos);
-    Map<UUID, WordEntity> existingWords = indexById(wordsRepository.findAllByIds(ids));
+    Map<UUID, WordEntity> existingWords = indexById(
+      wordsRepository.findAllByIdsForUpdate(ids.stream().sorted().toList())
+    );
     for (UUID id : ids) {
       if (!existingWords.containsKey(id)) {
         throw new WordNotFound(id.toString());

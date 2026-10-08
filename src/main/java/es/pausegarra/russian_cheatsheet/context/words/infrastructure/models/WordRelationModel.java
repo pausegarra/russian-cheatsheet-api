@@ -49,7 +49,16 @@ public class WordRelationModel {
   @JoinColumn(name = "target_word_id", nullable = false)
   private WordModel targetWord;
 
+  @Column(name = "source_russian", nullable = false)
+  private String sourceRussian;
+
+  @Column(name = "related_russian", nullable = false)
+  private String relatedRussian;
+
   @Convert(converter = WordRelationTypeConverter.class)
   @Column(name = "relation", nullable = false, length = 16)
   private WordRelationType relation;
+
+  @Column(name = "checksum", nullable = false, length = 64)
+  private String checksum;
 }

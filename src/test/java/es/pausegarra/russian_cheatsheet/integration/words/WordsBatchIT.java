@@ -3,6 +3,7 @@ package es.pausegarra.russian_cheatsheet.integration.words;
 import es.pausegarra.russian_cheatsheet.base.IntegrationTest;
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordTranslationInputDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.WordRelationChecksumService;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordRelationType;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
@@ -11,7 +12,9 @@ import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.Word
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import io.quarkus.test.security.TestSecurity;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
+import org.flywaydb.core.Flyway;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @QuarkusTest
 @TestProfile(BatchLimitProfile.class)
 class WordsBatchIT extends IntegrationTest {
+
+  @Inject
+  Flyway flyway;
 
   @Test
   @TestSecurity(user = "writer", roles = "words#create")
@@ -76,6 +82,8 @@ class WordsBatchIT extends IntegrationTest {
   @Test
   @TestSecurity(user = "writer", roles = "words#update")
   void shouldIncludeOutgoingRelationsInBatchUpdateResponse() {
+    flyway.clean();
+    flyway.migrate();
     WordModel source = persist(WordModel.fromEntity(WordEntity.createImported(
       "source-word", "источник", List.of(), null, null, WordType.NOUN, null, null
     )));
@@ -85,9 +93,15 @@ class WordsBatchIT extends IntegrationTest {
     WordRelationModel relation = new WordRelationModel();
     relation.setSourceWord(source);
     relation.setTargetWord(target);
+    relation.setSourceRussian("источник");
+    relation.setRelatedRussian("цель");
     relation.setRelation(WordRelationType.SYNONYM);
+    relation.setChecksum(new WordRelationChecksumService().calculate("источник", "цель", WordRelationType.SYNONYM));
     persist(relation);
 
+    String expectedChecksum = new WordRelationChecksumService().calculate(
+      "изменено", "цель", WordRelationType.SYNONYM
+    );
     given()
       .contentType("application/json")
       .body("[{\"id\":\"%s\",\"russian\":\"изменено\",\"type\":\"noun\"}]".formatted(source.getId()))
@@ -97,7 +111,15 @@ class WordsBatchIT extends IntegrationTest {
       .statusCode(200)
       .body("[0].relatedWords.size()", equalTo(1))
       .body("[0].relatedWords[0].id", equalTo(target.getId().toString()))
-      .body("[0].relatedWords[0].relation", equalTo("synonym"));
+      .body("[0].relatedWords[0].relation", equalTo("synonym"))
+      .body("[0].relatedWords[0].checksum", equalTo(expectedChecksum));
+
+    String storedChecksum = (String) em.createNativeQuery(
+        "select checksum from word_relations where id = :relationId"
+      )
+      .setParameter("relationId", relation.getId())
+      .getSingleResult();
+    assertEquals(expectedChecksum, storedChecksum);
   }
 
   @Test
