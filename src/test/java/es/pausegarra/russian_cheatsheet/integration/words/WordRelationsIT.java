@@ -32,6 +32,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -66,8 +67,11 @@ class WordRelationsIT extends IntegrationTest {
       .body("hasPreviousPage", equalTo(false))
       .body("data", hasSize(1))
       .body("data[0].sourceWordId", equalTo(firstSource.getId().toString()))
+      .body("data[0].sourceExternalId", equalTo(firstSource.getExternalId()))
       .body("data[0].relatedWordId", equalTo(firstTarget.getId().toString()))
+      .body("data[0].relatedExternalId", equalTo(firstTarget.getExternalId()))
       .body("data[0].relatedWord.id", equalTo(firstTarget.getId().toString()))
+      .body("data[0].relatedWord.externalId", equalTo(firstTarget.getExternalId()))
       .body("data[0].relatedWord.russian", equalTo("цель-а"))
       .body("data[0].relatedWord.type", equalTo("other"))
       .body("data[0].relatedWord.translations", hasSize(0))
@@ -83,7 +87,35 @@ class WordRelationsIT extends IntegrationTest {
       .body("hasPreviousPage", equalTo(true))
       .body("data", hasSize(1))
       .body("data[0].sourceWordId", equalTo(secondSource.getId().toString()))
+      .body("data[0].sourceExternalId", equalTo(secondSource.getExternalId()))
       .body("data[0].relatedWord.russian", equalTo("цель-б"));
+  }
+
+  @Test
+  void shouldNotPersistRussianSnapshotsOnWordRelations() {
+    long snapshotColumnCount = ((Number) em.createNativeQuery(
+        "select count(*) from information_schema.columns " +
+          "where table_schema = current_schema() and table_name = 'word_relations' " +
+          "and column_name in ('source_russian', 'related_russian')"
+      )
+      .getSingleResult()).longValue();
+
+    assertEquals(0L, snapshotColumnCount);
+  }
+
+  @Test
+  @TestSecurity(user = "importer", roles = "words#create")
+  void shouldAllowRelationsBetweenDifferentExternalWordsWithSameRussian() {
+    WordModel source = importedWord("омоним");
+    WordModel target = importedWord("омоним");
+    assertNotEquals(source.getExternalId(), target.getExternalId());
+
+    createRelation(source.getId(), target.getId())
+      .then().statusCode(201)
+      .body("relatedWordId", equalTo(target.getId().toString()))
+      .body("checksum", equalTo(
+        new WordRelationChecksumService().calculate("омоним", "омоним", WordRelationType.RELATED)
+      ));
   }
 
   @Test
@@ -418,8 +450,6 @@ class WordRelationsIT extends IntegrationTest {
     WordRelationModel relation = new WordRelationModel();
     relation.setSourceWord(source);
     relation.setTargetWord(target);
-    relation.setSourceRussian(source.getRussian());
-    relation.setRelatedRussian(target.getRussian());
     relation.setRelation(WordRelationType.RELATED);
     relation.setChecksum(new WordRelationChecksumService().calculate(
       source.getRussian(), target.getRussian(), WordRelationType.RELATED

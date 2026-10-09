@@ -45,7 +45,8 @@ public class FindAllWordRelationsService
           relation.relatedWord(), outgoingRelations.getOrDefault(relatedWordId, List.of())
         );
         return new WordRelationListItemDto(
-          relation.id(), relation.sourceWordId(), relatedWordId, relatedWord, relation.relation(), relation.checksum()
+          relation.id(), relation.sourceWordId(), relation.sourceExternalId(), relatedWordId,
+          relation.relatedWord().externalId(), relatedWord, relation.relation(), relation.checksum()
         );
       })
       .toList();

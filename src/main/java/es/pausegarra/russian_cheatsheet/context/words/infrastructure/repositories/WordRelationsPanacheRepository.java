@@ -65,19 +65,16 @@ public class WordRelationsPanacheRepository implements WordRelationsRepository, 
 
     UUID candidateRelationId = UUID.randomUUID();
     UUID storedRelationId = (UUID) entityManager.createNativeQuery(
-        "insert into word_relations (id, source_word_id, target_word_id, relation, source_russian, related_russian, checksum) " +
-          "values (:relationId, :sourceWordId, :targetWordId, :relationType, :sourceRussian, :relatedRussian, :checksum) " +
+        "insert into word_relations (id, source_word_id, target_word_id, relation, checksum) " +
+          "values (:relationId, :sourceWordId, :targetWordId, :relationType, :checksum) " +
           "on conflict (source_word_id, target_word_id, relation) " +
-          "do update set relation = excluded.relation, source_russian = excluded.source_russian, " +
-          "related_russian = excluded.related_russian, checksum = excluded.checksum " +
+          "do update set relation = excluded.relation, checksum = excluded.checksum " +
           "returning id"
       )
       .setParameter("relationId", candidateRelationId)
       .setParameter("sourceWordId", sourceWordId)
       .setParameter("targetWordId", relation.relatedWordId())
       .setParameter("relationType", relation.relation().value())
-      .setParameter("sourceRussian", sourceWord.getRussian())
-      .setParameter("relatedRussian", targetWord.getRussian())
       .setParameter("checksum", checksum)
       .getSingleResult();
 
@@ -242,8 +239,8 @@ public class WordRelationsPanacheRepository implements WordRelationsRepository, 
 
   private WordRelationDetailsEntity details(WordRelationModel relation) {
     return new WordRelationDetailsEntity(
-      relation.getId(), relation.getSourceWord().getId(), relation.getTargetWord().toEntity(), relation.getRelation(),
-      relation.getChecksum()
+      relation.getId(), relation.getSourceWord().getId(), relation.getSourceWord().getExternalId(),
+      relation.getTargetWord().toEntity(), relation.getRelation(), relation.getChecksum()
     );
   }
 }

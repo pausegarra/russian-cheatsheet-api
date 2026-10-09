@@ -7,6 +7,7 @@ import java.util.UUID;
 public record WordRelationDetailsEntity(
   UUID id,
   UUID sourceWordId,
+  String sourceExternalId,
   WordEntity relatedWord,
   WordRelationType relation,
   String checksum

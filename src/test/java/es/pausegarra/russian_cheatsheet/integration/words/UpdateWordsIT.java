@@ -67,8 +67,6 @@ public class UpdateWordsIT extends IntegrationTest {
     WordRelationModel relation = new WordRelationModel();
     relation.setSourceWord(source);
     relation.setTargetWord(target);
-    relation.setSourceRussian("источник");
-    relation.setRelatedRussian("цель");
     relation.setRelation(WordRelationType.RELATED);
     relation.setChecksum(new WordRelationChecksumService().calculate(
       "источник", "цель", WordRelationType.RELATED
