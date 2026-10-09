@@ -4,6 +4,7 @@ import es.pausegarra.russian_cheatsheet.common.application.use_cases.UseCase;
 import es.pausegarra.russian_cheatsheet.common.domain.exception.BadRequest;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDto;
+import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.delete_words_batch.DeleteWordsBatchService;
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.update_word.UpdateWordDto;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.config.BatchConfig;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.requests.UpdateWordBatchRequest;
@@ -14,12 +15,14 @@ import org.jboss.resteasy.reactive.RestResponse;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class WordsBatchResource implements WordsBatchApiSpec {
 
   private final UseCase<List<CreateWordDto>, List<WordDto>> createWordsBatchService;
   private final UseCase<List<UpdateWordDto>, List<WordDto>> updateWordsBatchService;
+  private final DeleteWordsBatchService deleteWordsBatchService;
   private final BatchConfig batchConfig;
 
   @Override
@@ -40,6 +43,14 @@ public class WordsBatchResource implements WordsBatchApiSpec {
       ))
       .toList();
     return RestResponse.ok(updateWordsBatchService.handle(updates));
+  }
+
+  @Override
+  @RolesAllowed("words#delete")
+  public RestResponse<Void> deleteWords(List<UUID> ids) {
+    validateBatchSize(ids);
+    deleteWordsBatchService.handle(ids);
+    return RestResponse.status(RestResponse.Status.NO_CONTENT);
   }
 
   private void validateBatchSize(List<?> requests) {
