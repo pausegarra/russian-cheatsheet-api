@@ -69,6 +69,14 @@ public class ExampleSentencesPanacheRepository implements ExampleSentencesReposi
   }
 
   @Override
+  public void deleteAllByIds(List<UUID> ids) {
+    if (ids.isEmpty()) {
+      return;
+    }
+    find("id in ?1", ids).list().forEach(this::delete);
+  }
+
+  @Override
   public Paginated<ExampleSentenceEntity> findAll(int page, int perPage) {
     PanacheQuery<ExampleSentenceModel> query = findAll(Sort.by("id")).page(Page.of(page, perPage));
     PageInfo pageInfo = PageInfo.fromQuery(query);

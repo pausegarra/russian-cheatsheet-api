@@ -112,6 +112,16 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
   }
 
   @Override
+  public void deleteAllByIds(List<UUID> ids) {
+    if (ids.isEmpty()) {
+      return;
+    }
+    find("id in ?1", ids).list().stream()
+      .map(WordModel::toEntity)
+      .forEach(this::delete);
+  }
+
+  @Override
   public List<WordEntity> getAll() {
     return findAll().stream().map(WordModel::toEntity).toList();
   }

@@ -26,6 +26,8 @@ public interface WordsRepository {
 
   void delete(WordEntity word);
 
+  void deleteAllByIds(List<UUID> ids);
+
   List<WordEntity> getAll();
 
   Paginated<WordEntity> findByCriteria(WordSearchCriteria criteria);

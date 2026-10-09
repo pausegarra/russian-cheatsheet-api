@@ -3,6 +3,7 @@ package es.pausegarra.russian_cheatsheet.context.words.infrastructure.spec;
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.application.use_cases.create_word.CreateWordDto;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.requests.UpdateWordBatchRequest;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PUT;
@@ -14,6 +15,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 @Path("/api/v1/words/batch")
 @Tag(name = "Words")
@@ -39,4 +41,13 @@ public interface WordsBatchApiSpec {
   @APIResponse(responseCode = "500", description = "An unexpected error occurred")
   @SecurityRequirement(name = "SecurityScheme")
   RestResponse<List<WordDto>> updateWords(@RequestBody List<UpdateWordBatchRequest> requests);
+
+  @DELETE
+  @Operation(summary = "Delete words in a batch")
+  @APIResponse(responseCode = "204", description = "All requested words were deleted or already absent")
+  @APIResponse(responseCode = "400", description = "Invalid or oversized batch")
+  @APIResponse(responseCode = "401", description = "The caller is not authenticated")
+  @APIResponse(responseCode = "403", description = "The caller cannot delete words")
+  @SecurityRequirement(name = "SecurityScheme")
+  RestResponse<Void> deleteWords(@RequestBody List<UUID> ids);
 }

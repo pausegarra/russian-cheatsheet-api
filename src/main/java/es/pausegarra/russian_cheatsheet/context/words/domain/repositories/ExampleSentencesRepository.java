@@ -20,6 +20,8 @@ public interface ExampleSentencesRepository {
 
   List<ExampleSentenceEntity> findAllByIds(List<UUID> ids);
 
+  void deleteAllByIds(List<UUID> ids);
+
   Paginated<ExampleSentenceEntity> findAll(int page, int perPage);
 
   Paginated<ImportedExampleReferenceEntity> findImportIndex(int page, int perPage);
