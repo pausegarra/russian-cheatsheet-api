@@ -37,11 +37,11 @@ ingress:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
   hosts:
-    - host: "russian-cheatsheet.pausegarra.com"
+    - host: "russiancheatsheet.com"
       paths:
         - path: /api/v1
           pathType: Prefix
   tls:
     - hosts:
-        - russian-cheatsheet.pausegarra.com
-      secretName: russian-cheatsheet-pausegarra-tls
+        - russiancheatsheet.com
+      secretName: russiancheatsheet-tls
