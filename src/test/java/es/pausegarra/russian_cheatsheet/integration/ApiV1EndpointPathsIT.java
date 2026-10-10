@@ -18,17 +18,29 @@ class ApiV1EndpointPathsIT extends IntegrationTest {
   }
 
   @Test
-  void shouldExposeOpenApiDocumentOutsideApiVersionPrefix() {
+  void shouldExposeOpenApiDocumentUnderHttpRootPath() {
     given().accept("application/json")
-      .when().get("http://localhost:" + RestAssured.port + "/q/openapi")
+      .when().get("http://localhost:" + RestAssured.port + "/api/q/openapi")
       .then().statusCode(200)
       .body("paths", hasKey("/api/v1/words"))
       .body("paths", hasKey("/api/v1/words/relations"));
   }
 
   @Test
-  void shouldExposeHealthProbeOutsideApiVersionPrefix() {
-    given().when().get("http://localhost:" + RestAssured.port + "/q/health/live")
+  void shouldExposeHealthProbeUnderHttpRootPath() {
+    given().when().get("http://localhost:" + RestAssured.port + "/api/q/health/live")
+      .then().statusCode(200);
+  }
+
+  @Test
+  void shouldExposeHealthEndpointUnderHttpRootPath() {
+    given().when().get("http://localhost:" + RestAssured.port + "/api/q/health")
+      .then().statusCode(200);
+  }
+
+  @Test
+  void shouldExposeReadinessProbeUnderHttpRootPath() {
+    given().when().get("http://localhost:" + RestAssured.port + "/api/q/health/ready")
       .then().statusCode(200);
   }
 

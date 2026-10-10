@@ -32,12 +32,12 @@ Main configuration lives in [application.yaml](src/main/resources/application.ya
 
 Important settings:
 
-- Global API path: `/api`, declared by `RussianCheatsheetApplication`
+- Global HTTP root path: `/api`, declared by `quarkus.http.root-path` in `application.yaml`
 - API version and endpoint paths: `/v1/...`, declared in each endpoint spec
 - Default HTTP port: `8080`
 - PostgreSQL URL: `jdbc:postgresql://localhost:5432/russian-cheatsheet`
-- Swagger UI: `http://localhost:8080/q/swagger-ui`
-- OpenAPI document: `http://localhost:8080/q/openapi`
+- Swagger UI: `http://localhost:8080/api/q/swagger-ui`
+- OpenAPI document: `http://localhost:8080/api/q/openapi`
 
 ## Local Setup
 
