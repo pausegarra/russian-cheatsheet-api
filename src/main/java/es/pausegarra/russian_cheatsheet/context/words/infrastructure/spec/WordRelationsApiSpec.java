@@ -19,7 +19,7 @@ import org.jboss.resteasy.reactive.RestResponse;
 import java.util.List;
 import java.util.UUID;
 
-@Path("/api/v1/words/{wordId}/relations")
+@Path("/v1/words/{wordId}/relations")
 @Tag(name = "Word Relations")
 public interface WordRelationsApiSpec {
 

@@ -12,7 +12,7 @@ envFrom:
 
 resources:
   limits:
-    cpu: 150m
+    cpu: 500m
     memory: 120Mi
   requests:
     cpu: 150m

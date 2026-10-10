@@ -32,7 +32,8 @@ Main configuration lives in [application.yaml](src/main/resources/application.ya
 
 Important settings:
 
-- API version prefix: `/api/v1`, declared in each endpoint spec
+- Global API path: `/api`, declared by `RussianCheatsheetApplication`
+- API version and endpoint paths: `/v1/...`, declared in each endpoint spec
 - Default HTTP port: `8080`
 - PostgreSQL URL: `jdbc:postgresql://localhost:5432/russian-cheatsheet`
 - Swagger UI: `http://localhost:8080/q/swagger-ui`

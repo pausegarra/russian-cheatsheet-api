@@ -11,7 +11,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
 
-@Path("/api/v1/words")
+@Path("/v1/words")
 @Tag(name = "Words")
 public interface FindWordsByCriteriaApiSpec {
 
