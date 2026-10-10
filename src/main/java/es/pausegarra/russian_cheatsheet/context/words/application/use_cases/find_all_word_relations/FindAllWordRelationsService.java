@@ -21,7 +21,7 @@ import java.util.UUID;
 public class FindAllWordRelationsService
   implements UseCase<FindAllWordRelationsDto, PaginatedDto<WordRelationListItemDto>> {
 
-  private static final int MAX_PER_PAGE = 100;
+  private static final int MAX_PER_PAGE = 1000;
 
   private final WordRelationsService relationsService;
 

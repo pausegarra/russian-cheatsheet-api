@@ -28,7 +28,7 @@ public interface FindAllWordRelationsApiSpec {
 
     @QueryParam("perPage")
     @DefaultValue("10")
-    @Parameter(description = "Maximum number of relations per page (1–100)")
+    @Parameter(description = "Maximum number of relations per page (1–1000)")
     int perPage
   );
 

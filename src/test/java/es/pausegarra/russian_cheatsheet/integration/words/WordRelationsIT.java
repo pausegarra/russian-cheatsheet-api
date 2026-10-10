@@ -129,7 +129,7 @@ class WordRelationsIT extends IntegrationTest {
     given().when().get("/api/v1/words/relations?page=-1&perPage=1")
       .then().statusCode(400);
 
-    given().when().get("/api/v1/words/relations?page=0&perPage=101")
+    given().when().get("/api/v1/words/relations?page=0&perPage=1001")
       .then().statusCode(400);
   }
 
