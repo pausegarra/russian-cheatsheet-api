@@ -12,6 +12,7 @@ import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import java.util.UUID;
 
 @ApplicationScoped
 @RequiredArgsConstructor
+@RegisterForReflection(targets = ImportedExampleReferenceEntity.class)
 public class ExampleSentencesPanacheRepository implements ExampleSentencesRepository, PanacheRepository<ExampleSentenceModel> {
 
   private final EntityManager entityManager;
