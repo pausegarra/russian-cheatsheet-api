@@ -14,7 +14,7 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
 
-@Path("/api/v1/examples/{id}")
+@Path("/v1/examples/{id}")
 @Tag(name = "Examples")
 public interface UpdateExampleApiSpec {
 

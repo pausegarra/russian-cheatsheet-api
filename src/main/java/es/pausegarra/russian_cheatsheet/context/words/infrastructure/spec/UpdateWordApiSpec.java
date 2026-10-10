@@ -14,7 +14,7 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
 
-@Path("/api/v1/words/{wordId}")
+@Path("/v1/words/{wordId}")
 @Tag(name = "Words")
 public interface UpdateWordApiSpec {
 

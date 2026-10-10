@@ -12,7 +12,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
 
-@Path("/api/v1/words/{wordId}/examples")
+@Path("/v1/words/{wordId}/examples")
 @Tag(name = "Examples")
 public interface FindWordExamplesApiSpec {
 
