@@ -82,7 +82,7 @@ make test   # runs: ./mvnw clean test -Dquarkus.profile=test
 - Main: `src/main/resources/application.yaml`
 - Dev overrides: `application-dev.yaml` (disables auth, CORS for localhost:5173)
 - Test overrides: `application-test.yaml`
-- Global API path: `/api`, declared with `@ApplicationPath` in `RussianCheatsheetApplication`
+- Global API path: `/api`, declared as `quarkus.rest.path` in `application.yaml`
 - API version and endpoint path: `/v1/...`, declared in each REST API spec `@Path`
 - Swagger UI: `/q/swagger-ui`
 

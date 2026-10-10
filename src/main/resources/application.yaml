@@ -1,5 +1,8 @@
 quarkus:
 
+  rest:
+    path: /api
+
   flyway:
     migrate-at-start: true
 
