@@ -2,7 +2,9 @@ package es.pausegarra.russian_cheatsheet.context.words.infrastructure.models;
 
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordTranslationEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.TranslationOrigin;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
+@RegisterForReflection
 public record WordTranslationJson(
   String language,
   String text,
