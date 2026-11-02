@@ -31,13 +31,13 @@ public class WordWriteMapper {
         dto.externalId(), dto.russian(), translationsFrom(dto.translations(), TranslationOrigin.OPENRUSSIAN),
         dto.usage(), dto.audioUrl(), dto.type(), dto.aspect(),
         validatedForms(dto.type(), dto.aspect(), dto.forms(), true)
-      );
+      ).withRussianAccented(dto.russianAccented());
     }
 
     return WordEntity.createManual(
       dto.russian(), translationsFrom(dto.translations(), TranslationOrigin.MANUAL), dto.usage(), dto.audioUrl(),
       dto.type(), dto.aspect(), validatedForms(dto.type(), dto.aspect(), dto.forms(), false)
-    );
+    ).withRussianAccented(dto.russianAccented());
   }
 
   public WordEntity fromUpdate(WordEntity word, UpdateWordDto dto) {
@@ -55,7 +55,7 @@ public class WordWriteMapper {
       updated = word.replaceImportedData(
         dto.externalId(), dto.russian(), translationsFrom(dto.translations(), TranslationOrigin.OPENRUSSIAN),
         dto.usage(), dto.audioUrl(), dto.type(), dto.aspect(), forms
-      );
+      ).withRussianAccented(dto.russianAccented());
     } else if (dto.translations() != null) {
       updated = word.replaceManualTranslations(
         dto.russian(), translationsFrom(dto.translations(), TranslationOrigin.MANUAL), dto.type(), dto.aspect(), forms

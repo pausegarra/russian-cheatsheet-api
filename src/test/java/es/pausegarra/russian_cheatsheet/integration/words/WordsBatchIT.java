@@ -266,7 +266,7 @@ class WordsBatchIT extends IntegrationTest {
 
   private String createWord(String russian) throws Exception {
     CreateWordDto dto = new CreateWordDto(
-      russian, null, List.of(new WordTranslationInputDto("es", "traducción", 0)),
+      russian, null, null, List.of(new WordTranslationInputDto("es", "traducción", 0)),
       null, null, WordType.OTHER, null, null
     );
     var response = given()

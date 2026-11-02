@@ -9,6 +9,7 @@ import java.util.List;
 
 public record UpdateWordRequest(
   String russian,
+  String russianAccented,
   WordType type,
   WordAspect aspect,
   WordFormsEntity forms,

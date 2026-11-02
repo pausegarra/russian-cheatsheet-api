@@ -12,6 +12,7 @@ public record ListWordsPresentation(
   UUID id,
   String externalId,
   String russian,
+  String russianAccented,
   List<WordTranslationDto> translations,
   String type,
   WordAspect aspect,
@@ -24,7 +25,7 @@ public record ListWordsPresentation(
       .orElse(null);
 
     return new ListWordsPresentation(
-      dto.id(), dto.externalId(), dto.russian(), dto.translations(), type, dto.aspect(), dto.checksum()
+      dto.id(), dto.externalId(), dto.russian(), dto.russianAccented(), dto.translations(), type, dto.aspect(), dto.checksum()
     );
   }
 

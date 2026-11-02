@@ -22,6 +22,7 @@ public class UpdateWordResource implements UpdateWordApiSpec {
     UpdateWordDto updateWordDto = new UpdateWordDto(
       UUID.fromString(wordId),
       request.russian(),
+      request.russianAccented(),
       request.externalId(),
       request.translations(),
       request.usage(),

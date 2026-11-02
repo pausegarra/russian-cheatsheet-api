@@ -11,6 +11,7 @@ import java.util.UUID;
 public record UpdateWordDto(
   UUID id,
   String russian,
+  String russianAccented,
   String externalId,
   List<WordTranslationInputDto> translations,
   String usage,

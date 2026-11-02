@@ -27,7 +27,7 @@ public class CreateWordIT extends IntegrationTest {
   @TestSecurity(user = "user", roles = "words#create")
   public void shouldCreateWordWithTranslations() throws JsonProcessingException {
     CreateWordDto dto = new CreateWordDto(
-      "russian", null,
+      "russian", null, null,
       List.of(new WordTranslationInputDto("en", "english", 0), new WordTranslationInputDto("es", "spanish", 1)),
       null, null, WordType.OTHER, null, null
     );
@@ -67,7 +67,7 @@ public class CreateWordIT extends IntegrationTest {
       .ru_verb_participle_active_past("вводивший")
       .build();
     CreateWordDto dto = new CreateWordDto(
-      "вводить", null,
+      "вводить", null, null,
       List.of(new WordTranslationInputDto("es", "introducir", 0)),
       "Usage text", "https://example.org/audio.mp3", WordType.VERB, WordAspect.IMPERFECTIVE, forms
     );
@@ -93,7 +93,7 @@ public class CreateWordIT extends IntegrationTest {
   @TestSecurity(user = "user", roles = "words#create")
   public void shouldRejectFormsFromAnotherWordType() throws JsonProcessingException {
     CreateWordDto dto = new CreateWordDto(
-      "вводить", null, List.of(), null, null, WordType.VERB, WordAspect.PERFECTIVE,
+      "вводить", null, null, List.of(), null, null, WordType.VERB, WordAspect.PERFECTIVE,
       WordFormsEntity.builder().ru_noun_sg_nom("дом").build()
     );
 

@@ -73,10 +73,10 @@ class WordsBatchServiceTest {
   }
 
   private CreateWordDto createDto(String russian) {
-    return new CreateWordDto(russian, null, List.of(), null, null, WordType.OTHER, null, null);
+    return new CreateWordDto(russian, null, null, List.of(), null, null, WordType.OTHER, null, null);
   }
 
   private UpdateWordDto updateDto(UUID id, String russian) {
-    return new UpdateWordDto(id, russian, null, null, null, null, WordType.OTHER, null, null);
+    return new UpdateWordDto(id, russian, null, null, null, null, null, WordType.OTHER, null, null);
   }
 }

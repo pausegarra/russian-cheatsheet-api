@@ -21,7 +21,7 @@ class WordWriteMapperTest {
   @Test
   void fromCreateNormalizesImportedTranslations() {
     WordEntity word = mapper.fromCreate(new CreateWordDto(
-      "слово", "source-1", List.of(new WordTranslationInputDto("ES", "palabra", null)),
+      "слово", null, "source-1", List.of(new WordTranslationInputDto("ES", "palabra", null)),
       null, null, WordType.NOUN, null, null
     ));
 
@@ -35,7 +35,7 @@ class WordWriteMapperTest {
       "source-1", "слово", List.of(), null, null, WordType.NOUN, null, null
     );
     UpdateWordDto request = new UpdateWordDto(
-      existing.id(), "слово", "source-1", null, null, null, WordType.NOUN, null, null
+      existing.id(), "слово", null, "source-1", null, null, null, WordType.NOUN, null, null
     );
 
     assertThrows(BadRequest.class, () -> mapper.fromUpdate(existing, request));

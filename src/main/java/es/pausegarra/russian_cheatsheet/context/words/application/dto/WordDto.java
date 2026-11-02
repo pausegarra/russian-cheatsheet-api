@@ -15,6 +15,7 @@ public record WordDto(
   UUID id,
   String externalId,
   String russian,
+  String russianAccented,
   List<WordTranslationDto> translations,
   String usage,
   String audioUrl,
@@ -39,6 +40,7 @@ public record WordDto(
       .id(entity.id())
       .externalId(entity.externalId())
       .russian(entity.russian())
+      .russianAccented(entity.russianAccented())
       .translations(entity.translations().stream().map(WordTranslationDto::fromEntity).toList())
       .usage(entity.usage())
       .audioUrl(entity.audioUrl())

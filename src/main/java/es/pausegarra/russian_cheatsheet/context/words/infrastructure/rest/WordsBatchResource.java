@@ -38,7 +38,7 @@ public class WordsBatchResource implements WordsBatchApiSpec {
     validateBatchSize(requests);
     List<UpdateWordDto> updates = requests.stream()
       .map(request -> new UpdateWordDto(
-        request.id(), request.russian(), request.externalId(), request.translations(), request.usage(),
+        request.id(), request.russian(), request.russianAccented(), request.externalId(), request.translations(), request.usage(),
         request.audioUrl(), request.type(), request.aspect(), request.forms()
       ))
       .toList();

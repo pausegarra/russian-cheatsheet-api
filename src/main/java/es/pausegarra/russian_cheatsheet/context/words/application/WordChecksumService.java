@@ -40,7 +40,7 @@ public class WordChecksumService {
       .toList();
 
     CanonicalWord payload = new CanonicalWord(
-      word.russian(), word.type() == null ? null : word.type().value(), translations, word.usage(), word.audioUrl(),
+      word.russian(), word.russianAccented(), word.type() == null ? null : word.type().value(), translations, word.usage(), word.audioUrl(),
       word.aspect() == null ? null : word.aspect().value(), word.forms()
     );
 
@@ -56,6 +56,7 @@ public class WordChecksumService {
   @JsonInclude(JsonInclude.Include.ALWAYS)
   private record CanonicalWord(
     String russian,
+    String russianAccented,
     String type,
     List<ChecksumTranslation> translations,
     String usage,

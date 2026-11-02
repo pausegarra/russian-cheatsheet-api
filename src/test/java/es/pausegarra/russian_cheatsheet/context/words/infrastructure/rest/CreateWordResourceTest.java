@@ -36,7 +36,7 @@ class CreateWordResourceTest {
     when(createWordUseCase.handle(any(CreateWordDto.class))).thenReturn(wordDto);
 
     CreateWordDto createWordDto = new CreateWordDto(
-      "russian", null,
+      "russian", null, null,
       List.of(new WordTranslationInputDto("en", "english", 0), new WordTranslationInputDto("es", "spanish", 1)),
       null, null, WordType.OTHER, null, null
     );
