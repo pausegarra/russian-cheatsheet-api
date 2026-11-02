@@ -37,7 +37,7 @@ public class UpdateWordsIT extends IntegrationTest {
     WordEntity word = WordMother.random().id(null).build();
     WordModel saved = persist(WordModel.fromEntity(word));
     UpdateWordRequest request = new UpdateWordRequest(
-      "newRussian", WordType.OTHER, null, null, null,
+      "newRussian", null, WordType.OTHER, null, null, null,
       List.of(new WordTranslationInputDto("es", "nueva traducción", 0)), null, null
     );
 
@@ -74,7 +74,7 @@ public class UpdateWordsIT extends IntegrationTest {
     persist(relation);
 
     UpdateWordRequest request = new UpdateWordRequest(
-      "новая цель", WordType.NOUN, null, null, target.getExternalId(), List.of(), null, null
+      "новая цель", null, WordType.NOUN, null, null, target.getExternalId(), List.of(), null, null
     );
     given().body(objectMapper.writeValueAsString(request)).contentType("application/json")
       .when().put("/api/v1/words/" + target.getId())
@@ -101,7 +101,7 @@ public class UpdateWordsIT extends IntegrationTest {
       .ru_verb_gerund_present("идя")
       .build();
     UpdateWordRequest request = new UpdateWordRequest(
-      "идти", WordType.VERB, WordAspect.IMPERFECTIVE, forms, null,
+      "идти", null, WordType.VERB, WordAspect.IMPERFECTIVE, forms, null,
       List.of(new WordTranslationInputDto("es", "ir", 0)), "Usage", "https://example.org/audio.mp3"
     );
 
@@ -123,7 +123,7 @@ public class UpdateWordsIT extends IntegrationTest {
     WordEntity word = WordMother.random().id(null).type(WordType.OTHER).build();
     WordModel saved = persist(WordModel.fromEntity(word));
     UpdateWordRequest request = new UpdateWordRequest(
-      "идти", WordType.VERB, WordAspect.PERFECTIVE,
+      "идти", null, WordType.VERB, WordAspect.PERFECTIVE,
       WordFormsEntity.builder().ru_noun_sg_nom("дом").build(), null, List.of(), null, null
     );
 
@@ -136,7 +136,7 @@ public class UpdateWordsIT extends IntegrationTest {
   @TestSecurity(user = "user", roles = "words#update")
   public void shouldReturn404IfWordNotFound() throws Exception {
     UpdateWordRequest request = new UpdateWordRequest(
-      "newRussian", WordType.OTHER, null, null, null, List.of(), null, null
+      "newRussian", null, WordType.OTHER, null, null, null, List.of(), null, null
     );
     given().body(objectMapper.writeValueAsString(request)).contentType("application/json")
       .when().put("/api/v1/words/" + UUID.randomUUID()).then().statusCode(404);
@@ -145,7 +145,7 @@ public class UpdateWordsIT extends IntegrationTest {
   @Test
   public void shouldReturn401IfUserIsNotAuthenticated() throws Exception {
     UpdateWordRequest request = new UpdateWordRequest(
-      "newRussian", WordType.OTHER, null, null, null, List.of(), null, null
+      "newRussian", null, WordType.OTHER, null, null, null, List.of(), null, null
     );
     given().body(objectMapper.writeValueAsString(request)).contentType("application/json")
       .when().put("/api/v1/words/" + UUID.randomUUID()).then().statusCode(401);
@@ -155,7 +155,7 @@ public class UpdateWordsIT extends IntegrationTest {
   @TestSecurity(user = "user")
   public void shouldReturn403IfUserIsNotAuthorized() throws Exception {
     UpdateWordRequest request = new UpdateWordRequest(
-      "newRussian", WordType.OTHER, null, null, null, List.of(), null, null
+      "newRussian", null, WordType.OTHER, null, null, null, List.of(), null, null
     );
     given().body(objectMapper.writeValueAsString(request)).contentType("application/json")
       .when().put("/api/v1/words/" + UUID.randomUUID()).then().statusCode(403);

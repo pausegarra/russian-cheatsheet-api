@@ -14,12 +14,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Builder
 public record WordEntity(
   UUID id,
   String externalId,
   String russian,
+  @With String russianAccented,
   List<WordTranslationEntity> translations,
   String usage,
   String audioUrl,
@@ -34,7 +36,11 @@ public record WordEntity(
   Instant updatedAt
 ) {
 
+  private static final Pattern ACCENT_WHITE_SPACE = Pattern.compile("\\p{IsWhite_Space}*");
+
   public WordEntity {
+    russianAccented = russianAccented == null || ACCENT_WHITE_SPACE.matcher(russianAccented).matches()
+      ? null : russianAccented;
     translations = translations == null ? List.of() : List.copyOf(translations);
   }
 
@@ -48,7 +54,7 @@ public record WordEntity(
     WordFormsEntity forms
   ) {
     return new WordEntity(
-      UUID.randomUUID(), null, russian, manualTranslationsWithOrigin(translations), usage, audioUrl, null,
+      UUID.randomUUID(), null, russian, null, manualTranslationsWithOrigin(translations), usage, audioUrl, null,
       type, aspect, forms, null, null, null, null, null
     );
   }
@@ -67,7 +73,7 @@ public record WordEntity(
     mergedTranslations.addAll(manualTranslationsWithOrigin(manualTranslations));
 
     return new WordEntity(
-      id(), externalId(), russian, mergedTranslations, usage(), audioUrl(), checksum(), type,
+      id(), externalId(), russian, russianAccented(), mergedTranslations, usage(), audioUrl(), checksum(), type,
       aspect, forms,
       publishedAt(), createdBy(), createdAt(), updatedBy(), updatedAt()
     );
@@ -75,7 +81,7 @@ public record WordEntity(
 
   public WordEntity updateWordDetails(String russian, WordType type, WordAspect aspect, WordFormsEntity forms) {
     return new WordEntity(
-      id(), externalId(), russian, translations(), usage(), audioUrl(), checksum(), type,
+      id(), externalId(), russian, russianAccented(), translations(), usage(), audioUrl(), checksum(), type,
       aspect, forms,
       publishedAt(), createdBy(), createdAt(), updatedBy(), updatedAt()
     );
@@ -92,7 +98,7 @@ public record WordEntity(
     WordFormsEntity forms
   ) {
     return new WordEntity(
-      UUID.randomUUID(), externalId, russian, importedTranslationsWithOrigin(importedTranslations), usage, audioUrl,
+      UUID.randomUUID(), externalId, russian, null, importedTranslationsWithOrigin(importedTranslations), usage, audioUrl,
       null, type, aspect, forms, Instant.now(), null, null, null, null
     );
   }
@@ -113,7 +119,7 @@ public record WordEntity(
       .forEach(mergedTranslations::add);
 
     return new WordEntity(
-      id(), externalId, russian, List.copyOf(mergedTranslations), usage, audioUrl, checksum(), type, aspect,
+      id(), externalId, russian, russianAccented(), List.copyOf(mergedTranslations), usage, audioUrl, checksum(), type, aspect,
       forms,
       publishedAt(), createdBy(), createdAt(), updatedBy(), updatedAt()
     );
@@ -121,7 +127,7 @@ public record WordEntity(
 
   public WordEntity withChecksum(String checksum) {
     return new WordEntity(
-      id(), externalId(), russian(), translations(), usage(), audioUrl(), checksum,
+      id(), externalId(), russian(), russianAccented(), translations(), usage(), audioUrl(), checksum,
       type(), aspect(), forms(), publishedAt(), createdBy(), createdAt(), updatedBy(), updatedAt()
     );
   }

@@ -11,6 +11,7 @@ import java.util.UUID;
 public record UpdateWordBatchRequest(
   UUID id,
   String russian,
+  String russianAccented,
   WordType type,
   WordAspect aspect,
   WordFormsEntity forms,

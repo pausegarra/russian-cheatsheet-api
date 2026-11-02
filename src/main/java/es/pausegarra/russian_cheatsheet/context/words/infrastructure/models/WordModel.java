@@ -52,6 +52,9 @@ public class WordModel extends AuditableModel {
 
   private final String russian;
 
+  @Column(name = "russian_accented", columnDefinition = "text")
+  private final String russianAccented;
+
   @Column(columnDefinition = "text")
   private final String usage;
 
@@ -91,6 +94,7 @@ public class WordModel extends AuditableModel {
       .id(id)
       .externalId(word.externalId())
       .russian(word.russian())
+      .russianAccented(word.russianAccented())
       .usage(word.usage())
       .audioUrl(word.audioUrl())
       .checksum(word.checksum())
@@ -113,6 +117,7 @@ public class WordModel extends AuditableModel {
       .id(id)
       .externalId(externalId)
       .russian(russian)
+      .russianAccented(russianAccented)
       .translations(translations == null ? List.of() : translations.stream().map(WordTranslationJson::toEntity).toList())
       .usage(usage)
       .audioUrl(audioUrl)

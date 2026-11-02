@@ -9,6 +9,7 @@ import java.util.List;
 
 public record CreateWordDto(
   String russian,
+  String russianAccented,
   String externalId,
   List<WordTranslationInputDto> translations,
   String usage,

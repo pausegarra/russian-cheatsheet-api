@@ -46,7 +46,7 @@ class CreateWordUseCaseTest {
       .ru_verb_gerund_present("вводя")
       .build();
     CreateWordDto dto = new CreateWordDto(
-      "вводить", null,
+      "вводить", null, null,
       List.of(new WordTranslationInputDto("es", "introducir", 0)),
       "Usage note", "https://example.org/audio.mp3", WordType.VERB, WordAspect.IMPERFECTIVE, forms
     );
@@ -67,7 +67,7 @@ class CreateWordUseCaseTest {
   @Test
   void shouldRejectFormsThatDoNotMatchTheWordType() {
     CreateWordDto dto = new CreateWordDto(
-      "вводить", null, List.of(), null, null, WordType.VERB, WordAspect.PERFECTIVE,
+      "вводить", null, null, List.of(), null, null, WordType.VERB, WordAspect.PERFECTIVE,
       WordFormsEntity.builder().ru_noun_sg_nom("дом").build()
     );
 
@@ -78,7 +78,7 @@ class CreateWordUseCaseTest {
   @Test
   void shouldRejectAspectForANonVerb() {
     CreateWordDto dto = new CreateWordDto(
-      "дом", null, List.of(), null, null, WordType.NOUN, WordAspect.PERFECTIVE, null
+      "дом", null, null, List.of(), null, null, WordType.NOUN, WordAspect.PERFECTIVE, null
     );
 
     assertThrows(BadRequest.class, () -> useCase.handle(dto));

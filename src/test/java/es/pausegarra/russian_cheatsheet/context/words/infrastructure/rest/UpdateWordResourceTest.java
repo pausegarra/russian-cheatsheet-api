@@ -39,7 +39,7 @@ class UpdateWordResourceTest {
     when(updateWordUseCase.handle(any(UpdateWordDto.class))).thenReturn(WordDto.fromEntity(word));
 
     UpdateWordRequest request = new UpdateWordRequest(
-      "russian", WordType.OTHER, null, null, null,
+      "russian", null, WordType.OTHER, null, null, null,
       List.of(new WordTranslationInputDto("en", "english", 0), new WordTranslationInputDto("es", "spanish", 1)),
       null, null
     );

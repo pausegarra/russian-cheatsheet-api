@@ -27,6 +27,7 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
     Map.entry("id", "id"),
     Map.entry("externalId", "external_id"),
     Map.entry("russian", "russian"),
+    Map.entry("russianAccented", "russian_accented"),
     Map.entry("usage", "usage"),
     Map.entry("audioUrl", "audio_url"),
     Map.entry("checksum", "checksum"),

@@ -56,7 +56,7 @@ class UpdateWordUseCaseTest {
       .ru_verb_gerund_present("идя")
       .build();
     UpdateWordDto dto = new UpdateWordDto(
-      id, "идти", null,
+      id, "идти", null, null,
       List.of(new WordTranslationInputDto("es", "ir", 0)),
       null, null, WordType.VERB, WordAspect.IMPERFECTIVE, newForms
     );
@@ -77,7 +77,7 @@ class UpdateWordUseCaseTest {
     UUID id = UUID.randomUUID();
     WordEntity existing = WordEntity.builder().id(id).russian("дом").type(WordType.NOUN).build();
     UpdateWordDto dto = new UpdateWordDto(
-      id, "идти", null, List.of(), null, null, WordType.VERB, WordAspect.PERFECTIVE,
+      id, "идти", null, null, List.of(), null, null, WordType.VERB, WordAspect.PERFECTIVE,
       WordFormsEntity.builder().ru_noun_sg_nom("дом").build()
     );
     when(wordsRepository.findById(id)).thenReturn(Optional.of(existing));
