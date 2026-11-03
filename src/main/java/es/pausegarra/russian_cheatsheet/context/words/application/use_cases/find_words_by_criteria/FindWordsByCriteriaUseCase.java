@@ -6,6 +6,7 @@ import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.Pag
 import es.pausegarra.russian_cheatsheet.context.words.application.dto.WordDto;
 import es.pausegarra.russian_cheatsheet.context.words.domain.criterias.WordSearchCriteria;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordSearchMode;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordsRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,17 @@ public class FindWordsByCriteriaUseCase implements UseCase<FindWordsByCriteriaDt
 
   @Override
   public PaginatedDto<WordDto> handle(FindWordsByCriteriaDto dto) {
-    WordSearchCriteria criteria = WordSearchCriteria.create(dto.page(), dto.perPage(), dto.sortBy(), dto.sortDirection(), dto.search());
+    WordSearchCriteria criteria = WordSearchCriteria.create(
+      dto.page(), dto.perPage(), dto.sortBy(), dto.sortDirection(), dto.search(), dto.matchMode()
+    );
+    if (criteria.getMode() != WordSearchMode.LEGACY && criteria.getSearch() != null && !criteria.getSearch().isBlank()) {
+      var searchResults = wordsRepository.findSearchMatchesByCriteria(criteria);
+      return PaginatedDto.fromPaginated(
+        searchResults,
+        searchResults.data().stream().map(WordDto::fromSearchResult).toList()
+      );
+    }
+
     Paginated<WordEntity> paginated = wordsRepository.findByCriteria(criteria);
 
     return PaginatedDto.fromPaginated(paginated, paginated.data().stream().map(WordDto::fromEntity).toList());

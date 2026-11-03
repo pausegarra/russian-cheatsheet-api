@@ -37,7 +37,7 @@ class FindWordsByCriteriaUseCaseTest {
     Paginated<WordEntity> paginated = new Paginated<>(List.of(word), 0, 10, 1, 1, true, false);
     when(wordsRepository.findByCriteria(any(WordSearchCriteria.class))).thenReturn(paginated);
 
-    FindWordsByCriteriaDto dto = new FindWordsByCriteriaDto(0, 10, "sortBy", "ASC", "search");
+    FindWordsByCriteriaDto dto = new FindWordsByCriteriaDto(0, 10, "sortBy", "ASC", "search", null);
     PaginatedDto<WordDto> result = findWordsByCriteriaUseCase.handle(dto);
 
     assertNotNull(result);

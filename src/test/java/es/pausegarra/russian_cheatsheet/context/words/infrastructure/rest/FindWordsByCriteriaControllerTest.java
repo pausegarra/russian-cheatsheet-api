@@ -43,7 +43,8 @@ class FindWordsByCriteriaControllerTest {
       10,
       "sortBy",
       "ASC",
-      "search"
+      "search",
+      null
     );
 
     assertNotNull(result);

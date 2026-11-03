@@ -1,6 +1,8 @@
 package es.pausegarra.russian_cheatsheet.context.words.application.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
+import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordSearchResultEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordFormsEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordType;
 import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordAspect;
@@ -28,7 +30,8 @@ public record WordDto(
   String createdBy,
   Instant createdAt,
   String updatedBy,
-  Instant updatedAt
+  Instant updatedAt,
+  @JsonInclude(JsonInclude.Include.NON_NULL) WordSearchMatchDto searchMatch
 ) {
 
   public static WordDto fromEntity(WordEntity entity) {
@@ -36,6 +39,14 @@ public record WordDto(
   }
 
   public static WordDto fromEntity(WordEntity entity, List<RelatedWordDto> relatedWords) {
+    return fromEntity(entity, relatedWords, null);
+  }
+
+  public static WordDto fromSearchResult(WordSearchResultEntity result) {
+    return fromEntity(result.word(), List.of(), WordSearchMatchDto.fromEntity(result.match()));
+  }
+
+  private static WordDto fromEntity(WordEntity entity, List<RelatedWordDto> relatedWords, WordSearchMatchDto searchMatch) {
     return WordDto.builder()
       .id(entity.id())
       .externalId(entity.externalId())
@@ -54,6 +65,7 @@ public record WordDto(
       .createdAt(entity.createdAt())
       .updatedBy(entity.updatedBy())
       .updatedAt(entity.updatedAt())
+      .searchMatch(searchMatch)
       .build();
   }
 

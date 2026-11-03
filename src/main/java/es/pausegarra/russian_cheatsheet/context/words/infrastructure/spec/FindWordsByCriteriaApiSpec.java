@@ -7,6 +7,9 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.enums.ParameterIn;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.jboss.resteasy.reactive.RestResponse;
@@ -47,7 +50,16 @@ public interface FindWordsByCriteriaApiSpec {
 
     @QueryParam("search")
     @DefaultValue("")
-    String search
+    String search,
+
+    @QueryParam("matchMode")
+    @Parameter(
+      name = "matchMode",
+      in = ParameterIn.QUERY,
+      description = "precise matches complete words; contains also matches word fragments. Omit to retain legacy search behavior.",
+      schema = @Schema(enumeration = { "precise", "contains" })
+    )
+    String matchMode
   );
 
 }
