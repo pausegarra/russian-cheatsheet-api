@@ -5,7 +5,7 @@ import es.pausegarra.russian_cheatsheet.common.domain.exception.BadRequest;
 import es.pausegarra.russian_cheatsheet.context.words.domain.criterias.WordSearchCriteria;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordEntity;
 import es.pausegarra.russian_cheatsheet.context.words.domain.entities.WordSearchResultEntity;
-import es.pausegarra.russian_cheatsheet.context.words.domain.enums.WordSearchMode;
+import es.pausegarra.russian_cheatsheet.context.words.domain.services.WordSearchMatcher;
 import es.pausegarra.russian_cheatsheet.context.words.domain.repositories.WordsRepository;
 import es.pausegarra.russian_cheatsheet.context.words.infrastructure.models.WordModel;
 import es.pausegarra.russian_cheatsheet.common.domain.pagination_and_sorting.SortDirection;
@@ -15,13 +15,15 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.LockModeType;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-import java.text.Normalizer;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @ApplicationScoped
@@ -45,64 +47,7 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
     Map.entry("updatedBy", "updated_by")
   );
 
-  private static final Pattern WHITESPACE = Pattern.compile("\\s+", Pattern.UNICODE_CHARACTER_CLASS);
-
-  private static final String SEARCH_CTES = """
-    WITH term AS (
-      SELECT CAST(:term AS text) AS value, CAST(:mode AS text) AS mode
-    ), fields AS (
-      SELECT w.id AS word_id, 'ru'::text AS language, 0 AS language_rank, 0 AS translation_position,
-        w.russian AS match_text, %s AS normalized_text
-      FROM words w
-      WHERE %s
-      UNION ALL
-      SELECT w.id AS word_id, translation.value ->> 'language' AS language,
-        CASE translation.value ->> 'language' WHEN 'en' THEN 1 ELSE 2 END AS language_rank,
-        COALESCE((translation.value ->> 'position')::integer, 0) AS translation_position,
-        translation.value ->> 'text' AS match_text, %s AS normalized_text
-      FROM words w
-      CROSS JOIN LATERAL jsonb_array_elements(w.translations) AS translation(value)
-      WHERE %s AND translation.value ->> 'language' IN ('en', 'es')
-    ), gloss_segments AS (
-      SELECT f.*,
-        trim(regexp_replace(regexp_replace(segment.value, '\\([^)]*\\)', '', 'g'), '[[:space:]]+', ' ', 'g'))
-          AS normalized_segment
-      FROM fields f
-      CROSS JOIN LATERAL regexp_split_to_table(f.normalized_text, '[,;!¡?¿]+') AS segment(value)
-      WHERE f.language <> 'ru'
-    ), matches AS (
-      SELECT f.word_id,
-        CASE WHEN f.normalized_text = t.value THEN 1
-             WHEN f.normalized_text ~ :wordPattern THEN 3
-             WHEN t.mode = 'contains' AND strpos(f.normalized_text, t.value) = 1 THEN 5
-             ELSE 6 END AS match_rank,
-        CASE WHEN f.normalized_text = t.value THEN 'russian_exact'
-             WHEN f.normalized_text ~ :wordPattern THEN 'russian_phrase'
-             WHEN t.mode = 'contains' AND strpos(f.normalized_text, t.value) = 1 THEN 'russian_prefix'
-             ELSE 'substring' END AS kind,
-        f.language, f.language_rank, f.translation_position, f.match_text
-      FROM fields f CROSS JOIN term t
-      WHERE f.language = 'ru'
-        AND (f.normalized_text = t.value OR f.normalized_text ~ :wordPattern
-             OR (t.mode = 'contains' AND strpos(f.normalized_text, t.value) > 0))
-      UNION ALL
-      SELECT f.word_id,
-        CASE WHEN f.normalized_segment = t.value THEN 2
-             WHEN f.normalized_text ~ :wordPattern THEN 4
-             ELSE 6 END AS match_rank,
-        CASE WHEN f.normalized_segment = t.value THEN 'translation_exact'
-             WHEN f.normalized_text ~ :wordPattern THEN 'translation_phrase'
-             ELSE 'substring' END AS kind,
-        f.language, f.language_rank, f.translation_position, f.match_text
-      FROM gloss_segments f CROSS JOIN term t
-      WHERE f.normalized_segment = t.value OR f.normalized_text ~ :wordPattern
-        OR (t.mode = 'contains' AND strpos(f.normalized_text, t.value) > 0)
-    ), best_matches AS (
-      SELECT DISTINCT ON (word_id) word_id, match_rank, kind, language, match_text
-      FROM matches
-      ORDER BY word_id, match_rank, language_rank, translation_position, match_text, language
-    )
-    """;
+  private static final WordSearchMatcher SEARCH_MATCHER = new WordSearchMatcher();
 
   @Override
   public WordEntity create(WordEntity word) {
@@ -243,82 +188,71 @@ public class WordsPanacheRepository implements WordsRepository, PanacheRepositor
       case ASC -> "ASC";
       case DESC -> "DESC";
     };
-    String term = normalizeSearch(criteria.getSearch());
+    String term = WordSearchMatcher.normalize(criteria.getSearch());
     if (term.isEmpty() || term.codePoints().noneMatch(Character::isLetterOrDigit)) {
       return new Paginated<>(List.of(), page.index, page.size, 0, 0, false, page.index > 0);
     }
 
     String publishedFilter = criteria.isPublished() ? "w.published_at is not null" : "w.published_at is null";
-    String normalizedRussian = normalizedSql("w.russian");
-    String ctes = SEARCH_CTES.formatted(
-      normalizedRussian,
-      publishedFilter,
-      normalizedSql("translation.value ->> 'text'"),
-      publishedFilter
-    );
-    String pattern = "(^|[^[:alnum:]])" + escapePostgresRegex(term) + "([^[:alnum:]]|$)";
-    long total = ((Number) getEntityManager().createNativeQuery(ctes + " SELECT COUNT(*) FROM best_matches")
-      .setParameter("term", term)
-      .setParameter("mode", criteria.getMode() == WordSearchMode.CONTAINS ? "contains" : "precise")
-      .setParameter("wordPattern", pattern)
-      .getSingleResult()).longValue();
-
-    if (total == 0) {
-      return new Paginated<>(List.of(), page.index, page.size, 0, 0, false, page.index > 0);
-    }
-
-    String ordering = "russian".equals(criteria.getSorting().sortBy()) ? normalizedRussian : "w." + sortColumn;
+    String candidatePattern = createCandidatePattern(term);
+    String russianText = candidateTextSql("w.russian");
+    String translationText = candidateTextSql("translation.value ->> 'text'");
+    String where = "(" + russianText + " LIKE :candidate ESCAPE E'\\\\' OR EXISTS (" +
+      "SELECT 1 FROM jsonb_array_elements(w.translations) AS translation(value) " +
+      "WHERE translation.value ->> 'language' IN ('en', 'es') AND " + translationText + " LIKE :candidate ESCAPE E'\\\\'" +
+      ")) AND " + publishedFilter;
+    String sortExpression = "russian".equals(criteria.getSorting().sortBy())
+      ? candidateTextSql("w.russian")
+      : "w." + sortColumn;
     @SuppressWarnings("unchecked")
-    List<Object[]> matchRows = getEntityManager().createNativeQuery(
-        ctes + " SELECT best.word_id, best.kind, best.language, best.match_text " +
-          "FROM best_matches best JOIN words w ON w.id = best.word_id " +
-          "ORDER BY best.match_rank, " + ordering + " " + sortDirection + ", w.id " +
-          "LIMIT :limit OFFSET :offset"
+    List<WordModel> candidates = getEntityManager().createNativeQuery(
+        "SELECT w.* FROM words w WHERE " + where + " ORDER BY " + sortExpression + " " + sortDirection + ", w.id",
+        WordModel.class
       )
-      .setParameter("term", term)
-      .setParameter("mode", criteria.getMode() == WordSearchMode.CONTAINS ? "contains" : "precise")
-      .setParameter("wordPattern", pattern)
-      .setParameter("limit", page.size)
-      .setParameter("offset", page.index * page.size)
+      .setParameter("candidate", candidatePattern)
       .getResultList();
 
-    List<UUID> ids = matchRows.stream().map(row -> (UUID) row[0]).toList();
-    Map<UUID, WordModel> modelsById = find("id in ?1", ids).list().stream()
-      .collect(java.util.stream.Collectors.toMap(WordModel::getId, model -> model));
-    List<WordSearchResultEntity> results = matchRows.stream().map(row -> {
-      WordEntity word = modelsById.get((UUID) row[0]).toEntity();
-      WordSearchResultEntity.Match match = new WordSearchResultEntity.Match(
-        (String) row[1], (String) row[2], (String) row[3]
-      );
-      return new WordSearchResultEntity(word, match);
-    }).toList();
+    List<WordSearchResultEntity> matches = new ArrayList<>();
+    for (WordModel candidate : candidates) {
+      SEARCH_MATCHER.match(candidate.toEntity(), term, criteria.getMode()).ifPresent(matches::add);
+    }
+    matches.sort(Comparator.comparingInt(result -> matchRank(result.match().kind())));
+
+    int total = matches.size();
     int totalPages = (int) Math.ceil((double) total / page.size);
+    long requestedFrom = (long) page.index * page.size;
+    int from = (int) Math.min(requestedFrom, total);
+    int to = (int) Math.min((long) from + page.size, total);
+    List<WordSearchResultEntity> results = List.copyOf(matches.subList(from, to));
 
     return new Paginated<>(results, page.index, page.size, totalPages, total, page.index + 1 < totalPages, page.index > 0);
   }
 
-  private static String normalizedSql(String expression) {
-    return "lower(trim(regexp_replace(normalize(regexp_replace(" + expression +
-      ", U&'\\0301', '', 'g'), NFC), '[[:space:]]+', ' ', 'g')))";
+  private static String candidateTextSql(String expression) {
+    return "lower(normalize(replace(" + expression + ", U&'\\0301', ''), NFC))";
   }
 
-  private static String normalizeSearch(String value) {
-    String withoutStress = value.replace("\u0301", "").toLowerCase(Locale.ROOT);
-    return WHITESPACE.matcher(Normalizer.normalize(withoutStress, Normalizer.Form.NFC))
-      .replaceAll(" ")
-      .strip();
+  private static String createCandidatePattern(String term) {
+    return "%" + Arrays.stream(term.split(" "))
+      .map(WordSearchMatcher::normalize)
+      .map(WordsPanacheRepository::escapeLike)
+      .collect(Collectors.joining("%")) + "%";
   }
 
-  private static String escapePostgresRegex(String value) {
-    StringBuilder escaped = new StringBuilder(value.length());
-    for (int index = 0; index < value.length(); index++) {
-      char character = value.charAt(index);
-      if ("\\.^$|?*+()[]{}".indexOf(character) >= 0) {
-        escaped.append('\\');
-      }
-      escaped.append(character);
-    }
-    return escaped.toString();
+  private static String escapeLike(String value) {
+    return value.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_");
+  }
+
+  private static int matchRank(String kind) {
+    return switch (kind) {
+      case "russian_exact" -> 1;
+      case "translation_exact" -> 2;
+      case "russian_phrase" -> 3;
+      case "translation_phrase" -> 4;
+      case "russian_prefix" -> 5;
+      case "substring" -> 6;
+      default -> throw new IllegalArgumentException("Unsupported word search match kind: " + kind);
+    };
   }
 
 }
