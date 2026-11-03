@@ -1,12 +1,14 @@
 package es.pausegarra.russian_cheatsheet.base;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.restassured.RestAssured;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 public class IntegrationTest {
 
@@ -17,6 +19,11 @@ public class IntegrationTest {
 
   @Inject
   Flyway flyway;
+
+  @BeforeEach
+  public void useExplicitApiPathInRequests() {
+    RestAssured.basePath = "";
+  }
 
   @AfterEach
   public void cleanUp() {

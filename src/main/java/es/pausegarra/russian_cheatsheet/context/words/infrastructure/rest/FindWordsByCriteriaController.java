@@ -22,9 +22,10 @@ public class FindWordsByCriteriaController implements FindWordsByCriteriaApiSpec
     int perPage,
     String sortBy,
     String sortDirection,
-    String search
+    String search,
+    String matchMode
   ) {
-    FindWordsByCriteriaDto dto = new FindWordsByCriteriaDto(page, perPage, sortBy, sortDirection, search);
+    FindWordsByCriteriaDto dto = new FindWordsByCriteriaDto(page, perPage, sortBy, sortDirection, search, matchMode);
     PaginatedDto<WordDto> result = useCase.handle(dto);
     List<ListWordsPresentation> presentations = result.data().stream().map(ListWordsPresentation::fromDto).toList();
     PaginatedDto<ListWordsPresentation> paginatedPresentations = new PaginatedDto<>(
